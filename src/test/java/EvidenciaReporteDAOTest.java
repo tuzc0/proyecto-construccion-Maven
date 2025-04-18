@@ -1,5 +1,6 @@
-package logica.DAOs;
 
+
+import logica.DAOs.EvidenciaReporteDAO;
 import logica.DTOs.EvidenciaReporteDTO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +28,7 @@ class EvidenciaReporteDAOTest {
     @Test
     void testInsertarEvidenciaReporte() {
         EvidenciaReporteDTO evidencia = new EvidenciaReporteDTO();
-        evidencia.setIdEvidencia(1);
+        evidencia.setIdEvidencia(0);
         evidencia.setURL("http://example.com/evidencia");
         evidencia.setIdReporte(1);
 

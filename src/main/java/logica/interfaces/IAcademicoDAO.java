@@ -9,7 +9,7 @@ public interface IAcademicoDAO {
 
     boolean insertarAcademico(AcademicoDTO academico) throws SQLException, IOException;
 
-    boolean eliminarAcademicoPorNumeroDePersonal(int estadoActivo, String numeroDePersonal) throws SQLException;
+    boolean eliminarAcademicoPorNumeroDePersonal(int estadoActivo, String numeroDePersonal) throws SQLException, IOException;
 
     boolean modificarAcademico(AcademicoDTO academico) throws SQLException;
 

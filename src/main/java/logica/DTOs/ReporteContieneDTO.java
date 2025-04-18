@@ -8,15 +8,19 @@ public class ReporteContieneDTO {
     private int idActividad;
     private Timestamp fechaInicioReal;
     private Timestamp fechaFinReal;
+    private int estadoActivo;
 
     public ReporteContieneDTO() {
 
     }
 
-    public ReporteContieneDTO(int idReporte, int idActividad) {
+    public ReporteContieneDTO(int idReporte, int idActividad, Timestamp fechaInicioReal, Timestamp fechaFinReal, int estadoActivo) {
 
         this.idReporte = idReporte;
         this.idActividad = idActividad;
+        this.fechaInicioReal = fechaInicioReal;
+        this.fechaFinReal = fechaFinReal;
+        this.estadoActivo = estadoActivo;
     }
 
     public int getIdReporte() {
@@ -56,5 +60,15 @@ public class ReporteContieneDTO {
 
     public void setFechaFinReal(Timestamp fechaFinReal) {
 
+    }
+
+    public int getEstadoActivo() {
+
+        return estadoActivo;
+    }
+
+    public void setEstadoActivo(int estadoActivo) {
+
+        this.estadoActivo = estadoActivo;
     }
 }

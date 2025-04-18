@@ -1,16 +1,16 @@
 package logica.DTOs;
 
-public class EvidenciaEvaluacion {
+public class EvidenciaEvaluacionDTO {
 
     private int idEvidencia;
     private String URL;
     private int idEvaluacion;
 
-    public EvidenciaEvaluacion() {
+    public EvidenciaEvaluacionDTO() {
 
     }
 
-    public EvidenciaEvaluacion(int idEvidencia, String URL, int idEvaluacion) {
+    public EvidenciaEvaluacionDTO(int idEvidencia, String URL, int idEvaluacion) {
 
         this.idEvidencia = idEvidencia;
         this.URL = URL;

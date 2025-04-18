@@ -1,15 +1,17 @@
 package logica.interfaces;
 
 import logica.DTOs.UsuarioDTO;
+
+import java.io.IOException;
 import java.sql.SQLException;
 
 public interface IUsuarioDAO {
 
-    boolean insertarUsuario(UsuarioDTO usuario) throws SQLException;
+    boolean insertarUsuario(UsuarioDTO usuario) throws SQLException, IOException;
 
-    boolean eliminarUsuarioPorID(int idUsuario) throws SQLException;
+    boolean eliminarUsuarioPorID(int idUsuario) throws SQLException, IOException;
 
-    boolean modificarUsuario(UsuarioDTO usuario) throws SQLException;
+    boolean modificarUsuario(UsuarioDTO usuario) throws SQLException, IOException;
 
-    UsuarioDTO buscarUsuarioPorID(int idUsuario) throws SQLException;
+    UsuarioDTO buscarUsuarioPorID(int idUsuario) throws SQLException, IOException;
 }

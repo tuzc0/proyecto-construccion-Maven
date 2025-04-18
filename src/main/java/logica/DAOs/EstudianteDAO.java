@@ -20,7 +20,7 @@ public class EstudianteDAO implements IEstudianteDAO {
         conexionBaseDeDatos = new ConexionBD().getConnection();
     }
 
-    public boolean insertarEstudiante(EstudianteDTO estudiante) throws SQLException {
+    public boolean insertarEstudiante(EstudianteDTO estudiante) throws SQLException, IOException {
 
         boolean estudianteInsertado = false;
 
@@ -28,6 +28,7 @@ public class EstudianteDAO implements IEstudianteDAO {
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(insertarSQLEstudiante);
             sentenciaEstudiante.setString(1, estudiante.getMatricula());
             sentenciaEstudiante.setInt(2, estudiante.getIdUsuario());
@@ -46,7 +47,7 @@ public class EstudianteDAO implements IEstudianteDAO {
     }
 
 
-    public boolean eliminarEstudiantePorMatricula (int estadoActivo, String matricula) throws SQLException {
+    public boolean eliminarEstudiantePorMatricula (int estadoActivo, String matricula) throws SQLException, IOException {
 
         boolean estudianteModificado = false;
 
@@ -54,6 +55,7 @@ public class EstudianteDAO implements IEstudianteDAO {
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(modificarSQLEstudiante);
             sentenciaEstudiante.setInt(1, estadoActivo);
             sentenciaEstudiante.setString(2, matricula);
@@ -71,7 +73,7 @@ public class EstudianteDAO implements IEstudianteDAO {
         return estudianteModificado;
     }
 
-    public boolean modificarEstudiante(EstudianteDTO estudiante) throws SQLException {
+    public boolean modificarEstudiante(EstudianteDTO estudiante) throws SQLException, IOException {
 
         boolean estudianteModificado = false;
 
@@ -79,6 +81,7 @@ public class EstudianteDAO implements IEstudianteDAO {
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(modificarSQLEstudiante);
             sentenciaEstudiante.setString(2, estudiante.getMatricula());
             sentenciaEstudiante.setInt(1, estudiante.getIdUsuario());
@@ -97,7 +100,7 @@ public class EstudianteDAO implements IEstudianteDAO {
     }
 
 
-    public EstudianteDTO buscarEstudiantePorMatricula(String matricula) throws SQLException {
+    public EstudianteDTO buscarEstudiantePorMatricula(String matricula) throws SQLException, IOException {
 
         EstudianteDTO estudiante = new EstudianteDTO(-1, "N/A", "N/A", "N/A", 0);
 
@@ -105,6 +108,7 @@ public class EstudianteDAO implements IEstudianteDAO {
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(buscarSQL);
             sentenciaEstudiante.setString(1, matricula);
             resultadoConsultaEstudiante = sentenciaEstudiante.executeQuery();

@@ -15,18 +15,16 @@ public class PeriodoDAO implements IPeriodoDAO {
     PreparedStatement sentenciaPeriodo = null;
     ResultSet resultadoConsultaPeriodo;
 
-    public PeriodoDAO() throws SQLException, IOException {
 
-        conexionBaseDeDatos = new ConexionBD().getConnection();
-    }
 
-    public boolean crearNuevoPeriodo(PeriodoDTO periodo) throws SQLException {
+    public boolean crearNuevoPeriodo(PeriodoDTO periodo) throws SQLException, IOException {
 
         boolean periodoInsertado = false;
         String insertarSQLPeriodo = "INSERT INTO periodo VALUES(?, ?, ?)";
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaPeriodo = conexionBaseDeDatos.prepareStatement(insertarSQLPeriodo);
             sentenciaPeriodo.setInt(1, periodo.getIDPeriodo());
             sentenciaPeriodo.setString(2, periodo.getDescripcion());
@@ -45,13 +43,14 @@ public class PeriodoDAO implements IPeriodoDAO {
         return periodoInsertado;
     }
 
-    public boolean eliminarPeriodoPorID(int idPeriodo) throws SQLException {
+    public boolean eliminarPeriodoPorID(int idPeriodo) throws SQLException, IOException {
 
         boolean periodoEliminado = false;
         String eliminarSQLPeriodo = "UPDATE periodo SET estadoActivo = 0 WHERE idPeriodo = ?";
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaPeriodo = conexionBaseDeDatos.prepareStatement(eliminarSQLPeriodo);
             sentenciaPeriodo.setInt(1, idPeriodo);
             sentenciaPeriodo.executeUpdate();
@@ -68,13 +67,14 @@ public class PeriodoDAO implements IPeriodoDAO {
         return periodoEliminado;
     }
 
-    public boolean modificarPeriodo(PeriodoDTO periodo) throws SQLException {
+    public boolean modificarPeriodo(PeriodoDTO periodo) throws SQLException, IOException {
 
         boolean periodoModificado = false;
         String modificarSQLPeriodo = "UPDATE periodo SET descripcion = ?, estadoActivo = ? WHERE idPeriodo = ?";
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaPeriodo = conexionBaseDeDatos.prepareStatement(modificarSQLPeriodo);
             sentenciaPeriodo.setInt(3, periodo.getIDPeriodo());
             sentenciaPeriodo.setString(1, periodo.getDescripcion());
@@ -93,13 +93,14 @@ public class PeriodoDAO implements IPeriodoDAO {
         return periodoModificado;
     }
 
-    public PeriodoDTO mostrarPeriodoActual ( ) throws SQLException {
+    public PeriodoDTO mostrarPeriodoActual ( ) throws SQLException, IOException {
 
         PeriodoDTO periodo = new PeriodoDTO(-1, "N/A", -1);
         String consultaSQLPeriodo = "SELECT * FROM periodo WHERE estadoActivo = 1";
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaPeriodo = conexionBaseDeDatos.prepareStatement(consultaSQLPeriodo);
             resultadoConsultaPeriodo = sentenciaPeriodo.executeQuery( );
 

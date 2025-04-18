@@ -1,15 +1,17 @@
 package logica.interfaces;
 
 import logica.DTOs.AutoevaluacionDTO;
+
+import java.io.IOException;
 import java.sql.SQLException;
 
 public interface IAutoevaluacionDAO {
 
-    boolean crearNuevaAutoevaluacion(AutoevaluacionDTO autoevaluacion) throws SQLException;
+    boolean crearNuevaAutoevaluacion(AutoevaluacionDTO autoevaluacion) throws SQLException, IOException;
 
-    boolean eliminarAutoevaluacionPorID(int idAutoevaluacion) throws SQLException;
+    boolean eliminarAutoevaluacionPorID(int idAutoevaluacion) throws SQLException, IOException;
 
-    boolean modificarAutoevaluacion(AutoevaluacionDTO autoevaluacion) throws SQLException;
+    boolean modificarAutoevaluacion(AutoevaluacionDTO autoevaluacion) throws SQLException, IOException;
 
-    AutoevaluacionDTO buscarAutoevaluacionPorID(int idAutoevaluacion) throws SQLException;
+    AutoevaluacionDTO buscarAutoevaluacionPorID(int idAutoevaluacion) throws SQLException, IOException;
 }

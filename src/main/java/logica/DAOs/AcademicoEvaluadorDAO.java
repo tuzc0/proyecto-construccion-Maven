@@ -15,18 +15,16 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
     PreparedStatement consultaPreparada = null;
     ResultSet resultadoConsulta;
 
-    public AcademicoEvaluadorDAO() throws SQLException, IOException {
 
-        conexionBaseDeDatos = new ConexionBD().getConnection();
-    }
 
-    public boolean insertarAcademicoEvaluador(AcademicoEvaluadorDTO academicoEvaluador) throws SQLException {
+    public boolean insertarAcademicoEvaluador(AcademicoEvaluadorDTO academicoEvaluador) throws SQLException, IOException {
 
         String consultaSQL = "INSERT INTO academicoevaluador (numeroDePersonal, idUsuario) VALUES (?, ?)";
         boolean insercionExitosa = false;
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, academicoEvaluador.getNumeroDePersonal());
             consultaPreparada.setInt(2, academicoEvaluador.getIdUsuario());
@@ -44,7 +42,7 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
         return insercionExitosa;
     }
 
-    public boolean eliminarAcademicoEvaluadorPorNumeroDePersonal(int numeroDePersonal) throws SQLException {
+    public boolean eliminarAcademicoEvaluadorPorNumeroDePersonal(int numeroDePersonal) throws SQLException, IOException {
 
         String consultaSQL = "UPDATE usuario SET estadoActivo = ? WHERE idUsuario = " +
                 "(SELECT idUsuario FROM academicoevaluador WHERE numeroDePersonal = ?)";
@@ -52,6 +50,7 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, 0);
             consultaPreparada.setInt(2, numeroDePersonal);
@@ -69,7 +68,7 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
         return eliminadoConExito;
     }
 
-    public boolean modificarAcademicoEvaluador(AcademicoEvaluadorDTO academicoEvaluador) throws SQLException {
+    public boolean modificarAcademicoEvaluador(AcademicoEvaluadorDTO academicoEvaluador) throws SQLException, IOException {
 
         String consultaSQL = "UPDATE academicoevaluador SET numeroDePersonal = ?, idUsuario = ? " +
                 "WHERE numeroDePersonal = ?";
@@ -77,6 +76,7 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, academicoEvaluador.getNumeroDePersonal());
             consultaPreparada.setInt(2, academicoEvaluador.getIdUsuario());
@@ -95,13 +95,14 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
         return modificacionExitosa;
     }
 
-    public AcademicoEvaluadorDTO buscarAcademicoEvaluadorPorNumeroDePersonal(int numeroDePersonal) throws SQLException {
+    public AcademicoEvaluadorDTO buscarAcademicoEvaluadorPorNumeroDePersonal(int numeroDePersonal) throws SQLException, IOException {
 
         String consultaSQL = "SELECT * FROM vista_evaluadores WHERE numeroDePersonal = ?";
         AcademicoEvaluadorDTO academicoEvaluador = new AcademicoEvaluadorDTO(-1,1, "", "", 0);
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, numeroDePersonal);
             resultadoConsulta = consultaPreparada.executeQuery();

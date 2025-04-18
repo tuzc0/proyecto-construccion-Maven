@@ -15,18 +15,16 @@ public class CriterioAutoevaluacionDAO implements ICriterioAutoevaluacionDAO {
     PreparedStatement sentenciaCriterio = null;
     ResultSet resultadoConsultaCriterio;
 
-    public CriterioAutoevaluacionDAO() throws SQLException, IOException {
 
-        conexionBaseDeDatos = new ConexionBD().getConnection();
-    }
 
-    public boolean crearNuevoCriterioAutoevaluacion(CriterioAutoevaluacionDTO criterio) throws SQLException {
+    public boolean crearNuevoCriterioAutoevaluacion(CriterioAutoevaluacionDTO criterio) throws SQLException, IOException {
 
         String insertarSQLCriterio = "INSERT INTO criterioautoevaluacion (idCriterio, descripciones, numeroCriterio) VALUES (?, ?, ?)";
         boolean criterioInsertado = false;
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaCriterio = conexionBaseDeDatos.prepareStatement(insertarSQLCriterio);
             sentenciaCriterio.setInt(1, criterio.getIDCriterio());
             sentenciaCriterio.setString(2, criterio.getDescripcion());
@@ -45,13 +43,14 @@ public class CriterioAutoevaluacionDAO implements ICriterioAutoevaluacionDAO {
         return criterioInsertado;
     }
 
-    public boolean eliminarCriterioAutoevaluacionPorNumeroDeCriterio(int numeroDeCriterio) throws SQLException {
+    public boolean eliminarCriterioAutoevaluacionPorNumeroDeCriterio(int numeroDeCriterio) throws SQLException, IOException {
 
         String eliminarSQLCriterio = "UPDATE criterioautoevaluacion SET estadoActivo = ? WHERE numeroCriterio = ?";
         boolean criterioEliminado = false;
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaCriterio = conexionBaseDeDatos.prepareStatement(eliminarSQLCriterio);
             sentenciaCriterio.setInt(1, 0);
             sentenciaCriterio.setInt(2, numeroDeCriterio);
@@ -69,13 +68,14 @@ public class CriterioAutoevaluacionDAO implements ICriterioAutoevaluacionDAO {
         return criterioEliminado;
     }
 
-    public boolean modificarCriterioAutoevaluacion(CriterioAutoevaluacionDTO criterio) throws SQLException {
+    public boolean modificarCriterioAutoevaluacion(CriterioAutoevaluacionDTO criterio) throws SQLException, IOException {
 
         String modificarSQLCriterio = "UPDATE criterioautoevaluacion SET descripciones = ? WHERE numeroCriterio = ?";
         boolean criterioModificado = false;
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaCriterio = conexionBaseDeDatos.prepareStatement(modificarSQLCriterio);
             sentenciaCriterio.setString(1, criterio.getDescripcion());
             sentenciaCriterio.setInt(2, criterio.getNumeroCriterio());
@@ -93,13 +93,14 @@ public class CriterioAutoevaluacionDAO implements ICriterioAutoevaluacionDAO {
         return criterioModificado;
     }
 
-    public CriterioAutoevaluacionDTO buscarCriterioAutoevaluacionPorID(int numeroDeCriterio) throws SQLException {
+    public CriterioAutoevaluacionDTO buscarCriterioAutoevaluacionPorID(int numeroDeCriterio) throws SQLException, IOException {
 
         String buscarSQLCriterio = "SELECT * FROM criterioautoevaluacion WHERE numeroCriterio = ?";
         CriterioAutoevaluacionDTO criterioEncontrado = new CriterioAutoevaluacionDTO(-1, "N/A", -1);
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaCriterio = conexionBaseDeDatos.prepareStatement(buscarSQLCriterio);
             sentenciaCriterio.setInt(1, numeroDeCriterio);
             resultadoConsultaCriterio = sentenciaCriterio.executeQuery();

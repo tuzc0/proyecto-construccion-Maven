@@ -15,17 +15,16 @@ public class ActividadDAO implements IActividadDAO {
     PreparedStatement sentenciaActividad = null;
     ResultSet resultadoConsulta;
 
-    public ActividadDAO() throws SQLException, IOException {
 
-        conexionBaseDeDatos = new ConexionBD().getConnection();
-    }
 
-    public boolean crearNuevaActividad(ActividadDTO actividad) throws SQLException {
+    public boolean crearNuevaActividad(ActividadDTO actividad) throws SQLException, IOException {
         boolean actividadInsertada = false;
 
         String insertarSQLActividad = "INSERT INTO actividad VALUES(?, ?, ?, ?, ?, ?, ?)";
 
         try {
+
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaActividad = conexionBaseDeDatos.prepareStatement(insertarSQLActividad);
             sentenciaActividad.setInt(1, actividad.getIDActividad());
             sentenciaActividad.setString(2, actividad.getNombre());
@@ -48,12 +47,14 @@ public class ActividadDAO implements IActividadDAO {
         return actividadInsertada;
     }
 
-    public boolean eliminarActividadPorID(int idActividad) throws SQLException {
+    public boolean eliminarActividadPorID(int idActividad) throws SQLException, IOException {
         boolean actividadEliminada = false;
 
         String eliminarSQLActividad = "UPDATE actividad SET estadoActivo = 0 WHERE IDActividad = ?";
 
         try {
+
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaActividad = conexionBaseDeDatos.prepareStatement(eliminarSQLActividad);
             sentenciaActividad.setInt(1, idActividad);
             sentenciaActividad.executeUpdate();
@@ -70,12 +71,14 @@ public class ActividadDAO implements IActividadDAO {
         return actividadEliminada;
     }
 
-    public boolean modificarActividad(ActividadDTO actividad) throws SQLException {
+    public boolean modificarActividad(ActividadDTO actividad) throws SQLException, IOException {
         boolean actividadModificada = false;
 
         String modificarSQLActividad = "UPDATE actividad SET nombre = ?, duracion = ?, hitos = ?, fechaInicio = ?, fechaFin = ? , estadoActivo = ? WHERE IDActividad = ?";
 
         try {
+
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaActividad = conexionBaseDeDatos.prepareStatement(modificarSQLActividad);
             sentenciaActividad.setString(1, actividad.getNombre());
             sentenciaActividad.setString(2, actividad.getDuracion());
@@ -98,13 +101,15 @@ public class ActividadDAO implements IActividadDAO {
         return actividadModificada;
     }
 
-    public ActividadDTO buscarActividadPorID(int idActividad) throws SQLException {
+    public ActividadDTO buscarActividadPorID(int idActividad) throws SQLException, IOException {
 
         ActividadDTO actividad = new ActividadDTO(-1, "Sin nombre", null, null, "Sin duración", "Sin hitos", 0);
 
         String buscarSQLActividad = "SELECT * FROM actividad WHERE IDActividad = ?";
 
         try {
+
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaActividad = conexionBaseDeDatos.prepareStatement(buscarSQLActividad);
             sentenciaActividad.setInt(1, idActividad);
             resultadoConsulta = sentenciaActividad.executeQuery();

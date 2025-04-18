@@ -15,12 +15,8 @@ public class CoordinadorDAO implements ICoordinadorDAO {
     PreparedStatement sentenciaCoordinador = null;
     ResultSet resultadoCoordinador;
 
-    public CoordinadorDAO() throws SQLException, IOException {
 
-        conexionBaseDeDatos = new ConexionBD().getConnection();
-    }
-
-    public boolean insertarCoordinador (CoordinadorDTO coordinador) throws SQLException {
+    public boolean insertarCoordinador (CoordinadorDTO coordinador) throws SQLException, IOException {
 
         boolean coordinadorInsertado = false;
 
@@ -28,6 +24,7 @@ public class CoordinadorDAO implements ICoordinadorDAO {
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaCoordinador = conexionBaseDeDatos.prepareStatement(insertarSQLCoordinador);
             sentenciaCoordinador.setInt(1, coordinador.getNumeroDePersonal());
             sentenciaCoordinador.setInt(2, coordinador.getIdUsuario());
@@ -42,7 +39,7 @@ public class CoordinadorDAO implements ICoordinadorDAO {
         return coordinadorInsertado;
     }
 
-    public boolean eliminarCoordinadorPorNumeroDePersonal (int numeroDePersonal) throws SQLException {
+    public boolean eliminarCoordinadorPorNumeroDePersonal (int numeroDePersonal) throws SQLException, IOException {
 
         boolean coordinadorModificado = false;
 
@@ -51,6 +48,7 @@ public class CoordinadorDAO implements ICoordinadorDAO {
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaCoordinador = conexionBaseDeDatos.prepareStatement(modificarSQLCoordinador);
             sentenciaCoordinador.setInt(1, numeroDePersonal);
             sentenciaCoordinador.executeUpdate();
@@ -73,6 +71,7 @@ public class CoordinadorDAO implements ICoordinadorDAO {
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaCoordinador = conexionBaseDeDatos.prepareStatement(modificarSQLCoordinador);
             sentenciaCoordinador.setInt(1, coordinador.getNumeroDePersonal());
             sentenciaCoordinador.setInt(2, coordinador.getIdUsuario());
@@ -87,13 +86,15 @@ public class CoordinadorDAO implements ICoordinadorDAO {
         return coordinadorModificado;
     }
 
-    public CoordinadorDTO buscarCoordinadorPorNumeroDePersonal (int numeroDePersonal) throws SQLException {
+    public CoordinadorDTO buscarCoordinadorPorNumeroDePersonal (int numeroDePersonal) throws SQLException, IOException {
 
         CoordinadorDTO coordinador = new CoordinadorDTO(-1, -1, "N/A", "N/A", 0);
 
         String consultaSQL = "SELECT * FROM vista_coordinadores WHERE numeroDePersonal = ?";
 
         try {
+
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaCoordinador = conexionBaseDeDatos.prepareStatement(consultaSQL);
             sentenciaCoordinador.setInt(1, numeroDePersonal);
             resultadoCoordinador = sentenciaCoordinador.executeQuery();

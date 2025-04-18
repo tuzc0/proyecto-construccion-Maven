@@ -15,18 +15,16 @@ public class RepresentanteDAO implements IRepresentanteDAO {
     PreparedStatement sentenciaRepresentante = null;
     ResultSet resultadoConsultaRepresentante;
 
-    public RepresentanteDAO() throws SQLException, IOException {
 
-        conexionBaseDeDatos = new ConexionBD().getConnection();
-    }
 
-    public boolean insertarRepresentante(RepresentanteDTO representante) throws SQLException {
+    public boolean insertarRepresentante(RepresentanteDTO representante) throws SQLException, IOException {
 
         boolean representanteInsertado = false;
         String insertarSQLRepresentante = "INSERT INTO representante VALUES(?, ?, ?, ?, ?, ?, ?)";
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaRepresentante = conexionBaseDeDatos.prepareStatement(insertarSQLRepresentante);
             sentenciaRepresentante.setInt(1, representante.getIDRepresentante());
             sentenciaRepresentante.setString(2, representante.getCorreo());
@@ -49,13 +47,14 @@ public class RepresentanteDAO implements IRepresentanteDAO {
         return representanteInsertado;
     }
 
-    public boolean eliminarRepresentantePorID(int idRepresentante) throws SQLException {
+    public boolean eliminarRepresentantePorID(int idRepresentante) throws SQLException, IOException {
 
         boolean representanteEliminado = false;
         String eliminarSQLRepresentante = "UPDATE representante SET estadoActivo = 0 WHERE IdRepresentante = ?";
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaRepresentante = conexionBaseDeDatos.prepareStatement(eliminarSQLRepresentante);
             sentenciaRepresentante.setInt(1, idRepresentante);
             sentenciaRepresentante.executeUpdate();
@@ -72,13 +71,14 @@ public class RepresentanteDAO implements IRepresentanteDAO {
         return representanteEliminado;
     }
 
-    public boolean modificarRepresentante(RepresentanteDTO representante) throws SQLException {
+    public boolean modificarRepresentante(RepresentanteDTO representante) throws SQLException, IOException {
 
         boolean representanteModificado = false;
         String modificarSQLRepresentante = "UPDATE representante SET correo = ?, telefono = ?, nombre = ?, apellidos = ?, idOV = ?, estadoActivo = ? WHERE IdRepresentante = ?";
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaRepresentante = conexionBaseDeDatos.prepareStatement(modificarSQLRepresentante);
             sentenciaRepresentante.setString(1, representante.getCorreo());
             sentenciaRepresentante.setString(2, representante.getTelefono());
@@ -101,13 +101,14 @@ public class RepresentanteDAO implements IRepresentanteDAO {
         return representanteModificado;
     }
 
-    public RepresentanteDTO buscarRepresentantePorID(int idRepresentante) throws SQLException {
+    public RepresentanteDTO buscarRepresentantePorID(int idRepresentante) throws SQLException, IOException {
 
         RepresentanteDTO representante = new RepresentanteDTO(-1, "N/A", "N/A", "N/A", "N/A", 0, 0);
         String buscarSQLRepresentante = "SELECT * FROM representante WHERE IdRepresentante = ?";
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaRepresentante = conexionBaseDeDatos.prepareStatement(buscarSQLRepresentante);
             sentenciaRepresentante.setInt(1, idRepresentante);
             resultadoConsultaRepresentante = sentenciaRepresentante.executeQuery();

@@ -15,18 +15,16 @@ public class OvDAO implements IOvDAO {
     PreparedStatement sentenciaOV = null;
     ResultSet resultadoConsultaOV;
 
-    public OvDAO() throws SQLException, IOException {
 
-        conexionBaseDeDatos = new ConexionBD().getConnection();
-    }
 
-    public boolean crearNuevaOv(OvDTO ov) throws SQLException {
+    public boolean crearNuevaOv(OvDTO ov) throws SQLException, IOException {
 
         boolean ovCreada = false;
         String insertarSQLOV = "INSERT INTO ov VALUES(?, ?, ?, ?, ?, ?)";
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaOV = conexionBaseDeDatos.prepareStatement(insertarSQLOV);
             sentenciaOV.setInt(1, ov.getIdOV());
             sentenciaOV.setString(2, ov.getNombre());
@@ -49,13 +47,14 @@ public class OvDAO implements IOvDAO {
         return ovCreada;
     }
 
-    public boolean eliminarOvPorID(int idOv) throws SQLException {
+    public boolean eliminarOvPorID(int idOv) throws SQLException, IOException {
 
         boolean ovEliminada = false;
         String eliminarSQLOV = "UPDATE ov SET estadoActivo = 0 WHERE idOV = ?";
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaOV = conexionBaseDeDatos.prepareStatement(eliminarSQLOV);
             sentenciaOV.setInt(1, idOv);
             sentenciaOV.executeUpdate();
@@ -73,13 +72,14 @@ public class OvDAO implements IOvDAO {
         return ovEliminada;
     }
 
-    public boolean modificarOv(OvDTO ov) throws SQLException {
+    public boolean modificarOv(OvDTO ov) throws SQLException, IOException {
 
         boolean ovModificada = false;
         String modificarSQLOV = "UPDATE ov SET nombre = ?, correo = ?, numeroContacto = ?, direccion = ? WHERE idOV = ?";
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaOV = conexionBaseDeDatos.prepareStatement(modificarSQLOV);
             sentenciaOV.setString(1, ov.getNombre());
             sentenciaOV.setString(2, ov.getCorreo());
@@ -101,13 +101,14 @@ public class OvDAO implements IOvDAO {
         return ovModificada;
     }
 
-    public OvDTO buscarOvPorID(int idOv) throws SQLException {
+    public OvDTO buscarOvPorID(int idOv) throws SQLException, IOException {
 
         OvDTO ov = new OvDTO(-1, "N/A", "N/A", "N/A", "N/A", 0);
         String buscarSQLOV = "SELECT * FROM ov WHERE idOV = ?";
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaOV = conexionBaseDeDatos.prepareStatement(buscarSQLOV);
             sentenciaOV.setInt(1, idOv);
             resultadoConsultaOV = sentenciaOV.executeQuery();

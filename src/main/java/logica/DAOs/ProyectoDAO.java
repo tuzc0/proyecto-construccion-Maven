@@ -15,18 +15,16 @@ public class ProyectoDAO implements IProyectoDAO {
     PreparedStatement sentenciaProyecto = null;
     ResultSet resultadoProyecto;
 
-    public ProyectoDAO() throws SQLException, IOException {
 
-        conexionBaseDeDatos = new ConexionBD().getConnection();
-    }
 
-    public boolean crearNuevoProyecto(ProyectoDTO proyecto) throws SQLException {
+    public boolean crearNuevoProyecto(ProyectoDTO proyecto) throws SQLException, IOException {
 
         String insertarSQLProyecto = "INSERT INTO proyecto VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         boolean proyectoInsertado = false;
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaProyecto = conexionBaseDeDatos.prepareStatement(insertarSQLProyecto);
             sentenciaProyecto.setInt(1, proyecto.getIDProyecto());
             sentenciaProyecto.setString(2, proyecto.getNombre());
@@ -50,13 +48,14 @@ public class ProyectoDAO implements IProyectoDAO {
         return proyectoInsertado;
     }
 
-    public boolean eliminarProyectoPorID(int idProyecto) throws SQLException {
+    public boolean eliminarProyectoPorID(int idProyecto) throws SQLException, IOException {
 
         String modificarSQLProyecto = "UPDATE proyecto SET estadoActivo = ? WHERE IDProyecto = ?";
         boolean proyectoEliminado = false;
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaProyecto = conexionBaseDeDatos.prepareStatement(modificarSQLProyecto);
             sentenciaProyecto.setInt(1, 0);
             sentenciaProyecto.setInt(2, idProyecto);
@@ -74,13 +73,14 @@ public class ProyectoDAO implements IProyectoDAO {
         return proyectoEliminado;
     }
 
-    public boolean modificarProyecto(ProyectoDTO proyecto) throws SQLException {
+    public boolean modificarProyecto(ProyectoDTO proyecto) throws SQLException, IOException {
 
         String modificarSQLProyecto = "UPDATE proyecto SET nombre = ?, descripcion = ?, fechaInicio = ?, fechaFin = ?, IDRepresentante = ?, IDEstudiante = ? WHERE IDProyecto = ?";
         boolean proyectoModificado = false;
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaProyecto = conexionBaseDeDatos.prepareStatement(modificarSQLProyecto);
             sentenciaProyecto.setString(1, proyecto.getNombre());
             sentenciaProyecto.setString(2, proyecto.getDescripcion());
@@ -103,13 +103,14 @@ public class ProyectoDAO implements IProyectoDAO {
         return proyectoModificado;
     }
 
-    public ProyectoDTO buscarProyectoPorID(int idProyecto) throws SQLException {
+    public ProyectoDTO buscarProyectoPorID(int idProyecto) throws SQLException, IOException {
 
         String consultaSQLProyecto = "SELECT * FROM proyecto WHERE IDProyecto = ?";
         ProyectoDTO proyecto = new ProyectoDTO(-1, "", "", "", "", -1, "", 0);
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaProyecto = conexionBaseDeDatos.prepareStatement(consultaSQLProyecto);
             sentenciaProyecto.setInt(1, idProyecto);
             resultadoProyecto = sentenciaProyecto.executeQuery();

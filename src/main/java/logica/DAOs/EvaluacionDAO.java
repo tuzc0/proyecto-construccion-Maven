@@ -16,12 +16,8 @@ public class EvaluacionDAO implements IEvaluacionDAO {
     PreparedStatement sentenciaEvaluacion = null;
     ResultSet resultadoConsultaEvaluacion;
 
-    public EvaluacionDAO() throws SQLException, IOException {
 
-        conexionBaseDeDatos = new ConexionBD().getConnection();
-    }
-
-    public boolean crearNuevaEvaluacion(EvaluacionDTO evaluacion) throws SQLException {
+    public boolean crearNuevaEvaluacion(EvaluacionDTO evaluacion) throws SQLException, IOException {
 
         String insertarSQLEvaluacion = "INSERT INTO evaluacion (idEvaluacion, comentarios, calificacionFinal, " +
                 "numeroPersonal, idEstudiante, estadoActivo) VALUES (?, ?, ?, ?, ?, ?)";
@@ -29,6 +25,7 @@ public class EvaluacionDAO implements IEvaluacionDAO {
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaEvaluacion = conexionBaseDeDatos.prepareStatement(insertarSQLEvaluacion);
             sentenciaEvaluacion.setInt(1, evaluacion.getIDEvaluacion());
             sentenciaEvaluacion.setString(2, evaluacion.getComentarios());
@@ -50,13 +47,14 @@ public class EvaluacionDAO implements IEvaluacionDAO {
         return evaluacionInsertada;
     }
 
-    public boolean eliminarEvaluacionPorID(int estadoActivo, int idEvaluacion) throws SQLException {
+    public boolean eliminarEvaluacionPorID(int estadoActivo, int idEvaluacion) throws SQLException, IOException {
 
         String eliminarSQLEvaluacion = "UPDATE evaluacion SET estadoActivo = ? WHERE idEvaluacion = ?";
         boolean evaluacionEliminada = false;
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaEvaluacion = conexionBaseDeDatos.prepareStatement(eliminarSQLEvaluacion);
             sentenciaEvaluacion.setInt(1, idEvaluacion);
             sentenciaEvaluacion.setInt(2, estadoActivo);
@@ -74,7 +72,7 @@ public class EvaluacionDAO implements IEvaluacionDAO {
         return evaluacionEliminada;
     }
 
-    public boolean modificarEvaluacion(EvaluacionDTO evaluacion) throws SQLException {
+    public boolean modificarEvaluacion(EvaluacionDTO evaluacion) throws SQLException, IOException {
 
         String modificarSQLEvaluacion = "UPDATE evaluacion SET comentarios = ?, calificacionFinal = ?, numeroPersonal = ?, " +
                 "idEstudiante = ?, estadoActivo = ? WHERE idEvaluacion = ?";
@@ -82,6 +80,7 @@ public class EvaluacionDAO implements IEvaluacionDAO {
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaEvaluacion = conexionBaseDeDatos.prepareStatement(modificarSQLEvaluacion);
             sentenciaEvaluacion.setString(1, evaluacion.getComentarios());
             sentenciaEvaluacion.setInt(2, evaluacion.getCalificacionFinal());
@@ -103,13 +102,14 @@ public class EvaluacionDAO implements IEvaluacionDAO {
         return evaluacionModificada;
     }
 
-    public EvaluacionDTO buscarEvaluacionPorID(int idEvaluacion) throws SQLException {
+    public EvaluacionDTO buscarEvaluacionPorID(int idEvaluacion) throws SQLException, IOException {
 
         String buscarSQLEvaluacion = "SELECT * FROM evaluacion WHERE idEvaluacion = ?";
         EvaluacionDTO evaluacion = new EvaluacionDTO(-1, " ", 0, 0, " ", 0);
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaEvaluacion = conexionBaseDeDatos.prepareStatement(buscarSQLEvaluacion);
             sentenciaEvaluacion.setInt(1, idEvaluacion);
             ResultSet resultadoConsultaEvaluacion = sentenciaEvaluacion.executeQuery();

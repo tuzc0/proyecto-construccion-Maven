@@ -15,18 +15,16 @@ public class ReporteDAO implements IReporteDAO {
     PreparedStatement sentenciaReporte = null;
     ResultSet resultadoReporte;
 
-    public ReporteDAO() throws SQLException, IOException {
 
-        conexionBaseDeDatos = new ConexionBD().getConnection();
-    }
 
-    public boolean insertarReporte(ReporteDTO reporte) throws SQLException {
+    public boolean insertarReporte(ReporteDTO reporte) throws SQLException, IOException {
 
         String insertarSQLReporte = "INSERT INTO reporte VALUES (?, ?, ?, ?, ?, ?)";
         boolean reporteInsertado = false;
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaReporte = conexionBaseDeDatos.prepareStatement(insertarSQLReporte);
             sentenciaReporte.setInt(1, reporte.getIDReporte());
             sentenciaReporte.setInt(2, reporte.getNumeroHoras());
@@ -48,13 +46,14 @@ public class ReporteDAO implements IReporteDAO {
         return reporteInsertado;
     }
 
-    public boolean modificarReporte(ReporteDTO reporte) throws SQLException {
+    public boolean modificarReporte(ReporteDTO reporte) throws SQLException, IOException {
 
         String modificarSQLReporte = "UPDATE reporte SET numeroHoras = ?, metodologia = ?, observaciones = ?, fecha = ?, IDEstudiante = ? WHERE IDReporte = ?";
         boolean reporteModificado = false;
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaReporte = conexionBaseDeDatos.prepareStatement(modificarSQLReporte);
             sentenciaReporte.setInt(1, reporte.getNumeroHoras());
             sentenciaReporte.setString(2, reporte.getMetodologia());
@@ -76,13 +75,14 @@ public class ReporteDAO implements IReporteDAO {
         return reporteModificado;
     }
 
-    public ReporteDTO buscarReportePorID(int idReporte) throws SQLException {
+    public ReporteDTO buscarReportePorID(int idReporte) throws SQLException, IOException {
 
         String buscarSQLReporte = "SELECT * FROM reporte WHERE IDReporte = ?";
         ReporteDTO reporteEncontrado = new ReporteDTO( -1, -1, "", "", null, "");
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaReporte = conexionBaseDeDatos.prepareStatement(buscarSQLReporte);
             sentenciaReporte.setInt(1, idReporte);
             resultadoReporte = sentenciaReporte.executeQuery();

@@ -15,18 +15,16 @@ public class CronogramaActividadesDAO implements ICronogramaActividadesDAO {
     PreparedStatement sentenciaCronograma = null;
     ResultSet resultadoConsultaCronograma;
 
-    public CronogramaActividadesDAO() throws SQLException, IOException {
 
-        conexionBaseDeDatos = new ConexionBD().getConnection();
-    }
 
-    public boolean crearNuevoCronogramaDeActividades(CronogramaActividadesDTO cronograma) throws SQLException {
+    public boolean crearNuevoCronogramaDeActividades(CronogramaActividadesDTO cronograma) throws SQLException, IOException {
 
         String insertarSQLCronograma = "INSERT INTO cronogramaactividades (IDCronograma, fechaInicio, fechaFinal, idEstudiante) VALUES (?, ?, ?, ?)";
         boolean cronogramaInsertado = false;
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaCronograma = conexionBaseDeDatos.prepareStatement(insertarSQLCronograma);
             sentenciaCronograma.setInt(1, cronograma.getIDCronograma());
             sentenciaCronograma.setTimestamp(2, cronograma.getFechaInicio());
@@ -46,13 +44,14 @@ public class CronogramaActividadesDAO implements ICronogramaActividadesDAO {
         return cronogramaInsertado;
     }
 
-    public boolean modificarCronogramaDeActividades(CronogramaActividadesDTO cronograma) throws SQLException {
+    public boolean modificarCronogramaDeActividades(CronogramaActividadesDTO cronograma) throws SQLException, IOException {
 
         String modificarSQLCronograma = "UPDATE cronogramaactividades SET fechaInicio = ?, fechaFinal = ? WHERE idCronograma = ?";
         boolean cronogramaModificado = false;
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaCronograma = conexionBaseDeDatos.prepareStatement(modificarSQLCronograma);
             sentenciaCronograma.setTimestamp(1, cronograma.getFechaInicio());
             sentenciaCronograma.setTimestamp(2, cronograma.getFechaFinal());
@@ -71,7 +70,7 @@ public class CronogramaActividadesDAO implements ICronogramaActividadesDAO {
         return cronogramaModificado;
     }
 
-    public CronogramaActividadesDTO buscarCronogramaDeActividadesPorID(int idCronograma) throws SQLException {
+    public CronogramaActividadesDTO buscarCronogramaDeActividadesPorID(int idCronograma) throws SQLException, IOException {
 
         CronogramaActividadesDTO cronogramaEncontrado = new CronogramaActividadesDTO(-1, null, null, "0");
         String buscarSQLCronograma = "SELECT * FROM cronogramaactividades WHERE IDCronograma = ?";
@@ -79,6 +78,7 @@ public class CronogramaActividadesDAO implements ICronogramaActividadesDAO {
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaCronograma = conexionBaseDeDatos.prepareStatement(buscarSQLCronograma);
             sentenciaCronograma.setInt(1, idCronograma);
             resultadoConsultaCronograma = sentenciaCronograma.executeQuery();

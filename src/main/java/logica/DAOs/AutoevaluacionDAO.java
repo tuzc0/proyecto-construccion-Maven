@@ -16,12 +16,8 @@ public class AutoevaluacionDAO implements IAutoevaluacionDAO {
     PreparedStatement sentenciaAutoevaluacion = null;
     ResultSet resultadoConsultaAutoevaluacion;
 
-    public AutoevaluacionDAO() throws SQLException, IOException {
 
-        conexionBaseDeDatos = new ConexionBD().getConnection();
-    }
-
-    public boolean crearNuevaAutoevaluacion(AutoevaluacionDTO autoevaluacion) throws SQLException {
+    public boolean crearNuevaAutoevaluacion(AutoevaluacionDTO autoevaluacion) throws SQLException, IOException {
 
         String insertarSQLAutoevaluacion = "INSERT INTO autoevaluacion (idAutoevaluacion, fecha, lugar, " +
                 "calificacionFinal, idEstudiante) VALUES (?, ?, ?, ?, ?)";
@@ -29,6 +25,7 @@ public class AutoevaluacionDAO implements IAutoevaluacionDAO {
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaAutoevaluacion = conexionBaseDeDatos.prepareStatement(insertarSQLAutoevaluacion);
             sentenciaAutoevaluacion.setInt(1, autoevaluacion.getIDAutoevaluacion());
             java.sql.Date sqlDate = new java.sql.Date(autoevaluacion.getFecha().getTime());
@@ -50,13 +47,14 @@ public class AutoevaluacionDAO implements IAutoevaluacionDAO {
         return autoevaluacionInsertada;
     }
 
-    public boolean eliminarAutoevaluacionPorID(int idAutoevaluacion) throws SQLException {
+    public boolean eliminarAutoevaluacionPorID(int idAutoevaluacion) throws SQLException, IOException {
 
         String eliminarSQLAutoevaluacion = "UPDATE autoevaluacion SET estadoActivo = ? WHERE idAutoevaluacion = ?";
         boolean autoevaluacionEliminada = false;
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaAutoevaluacion = conexionBaseDeDatos.prepareStatement(eliminarSQLAutoevaluacion);
             sentenciaAutoevaluacion.setInt(1, idAutoevaluacion);
             sentenciaAutoevaluacion.setInt(2, 0);
@@ -74,7 +72,7 @@ public class AutoevaluacionDAO implements IAutoevaluacionDAO {
         return autoevaluacionEliminada;
     }
 
-    public boolean modificarAutoevaluacion(AutoevaluacionDTO autoevaluacion) throws SQLException {
+    public boolean modificarAutoevaluacion(AutoevaluacionDTO autoevaluacion) throws SQLException, IOException {
 
         String modificarSQLAutoevaluacion = "UPDATE autoevaluacion SET fecha = ?, lugar = ?, calificacionFinal = ?, idEstudiante = ? " +
                 "WHERE idAutoevaluacion = ?";
@@ -82,6 +80,7 @@ public class AutoevaluacionDAO implements IAutoevaluacionDAO {
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaAutoevaluacion = conexionBaseDeDatos.prepareStatement(modificarSQLAutoevaluacion);
             java.sql.Date sqlDate = new java.sql.Date(autoevaluacion.getFecha().getTime());
             sentenciaAutoevaluacion.setDate(1, sqlDate);
@@ -103,13 +102,14 @@ public class AutoevaluacionDAO implements IAutoevaluacionDAO {
         return autoevaluacionModificada;
     }
 
-    public AutoevaluacionDTO buscarAutoevaluacionPorID(int idAutoevaluacion) throws SQLException {
+    public AutoevaluacionDTO buscarAutoevaluacionPorID(int idAutoevaluacion) throws SQLException, IOException {
 
         String buscarSQLAutoevaluacion = "SELECT * FROM autoevaluacion WHERE idAutoevaluacion = ?";
         AutoevaluacionDTO autoevaluacion = new AutoevaluacionDTO(-1, null, null, 0, null);
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaAutoevaluacion = conexionBaseDeDatos.prepareStatement(buscarSQLAutoevaluacion);
             sentenciaAutoevaluacion.setInt(1, idAutoevaluacion);
             resultadoConsultaAutoevaluacion = sentenciaAutoevaluacion.executeQuery();

@@ -15,18 +15,16 @@ public class ExperienciaEducativaDAO implements IExperienciaEducativaDAO {
     PreparedStatement sentenciaExperienciaEducativa = null;
     ResultSet resultadoExperienciaEducativa;
 
-    public ExperienciaEducativaDAO() throws SQLException, IOException {
 
-        conexionBaseDeDatos = new ConexionBD().getConnection();
-    }
 
-    public boolean crearNuevaExperienciaEducativa(ExperienciaEducativaDTO experienciaEducativa) throws SQLException {
+    public boolean crearNuevaExperienciaEducativa(ExperienciaEducativaDTO experienciaEducativa) throws SQLException, IOException {
         boolean experienciaEducativaInsertada = false;
 
         String insertarSQLEducativa = "INSERT INTO experienciaeducativa VALUES(?, ?)";
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaExperienciaEducativa = conexionBaseDeDatos.prepareStatement(insertarSQLEducativa);
             sentenciaExperienciaEducativa.setInt(1, experienciaEducativa.getIdEE());
             sentenciaExperienciaEducativa.setString(2, experienciaEducativa.getNombre());
@@ -44,13 +42,14 @@ public class ExperienciaEducativaDAO implements IExperienciaEducativaDAO {
         return experienciaEducativaInsertada;
     }
 
-    public boolean modificarExperienciaEducativa(ExperienciaEducativaDTO experienciaEducativa) throws SQLException {
+    public boolean modificarExperienciaEducativa(ExperienciaEducativaDTO experienciaEducativa) throws SQLException, IOException {
         boolean experienciaEducativaModificada = false;
 
         String modificarSQLEducativa = "UPDATE experienciaeducativa SET nombre = ? WHERE idEE = ?";
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaExperienciaEducativa = conexionBaseDeDatos.prepareStatement(modificarSQLEducativa);
             sentenciaExperienciaEducativa.setString(1, experienciaEducativa.getNombre());
             sentenciaExperienciaEducativa.setInt(2, experienciaEducativa.getIdEE());
@@ -68,7 +67,7 @@ public class ExperienciaEducativaDAO implements IExperienciaEducativaDAO {
         return experienciaEducativaModificada;
     }
 
-    public ExperienciaEducativaDTO mostrarExperienciaEducativa() throws SQLException {
+    public ExperienciaEducativaDTO mostrarExperienciaEducativa() throws SQLException, IOException {
 
         ExperienciaEducativaDTO experienciaEducativa = new ExperienciaEducativaDTO(-1,"N/A");
 
@@ -76,6 +75,7 @@ public class ExperienciaEducativaDAO implements IExperienciaEducativaDAO {
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaExperienciaEducativa = conexionBaseDeDatos.prepareStatement(consultaSQL);
             resultadoExperienciaEducativa = sentenciaExperienciaEducativa.executeQuery();
 

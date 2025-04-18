@@ -15,18 +15,16 @@ public class CuentaDAO implements ICuentaDAO {
     PreparedStatement consultaCuenta = null;
     ResultSet resultadoConsultaCuenta;
 
-    public CuentaDAO() throws SQLException, IOException {
 
-        conexionBaseDeDatos = new ConexionBD().getConnection();
-    }
 
-    public boolean crearNuevaCuenta(CuentaDTO cuenta) throws SQLException {
+    public boolean crearNuevaCuenta(CuentaDTO cuenta) throws SQLException, IOException {
 
         String insertarSQLCuenta = "INSERT INTO cuenta VALUES(?, ?, ?)";
         boolean usuarioInsertado = false;
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             consultaCuenta = conexionBaseDeDatos.prepareStatement(insertarSQLCuenta);
             consultaCuenta.setString(1, cuenta.getCorreoElectronico());
             consultaCuenta.setString(2, cuenta.getContrasena());
@@ -45,7 +43,7 @@ public class CuentaDAO implements ICuentaDAO {
         return usuarioInsertado;
     }
 
-    public boolean eliminarCuentaPorID(int idUsuario) throws SQLException {
+    public boolean eliminarCuentaPorID(int idUsuario) throws SQLException, IOException {
 
         String eliminarSQLUsuario = "UPDATE usuario SET estadoActivo = ? WHERE idUsuario = " +
                 "(SELECT idUsuario FROM cuenta WHERE idUsuario = ?)";
@@ -53,6 +51,7 @@ public class CuentaDAO implements ICuentaDAO {
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             consultaCuenta = conexionBaseDeDatos.prepareStatement(eliminarSQLUsuario);
             consultaCuenta.setInt(1, idUsuario);
             consultaCuenta.executeUpdate();
@@ -69,13 +68,14 @@ public class CuentaDAO implements ICuentaDAO {
         return cuentaEliminada;
     }
 
-    public boolean modificarCuenta(CuentaDTO cuenta) throws SQLException {
+    public boolean modificarCuenta(CuentaDTO cuenta) throws SQLException, IOException {
 
         String modificarSQLUsuario = "UPDATE cuenta SET correoElectronico = ?, contrasena = ? WHERE idUsuario = ?";
         boolean cuentaModificada = false;
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             consultaCuenta = conexionBaseDeDatos.prepareStatement(modificarSQLUsuario);
             consultaCuenta.setString(1, cuenta.getCorreoElectronico());
             consultaCuenta.setString(2, cuenta.getContrasena());
@@ -93,13 +93,14 @@ public class CuentaDAO implements ICuentaDAO {
         return cuentaModificada;
     }
 
-    public CuentaDTO buscarCuentaPorID(int idUsuario) throws SQLException {
+    public CuentaDTO buscarCuentaPorID(int idUsuario) throws SQLException, IOException {
 
         String buscarSQLUsuario = "SELECT * FROM cuenta WHERE idUsuario = ?";
         CuentaDTO cuentaEncontrada = new CuentaDTO("N/A","N/A", -1);
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             consultaCuenta = conexionBaseDeDatos.prepareStatement(buscarSQLUsuario);
             consultaCuenta.setInt(1, idUsuario);
             resultadoConsultaCuenta = consultaCuenta.executeQuery();

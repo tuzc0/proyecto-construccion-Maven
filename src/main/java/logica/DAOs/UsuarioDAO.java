@@ -15,18 +15,16 @@ public class UsuarioDAO implements IUsuarioDAO {
     PreparedStatement consultaPreparada = null;
     ResultSet resultadoConsulta;
 
-    public UsuarioDAO() throws SQLException, IOException {
 
-        conexionBaseDeDatos = new ConexionBD().getConnection();
-    }
 
-    public boolean insertarUsuario(UsuarioDTO usuario) throws SQLException {
+    public boolean insertarUsuario(UsuarioDTO usuario) throws SQLException, IOException {
 
         String consultaSQL = "INSERT INTO usuario (idUsuario, nombre, apellidos, estadoActivo) VALUES (?, ?, ?, ?)";
         boolean usuarioInsertado = false;
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, usuario.getIdUsuario());
             consultaPreparada.setString(2, usuario.getNombre());
@@ -46,13 +44,14 @@ public class UsuarioDAO implements IUsuarioDAO {
         return usuarioInsertado;
     }
 
-    public boolean eliminarUsuarioPorID(int idUsuario) throws SQLException {
+    public boolean eliminarUsuarioPorID(int idUsuario) throws SQLException, IOException {
 
         String consultaSQL = "UPDATE usuario SET estadoActivo = ? WHERE idUsuario = ?";
         boolean usuarioEliminado = false;
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, 0);
             consultaPreparada.setInt(2, idUsuario);
@@ -70,13 +69,14 @@ public class UsuarioDAO implements IUsuarioDAO {
         return usuarioEliminado;
     }
 
-    public boolean modificarUsuario(UsuarioDTO usuario) throws SQLException {
+    public boolean modificarUsuario(UsuarioDTO usuario) throws SQLException, IOException {
 
         String consultaSQL = "UPDATE usuario SET nombre = ?, apellidos = ? WHERE idUsuario = ?";
         boolean usuarioModificado = false;
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(3, usuario.getIdUsuario());
             consultaPreparada.setString(2, usuario.getApellido());
@@ -95,13 +95,14 @@ public class UsuarioDAO implements IUsuarioDAO {
         return usuarioModificado;
     }
 
-    public UsuarioDTO buscarUsuarioPorID(int idUsuario) throws SQLException {
+    public UsuarioDTO buscarUsuarioPorID(int idUsuario) throws SQLException, IOException {
 
         String consultaSQL = "SELECT * FROM usuario WHERE idUsuario = ?";
         UsuarioDTO usuarioEncontrado = new UsuarioDTO(-1, "N/A", "N/A", 0);
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, idUsuario);
             resultadoConsulta = consultaPreparada.executeQuery();

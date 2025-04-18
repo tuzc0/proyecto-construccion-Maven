@@ -63,7 +63,7 @@ public class CoordinadorDAO implements ICoordinadorDAO {
     }
 
 
-    public boolean modificarCoordinador (CoordinadorDTO coordinador) throws SQLException {
+    public boolean modificarCoordinador (CoordinadorDTO coordinador) throws SQLException, IOException {
 
         boolean coordinadorModificado = false;
 

@@ -1,7 +1,7 @@
 
 
-import logica.DAOs.EvidenciaAutoevaluacionDAO;
-import logica.DTOs.EvidenciaAutoevaluacionDTO;
+import logica.DAOs.EvidenciaCronogramaDAO;
+import logica.DTOs.EvidenciaCronogramaDTO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,13 +11,13 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class EvidenciaAutoevaluacionDAOTest {
+class EvidenciaCronogramaDAOTest {
 
-    private EvidenciaAutoevaluacionDAO dao;
+    private EvidenciaCronogramaDAO dao;
 
     @BeforeEach
     void setUp() {
-        dao = new EvidenciaAutoevaluacionDAO();
+        dao = new EvidenciaCronogramaDAO();
     }
 
     @AfterEach
@@ -26,14 +26,14 @@ class EvidenciaAutoevaluacionDAOTest {
     }
 
     @Test
-    void testInsertarEvidenciaAutoevaluacion() {
-        EvidenciaAutoevaluacionDTO evidencia = new EvidenciaAutoevaluacionDTO();
-        evidencia.setIdEvidencia(1);
+    void testInsertarEvidenciaCronograma() {
+        EvidenciaCronogramaDTO evidencia = new EvidenciaCronogramaDTO();
+        evidencia.setIdEvidencia(0);
         evidencia.setURL("http://example.com/evidencia");
-        evidencia.setIdAutoevaluacion(1);
+        evidencia.setIdCronograma(1);
 
         try {
-            boolean result = dao.insertarEvidenciaAutoevaluacion(evidencia);
+            boolean result = dao.insertarEvidenciaCronograma(evidencia);
             assertTrue(result, "The evidence should be inserted successfully.");
         } catch (SQLException | IOException e) {
             fail("Exception occurred during test: " + e.getMessage());
@@ -41,15 +41,15 @@ class EvidenciaAutoevaluacionDAOTest {
     }
 
     @Test
-    void testMostrarEvidenciaAutoevaluacionPorID() {
+    void testMostrarEvidenciaCronogramaPorID() {
         int idEvidencia = 1;
 
         try {
-            EvidenciaAutoevaluacionDTO evidencia = dao.mostrarEvidenciaAutoevaluacionPorID(idEvidencia);
+            EvidenciaCronogramaDTO evidencia = dao.mostrarEvidenciaCronogramaPorID(idEvidencia);
             assertNotNull(evidencia, "The evidence should not be null.");
             assertEquals(idEvidencia, evidencia.getIdEvidencia(), "The ID should match the requested ID.");
             assertNotNull(evidencia.getURL(), "The URL should not be null.");
-            assertTrue(evidencia.getIdAutoevaluacion() > 0, "The associated autoevaluation ID should be valid.");
+            assertTrue(evidencia.getIdCronograma() > 0, "The associated cronograma ID should be valid.");
         } catch (SQLException | IOException e) {
             fail("Exception occurred during test: " + e.getMessage());
         }

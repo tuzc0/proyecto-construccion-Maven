@@ -9,5 +9,5 @@ public interface IEvidenciaAutoevaluacionDAO {
 
     boolean insertarEvidenciaAutoevaluacion(EvidenciaAutoevaluacionDTO evidencia) throws SQLException, IOException;
 
-    boolean mostrarEvidenciaAutoevaluacionPorID(int idEvidencia) throws SQLException, IOException;
+    EvidenciaAutoevaluacionDTO mostrarEvidenciaAutoevaluacionPorID(int idEvidencia) throws SQLException, IOException;
 }

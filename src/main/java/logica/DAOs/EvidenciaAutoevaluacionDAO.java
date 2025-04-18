@@ -13,8 +13,8 @@ import java.sql.SQLException;
 public class EvidenciaAutoevaluacionDAO implements IEvidenciaAutoevaluacionDAO {
 
     Connection conexionBaseDeDatos;
-    PreparedStatement sentenciaEvaluacion = null;
-    ResultSet resultadoConsultaEvaluacion;
+    PreparedStatement sentenciaEvidenciaAutoevaluacion = null;
+    ResultSet resultadoConsultaEvidenciaAutoevaluacion;
 
     public boolean insertarEvidenciaAutoevaluacion(EvidenciaAutoevaluacionDTO evidencia) throws SQLException, IOException {
 
@@ -24,18 +24,18 @@ public class EvidenciaAutoevaluacionDAO implements IEvidenciaAutoevaluacionDAO {
         try {
 
             conexionBaseDeDatos = new ConexionBD().getConnection();
-            sentenciaEvaluacion = conexionBaseDeDatos.prepareStatement(insertarSQLEvidencia);
-            sentenciaEvaluacion.setInt(1, evidencia.getIdEvidencia());
-            sentenciaEvaluacion.setString(2, evidencia.getURL());
-            sentenciaEvaluacion.setInt(3, evidencia.getIdAutoevaluacion());
-            sentenciaEvaluacion.executeUpdate();
+            sentenciaEvidenciaAutoevaluacion = conexionBaseDeDatos.prepareStatement(insertarSQLEvidencia);
+            sentenciaEvidenciaAutoevaluacion.setInt(1, evidencia.getIdEvidencia());
+            sentenciaEvidenciaAutoevaluacion.setString(2, evidencia.getURL());
+            sentenciaEvidenciaAutoevaluacion.setInt(3, evidencia.getIdAutoevaluacion());
+            sentenciaEvidenciaAutoevaluacion.executeUpdate();
             evidenciaInsertada = true;
 
         } finally {
 
-            if (sentenciaEvaluacion != null) {
+            if (sentenciaEvidenciaAutoevaluacion != null) {
 
-                sentenciaEvaluacion.close();
+                sentenciaEvidenciaAutoevaluacion.close();
             }
         }
 
@@ -43,31 +43,27 @@ public class EvidenciaAutoevaluacionDAO implements IEvidenciaAutoevaluacionDAO {
     }
 
 
-    public boolean mostrarEvidenciaAutoevaluacionPorID(int idEvidencia) throws SQLException, IOException {
+
+    public EvidenciaAutoevaluacionDTO mostrarEvidenciaAutoevaluacionPorID(int idEvidencia) throws SQLException, IOException {
 
         String consultaSQLEvidencia = "SELECT * FROM evidenciaautoevaluacion WHERE idEvidencia = ?";
-        boolean evidenciaEncontrada = false;
+        EvidenciaAutoevaluacionDTO evidenciaEncontrada = new EvidenciaAutoevaluacionDTO(-1, " ", -1);
 
         try {
-
             conexionBaseDeDatos = new ConexionBD().getConnection();
-            sentenciaEvaluacion = conexionBaseDeDatos.prepareStatement(consultaSQLEvidencia);
-            sentenciaEvaluacion.setInt(1, idEvidencia);
-            resultadoConsultaEvaluacion = sentenciaEvaluacion.executeQuery();
+            sentenciaEvidenciaAutoevaluacion = conexionBaseDeDatos.prepareStatement(consultaSQLEvidencia);
+            sentenciaEvidenciaAutoevaluacion.setInt(1, idEvidencia);
+            resultadoConsultaEvidenciaAutoevaluacion = sentenciaEvidenciaAutoevaluacion.executeQuery();
 
-            if (resultadoConsultaEvaluacion.next()) {
-                evidenciaEncontrada = true;
+            if (resultadoConsultaEvidenciaAutoevaluacion.next()) {
+                evidenciaEncontrada = new EvidenciaAutoevaluacionDTO();
+                evidenciaEncontrada.setIdEvidencia(resultadoConsultaEvidenciaAutoevaluacion.getInt("idEvidencia"));
+                evidenciaEncontrada.setURL(resultadoConsultaEvidenciaAutoevaluacion.getString("url"));
+                evidenciaEncontrada.setIdAutoevaluacion(resultadoConsultaEvidenciaAutoevaluacion.getInt("idAutoEvaluacion"));
             }
-
         } finally {
-
-            if (resultadoConsultaEvaluacion != null) {
-
-                resultadoConsultaEvaluacion.close();
-            }
-            if (sentenciaEvaluacion != null) {
-
-                sentenciaEvaluacion.close();
+            if (sentenciaEvidenciaAutoevaluacion != null) {
+                sentenciaEvidenciaAutoevaluacion.close();
             }
         }
 

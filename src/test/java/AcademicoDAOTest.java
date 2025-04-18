@@ -39,6 +39,8 @@ class AcademicoDAOTest {
             assertTrue(resultado, "El académico debería ser eliminado correctamente.");
         } catch (SQLException e) {
             fail("No se esperaba una excepción: " + e.getMessage());
+        }  catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -51,6 +53,8 @@ class AcademicoDAOTest {
             assertTrue(resultado, "El académico debería ser modificado correctamente.");
         } catch (SQLException e) {
             fail("No se esperaba una excepción: " + e.getMessage());
+        }  catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -64,6 +68,8 @@ class AcademicoDAOTest {
             assertEquals(numeroDePersonal, academico.getNumeroDePersonal(), "El número de personal debería coincidir.");
         } catch (SQLException e) {
             fail("No se esperaba una excepción: " + e.getMessage());
+        }  catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

@@ -83,7 +83,7 @@ public class AcademicoDAO implements IAcademicoDAO {
         return AcademicoEliminado;
     }
 
-    public boolean modificarAcademico(AcademicoDTO academico) throws SQLException {
+    public boolean modificarAcademico(AcademicoDTO academico) throws SQLException, IOException {
 
         String consultaSQL = "UPDATE academico SET numeroDePersonal = ?, idUsuario = ? " +
                 "WHERE numeroDePersonal = ?";
@@ -91,6 +91,7 @@ public class AcademicoDAO implements IAcademicoDAO {
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, academico.getNumeroDePersonal());
             consultaPreparada.setInt(2, academico.getIdUsuario());
@@ -109,7 +110,7 @@ public class AcademicoDAO implements IAcademicoDAO {
         return academicoModificado;
     }
 
-    public AcademicoDTO buscarAcademicoPorNumeroDePersonal(int numeroDePersonal) throws SQLException {
+    public AcademicoDTO buscarAcademicoPorNumeroDePersonal(int numeroDePersonal) throws SQLException, IOException {
 
         AcademicoDTO academico = new AcademicoDTO(-1, -1, "N/A", "N/A", 0);
 
@@ -117,6 +118,7 @@ public class AcademicoDAO implements IAcademicoDAO {
 
         try {
 
+            conexionBaseDeDatos = new ConexionBD().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, numeroDePersonal);
             resultadoConsulta = consultaPreparada.executeQuery();

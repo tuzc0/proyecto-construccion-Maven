@@ -11,7 +11,7 @@ public interface IAcademicoDAO {
 
     boolean eliminarAcademicoPorNumeroDePersonal(int estadoActivo, String numeroDePersonal) throws SQLException, IOException;
 
-    boolean modificarAcademico(AcademicoDTO academico) throws SQLException;
+    boolean modificarAcademico(AcademicoDTO academico) throws SQLException, IOException;
 
-    AcademicoDTO buscarAcademicoPorNumeroDePersonal(int numeroDePersonal) throws SQLException;
+    AcademicoDTO buscarAcademicoPorNumeroDePersonal(int numeroDePersonal) throws SQLException, IOException;
 }

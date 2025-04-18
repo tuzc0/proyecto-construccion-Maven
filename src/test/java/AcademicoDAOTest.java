@@ -12,22 +12,20 @@ class AcademicoDAOTest {
 
     @BeforeAll
     void setUp() {
-        try {
-            academicoDAO = new AcademicoDAO();
-        } catch (IOException | SQLException e) {
-            fail("Error al inicializar AcademicoDAO: " + e.getMessage());
-        }
+        academicoDAO = new AcademicoDAO();
     }
 
     @Test
     void testInsertarAcademico() {
-        AcademicoDTO academico = new AcademicoDTO(1002, 1, "Juan", "Perez", 1);
+        AcademicoDTO academico = new AcademicoDTO(1003, 10, "Juan", "Perez", 1);
 
         try {
             boolean resultado = academicoDAO.insertarAcademico(academico);
             assertTrue(resultado, "El académico debería ser insertado correctamente.");
         } catch (SQLException e) {
             fail("No se esperaba una excepción: " + e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

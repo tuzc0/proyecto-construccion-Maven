@@ -1,11 +1,13 @@
 package logica.interfaces;
 
 import logica.DTOs.AcademicoDTO;
+
+import java.io.IOException;
 import java.sql.SQLException;
 
 public interface IAcademicoDAO {
 
-    boolean insertarAcademico(AcademicoDTO academico) throws SQLException;
+    boolean insertarAcademico(AcademicoDTO academico) throws SQLException, IOException;
 
     boolean eliminarAcademicoPorNumeroDePersonal(int estadoActivo, String numeroDePersonal) throws SQLException;
 

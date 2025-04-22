@@ -33,7 +33,6 @@ public class RegistroEstudianteGUI {
     private TextField campoContraseña;
 
 
-
     @FXML
     private void guardarEstudiante(ActionEvent event) {
 
@@ -46,7 +45,6 @@ public class RegistroEstudianteGUI {
         int idUsuario = 0;
 
 
-
         try {
 
             if (nombre.isEmpty() || apellidos.isEmpty() || matricula.isEmpty() || correo.isEmpty() || contraseña.isEmpty()) {
@@ -55,27 +53,33 @@ public class RegistroEstudianteGUI {
 
             UsuarioDTO usuarioDTO = new UsuarioDTO(idUsuario, nombre, apellidos, estadoActivo);
             UsuarioDAO usuarioDAO = new UsuarioDAO();
+            idUsuario = usuarioDAO.insertarUsuario(usuarioDTO);
 
             CuentaDTO cuentaDTO = new CuentaDTO(correo, contraseña, idUsuario);
             CuentaDAO cuentaDAO = new CuentaDAO();
-
-            EstudianteDTO estudianteDTO = new EstudianteDTO(idUsuario,nombre, apellidos, matricula, estadoActivo);
-            EstudianteDAO estudianteDAO = new EstudianteDAO();
-
-            usuarioDAO.insertarUsuario(usuarioDTO);
             cuentaDAO.crearNuevaCuenta(cuentaDTO);
+
+            EstudianteDTO estudianteDTO = new EstudianteDTO(idUsuario, nombre, apellidos, matricula, estadoActivo);
+            EstudianteDAO estudianteDAO = new EstudianteDAO();
             estudianteDAO.insertarEstudiante(estudianteDTO);
+
+            Parent root = FXMLLoader.load(getClass().getResource("RegistroEstudianteExitosoGUI.fxml"));
 
 
         } catch (SQLException e) {
 
-        } catch (IOException i){
 
-        } catch (Exception e){
+
+        } catch (IOException i) {
+
+
+
+        } catch (Exception e) {
 
         }
 
     }
+
 
     @FXML
     private void cancelarRegistro(ActionEvent event) {

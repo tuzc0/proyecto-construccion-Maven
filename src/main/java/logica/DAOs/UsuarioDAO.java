@@ -17,31 +17,35 @@ public class UsuarioDAO implements IUsuarioDAO {
 
 
 
-    public boolean insertarUsuario(UsuarioDTO usuario) throws SQLException, IOException {
+    public int insertarUsuario(UsuarioDTO usuario) throws SQLException, IOException {
 
-        String consultaSQL = "INSERT INTO usuario (idUsuario, nombre, apellidos, estadoActivo) VALUES (?, ?, ?, ?)";
-        boolean usuarioInsertado = false;
+        String consultaSQL = "INSERT INTO usuario (nombre, apellidos, estadoActivo) VALUES (?, ?, ?)";
+        int idUsuarioGenerado = -1;
 
         try {
 
             conexionBaseDeDatos = new ConexionBD().getConnection();
-            consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
-            consultaPreparada.setInt(1, usuario.getIdUsuario());
-            consultaPreparada.setString(2, usuario.getNombre());
-            consultaPreparada.setString(3, usuario.getApellido());
-            consultaPreparada.setInt(4, usuario.getEstado());
+            consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL, PreparedStatement.RETURN_GENERATED_KEYS);
+            consultaPreparada.setString(1, usuario.getNombre());
+            consultaPreparada.setString(2, usuario.getApellido());
+            consultaPreparada.setInt(3, usuario.getEstado());
             consultaPreparada.executeUpdate();
-            usuarioInsertado = true;
 
+
+            ResultSet generatedKeys = consultaPreparada.getGeneratedKeys();
+
+            if (generatedKeys.next()) {
+
+                idUsuarioGenerado = generatedKeys.getInt(1);
+            }
         } finally {
 
             if (consultaPreparada != null) {
-
                 consultaPreparada.close();
             }
         }
 
-        return usuarioInsertado;
+        return idUsuarioGenerado;
     }
 
     public boolean eliminarUsuarioPorID(int idUsuario) throws SQLException, IOException {

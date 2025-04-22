@@ -2,6 +2,8 @@ package GUI;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import logica.DAOs.CuentaDAO;
 import logica.DAOs.EstudianteDAO;
@@ -43,11 +45,13 @@ public class RegistroEstudianteGUI {
         int estadoActivo = 1;
         int idUsuario = 0;
 
-        if (nombre.isEmpty() || apellidos.isEmpty() || matricula.isEmpty() || correo.isEmpty() || contraseña.isEmpty()) {
 
-        }
 
         try {
+
+            if (nombre.isEmpty() || apellidos.isEmpty() || matricula.isEmpty() || correo.isEmpty() || contraseña.isEmpty()) {
+                Parent root = FXMLLoader.load(getClass().getResource("CamposVaciosGUI.fxml"));
+            }
 
             UsuarioDTO usuarioDTO = new UsuarioDTO(idUsuario, nombre, apellidos, estadoActivo);
             UsuarioDAO usuarioDAO = new UsuarioDAO();

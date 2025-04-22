@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public interface IUsuarioDAO {
 
-    boolean insertarUsuario(UsuarioDTO usuario) throws SQLException, IOException;
+    int insertarUsuario(UsuarioDTO usuario) throws SQLException, IOException;
 
     boolean eliminarUsuarioPorID(int idUsuario) throws SQLException, IOException;
 

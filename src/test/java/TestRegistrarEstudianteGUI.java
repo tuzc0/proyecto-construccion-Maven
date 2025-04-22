@@ -1,0 +1,23 @@
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class TestRegistrarEstudianteGUI extends Application {
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        // Load the FXML file
+        Parent root = FXMLLoader.load(getClass().getResource("/RegistrarEstudianteGUI.fxml"));
+
+        // Set up the stage
+        primaryStage.setTitle("Test Registrar Estudiante GUI");
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}

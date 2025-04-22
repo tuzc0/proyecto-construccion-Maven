@@ -1,5 +1,6 @@
 package GUI;
 
+import GUI.utilidades.Utilidades;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,6 +33,8 @@ public class RegistroEstudianteGUI {
     @FXML
     private TextField campoContraseña;
 
+    Utilidades utilidades = new Utilidades();
+
 
     @FXML
     private void guardarEstudiante(ActionEvent event) {
@@ -48,7 +51,8 @@ public class RegistroEstudianteGUI {
         try {
 
             if (nombre.isEmpty() || apellidos.isEmpty() || matricula.isEmpty() || correo.isEmpty() || contraseña.isEmpty()) {
-                Parent root = FXMLLoader.load(getClass().getResource("CamposVaciosGUI.fxml"));
+                utilidades.mostrarVentana("ErrorRegistroEstudianteGUI.fxml");
+                return;
             }
 
             UsuarioDTO usuarioDTO = new UsuarioDTO(idUsuario, nombre, apellidos, estadoActivo);
@@ -63,18 +67,20 @@ public class RegistroEstudianteGUI {
             EstudianteDAO estudianteDAO = new EstudianteDAO();
             estudianteDAO.insertarEstudiante(estudianteDTO);
 
-            Parent root = FXMLLoader.load(getClass().getResource("RegistroEstudianteExitosoGUI.fxml"));
+            utilidades.mostrarVentana("RegistroExitosoEstudianteGUI.fxml");
 
 
         } catch (SQLException e) {
 
-
+            utilidades.mostrarVentana("ErrorRegistroEstudianteGUI.fxml");
 
         } catch (IOException i) {
 
-
+            utilidades.mostrarVentana("ErrorRegistroEstudianteGUI.fxml");
 
         } catch (Exception e) {
+
+            utilidades.mostrarVentana("ErrorRegistroEstudianteGUI.fxml");
 
         }
 
@@ -84,10 +90,12 @@ public class RegistroEstudianteGUI {
     @FXML
     private void cancelarRegistro(ActionEvent event) {
 
+
         campoNombre.clear();
         campoApellidos.clear();
         campoMatricula.clear();
         campoCorreo.clear();
         campoContraseña.clear();
+
     }
 }

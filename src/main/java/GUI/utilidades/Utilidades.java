@@ -15,7 +15,7 @@ public class Utilidades {
 
     private static final Logger logger = LogManager.getLogger(Utilidades.class);
 
-    private void mostrarVentana(String fxml) {
+    public void mostrarVentana(String fxml) {
         try {
 
             Parent root = FXMLLoader.load(getClass().getResource(fxml));

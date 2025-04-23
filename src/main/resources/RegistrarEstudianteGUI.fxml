@@ -10,22 +10,21 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="405.0" prefWidth="402.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.RegistroEstudianteGUI">
    <children>
-
-      <TextField layoutX="200.0" layoutY="136.0" />
+      <TextField fx:id="campoApellidos" layoutX="200.0" layoutY="136.0" />
       <Label layoutX="36.0" layoutY="89.0" text="nombre" />
       <Label layoutX="33.0" layoutY="140.0" text="apellidos" />
       <Label layoutX="36.0" layoutY="185.0" text="matricula" />
-      <TextField layoutX="200.0" layoutY="181.0" />
-      <TextField layoutX="200.0" layoutY="223.0" />
+      <TextField fx:id="campoMatricula" layoutX="200.0" layoutY="181.0" />
+      <TextField fx:id="campoCorreo" layoutX="200.0" layoutY="223.0" />
       <Label layoutX="122.0" layoutY="32.0" text="Registrar Estudiante">
          <font>
             <Font name="System Bold" size="17.0" />
          </font>
       </Label>
       <Label layoutX="36.0" layoutY="227.0" text="correo electronico" />
-      <TextField layoutX="200.0" layoutY="85.0" />
+      <TextField fx:id="campoNombre" layoutX="200.0" layoutY="85.0" />
       <Label layoutX="36.0" layoutY="275.0" text="contraseña" />
-      <TextField layoutX="200.0" layoutY="271.0" />
+      <TextField fx:id="campoContraseña" layoutX="200.0" layoutY="271.0" />
       <Button layoutX="239.0" layoutY="335.0" mnemonicParsing="false" onAction="#guardarEstudiante" prefHeight="25.0" prefWidth="89.0" text="guardar" textFill="#1b1a1a">
          <opaqueInsets>
             <Insets />

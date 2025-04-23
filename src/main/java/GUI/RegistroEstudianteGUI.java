@@ -3,8 +3,6 @@ package GUI;
 import GUI.utilidades.Utilidades;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import logica.DAOs.CuentaDAO;
 import logica.DAOs.EstudianteDAO;
@@ -33,7 +31,7 @@ public class RegistroEstudianteGUI {
     @FXML
     private TextField campoContraseña;
 
-    Utilidades utilidades = new Utilidades();
+
 
 
     @FXML
@@ -47,11 +45,13 @@ public class RegistroEstudianteGUI {
         int estadoActivo = 1;
         int idUsuario = 0;
 
+        Utilidades utilidades = new Utilidades();
+
 
         try {
 
-            if (nombre.isEmpty() || apellidos.isEmpty() || matricula.isEmpty() || correo.isEmpty() || contraseña.isEmpty()) {
-                utilidades.mostrarVentana("ErrorRegistroEstudianteGUI.fxml");
+            if (nombre.isBlank() || apellidos.isBlank() || matricula.isBlank() || correo.isBlank() || contraseña.isBlank()) {
+                utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
                 return;
             }
 
@@ -67,20 +67,20 @@ public class RegistroEstudianteGUI {
             EstudianteDAO estudianteDAO = new EstudianteDAO();
             estudianteDAO.insertarEstudiante(estudianteDTO);
 
-            utilidades.mostrarVentana("RegistroExitosoEstudianteGUI.fxml");
+            utilidades.mostrarVentana("/RegistroEstudianteExitosoGUI.fxml");
 
 
         } catch (SQLException e) {
 
-            utilidades.mostrarVentana("ErrorRegistroEstudianteGUI.fxml");
+            utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
 
         } catch (IOException i) {
 
-            utilidades.mostrarVentana("ErrorRegistroEstudianteGUI.fxml");
+            utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
 
         } catch (Exception e) {
 
-            utilidades.mostrarVentana("ErrorRegistroEstudianteGUI.fxml");
+            utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
 
         }
 

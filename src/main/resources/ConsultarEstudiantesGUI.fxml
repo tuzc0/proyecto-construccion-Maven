@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="554.0" prefWidth="774.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ConsultarEstudianteGUI">
+   <children>
+      <VBox layoutX="37.0" layoutY="82.0" prefHeight="379.0" prefWidth="703.0">
+         <children>
+            <HBox prefHeight="54.0" prefWidth="703.0">
+               <children>
+                  <HBox prefHeight="48.0" prefWidth="518.0">
+                     <children>
+                        <TextField fx:id="campoMatricula" prefHeight="26.0" prefWidth="501.0" promptText="Ej. S12345678" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="34.0" prefWidth="170.0">
+                     <children>
+                        <Button fx:id="botonBuscar" mnemonicParsing="false" onAction="#buscarEstudiante" prefHeight="26.0" prefWidth="162.0" text="Buscar">
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="/lupa.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <HBox prefHeight="343.0" prefWidth="703.0">
+               <children>
+                  <VBox prefHeight="290.0" prefWidth="430.0">
+                     <children>
+                        <TableView fx:id="tablaEstudiantes" prefHeight="348.0" prefWidth="397.0">
+                          <columns>
+                            <TableColumn fx:id="columnaMatricula" prefWidth="127.19997787475586" text="matricula" />
+                            <TableColumn fx:id="columnaNombres" prefWidth="126.40003967285156" text="nombres" />
+                              <TableColumn fx:id="columnaApellidos" prefWidth="144.0" text="apellidos" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="290.0" prefWidth="86.0" />
+                  <VBox prefHeight="290.0" prefWidth="286.0">
+                     <children>
+                        <Label prefHeight="23.0" prefWidth="178.0" text="Detalles estudiante:">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="42.0" prefWidth="66.0" text="Nombres:">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <StackPane prefHeight="34.0" prefWidth="254.0">
+                           <children>
+                              <Label fx:id="campoNombreEncontrado" prefHeight="34.0" prefWidth="254.0">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </StackPane>
+                        <Label prefHeight="41.0" prefWidth="66.0" text="Apellidos:">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <StackPane prefHeight="34.0" prefWidth="254.0">
+                           <children>
+                              <Label fx:id="campoApellidoEncontrado" prefHeight="34.0" prefWidth="254.0">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </StackPane>
+                        <Label prefHeight="44.0" prefWidth="84.0" text="Matricula:">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <StackPane prefHeight="34.0" prefWidth="254.0">
+                           <children>
+                              <Label fx:id="campoMatriculaEncontrada" prefHeight="34.0" prefWidth="254.0">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </StackPane>
+                        <Label prefHeight="51.0" prefWidth="146.0" text="Correo Electronico:">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <StackPane prefHeight="34.0" prefWidth="254.0">
+                           <children>
+                              <Label fx:id="campoCorreoEncontrado" prefHeight="34.0" prefWidth="254.0">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </StackPane>
+                        <Button mnemonicParsing="false" prefHeight="34.0" prefWidth="74.0" text="Editar">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Label layoutX="247.0" layoutY="25.0" prefHeight="45.0" prefWidth="283.0" text="Lista de estudiantes">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Label>
+      <Button layoutX="37.0" layoutY="484.0" mnemonicParsing="false" onAction="#abrirVentanaRegistrarEstudiante" prefHeight="34.0" prefWidth="178.0" text="Registrar Estudiante">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>

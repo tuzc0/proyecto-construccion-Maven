@@ -123,4 +123,34 @@ public class CuentaDAO implements ICuentaDAO {
 
         return cuentaEncontrada;
     }
+
+    public CuentaDTO buscarCuentaPorID(int idUsuario) throws SQLException, IOException {
+
+        String buscarSQLUsuario = "SELECT * FROM cuenta WHERE idUsuario = ?";
+        CuentaDTO cuentaEncontrada = new CuentaDTO("N/A","N/A", -1);
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBD().getConnection();
+            consultaCuenta = conexionBaseDeDatos.prepareStatement(buscarSQLUsuario);
+            consultaCuenta.setInt(1, idUsuario);
+            resultadoConsultaCuenta = consultaCuenta.executeQuery();
+
+            if (resultadoConsultaCuenta.next()) {
+
+                cuentaEncontrada.setCorreoElectronico(resultadoConsultaCuenta.getString("correoElectronico"));
+                cuentaEncontrada.setContrasena(resultadoConsultaCuenta.getString("contrasena"));
+                cuentaEncontrada.setIdUsuario(resultadoConsultaCuenta.getInt("idUsuario"));
+            }
+
+        } finally {
+
+            if (consultaCuenta != null) {
+
+                consultaCuenta.close();
+            }
+        }
+
+        return cuentaEncontrada;
+    }
 }

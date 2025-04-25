@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EstudianteDAO implements IEstudianteDAO {
 
@@ -134,4 +136,40 @@ public class EstudianteDAO implements IEstudianteDAO {
 
         return estudiante;
     }
+
+    public List<EstudianteDTO> listarEstudiantes() throws SQLException, IOException {
+
+        List<EstudianteDTO> listaEstudiantes = new ArrayList<>();
+
+        String listarSQL = "SELECT * FROM vista_estudiante";
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBD().getConnection();
+            sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(listarSQL);
+            resultadoConsultaEstudiante = sentenciaEstudiante.executeQuery();
+
+            while (resultadoConsultaEstudiante.next()) {
+
+                String matricula = resultadoConsultaEstudiante.getString("matricula");
+                int idUsuario = resultadoConsultaEstudiante.getInt("idUsuario");
+                String apellidos = resultadoConsultaEstudiante.getString("apellidos");
+                String nombre = resultadoConsultaEstudiante.getString("nombre");
+                int estadoActivo = resultadoConsultaEstudiante.getInt("estadoActivo");
+
+                EstudianteDTO estudiante = new EstudianteDTO(idUsuario, nombre, apellidos, matricula, estadoActivo);
+                listaEstudiantes.add(estudiante);
+            }
+
+        } finally {
+
+            if (sentenciaEstudiante != null) {
+
+                sentenciaEstudiante.close();
+            }
+        }
+
+        return listaEstudiantes;
+    }
+
 }

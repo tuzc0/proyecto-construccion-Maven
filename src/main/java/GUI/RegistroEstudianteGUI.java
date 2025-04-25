@@ -15,6 +15,8 @@ import logica.DTOs.EstudianteDTO;
 import logica.DTOs.UsuarioDTO;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import logica.VerificacionUsuario;
+
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -95,30 +97,83 @@ public class RegistroEstudianteGUI {
         int idUsuario = 0;
 
         Utilidades utilidades = new Utilidades();
+        VerificacionUsuario verificacionUsuario = new VerificacionUsuario();
 
 
         try {
 
-            if (nombre.isBlank() || apellidos.isBlank() || matricula.isBlank() || correo.isBlank() || contraseña.isBlank()) {
+            if (verificacionUsuario.camposVacios(nombre, apellidos, matricula, correo, contraseña)) {
                 utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
+                System.out.println("Campos vacíos detectados en el formulario.");
+                return;
+            }
+
+            if (!verificacionUsuario.correoValido(correo)) {
+                utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
+                System.out.println("Correo inválido.");
+                return;
+            }
+
+            if (!verificacionUsuario.matriculaValida(matricula)) {
+                utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
+                System.out.println("Matrícula inválida.");
+                return;
+            }
+
+            if (!verificacionUsuario.contrasenaValida(contraseña)) {
+                utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
+                System.out.println("Contraseña inválida.");
+                return;
+            }
+
+            if (!verificacionUsuario.nombreValido(nombre)) {
+                utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
+                System.out.println("Nombre inválido.");
+                return;
+            }
+
+            if (!verificacionUsuario.apellidosValidos(apellidos)) {
+                utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
+                System.out.println("Apellidos inválidos.");
                 return;
             }
 
             if (!UtilidadesContraseña.esContraseñaIgual(campoContraseña, campoConfirmarContraseña)) {
                 utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
+                System.out.println("Las contraseñas no coinciden.");
                 return;
             }
 
-            UsuarioDTO usuarioDTO = new UsuarioDTO(idUsuario, nombre, apellidos, estadoActivo);
             UsuarioDAO usuarioDAO = new UsuarioDAO();
+            CuentaDAO cuentaDAO = new CuentaDAO();
+            EstudianteDAO estudianteDAO = new EstudianteDAO();
+
+            EstudianteDTO estudianteExistente = estudianteDAO.buscarEstudiantePorMatricula(matricula);
+            CuentaDTO cuentaEncontrada = cuentaDAO.buscarCuentaPorCorreo(correo);
+
+            if (estudianteExistente.getMatricula() != "N/A"){
+
+                utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
+                System.out.println("la matricula ya existe.");
+                return;
+
+            }
+
+            if (cuentaEncontrada.getCorreoElectronico() != "N/A") {
+
+                utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
+                System.out.println("El correo ya existe.");
+                return;
+
+            }
+
+            UsuarioDTO usuarioDTO = new UsuarioDTO(idUsuario, nombre, apellidos, estadoActivo);
             idUsuario = usuarioDAO.insertarUsuario(usuarioDTO);
 
             CuentaDTO cuentaDTO = new CuentaDTO(correo, contraseña, idUsuario);
-            CuentaDAO cuentaDAO = new CuentaDAO();
             cuentaDAO.crearNuevaCuenta(cuentaDTO);
 
             EstudianteDTO estudianteDTO = new EstudianteDTO(idUsuario, nombre, apellidos, matricula, estadoActivo);
-            EstudianteDAO estudianteDAO = new EstudianteDAO();
             estudianteDAO.insertarEstudiante(estudianteDTO);
 
             utilidades.mostrarVentana("/RegistroEstudianteExitosoGUI.fxml");

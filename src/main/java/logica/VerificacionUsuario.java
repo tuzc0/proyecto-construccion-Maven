@@ -1,0 +1,76 @@
+package logica;
+
+import GUI.utilidades.Utilidades;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import java.util.regex.Pattern;
+
+public class VerificacionUsuario {
+
+    private static final Logger logger = LogManager.getLogger(VerificacionUsuario.class);
+    private static final Utilidades utilidades = new Utilidades();
+
+    private static final Pattern PATRON_CORREO = Pattern.compile("^[A-Za-z0-9]+@[A-Za-z0-9]+\\.[A-Za-z]{2,6}$");
+    private static final Pattern PATRON_NUMERO_PERSONAL = Pattern.compile("^\\d{5}$");
+    private static final Pattern PATRON_MATRICULA = Pattern.compile("^S\\d{8}$");
+    private static final Pattern PATRON_CONTRASENA = Pattern.compile("^[a-zA-Z0-9]{8}$");
+    private static final Pattern PATRON_NOMBRE = Pattern.compile("^[a-zA-Z\\s]+$");
+
+    public static boolean correoValido(String correo) {
+
+        return validar(correo, PATRON_CORREO);
+    }
+
+    public static boolean numeroPersonalValido(String numeroPersonal) {
+
+        return validar(numeroPersonal, PATRON_NUMERO_PERSONAL);
+    }
+
+    public static boolean matriculaValida(String matricula) {
+
+        return validar(matricula, PATRON_MATRICULA);
+    }
+
+    public static boolean contrasenaValida(String contrasena) {
+
+        return validar(contrasena, PATRON_CONTRASENA);
+    }
+
+    public static boolean nombreValido(String nombre) {
+
+        return validar(nombre, PATRON_NOMBRE);
+    }
+
+    public static boolean apellidosValidos(String apellidos) {
+
+        return validar(apellidos, PATRON_NOMBRE);
+    }
+
+    private static boolean validar(String campo, Pattern patron) {
+
+        return patron.matcher(campo).matches();
+    }
+
+    public static boolean camposVacios(String nombre, String apellidos, String numeroPersonal, String correo,
+                                       String contrasena) {
+
+        return nombre.isEmpty() || apellidos.isEmpty() || numeroPersonal.isEmpty()
+                || correo.isEmpty() || contrasena.isEmpty();
+    }
+
+    public static void mostrarError(String mensaje) {
+
+        logger.warn(mensaje);
+        utilidades.mostrarVentana("/ErrorRegistroAcademicoGUI.fxml");
+    }
+
+    public static boolean validarCampos(String nombre, String apellidos, String numeroPersonalTexto, String correo,
+                                        String contrasena) {
+
+        return correoValido(correo) &&
+                numeroPersonalValido(numeroPersonalTexto) &&
+                contrasenaValida(contrasena) &&
+                nombreValido(nombre) &&
+                apellidosValidos(apellidos);
+    }
+}

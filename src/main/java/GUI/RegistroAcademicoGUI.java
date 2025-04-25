@@ -1,7 +1,7 @@
 package GUI;
 
 import GUI.utilidades.Utilidades;
-import GUI.utilidades.VerificacionUsuario;
+import logica.VerificacionUsuario;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import logica.DAOs.AcademicoDAO;
@@ -19,113 +19,66 @@ public class RegistroAcademicoGUI {
 
     private static final Logger logger = LogManager.getLogger(RegistroAcademicoGUI.class);
 
-    @FXML
-    private TextField campoNombre;
-
-    @FXML
-    private TextField campoApellidos;
-
-    @FXML
-    private TextField campoNumeroPersonal;
-
-    @FXML
-    private TextField campoCorreo;
-
-    @FXML
-    private TextField campoContrasena;
-
-    @FXML
-    private void initialize() {
-    }
+    @FXML private TextField campoNombre;
+    @FXML private TextField campoApellidos;
+    @FXML private TextField campoNumeroPersonal;
+    @FXML private TextField campoCorreo;
+    @FXML private TextField campoContrasena;
 
     Utilidades utilidades = new Utilidades();
 
     @FXML
     private void guardarAcademico() {
 
-        String nombre = campoNombre.getText();
-        String apellidos = campoApellidos.getText();
-        String numeroPersonalTexto = campoNumeroPersonal.getText().trim();
-        String correo = campoCorreo.getText();
-        String contrasena = campoContrasena.getText();
-
-        int idUsuario = 0;
-        int estadoActivo = 1;
-
-        if (nombre.isEmpty() || apellidos.isEmpty() || numeroPersonalTexto.isEmpty() ||
-                correo.isEmpty() || contrasena.isEmpty()) {
-
-            logger.warn("Campos vacíos detectados en el formulario.");
-            utilidades.mostrarVentana("/ErrorRegistroAcademicoGUI.fxml");
-            return;
-        }
-
-        int numeroPersonal;
-
         try {
 
-            numeroPersonal = Integer.parseInt(numeroPersonalTexto);
+            String nombre = campoNombre.getText().trim();
+            String apellidos = campoApellidos.getText().trim();
+            String numeroPersonalTexto = campoNumeroPersonal.getText().trim();
+            String correo = campoCorreo.getText().trim();
+            String contrasena = campoContrasena.getText().trim();
 
-        } catch (NumberFormatException e) {
+            if (VerificacionUsuario.camposVacios(nombre, apellidos, numeroPersonalTexto, correo, contrasena)) {
 
-            logger.error("Error al convertir el número de personal: " + numeroPersonalTexto, e);
-            utilidades.mostrarVentana("/ErrorRegistroAcademicoGUI.fxml");
-            return;
-
-        }
-
-        try {
-
-            CuentaDAO cuentaDAO = new CuentaDAO();
-            CuentaDTO existenciaCuenta = cuentaDAO.buscarCuentaPorCorreo(correo);
-
-            AcademicoDAO academicoDAO = new AcademicoDAO();
-            AcademicoDTO existenciaAcademico = academicoDAO.buscarAcademicoPorNumeroDePersonal(numeroPersonal);
-
-            if (existenciaAcademico.getNumeroDePersonal() != -1 || existenciaCuenta.getCorreoElectronico() != "N/A") {
-
-                logger.info("El académico o la cuenta ya existen en la base de datos.");
-                utilidades.mostrarVentana("/ErrorRegistroAcademicoGUI.fxml");
+                VerificacionUsuario.mostrarError("Campos vacíos detectados en el formulario.");
                 return;
-
             }
 
-            UsuarioDTO usuarioDTO = new UsuarioDTO(idUsuario, nombre, apellidos, estadoActivo);
-            UsuarioDAO usuarioDAO = new UsuarioDAO();
-            idUsuario = usuarioDAO.insertarUsuario(usuarioDTO);
+            if (!VerificacionUsuario.validarCampos(nombre, apellidos, numeroPersonalTexto, correo, contrasena)) {
 
-            CuentaDTO cuentaDTO = new CuentaDTO(correo, contrasena, idUsuario);
-            boolean cuentaCreadaConExito = cuentaDAO.crearNuevaCuenta(cuentaDTO);
-
-            AcademicoDTO academicoDTO = new AcademicoDTO(numeroPersonal, idUsuario, nombre, apellidos, estadoActivo);
-            boolean academicoCreadoConExito = academicoDAO.insertarAcademico(academicoDTO);
-
-            if (academicoCreadoConExito && cuentaCreadaConExito) {
-
-                logger.info("Registro de académico exitoso.");
-                utilidades.mostrarVentana("/RegistroAcademicoExitosoGUI.fxml");
-
-            } else {
-
-                logger.error("Error al registrar el académico.");
-                utilidades.mostrarVentana("/ErrorRegistroAcademicoGUI.fxml");
+                VerificacionUsuario.mostrarError("Datos inválidos en el formulario.");
+                return;
             }
 
-        } catch (SQLException e) {
+            int numeroPersonal = Integer.parseInt(numeroPersonalTexto);
+            int estadoActivo = 1;
+            int idUsuario = 0;
 
-            logger.error("Error de SQL durante el registro del académico.", e);
-            utilidades.mostrarVentana("/ErrorRegistroAcademicoGUI.fxml");
+            UsuarioDTO usuario = new UsuarioDTO(idUsuario, nombre, apellidos, estadoActivo);
+            idUsuario = new UsuarioDAO().insertarUsuario(usuario);
 
-        } catch (IOException e) {
+            CuentaDTO cuenta = new CuentaDTO(correo, contrasena, idUsuario);
+            AcademicoDTO academico = new AcademicoDTO(numeroPersonal, idUsuario, nombre, apellidos, estadoActivo);
 
-            logger.error("Error de IO durante el registro del académico.", e);
-            utilidades.mostrarVentana("/ErrorRegistroAcademicoGUI.fxml");
+            if (!crearCuentaYAcademico(cuenta, academico)) {
 
-        } catch (Exception e) {
+                VerificacionUsuario.mostrarError("Error al registrar el académico.");
+                return;
+            }
 
-            logger.error("Error inesperado durante el registro del académico.", e);
+            logger.info("Registro de académico exitoso.");
+            utilidades.mostrarVentana("/RegistroAcademicoExitosoGUI.fxml");
+
+        } catch (SQLException | IOException | NumberFormatException e) {
+
+            logger.error("Error durante el registro del académico.", e);
             utilidades.mostrarVentana("/ErrorRegistroAcademicoGUI.fxml");
         }
+    }
+
+    private boolean crearCuentaYAcademico(CuentaDTO cuenta, AcademicoDTO academico) throws SQLException, IOException {
+
+        return new CuentaDAO().crearNuevaCuenta(cuenta) || new AcademicoDAO().insertarAcademico(academico);
     }
 
     @FXML

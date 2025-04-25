@@ -37,7 +37,7 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="campoMatricula" promptText="Ej.12345" />
+            <TextField fx:id="campoNumeroPersonal" promptText="Ej.12345" />
             <Label prefHeight="26.0" prefWidth="118.0" text="Correo Electronico:">
                <font>
                   <Font size="13.0" />
@@ -81,12 +81,12 @@
             </HBox>
          </children>
       </VBox>
-      <Button layoutX="325.0" layoutY="425.0" mnemonicParsing="false" onAction="#guardarEstudiante" prefHeight="31.0" prefWidth="88.0" text="Registrar">
+      <Button layoutX="325.0" layoutY="425.0" mnemonicParsing="false" onAction="#guardarAcademico" prefHeight="31.0" prefWidth="88.0" text="Registrar">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button layoutX="184.0" layoutY="425.0" mnemonicParsing="false" onAction="#cancelarRegistro" prefHeight="31.0" prefWidth="88.0" text="Cancelar">
+      <Button layoutX="184.0" layoutY="425.0" mnemonicParsing="false" onAction="#cancelarRegistroAcademico" prefHeight="31.0" prefWidth="88.0" text="Cancelar">
          <font>
             <Font size="14.0" />
          </font>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="405.0" prefWidth="402.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.RegistroAcademicoGUI">
+   <children>
+      <TextField fx:id="campoApellidos" layoutX="200.0" layoutY="136.0" />
+      <Label layoutX="36.0" layoutY="89.0" text="Nombre:" />
+      <Label layoutX="33.0" layoutY="140.0" text="Apellidos:" />
+      <Label layoutX="36.0" layoutY="185.0" text="Numero de personal:" />
+      <TextField fx:id="campoNumeroPersonal" layoutX="200.0" layoutY="181.0" />
+      <TextField fx:id="campoCorreo" layoutX="200.0" layoutY="223.0" />
+      <Label layoutX="122.0" layoutY="32.0" text="Registrar Academico">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Label>
+      <Label layoutX="36.0" layoutY="227.0" text="Correo electronico:" />
+      <TextField fx:id="campoNombre" layoutX="200.0" layoutY="85.0" />
+      <Label layoutX="36.0" layoutY="275.0" text="Contraseña:" />
+      <TextField fx:id="campoContrasena" layoutX="200.0" layoutY="271.0" />
+      <Button fx:id="botonGuardar" layoutX="239.0" layoutY="335.0" mnemonicParsing="false" onAction="#guardarAcademico" prefHeight="25.0" prefWidth="89.0" text="guardar" textFill="#1b1a1a">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </Button>
+      <Button fx:id="botonCancelar" layoutX="57.0" layoutY="335.0" mnemonicParsing="false" onAction="#cancelarRegistroAcademico" prefHeight="25.0" prefWidth="96.0" text="cancelar" />
+   </children>
+</Pane>

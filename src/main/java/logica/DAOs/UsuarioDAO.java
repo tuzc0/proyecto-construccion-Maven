@@ -38,6 +38,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 
                 idUsuarioGenerado = generatedKeys.getInt(1);
             }
+
         } finally {
 
             if (consultaPreparada != null) {

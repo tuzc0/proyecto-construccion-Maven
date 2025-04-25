@@ -1,34 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="405.0" prefWidth="402.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.RegistroAcademicoGUI">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.RegistroAcademicoGUI">
    <children>
-      <TextField fx:id="campoApellidos" layoutX="200.0" layoutY="136.0" />
-      <Label layoutX="36.0" layoutY="89.0" text="Nombre:" />
-      <Label layoutX="33.0" layoutY="140.0" text="Apellidos:" />
-      <Label layoutX="36.0" layoutY="185.0" text="Numero de personal:" />
-      <TextField fx:id="campoNumeroPersonal" layoutX="200.0" layoutY="181.0" />
-      <TextField fx:id="campoCorreo" layoutX="200.0" layoutY="223.0" />
-      <Label layoutX="122.0" layoutY="32.0" text="Registrar Academico">
+      <Label layoutX="162.0" layoutY="46.0" text="Registrar Academico">
          <font>
-            <Font name="System Bold" size="17.0" />
+            <Font name="System Bold" size="30.0" />
          </font>
       </Label>
-      <Label layoutX="36.0" layoutY="227.0" text="Correo electronico:" />
-      <TextField fx:id="campoNombre" layoutX="200.0" layoutY="85.0" />
-      <Label layoutX="36.0" layoutY="275.0" text="Contraseña:" />
-      <TextField fx:id="campoContrasena" layoutX="200.0" layoutY="271.0" />
-      <Button fx:id="botonGuardar" layoutX="239.0" layoutY="335.0" mnemonicParsing="false" onAction="#guardarAcademico" prefHeight="25.0" prefWidth="89.0" text="guardar" textFill="#1b1a1a">
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
+      <VBox layoutX="52.0" layoutY="104.0" prefHeight="281.0" prefWidth="497.0">
+         <children>
+            <Label prefHeight="26.0" prefWidth="58.0" text="Nombre">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="campoNombre" />
+            <Label prefHeight="38.0" prefWidth="78.0" text="Apellido">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="campoApellidos" />
+            <Label prefHeight="24.0" prefWidth="136.0" text="Numero de Personal:">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="campoMatricula" promptText="Ej.12345" />
+            <Label prefHeight="26.0" prefWidth="118.0" text="Correo Electronico:">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="campoCorreo" prefHeight="26.0" prefWidth="498.0" promptText="Ej. ejemplo@gmail.com " />
+            <HBox prefHeight="59.0" prefWidth="498.0">
+               <children>
+                  <VBox prefHeight="65.0" prefWidth="242.0">
+                     <children>
+                        <Label prefHeight="19.0" prefWidth="78.0" text="Contraseña:">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <TextField fx:id="campoContraseñaVisible" visible="false" />
+                              <PasswordField fx:id="campoContraseña" />
+                           </children>
+                        </StackPane>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="65.0" prefWidth="51.0" />
+                  <VBox prefHeight="65.0" prefWidth="242.0">
+                     <children>
+                        <Label prefHeight="30.0" prefWidth="130.0" text="Confirmar Contraseña">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <TextField fx:id="campoConfirmarContraseñaVisible" visible="false" />
+                              <PasswordField fx:id="campoConfirmarContraseña" />
+                           </children>
+                        </StackPane>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Button layoutX="325.0" layoutY="425.0" mnemonicParsing="false" onAction="#guardarEstudiante" prefHeight="31.0" prefWidth="88.0" text="Registrar">
+         <font>
+            <Font size="14.0" />
+         </font>
       </Button>
-      <Button fx:id="botonCancelar" layoutX="57.0" layoutY="335.0" mnemonicParsing="false" onAction="#cancelarRegistroAcademico" prefHeight="25.0" prefWidth="96.0" text="cancelar" />
+      <Button layoutX="184.0" layoutY="425.0" mnemonicParsing="false" onAction="#cancelarRegistro" prefHeight="31.0" prefWidth="88.0" text="Cancelar">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button contentDisplay="GRAPHIC_ONLY" layoutX="52.0" layoutY="385.0" mnemonicParsing="false" onAction="#alternarVisibilidadContrasena" text="Button">
+         <graphic>
+            <ImageView fx:id="iconoOjo" fitHeight="25.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </Pane>

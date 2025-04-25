@@ -13,5 +13,5 @@ public interface ICuentaDAO {
 
     boolean modificarCuenta(CuentaDTO usuario) throws SQLException, IOException;
 
-    CuentaDTO buscarCuentaPorID(int idUsuario) throws SQLException, IOException;
+    CuentaDTO buscarCuentaPorCorreo(String correo) throws SQLException, IOException;
 }

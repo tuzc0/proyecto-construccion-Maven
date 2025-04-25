@@ -15,25 +15,8 @@ public class AcademicoDAO implements IAcademicoDAO {
     PreparedStatement consultaPreparada = null;
     ResultSet resultadoConsulta;
 
-
-
-    /*private void verificarConexion() throws SQLException {
-
-        if (conexionBaseDeDatos == null || conexionBaseDeDatos.isClosed()) {
-
-            try {
-                conexionBaseDeDatos = new ConexionBD().getConnection();
-
-            } catch (IOException e) {
-
-                throw new SQLException("Error al reabrir la conexión: " + e.getMessage(), e);
-            }
-        }
-    }*/
-
     public boolean insertarAcademico(AcademicoDTO academico) throws SQLException, IOException {
 
-        //verificarConexion();
         String consultaSQL = "INSERT INTO academico (numeroDePersonal, idUsuario) VALUES (?, ?)";
         boolean academicoInsertado = false;
 

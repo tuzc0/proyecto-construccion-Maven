@@ -1,16 +1,20 @@
 package GUI;
 
 import GUI.utilidades.Utilidades;
+import GUI.utilidades.UtilidadesContraseña;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
 import logica.DAOs.CuentaDAO;
 import logica.DAOs.EstudianteDAO;
 import logica.DAOs.UsuarioDAO;
 import logica.DTOs.CuentaDTO;
 import logica.DTOs.EstudianteDTO;
 import logica.DTOs.UsuarioDTO;
-
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -29,9 +33,54 @@ public class RegistroEstudianteGUI {
     private TextField campoCorreo;
 
     @FXML
-    private TextField campoContraseña;
+    private PasswordField campoContraseña;
+
+    @FXML
+    private PasswordField campoConfirmarContraseña;
+
+    @FXML
+    private TextField campoContraseñaVisible;
+
+    @FXML
+    private TextField campoConfirmarContraseñaVisible;
+
+    @FXML
+    private Button botonVerContraseña;
+
+    @FXML
+    private ImageView iconoOjo;
+
+    private boolean contraseñaVisible = false;
+
+    private final UtilidadesContraseña utilidadesContraseña = new UtilidadesContraseña();
+
+    @FXML
+    private void initialize() {
+
+        campoContraseñaVisible.textProperty().bindBidirectional(campoContraseña.textProperty());
+        campoConfirmarContraseñaVisible.textProperty().bindBidirectional(campoConfirmarContraseña.textProperty());
 
 
+        utilidadesContraseña.inicializarIcono(iconoOjo);
+
+
+        campoContraseñaVisible.setVisible(false);
+        campoContraseñaVisible.setManaged(false);
+
+        campoConfirmarContraseñaVisible.setVisible(false);
+        campoConfirmarContraseñaVisible.setManaged(false);
+    }
+
+    @FXML
+    private void alternarVisibilidadContrasena() {
+        utilidadesContraseña.alternarVisibilidadContrasena(
+                campoContraseña,
+                campoContraseñaVisible,
+                campoConfirmarContraseña,
+                campoConfirmarContraseñaVisible,
+                iconoOjo
+        );
+    }
 
 
     @FXML
@@ -51,6 +100,11 @@ public class RegistroEstudianteGUI {
         try {
 
             if (nombre.isBlank() || apellidos.isBlank() || matricula.isBlank() || correo.isBlank() || contraseña.isBlank()) {
+                utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
+                return;
+            }
+
+            if (!UtilidadesContraseña.esContraseñaIgual(campoContraseña, campoConfirmarContraseña)) {
                 utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
                 return;
             }
@@ -96,6 +150,8 @@ public class RegistroEstudianteGUI {
         campoMatricula.clear();
         campoCorreo.clear();
         campoContraseña.clear();
+        campoConfirmarContraseña.clear();
 
     }
+
 }

@@ -13,7 +13,7 @@ public class VerificacionUsuario {
     private static final Pattern PATRON_CORREO = Pattern.compile("^[A-Za-z0-9]+@[A-Za-z0-9]+\\.[A-Za-z]{2,6}$");
     private static final Pattern PATRON_NUMERO_PERSONAL = Pattern.compile("^\\d{5}$");
     private static final Pattern PATRON_MATRICULA = Pattern.compile("^S\\d{8}$");
-    private static final Pattern PATRON_CONTRASENA = Pattern.compile("^[a-zA-Z0-9]{8}$");
+    private static final Pattern PATRON_CONTRASENA = Pattern.compile("^[a-zA-Z0-9]{6,64}$");
     private static final Pattern PATRON_NOMBRE = Pattern.compile("^[a-zA-Z\\s]+$");
 
     public static boolean correoValido(String correo) {

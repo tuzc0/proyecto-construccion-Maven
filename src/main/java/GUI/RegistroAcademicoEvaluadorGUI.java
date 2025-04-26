@@ -2,13 +2,13 @@ package GUI;
 
 import GUI.utilidades.Utilidades;
 import javafx.scene.control.PasswordField;
+import logica.DAOs.AcademicoEvaluadorDAO;
+import logica.DTOs.AcademicoEvaluadorDTO;
 import logica.VerificacionUsuario;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import logica.DAOs.AcademicoDAO;
 import logica.DAOs.CuentaDAO;
 import logica.DAOs.UsuarioDAO;
-import logica.DTOs.AcademicoDTO;
 import logica.DTOs.CuentaDTO;
 import logica.DTOs.UsuarioDTO;
 import org.apache.logging.log4j.LogManager;
@@ -18,9 +18,9 @@ import java.sql.SQLException;
 import javafx.scene.image.ImageView;
 import GUI.utilidades.UtilidadesContraseña;
 
-public class RegistroAcademicoGUI {
+public class RegistroAcademicoEvaluadorGUI {
 
-    private static final Logger logger = LogManager.getLogger(RegistroAcademicoGUI.class);
+    private static final Logger logger = LogManager.getLogger(RegistroAcademicoEvaluadorGUI.class);
 
     @FXML private TextField campoNombre;
     @FXML private TextField campoApellidos;
@@ -82,7 +82,7 @@ public class RegistroAcademicoGUI {
 
             if (!UtilidadesContraseña.esContraseñaIgual(campoContraseña, campoConfirmarContraseña)) {
 
-                utilidades.mostrarVentana("/ErrorRegistroAcademico.fxml");
+                utilidades.mostrarVentana("/ErrorRegistroAcadmeico.fxml");
                 return;
             }
 
@@ -97,9 +97,9 @@ public class RegistroAcademicoGUI {
             int idUsuario = 0;
 
             CuentaDAO cuentaDAO = new CuentaDAO();
-            AcademicoDAO academicoDAO = new AcademicoDAO();
+            AcademicoEvaluadorDAO academicoevaluadorDAO = new AcademicoEvaluadorDAO();
 
-            AcademicoDTO academicoExistente = academicoDAO.buscarAcademicoPorNumeroDePersonal(numeroPersonal);
+            AcademicoEvaluadorDTO academicoExistente = academicoevaluadorDAO.buscarAcademicoEvaluadorPorNumeroDePersonal(numeroPersonal);
             CuentaDTO cuentaEncontrada = cuentaDAO.buscarCuentaPorCorreo(correo);
 
             if (academicoExistente.getNumeroDePersonal() != -1){
@@ -118,10 +118,10 @@ public class RegistroAcademicoGUI {
             idUsuario = new UsuarioDAO().insertarUsuario(usuario);
 
             CuentaDTO cuentaDTO = new CuentaDTO(correo, contrasena, idUsuario);
-            AcademicoDTO academicoDTO = new AcademicoDTO(numeroPersonal, idUsuario, nombre, apellidos, estadoActivo);
+            AcademicoEvaluadorDTO academicoDTO = new AcademicoEvaluadorDTO(numeroPersonal, idUsuario, nombre, apellidos, estadoActivo);
 
             cuentaDAO.crearNuevaCuenta(cuentaDTO);
-            academicoDAO.insertarAcademico(academicoDTO);
+            academicoevaluadorDAO.insertarAcademicoEvaluador(academicoDTO);
 
             logger.info("Registro de académico exitoso.");
             utilidades.mostrarVentana("/RegistroAcademicoExitosoGUI.fxml");

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.RegistroAcademicoEvaluadorGUI">
+    <children>
+        <Label layoutX="80.0" layoutY="42.0" text="Registrar Academico Evaluador">
+            <font>
+                <Font name="System Bold" size="30.0" />
+            </font>
+        </Label>
+        <VBox layoutX="52.0" layoutY="104.0" prefHeight="281.0" prefWidth="497.0">
+            <children>
+                <Label prefHeight="26.0" prefWidth="58.0" text="Nombre">
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="campoNombre" />
+                <Label prefHeight="38.0" prefWidth="78.0" text="Apellido">
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="campoApellidos" />
+                <Label prefHeight="24.0" prefWidth="136.0" text="Numero de Personal:">
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="campoNumeroPersonal" promptText="Ej.12345" />
+                <Label prefHeight="26.0" prefWidth="118.0" text="Correo Electronico:">
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="campoCorreo" prefHeight="26.0" prefWidth="498.0" promptText="Ej. ejemplo@gmail.com " />
+                <HBox prefHeight="59.0" prefWidth="498.0">
+                    <children>
+                        <VBox prefHeight="65.0" prefWidth="242.0">
+                            <children>
+                                <Label prefHeight="19.0" prefWidth="78.0" text="Contraseña:">
+                                    <font>
+                                        <Font size="13.0" />
+                                    </font>
+                                </Label>
+                                <StackPane prefHeight="150.0" prefWidth="200.0">
+                                    <children>
+                                        <TextField fx:id="campoContraseñaVisible" visible="false" />
+                                        <PasswordField fx:id="campoContraseña" />
+                                    </children>
+                                </StackPane>
+                            </children>
+                        </VBox>
+                        <VBox prefHeight="65.0" prefWidth="51.0" />
+                        <VBox prefHeight="65.0" prefWidth="242.0">
+                            <children>
+                                <Label prefHeight="30.0" prefWidth="130.0" text="Confirmar Contraseña">
+                                    <font>
+                                        <Font size="13.0" />
+                                    </font>
+                                </Label>
+                                <StackPane prefHeight="150.0" prefWidth="200.0">
+                                    <children>
+                                        <TextField fx:id="campoConfirmarContraseñaVisible" visible="false" />
+                                        <PasswordField fx:id="campoConfirmarContraseña" />
+                                    </children>
+                                </StackPane>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+        <Button layoutX="325.0" layoutY="425.0" mnemonicParsing="false" onAction="#guardarAcademico" prefHeight="31.0" prefWidth="88.0" text="Registrar">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <Button layoutX="184.0" layoutY="425.0" mnemonicParsing="false" onAction="#cancelarRegistroAcademico" prefHeight="31.0" prefWidth="88.0" text="Cancelar">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <Button contentDisplay="GRAPHIC_ONLY" layoutX="52.0" layoutY="385.0" mnemonicParsing="false" onAction="#alternarVisibilidadContrasena" text="Button">
+            <graphic>
+                <ImageView fx:id="iconoOjo" fitHeight="25.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                </ImageView>
+            </graphic>
+        </Button>
+    </children>
+</Pane>

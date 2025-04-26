@@ -15,8 +15,6 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
     PreparedStatement consultaPreparada = null;
     ResultSet resultadoConsulta;
 
-
-
     public boolean insertarAcademicoEvaluador(AcademicoEvaluadorDTO academicoEvaluador) throws SQLException, IOException {
 
         String consultaSQL = "INSERT INTO academicoevaluador (numeroDePersonal, idUsuario) VALUES (?, ?)";
@@ -98,7 +96,7 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
     public AcademicoEvaluadorDTO buscarAcademicoEvaluadorPorNumeroDePersonal(int numeroDePersonal) throws SQLException, IOException {
 
         String consultaSQL = "SELECT * FROM vista_evaluadores WHERE numeroDePersonal = ?";
-        AcademicoEvaluadorDTO academicoEvaluador = new AcademicoEvaluadorDTO(-1,1, "", "", 0);
+        AcademicoEvaluadorDTO academicoEvaluador = new AcademicoEvaluadorDTO(-1,-1, "", "", 0);
 
         try {
 
@@ -117,7 +115,6 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
 
                 academicoEvaluador = new AcademicoEvaluadorDTO(numeroDePersonalAcademico, idUsuario, nombre, apellido, estadoActivo);
             }
-
 
         } finally {
 

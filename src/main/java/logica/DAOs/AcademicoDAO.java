@@ -3,11 +3,13 @@ package logica.DAOs;
 import accesoadatos.ConexionBD;
 import logica.DTOs.AcademicoDTO;
 import logica.interfaces.IAcademicoDAO;
+import java.util.List;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class AcademicoDAO implements IAcademicoDAO {
 
@@ -126,6 +128,41 @@ public class AcademicoDAO implements IAcademicoDAO {
         }
 
         return academico;
+    }
+
+    public List<AcademicoDTO> listarAcademicos() throws SQLException, IOException {
+
+        List<AcademicoDTO> academicos = new ArrayList<>();
+
+        String consultaSQL = "SELECT * FROM vista_academico_usuario";
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBD().getConnection();
+            consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
+            resultadoConsulta = consultaPreparada.executeQuery();
+
+            while (resultadoConsulta.next()) {
+
+                int numeroDePersonalAcademico = resultadoConsulta.getInt("numeroDePersonal");
+                int idUsuario = resultadoConsulta.getInt("idUsuario");
+                String apellidos = resultadoConsulta.getString("apellidos");
+                String nombreAcademico = resultadoConsulta.getString("nombre");
+                int estadoActivo = resultadoConsulta.getInt("estadoActivo");
+
+                AcademicoDTO academico = new AcademicoDTO(numeroDePersonalAcademico, idUsuario, nombreAcademico, apellidos, estadoActivo);
+                academicos.add(academico);
+            }
+
+        } finally {
+
+            if (consultaPreparada != null) {
+
+                consultaPreparada.close();
+            }
+        }
+
+        return academicos;
     }
 }
 

@@ -29,9 +29,8 @@
                         <Button fx:id="botonBuscar" mnemonicParsing="false" onAction="#buscarEstudiante" prefHeight="26.0" prefWidth="162.0" text="Buscar">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="/lupa.png" />
-                                 </image>
+                                 <Image url="@/lupa.png" />
+
                               </ImageView>
                            </graphic>
                            <font>

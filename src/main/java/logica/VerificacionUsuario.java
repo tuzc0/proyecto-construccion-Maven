@@ -66,11 +66,30 @@ public class VerificacionUsuario {
 
     public static boolean validarCampos(String nombre, String apellidos, String numeroPersonalTexto, String correo,
                                         String contrasena) {
+        boolean camposValidos= true;
 
-        return correoValido(correo) &&
-                numeroPersonalValido(numeroPersonalTexto) &&
-                contrasenaValida(contrasena) &&
-                nombreValido(nombre) &&
-                apellidosValidos(apellidos);
+        if (!nombreValido(nombre)){
+            mostrarError("El nombre no es valido.");
+            camposValidos = false;
+        }
+        if (!apellidosValidos(apellidos)) {
+            mostrarError("Los apellidos no son validos.");
+            camposValidos = false;
+        }
+        if (!numeroPersonalValido(numeroPersonalTexto)) {
+            mostrarError("Número de personal inválido.");
+            camposValidos = false;
+        }
+        if (!correoValido(correo)) {
+            mostrarError("Correo inválido.");
+            camposValidos = false;
+        }
+        if (!contrasenaValida(contrasena)) {
+            mostrarError("Contraseña inválida\n" +
+                    "La contraseña debe tener entre 6 y 64 caracteres y no puede contener caracteres especiales.");
+            camposValidos = false;
+        }
+
+        return camposValidos;
     }
 }

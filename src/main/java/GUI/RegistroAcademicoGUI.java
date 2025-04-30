@@ -80,15 +80,14 @@ public class RegistroAcademicoGUI {
                 return;
             }
 
-            if (!UtilidadesContraseña.esContraseñaIgual(campoContraseña, campoConfirmarContraseña)) {
+            if (!VerificacionUsuario.validarCampos(nombre, apellidos, numeroPersonalTexto, correo, contrasena)) {
 
-                utilidades.mostrarVentana("/ErrorRegistroAcademico.fxml");
                 return;
             }
 
-            if (!VerificacionUsuario.validarCampos(nombre, apellidos, numeroPersonalTexto, correo, contrasena)) {
+            if (!UtilidadesContraseña.esContraseñaIgual(campoContraseña, campoConfirmarContraseña)) {
 
-                VerificacionUsuario.mostrarError("Datos inválidos en el formulario.");
+                utilidades.mostrarVentana("/ErrorRegistroAcademico.fxml");
                 return;
             }
 
@@ -126,9 +125,22 @@ public class RegistroAcademicoGUI {
             logger.info("Registro de académico exitoso.");
             utilidades.mostrarVentana("/RegistroAcademicoExitosoGUI.fxml");
 
-        } catch (SQLException | IOException | NumberFormatException e) {
+        } catch (SQLException e) {
 
-            logger.error("Error durante el registro del académico.", e);
+            logger.error("Error de base de datos durante el registro del académico.", e);
+            utilidades.mostrarVentana("/ErrorRegistroAcademicoGUI.fxml");
+
+        } catch (NumberFormatException e) {
+
+            logger.error("Error de formato numérico en el número de personal.", e);
+            utilidades.mostrarVentana("/ErrorRegistroAcademicoGUI.fxml");
+        } catch (IOException e) {
+
+            logger.error("Error de entrada/salida durante el registro del académico.", e);
+            utilidades.mostrarVentana("/ErrorRegistroAcademicoGUI.fxml");
+        } catch (Exception e) {
+
+            logger.error("Error inesperado durante el registro del académico.", e);
             utilidades.mostrarVentana("/ErrorRegistroAcademicoGUI.fxml");
         }
     }

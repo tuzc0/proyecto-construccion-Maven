@@ -294,3 +294,5 @@ java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '22222' for k
 2025-04-25 17:55:18 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - Datos inválidos en el formulario.
 2025-04-25 17:55:30 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - Datos inválidos en el formulario.
 2025-04-25 17:55:39 [JavaFX Application Thread] INFO  GUI.RegistroAcademicoEvaluadorGUI - Registro de académico exitoso.
+2025-04-27 17:54:03 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - El nombre no es valido.
+2025-04-27 17:54:14 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - El nombre no es valido.

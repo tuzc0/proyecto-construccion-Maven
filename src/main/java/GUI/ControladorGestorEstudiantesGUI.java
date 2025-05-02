@@ -1,6 +1,5 @@
 package GUI;
 
-
 import GUI.utilidades.Utilidades;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -18,7 +17,6 @@ import logica.DTOs.CuentaDTO;
 import logica.DTOs.EstudianteDTO;
 import logica.DTOs.UsuarioDTO;
 import logica.VerificacionUsuario;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Logger;
@@ -96,13 +94,11 @@ public class ControladorGestorEstudiantesGUI {
     @FXML
     private Button botonRegistrarEstudiante;
 
-
     private int idEstudiante = 0;
-
-
 
     @FXML
     public void initialize() {
+
         columnaMatricula.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMatricula()));
         columnaNombres.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNombre()));
         columnaApellidos.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getApellido()));
@@ -110,18 +106,17 @@ public class ControladorGestorEstudiantesGUI {
         cargarEstudiantes();
         tablaEstudiantes.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-
         tablaEstudiantes.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
+
             mostrarDetallesDesdeTabla(newSel);
             botonEliminarSeleccionado.setDisable(newSel == null);
         });
 
-
-
-
     }
 
     private void cargarEstudiantes() {
+
+        Utilidades utilidades = new Utilidades();
 
         try {
 
@@ -132,8 +127,7 @@ public class ControladorGestorEstudiantesGUI {
         } catch (Exception e) {
 
             logger.severe("Error al cargar la lista de estudiantes: " + e.getMessage());
-            Utilidades utilidades = new Utilidades();
-            utilidades.mostrarVentana("/AvisoGUI.fxml");
+            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al cargar la lista de estudiantes.");
         }
     }
 
@@ -143,8 +137,8 @@ public class ControladorGestorEstudiantesGUI {
         String matricula = campoMatricula.getText().trim();
         Utilidades utilidades = new Utilidades();
 
-
         if (matricula.isEmpty()) {
+
             utilidades.mostrarVentana("/CamposVaciosGUI.fxml");
         }
 
@@ -154,7 +148,6 @@ public class ControladorGestorEstudiantesGUI {
             EstudianteDTO estudiante = estudianteDAO.buscarEstudiantePorMatricula(matricula);
 
             CuentaDAO cuentaDAO = new CuentaDAO();
-
             if (estudiante.getIdUsuario() != -1) {
 
                 campoNombreEncontrado.setText(estudiante.getNombre());
@@ -164,32 +157,34 @@ public class ControladorGestorEstudiantesGUI {
                 idEstudiante = estudiante.getIdUsuario();
                 CuentaDTO cuenta = cuentaDAO.buscarCuentaPorID(idEstudiante);
                 campoCorreoEncontrado.setText(cuenta.getCorreoElectronico());
-
-
             } else {
 
                 campoNombreEncontrado.setText("No hay estudiante con esa matricula");
                 campoApellidoEncontrado.setText("");
                 campoMatriculaEncontrada.setText("");
                 campoCorreoEncontrado.setText("");
-
             }
 
         } catch (SQLException | IOException e) {
 
-            utilidades.mostrarVentana("/AvisoGUI.fxml");
+            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al buscar el estudiante.");
+            logger.severe("Error al buscar el estudiante: " + e.getMessage());
         }
     }
 
     private void mostrarDetallesDesdeTabla(EstudianteDTO estudianteSeleccionado) {
+
+        Utilidades utilidades = new Utilidades();
         if (estudianteSeleccionado == null) return;
 
         try {
+
             EstudianteDAO estudianteDAO = new EstudianteDAO();
             EstudianteDTO estudiante = estudianteDAO.buscarEstudiantePorMatricula(estudianteSeleccionado.getMatricula());
             CuentaDAO cuentaDAO = new CuentaDAO();
 
             if (estudiante.getIdUsuario() != -1) {
+
                 campoNombreEncontrado.setText(estudiante.getNombre());
                 campoApellidoEncontrado.setText(estudiante.getApellido());
                 campoMatriculaEncontrada.setText(estudiante.getMatricula());
@@ -200,13 +195,18 @@ public class ControladorGestorEstudiantesGUI {
             }
 
         } catch (SQLException | IOException e) {
-            new Utilidades().mostrarVentana("/AvisoGUI.fxml");
+
+            logger.severe("Error al mostrar detalles del estudiante: " + e.getMessage());
+            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al mostrar detalles del estudiante.");
         }
     }
 
     @FXML
     private void abrirVentanaRegistrarEstudiante() {
+
+        Utilidades utilidades = new Utilidades();
         try {
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistrarEstudiante.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
@@ -217,13 +217,15 @@ public class ControladorGestorEstudiantesGUI {
             stage.show();
 
         } catch (IOException e) {
+
             logger.severe("Error al abrir la ventana de registro: " + e.getMessage());
-            new Utilidades().mostrarVentana("/AvisoGUI.fxml");
+            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al abrir la ventana de registro.");
         }
     }
 
     @FXML
     private void eliminarEstudiante() {
+
         Utilidades utilidades = new Utilidades();
         String matricula = campoMatriculaEncontrada.getText().trim();
 
@@ -251,7 +253,7 @@ public class ControladorGestorEstudiantesGUI {
         } catch (SQLException | IOException e) {
 
             logger.severe("Error al eliminar el estudiante: " + e.getMessage());
-            utilidades.mostrarVentana("/AvisoGUI.fxml");
+            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al eliminar el estudiante.");
         }
     }
 
@@ -267,10 +269,13 @@ public class ControladorGestorEstudiantesGUI {
         botonRegistrarEstudiante.setDisable(true);
 
         tablaEstudiantes.getSelectionModel().getSelectedItems().addListener((ListChangeListener<EstudianteDTO>) change -> {
+
             int cantidadSeleccionados = tablaEstudiantes.getSelectionModel().getSelectedItems().size();
             if (cantidadSeleccionados > 0) {
+
                 campoNumeroEstudiantesSeleccionados.setText("Estudiantes seleccionados: " + cantidadSeleccionados);
             } else {
+
                 campoNumeroEstudiantesSeleccionados.setText(" ");
             }
         });
@@ -310,8 +315,10 @@ public class ControladorGestorEstudiantesGUI {
         }
 
         if (error) {
-            utilidades.mostrarVentana("/AvisoGUI.fxml");
+
+            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al eliminar algunos estudiantes.");
         } else {
+
             utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Estudiantes eliminados exitosamente.");
         }
 
@@ -340,8 +347,6 @@ public class ControladorGestorEstudiantesGUI {
 
         tablaEstudiantes.getSelectionModel().clearSelection();
         campoNumeroEstudiantesSeleccionados.setText(" ");
-
-
 
     }
 
@@ -372,8 +377,6 @@ public class ControladorGestorEstudiantesGUI {
         botonEliminarEstudiante.setVisible(false);
         tablaEstudiantes.setDisable(true);
         botonRegistrarEstudiante.setDisable(true);
-
-
 
     }
 
@@ -476,7 +479,6 @@ public class ControladorGestorEstudiantesGUI {
             cuentaDAO.modificarCuenta(new CuentaDTO(correo, contrasena, idEstudiante));
             estudianteDAO.modificarEstudiante(new EstudianteDTO(idEstudiante, nombre, apellidos, matricula, 1));
 
-
             campoNombreEncontrado.setText(nombre);
             campoApellidoEncontrado.setText(apellidos);
             campoMatriculaEncontrada.setText(matricula);
@@ -487,7 +489,8 @@ public class ControladorGestorEstudiantesGUI {
 
         } catch (SQLException | IOException e) {
 
-            utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
+            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al guardar los cambios.");
+            logger.severe("Error al guardar los cambios: " + e.getMessage());
         }
 
         botonSeleccionarEstudiantes.setDisable(false);
@@ -497,13 +500,5 @@ public class ControladorGestorEstudiantesGUI {
         botonRegistrarEstudiante.setDisable(false);
 
     }
-
-
-
-
-
-
-
-
 
 }

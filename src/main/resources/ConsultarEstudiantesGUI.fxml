@@ -5,7 +5,6 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Bloom?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
@@ -14,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="586.0" prefWidth="971.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ConsultarEstudianteGUI">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="971.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ConsultarEstudianteGUI">
    <children>
       <VBox layoutX="37.0" layoutY="80.0" prefHeight="437.0" prefWidth="910.0">
          <children>
@@ -42,21 +41,21 @@
                   </HBox>
                </children>
             </HBox>
-            <HBox prefHeight="385.0" prefWidth="910.0">
+            <HBox prefHeight="398.0" prefWidth="910.0">
                <children>
                   <VBox prefHeight="386.0" prefWidth="622.0">
                      <children>
-                        <TableView fx:id="tablaEstudiantes" prefHeight="386.0" prefWidth="610.0">
+                        <TableView fx:id="tablaEstudiantes" prefHeight="386.0" prefWidth="591.0">
                           <columns>
                             <TableColumn fx:id="columnaMatricula" prefWidth="127.19997787475586" text="matricula" />
                             <TableColumn fx:id="columnaNombres" prefWidth="207.2000274658203" text="nombres" />
-                              <TableColumn fx:id="columnaApellidos" prefWidth="256.79998779296875" text="apellidos" />
+                              <TableColumn fx:id="columnaApellidos" prefWidth="267.20000000000005" text="apellidos" />
                           </columns>
                         </TableView>
                      </children>
                   </VBox>
-                  <VBox prefHeight="386.0" prefWidth="89.0" />
-                  <VBox prefHeight="290.0" prefWidth="286.0">
+                  <VBox prefHeight="394.0" prefWidth="35.0" />
+                  <VBox prefHeight="394.0" prefWidth="309.0">
                      <children>
                         <Label prefHeight="23.0" prefWidth="178.0" text="Detalles estudiante:">
                            <font>
@@ -108,32 +107,32 @@
                               <TextField fx:id="campoMatriculaEditable" visible="false" />
                            </children>
                         </StackPane>
-                        <Label prefHeight="51.0" prefWidth="146.0" text="Correo Electronico:">
+                        <Label prefHeight="38.0" prefWidth="146.0" text="Correo Electronico:">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <StackPane prefHeight="34.0" prefWidth="254.0">
+                        <StackPane prefHeight="51.0" prefWidth="291.0">
                            <children>
+                              <TextField fx:id="campoCorreoEditable" visible="false" />
                               <Label fx:id="campoCorreoEncontrado" prefHeight="34.0" prefWidth="254.0">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="campoCorreoEditable" visible="false" />
                            </children>
                         </StackPane>
-                        <VBox prefHeight="43.0" prefWidth="273.0">
+                        <VBox prefHeight="53.0" prefWidth="277.0">
                            <children>
-                              <HBox prefHeight="6.0" prefWidth="273.0">
+                              <HBox prefHeight="48.0" prefWidth="277.0">
                                  <children>
-                                    <Button fx:id="botonEditar" mnemonicParsing="false" onAction="#editarEstudiante" prefHeight="30.0" prefWidth="86.0" text="Editar">
+                                    <Button fx:id="botonEditar" mnemonicParsing="false" onAction="#editarEstudiante" prefHeight="33.0" prefWidth="86.0" text="Editar">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
                                        </font>
                                     </Button>
-                                    <HBox prefHeight="30.0" prefWidth="54.0" />
-                                    <Button mnemonicParsing="false" onAction="#eliminarEstudiante" prefHeight="30.0" prefWidth="79.0" text="Eliminar">
+                                    <HBox prefHeight="48.0" prefWidth="29.0" />
+                                    <Button fx:id="botonEliminarEstudiante" mnemonicParsing="false" onAction="#eliminarEstudiante" prefHeight="30.0" prefWidth="79.0" text="Eliminar">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
                                        </font>
@@ -153,12 +152,12 @@
             <Font name="System Bold" size="30.0" />
          </font>
       </Label>
-      <Button layoutX="37.0" layoutY="523.0" mnemonicParsing="false" onAction="#abrirVentanaRegistrarEstudiante" prefHeight="34.0" prefWidth="178.0" text="Registrar Estudiante">
+      <Button fx:id="botonRegistrarEstudiante" layoutX="37.0" layoutY="533.0" mnemonicParsing="false" onAction="#abrirVentanaRegistrarEstudiante" prefHeight="34.0" prefWidth="178.0" text="Registrar Estudiante">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <Button layoutX="416.0" layoutY="525.0" mnemonicParsing="false" onAction="#activarModoSeleccion" prefHeight="34.0" prefWidth="218.0" text="Seleccionar estudiantes">
+      <Button fx:id="botonSeleccionarEstudiantes" layoutX="402.0" layoutY="533.0" mnemonicParsing="false" onAction="#activarModoSeleccion" prefHeight="34.0" prefWidth="218.0" text="Seleccionar estudiantes">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
@@ -169,19 +168,26 @@
                <Image url="@/bote-basura.png" />
             </ImageView>
          </graphic>
-         <effect>
-            <Bloom />
-         </effect>
       </Button>
-      <Button fx:id="botonGuardar" layoutX="830.0" layoutY="512.0" mnemonicParsing="false" onAction="#guardarCambios" prefHeight="26.0" prefWidth="79.0" text="Guardar" visible="false">
+      <Button fx:id="botonGuardar" layoutX="855.0" layoutY="518.0" mnemonicParsing="false" onAction="#guardarCambios" prefHeight="26.0" prefWidth="79.0" text="Guardar" visible="false">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="botonCancelar" layoutX="697.0" layoutY="512.0" mnemonicParsing="false" onAction="#cancelarEdicion" prefHeight="26.0" prefWidth="79.0" text="Cancelar" visible="false">
+      <Button fx:id="botonCancelar" layoutX="754.0" layoutY="518.0" mnemonicParsing="false" onAction="#cancelarEdicion" prefHeight="26.0" prefWidth="79.0" text="Cancelar" visible="false">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
+      <Button fx:id="botonCancelarSeleccion" layoutX="776.0" layoutY="533.0" mnemonicParsing="false" onAction="#cancelarSeleccionEstudiante" prefHeight="34.0" prefWidth="136.0" text="Cancelar seleccion" visible="false">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <Label fx:id="campoNumeroEstudiantesSeleccionados" layoutX="406.0" layoutY="580.0" prefHeight="20.0" prefWidth="211.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
    </children>
 </Pane>

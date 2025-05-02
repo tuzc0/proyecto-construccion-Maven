@@ -110,37 +110,37 @@ public class RegistroEstudianteGUI {
 
             if (!verificacionUsuario.correoValido(correo)) {
 
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Correo inválido.");
+                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Correo electronico ingresado inválido.");
                 return;
             }
 
             if (!verificacionUsuario.matriculaValida(matricula)) {
 
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Matrícula inválida.");
+                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Matrícula ingresada inválida.");
                 return;
             }
 
             if (!verificacionUsuario.contrasenaValida(contraseña)) {
 
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Contraseña inválida,.");
+                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Contraseña ingresada inválida,.");
                 return;
             }
 
             if (!verificacionUsuario.nombreValido(nombre)) {
 
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Nombre inválido.");
+                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Nombre ingresado inválido.");
                 return;
             }
 
             if (!verificacionUsuario.apellidosValidos(apellidos)) {
 
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Apellidos inválidos.");
+                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Apellidos ingresados inválidos.");
                 return;
             }
 
             if (!UtilidadesContraseña.esContraseñaIgual(campoContraseña, campoConfirmarContraseña)) {
 
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Las contraseñas no coinciden.");
+                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Las contraseñas ingresadas no coinciden.");
                 return;
             }
 

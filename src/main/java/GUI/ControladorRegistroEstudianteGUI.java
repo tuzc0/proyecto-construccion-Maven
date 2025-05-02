@@ -13,14 +13,13 @@ import logica.DAOs.UsuarioDAO;
 import logica.DTOs.CuentaDTO;
 import logica.DTOs.EstudianteDTO;
 import logica.DTOs.UsuarioDTO;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import logica.VerificacionUsuario;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class RegistroEstudianteGUI {
+public class ControladorRegistroEstudianteGUI {
 
     @FXML
     private TextField campoNombre;
@@ -104,43 +103,43 @@ public class RegistroEstudianteGUI {
 
             if (verificacionUsuario.camposVacios(nombre, apellidos, matricula, correo, contraseña)) {
 
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Por favor, complete todos los campos.");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Por favor, complete todos los campos.");
                 return;
             }
 
             if (!verificacionUsuario.correoValido(correo)) {
 
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Correo electronico ingresado inválido.");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Correo electronico ingresado inválido.");
                 return;
             }
 
             if (!verificacionUsuario.matriculaValida(matricula)) {
 
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Matrícula ingresada inválida.");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Matrícula ingresada inválida.");
                 return;
             }
 
             if (!verificacionUsuario.contrasenaValida(contraseña)) {
 
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Contraseña ingresada inválida,.");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Contraseña ingresada inválida,.");
                 return;
             }
 
             if (!verificacionUsuario.nombreValido(nombre)) {
 
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Nombre ingresado inválido.");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Nombre ingresado inválido.");
                 return;
             }
 
             if (!verificacionUsuario.apellidosValidos(apellidos)) {
 
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Apellidos ingresados inválidos.");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Apellidos ingresados inválidos.");
                 return;
             }
 
             if (!UtilidadesContraseña.esContraseñaIgual(campoContraseña, campoConfirmarContraseña)) {
 
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Las contraseñas ingresadas no coinciden.");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Las contraseñas ingresadas no coinciden.");
                 return;
             }
 
@@ -153,14 +152,14 @@ public class RegistroEstudianteGUI {
 
             if (estudianteExistente.getMatricula() != "N/A"){
 
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "La matrícula ya existe.");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "La matrícula ya existe.");
                 return;
 
             }
 
             if (cuentaEncontrada.getCorreoElectronico() != "N/A") {
 
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "El correo ya está registrado.");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "El correo ya está registrado.");
                 return;
 
             }

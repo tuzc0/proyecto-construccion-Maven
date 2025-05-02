@@ -18,7 +18,7 @@ class EvaluacionDAOTest {
 
     @Test
     @Order(1)
-    void testCrearNuevaEvaluacion() throws SQLException, IOException {
+    void testCrearNuevaEvaluacionDatosValidos() throws SQLException, IOException {
 
         EvaluacionDTO evaluacion = new EvaluacionDTO(5, "Buen trabajo", 9, 33333, "A12345", 1);
         boolean resultado = evaluacionDAO.crearNuevaEvaluacion(evaluacion);
@@ -27,7 +27,7 @@ class EvaluacionDAOTest {
 
     @Test
     @Order(2)
-    void testBuscarEvaluacionPorID() throws SQLException, IOException {
+    void testBuscarEvaluacionPorIDDatosValidos() throws SQLException, IOException {
 
         EvaluacionDTO evaluacion = evaluacionDAO.buscarEvaluacionPorID(1);
         assertEquals(1, evaluacion.getIDEvaluacion(), "El ID de la evaluación debería coincidir.");
@@ -35,7 +35,7 @@ class EvaluacionDAOTest {
 
     @Test
     @Order(3)
-    void testModificarEvaluacion() throws SQLException, IOException {
+    void testModificarEvaluacionDatosValidos() throws SQLException, IOException {
 
         EvaluacionDTO evaluacion = new EvaluacionDTO(1, "Trabajo excelente", 95, 33333, "A12345", 1);
         boolean resultado = evaluacionDAO.modificarEvaluacion(evaluacion);
@@ -44,7 +44,7 @@ class EvaluacionDAOTest {
 
     @Test
     @Order(4)
-    void testEliminarEvaluacionPorID() throws SQLException, IOException {
+    void testEliminarEvaluacionPorIDDatosValidos() throws SQLException, IOException {
 
         boolean resultado = evaluacionDAO.eliminarEvaluacionPorID(0, 1);
         assertTrue(resultado, "La evaluación debería haberse eliminado correctamente.");

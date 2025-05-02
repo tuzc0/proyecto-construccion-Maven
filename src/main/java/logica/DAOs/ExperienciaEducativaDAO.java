@@ -1,6 +1,6 @@
 package logica.DAOs;
 
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.ExperienciaEducativaDTO;
 import logica.interfaces.IExperienciaEducativaDAO;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class ExperienciaEducativaDAO implements IExperienciaEducativaDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaExperienciaEducativa = conexionBaseDeDatos.prepareStatement(insertarSQLEducativa);
             sentenciaExperienciaEducativa.setInt(1, experienciaEducativa.getIdEE());
             sentenciaExperienciaEducativa.setString(2, experienciaEducativa.getNombre());
@@ -49,7 +49,7 @@ public class ExperienciaEducativaDAO implements IExperienciaEducativaDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaExperienciaEducativa = conexionBaseDeDatos.prepareStatement(modificarSQLEducativa);
             sentenciaExperienciaEducativa.setString(1, experienciaEducativa.getNombre());
             sentenciaExperienciaEducativa.setInt(2, experienciaEducativa.getIdEE());
@@ -75,7 +75,7 @@ public class ExperienciaEducativaDAO implements IExperienciaEducativaDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaExperienciaEducativa = conexionBaseDeDatos.prepareStatement(consultaSQL);
             resultadoExperienciaEducativa = sentenciaExperienciaEducativa.executeQuery();
 

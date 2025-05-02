@@ -2,7 +2,7 @@ package logica.DAOs;
 
 import logica.DTOs.ReporteContieneDTO;
 import logica.interfaces.IReporteContieneDAO;
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,7 +22,7 @@ public class ReporteContieneDAO implements IReporteContieneDAO {
 
         try {
 
-            conexion = new ConexionBD().getConnection();
+            conexion = new ConexionBaseDeDatos().getConnection();
             sentencia = conexion.prepareStatement(consultaSQL);
             sentencia.setInt(1, reporte.getIdReporte());
             sentencia.setInt(2, reporte.getIdActividad());
@@ -48,7 +48,7 @@ public class ReporteContieneDAO implements IReporteContieneDAO {
 
         try {
 
-            conexion = new ConexionBD().getConnection();
+            conexion = new ConexionBaseDeDatos().getConnection();
             sentencia = conexion.prepareStatement(consultaSQL);
             sentencia.setInt(1, idReporte);
             sentencia.executeUpdate();
@@ -71,7 +71,7 @@ public class ReporteContieneDAO implements IReporteContieneDAO {
 
         try {
 
-            conexion = new ConexionBD().getConnection();
+            conexion = new ConexionBaseDeDatos().getConnection();
             sentencia = conexion.prepareStatement(consultaSQL);
             sentencia.setInt(1, reporte.getIdActividad());
             sentencia.setTimestamp(2, reporte.getFechaInicioReal());
@@ -97,7 +97,7 @@ public class ReporteContieneDAO implements IReporteContieneDAO {
 
         try {
 
-            conexion = new ConexionBD().getConnection();
+            conexion = new ConexionBaseDeDatos().getConnection();
             sentencia = conexion.prepareStatement(consultaSQL);
             sentencia.setInt(1, idReporte);
             resultadoConsulta = sentencia.executeQuery();

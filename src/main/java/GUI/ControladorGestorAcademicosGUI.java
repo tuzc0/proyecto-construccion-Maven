@@ -75,7 +75,7 @@ public class ControladorGestorAcademicosGUI {
         } catch (Exception e) {
 
             logger.warn("Error al cargar la lista de estudiantes: " + e.getMessage());
-            utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Error al cargar la lista de académicos");
+            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al cargar la lista de académicos");
         }
     }
 
@@ -86,7 +86,7 @@ public class ControladorGestorAcademicosGUI {
 
         if (numeroDePersonal.isEmpty()) {
 
-            utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Por favor ingrese un número de personal");
+            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Por favor ingrese un número de personal");
             return;
         }
 
@@ -108,7 +108,7 @@ public class ControladorGestorAcademicosGUI {
 
             } else {
 
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "El académico no fue encontrado");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "El académico no fue encontrado");
                 campoNombreEncontrado.setText("");
                 campoApellidoEncontrado.setText("");
                 campoNumeroDePersonalEncontrado.setText("");
@@ -118,7 +118,7 @@ public class ControladorGestorAcademicosGUI {
         } catch (SQLException | IOException e) {
 
             logger.warn("Error al buscar el académico: " + e.getMessage());
-            utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Ocurrio un error al buscar al académico");
+            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Ocurrio un error al buscar al académico");
         }
     }
 
@@ -138,7 +138,7 @@ public class ControladorGestorAcademicosGUI {
 
             if (academicoDTO == null || academicoDTO.getIdUsuario() == -1) {
 
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "El académico no fue encontrado");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "El académico no fue encontrado");
                 return;
             }
 
@@ -154,7 +154,7 @@ public class ControladorGestorAcademicosGUI {
         } catch (SQLException | IOException e) {
 
             logger.warn("Error al mostrar detalles del académico: " + e.getMessage());
-            utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Error al mostrar detalles del académico");
+            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al mostrar detalles del académico");
         }
     }
 
@@ -173,7 +173,7 @@ public class ControladorGestorAcademicosGUI {
         } catch (IOException e) {
 
             logger.warn("Error al abrir la ventana de registro: " + e.getMessage());
-            utilidades.mostrarVentanaError("/ErrorGUI.fxml", "En estos momentos no se puede registrar un nuevo academico");
+            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "En estos momentos no se puede registrar un nuevo academico");
         }
     }
 
@@ -202,7 +202,7 @@ public class ControladorGestorAcademicosGUI {
         if (academicoSeleccionado == null) {
 
             logger.warn("No se ha seleccionado un académico.");
-            utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Por favor seleccione un académico");
+            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Por favor seleccione un académico");
             return;
         }
 
@@ -219,7 +219,7 @@ public class ControladorGestorAcademicosGUI {
 
             if (VerificacionUsuario.camposVacios(nuevoNombre, nuevosApellidos, nuevoNumeroDePersonal, nuevoCorreo, contrasena)) {
 
-                utilidades.mostrarVentanaError("/CamposVaciosGUI.fxml", "Por favor complete todos los campos");
+                utilidades.mostrarVentanaAviso("/CamposVaciosGUI.fxml", "Por favor complete todos los campos");
                 return;
             }
 
@@ -228,7 +228,7 @@ public class ControladorGestorAcademicosGUI {
             if (!errores.isEmpty()) {
 
                 String mensajeError = String.join("\n", errores);
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", mensajeError);
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", mensajeError);
                 return;
             }
 
@@ -243,7 +243,7 @@ public class ControladorGestorAcademicosGUI {
 
                 if (academicoDAO.buscarAcademicoPorNumeroDePersonal(numeroPersonal).getNumeroDePersonal() != -1) {
 
-                    utilidades.mostrarVentanaError("/ErrorGUI.fxml", "El número de personal ya existe");
+                    utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "El número de personal ya existe");
                     return;
                 }
             }
@@ -252,7 +252,7 @@ public class ControladorGestorAcademicosGUI {
 
                 if (!cuentaDAO.buscarCuentaPorCorreo(nuevoCorreo).equals("N/A")) {
 
-                    utilidades.mostrarVentanaError("/ErrorGUI.fxml", "El correo electrónico ya existe");
+                    utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "El correo electrónico ya existe");
                     return;
                 }
             }
@@ -267,7 +267,7 @@ public class ControladorGestorAcademicosGUI {
             if (usuarioModificado && academicoModificado && correoModificado) {
 
                 logger.info("El académico ha sido modificado correctamente.");
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "El académico ha sido modificado correctamente");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "El académico ha sido modificado correctamente");
                 cargarAcademicos();
                 cambiarModoEdicion(false);
 
@@ -276,7 +276,7 @@ public class ControladorGestorAcademicosGUI {
             } else {
 
                 logger.warn("No se pudo modificar el académico.");
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "No se pudo modificar el académico.");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "No se pudo modificar el académico.");
             }
 
             tablaAcademicos.setDisable(false);
@@ -285,21 +285,21 @@ public class ControladorGestorAcademicosGUI {
         } catch (SQLException e) {
 
             logger.error("Error de base de datos durante el registro del académico.", e);
-            utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Ocurrio un error, por favor intente más tarde.");
+            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Ocurrio un error, por favor intente más tarde.");
 
         } catch (NumberFormatException e) {
 
             logger.error("Error de formato numérico en el número de personal.", e);
-            utilidades.mostrarVentanaError("/ErrorGUI.fxml", "El número de personal debe ser un número entero.");
+            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "El número de personal debe ser un número entero.");
         } catch (IOException e) {
 
             logger.error("Error de entrada/salida durante el registro del académico.", e);
-            utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Ocurrio un error, por favor intente más tarde.");
+            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Ocurrio un error, por favor intente más tarde.");
 
         } catch (Exception e) {
 
             logger.error("Error inesperado durante el registro del académico.", e);
-            utilidades.mostrarVentanaError("/ErrorRegistroAcademicoGUI.fxml", "Ocurrio un error, por facvor intente más tarde.");
+            utilidades.mostrarVentanaAviso("/ErrorRegistroAcademicoGUI.fxml", "Ocurrio un error, por facvor intente más tarde.");
         }
     }
 

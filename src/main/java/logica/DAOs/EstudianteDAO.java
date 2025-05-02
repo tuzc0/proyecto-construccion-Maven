@@ -1,6 +1,6 @@
 package logica.DAOs;
 
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.EstudianteDTO;
 import logica.interfaces.IEstudianteDAO;
 import java.io.IOException;
@@ -19,7 +19,7 @@ public class EstudianteDAO implements IEstudianteDAO {
 
     public EstudianteDAO() throws SQLException, IOException {
 
-        conexionBaseDeDatos = new ConexionBD().getConnection();
+        conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
     }
 
     public boolean insertarEstudiante(EstudianteDTO estudiante) throws SQLException, IOException {
@@ -30,7 +30,7 @@ public class EstudianteDAO implements IEstudianteDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(insertarSQLEstudiante);
             sentenciaEstudiante.setString(1, estudiante.getMatricula());
             sentenciaEstudiante.setInt(2, estudiante.getIdUsuario());
@@ -57,7 +57,7 @@ public class EstudianteDAO implements IEstudianteDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(modificarSQLEstudiante);
             sentenciaEstudiante.setInt(1, estadoActivo);
             sentenciaEstudiante.setString(2, matricula);
@@ -83,7 +83,7 @@ public class EstudianteDAO implements IEstudianteDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(modificarSQLEstudiante);
             sentenciaEstudiante.setString(2, estudiante.getMatricula());
             sentenciaEstudiante.setInt(1, estudiante.getIdUsuario());
@@ -110,7 +110,7 @@ public class EstudianteDAO implements IEstudianteDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(buscarSQL);
             sentenciaEstudiante.setString(1, matricula);
             resultadoConsultaEstudiante = sentenciaEstudiante.executeQuery();
@@ -145,7 +145,7 @@ public class EstudianteDAO implements IEstudianteDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(listarSQL);
             resultadoConsultaEstudiante = sentenciaEstudiante.executeQuery();
 

@@ -1,6 +1,6 @@
 package logica.DAOs;
 
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.RepresentanteDTO;
 import logica.interfaces.IRepresentanteDAO;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class RepresentanteDAO implements IRepresentanteDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaRepresentante = conexionBaseDeDatos.prepareStatement(insertarSQLRepresentante);
             sentenciaRepresentante.setInt(1, representante.getIDRepresentante());
             sentenciaRepresentante.setString(2, representante.getCorreo());
@@ -54,7 +54,7 @@ public class RepresentanteDAO implements IRepresentanteDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaRepresentante = conexionBaseDeDatos.prepareStatement(eliminarSQLRepresentante);
             sentenciaRepresentante.setInt(1, idRepresentante);
             sentenciaRepresentante.executeUpdate();
@@ -78,7 +78,7 @@ public class RepresentanteDAO implements IRepresentanteDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaRepresentante = conexionBaseDeDatos.prepareStatement(modificarSQLRepresentante);
             sentenciaRepresentante.setString(1, representante.getCorreo());
             sentenciaRepresentante.setString(2, representante.getTelefono());
@@ -108,7 +108,7 @@ public class RepresentanteDAO implements IRepresentanteDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaRepresentante = conexionBaseDeDatos.prepareStatement(buscarSQLRepresentante);
             sentenciaRepresentante.setInt(1, idRepresentante);
             resultadoConsultaRepresentante = sentenciaRepresentante.executeQuery();

@@ -17,7 +17,7 @@ class CuentaDAOTest {
     }
 
     @Test
-    void testCrearNuevaCuenta() {
+    void testCrearNuevaCuentaDatosValidos() {
 
         CuentaDTO cuenta = new CuentaDTO("nue@correo.com", "12345", 1);
 
@@ -33,7 +33,7 @@ class CuentaDAOTest {
     }
 
     @Test
-    void testEliminarCuentaPorID() {
+    void testEliminarCuentaPorIDDatosValidos() {
 
         int idUsuario = 3;
 
@@ -49,7 +49,7 @@ class CuentaDAOTest {
     }
 
     @Test
-    void testModificarCuenta() {
+    void testModificarCuentaDatosValidos() {
 
         CuentaDTO cuenta = new CuentaDTO("modifica@correo.com", "nuevaPass", 1);
 
@@ -65,7 +65,7 @@ class CuentaDAOTest {
     }
 
     @Test
-    void testBuscarCuentaPorID() {
+    void testBuscarCuentaPorIDDatosValidos() {
 
         String correo = "modificad@correo.com";
 

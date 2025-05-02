@@ -2,10 +2,10 @@
 2025-04-18 01:18:25 [main] ERROR Main - ¡Algo salió mal!
 2025-04-25 01:34:20 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - Datos inválidos en el formulario.
 2025-04-25 01:34:29 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - Datos inválidos en el formulario.
-2025-04-25 01:36:26 [JavaFX Application Thread] INFO  GUI.RegistroAcademicoGUI - Registro de académico exitoso.
-2025-04-25 02:06:57 [JavaFX Application Thread] INFO  GUI.RegistroAcademicoGUI - Registro de académico exitoso.
+2025-04-25 01:36:26 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoGUI - Registro de académico exitoso.
+2025-04-25 02:06:57 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoGUI - Registro de académico exitoso.
 2025-04-25 02:07:34 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - Error al registrar el académico.
-2025-04-25 02:07:43 [JavaFX Application Thread] ERROR GUI.RegistroAcademicoGUI - Error durante el registro del académico.
+2025-04-25 02:07:43 [JavaFX Application Thread] ERROR GUI.ControladorRegistroAcademicoGUI - Error durante el registro del académico.
 java.sql.SQLIntegrityConstraintViolationException: Duplicate entry 'empleado125@empresa.co' for key 'cuenta.PRIMARY'
 	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:118) ~[mysql-connector-j-8.0.33.jar:8.0.33]
 	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122) ~[mysql-connector-j-8.0.33.jar:8.0.33]
@@ -15,7 +15,7 @@ java.sql.SQLIntegrityConstraintViolationException: Duplicate entry 'empleado125@
 	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1320) ~[mysql-connector-j-8.0.33.jar:8.0.33]
 	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:994) ~[mysql-connector-j-8.0.33.jar:8.0.33]
 	at logica.DAOs.CuentaDAO.crearNuevaCuenta(CuentaDAO.java:32) ~[classes/:?]
-	at GUI.RegistroAcademicoGUI.guardarAcademico(RegistroAcademicoGUI.java:115) ~[classes/:?]
+	at GUI.ControladorRegistroAcademicoGUI.guardarAcademico(RegistroAcademicoGUI.java:115) ~[classes/:?]
 	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
@@ -71,7 +71,7 @@ java.sql.SQLIntegrityConstraintViolationException: Duplicate entry 'empleado125@
 	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
 	at java.lang.Thread.run(Thread.java:1570) [?:?]
 2025-04-25 03:25:01 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - Datos inválidos en el formulario.
-2025-04-25 03:25:08 [JavaFX Application Thread] ERROR GUI.RegistroAcademicoGUI - Error durante el registro del académico.
+2025-04-25 03:25:08 [JavaFX Application Thread] ERROR GUI.ControladorRegistroAcademicoGUI - Error durante el registro del académico.
 java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '12345' for key 'academico.PRIMARY'
 	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:118) ~[mysql-connector-j-8.0.33.jar:8.0.33]
 	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122) ~[mysql-connector-j-8.0.33.jar:8.0.33]
@@ -81,7 +81,7 @@ java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '12345' for k
 	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1320) ~[mysql-connector-j-8.0.33.jar:8.0.33]
 	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:994) ~[mysql-connector-j-8.0.33.jar:8.0.33]
 	at logica.DAOs.AcademicoDAO.insertarAcademico(AcademicoDAO.java:29) ~[classes/:?]
-	at GUI.RegistroAcademicoEvaluadorGUI.guardarAcademico(RegistroAcademicoEvaluadorGUI.java:120) ~[classes/:?]
+	at GUI.ControladorRegistroAcademicoEvaluadorGUI.guardarAcademico(RegistroAcademicoEvaluadorGUI.java:120) ~[classes/:?]
 	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
@@ -136,7 +136,7 @@ java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '12345' for k
 	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
 	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
 	at java.lang.Thread.run(Thread.java:1570) [?:?]
-2025-04-25 03:30:17 [JavaFX Application Thread] ERROR GUI.RegistroAcademicoGUI - Error durante el registro del académico.
+2025-04-25 03:30:17 [JavaFX Application Thread] ERROR GUI.ControladorRegistroAcademicoGUI - Error durante el registro del académico.
 java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '12345' for key 'academico.PRIMARY'
 	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:118) ~[mysql-connector-j-8.0.33.jar:8.0.33]
 	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122) ~[mysql-connector-j-8.0.33.jar:8.0.33]
@@ -146,7 +146,7 @@ java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '12345' for k
 	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1320) ~[mysql-connector-j-8.0.33.jar:8.0.33]
 	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:994) ~[mysql-connector-j-8.0.33.jar:8.0.33]
 	at logica.DAOs.AcademicoDAO.insertarAcademico(AcademicoDAO.java:29) ~[classes/:?]
-	at GUI.RegistroAcademicoEvaluadorGUI.guardarAcademico(RegistroAcademicoEvaluadorGUI.java:120) ~[classes/:?]
+	at GUI.ControladorRegistroAcademicoEvaluadorGUI.guardarAcademico(RegistroAcademicoEvaluadorGUI.java:120) ~[classes/:?]
 	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
@@ -207,10 +207,10 @@ java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '12345' for k
 2025-04-25 03:49:43 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - Datos inválidos en el formulario.
 2025-04-25 03:55:30 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - Datos inválidos en el formulario.
 2025-04-25 03:59:01 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - Datos inválidos en el formulario.
-2025-04-25 17:09:47 [JavaFX Application Thread] INFO  GUI.RegistroAcademicoEvaluadorGUI - No se encontró la cuenta o el académico.
-2025-04-25 17:09:47 [JavaFX Application Thread] INFO  GUI.RegistroAcademicoEvaluadorGUI - Registro de académico exitoso.
-2025-04-25 17:12:23 [JavaFX Application Thread] INFO  GUI.RegistroAcademicoEvaluadorGUI - No se encontró la cuenta o el académico.
-2025-04-25 17:12:23 [JavaFX Application Thread] ERROR GUI.RegistroAcademicoEvaluadorGUI - Error durante el registro del académico.
+2025-04-25 17:09:47 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoEvaluadorGUI - No se encontró la cuenta o el académico.
+2025-04-25 17:09:47 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoEvaluadorGUI - Registro de académico exitoso.
+2025-04-25 17:12:23 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoEvaluadorGUI - No se encontró la cuenta o el académico.
+2025-04-25 17:12:23 [JavaFX Application Thread] ERROR GUI.ControladorRegistroAcademicoEvaluadorGUI - Error durante el registro del académico.
 java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '22222' for key 'academicoevaluador.PRIMARY'
 	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:118) ~[mysql-connector-j-8.0.33.jar:8.0.33]
 	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122) ~[mysql-connector-j-8.0.33.jar:8.0.33]
@@ -220,7 +220,7 @@ java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '22222' for k
 	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1320) ~[mysql-connector-j-8.0.33.jar:8.0.33]
 	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:994) ~[mysql-connector-j-8.0.33.jar:8.0.33]
 	at logica.DAOs.AcademicoEvaluadorDAO.insertarAcademicoEvaluador(AcademicoEvaluadorDAO.java:29) ~[classes/:?]
-	at GUI.RegistroAcademicoEvaluadorGUI.guardarAcademico(RegistroAcademicoEvaluadorGUI.java:125) ~[classes/:?]
+	at GUI.ControladorRegistroAcademicoEvaluadorGUI.guardarAcademico(RegistroAcademicoEvaluadorGUI.java:125) ~[classes/:?]
 	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
@@ -275,25 +275,25 @@ java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '22222' for k
 	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
 	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
 	at java.lang.Thread.run(Thread.java:1570) [?:?]
-2025-04-25 17:16:02 [JavaFX Application Thread] INFO  GUI.RegistroAcademicoEvaluadorGUI - No se encontró la cuenta o el académico.
+2025-04-25 17:16:02 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoEvaluadorGUI - No se encontró la cuenta o el académico.
 2025-04-25 17:16:02 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - Error al registrar el académico.
-2025-04-25 17:16:41 [JavaFX Application Thread] INFO  GUI.RegistroAcademicoEvaluadorGUI - No se encontró la cuenta o el académico.
+2025-04-25 17:16:41 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoEvaluadorGUI - No se encontró la cuenta o el académico.
 2025-04-25 17:16:41 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - Error al registrar el académico.
-2025-04-25 17:17:51 [JavaFX Application Thread] INFO  GUI.RegistroAcademicoEvaluadorGUI - No se encontró la cuenta o el académico.
+2025-04-25 17:17:51 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoEvaluadorGUI - No se encontró la cuenta o el académico.
 2025-04-25 17:17:51 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - Error al registrar el académico.
-2025-04-25 17:21:20 [JavaFX Application Thread] INFO  GUI.RegistroAcademicoEvaluadorGUI - No se encontró la cuenta o el académico.
+2025-04-25 17:21:20 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoEvaluadorGUI - No se encontró la cuenta o el académico.
 2025-04-25 17:21:20 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - Error al registrar el académico.
-2025-04-25 17:24:33 [JavaFX Application Thread] INFO  GUI.RegistroAcademicoEvaluadorGUI - No se encontró la cuenta o el académico.
+2025-04-25 17:24:33 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoEvaluadorGUI - No se encontró la cuenta o el académico.
 2025-04-25 17:24:33 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - Error al registrar el académico.
-2025-04-25 17:25:49 [JavaFX Application Thread] INFO  GUI.RegistroAcademicoEvaluadorGUI - No se encontró la cuenta o el académico.
+2025-04-25 17:25:49 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoEvaluadorGUI - No se encontró la cuenta o el académico.
 2025-04-25 17:25:49 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - Error al registrar el académico.
-2025-04-25 17:49:33 [JavaFX Application Thread] INFO  GUI.RegistroAcademicoEvaluadorGUI - Registro de académico exitoso.
+2025-04-25 17:49:33 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoEvaluadorGUI - Registro de académico exitoso.
 2025-04-25 17:51:36 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - Datos inválidos en el formulario.
-2025-04-25 17:51:53 [JavaFX Application Thread] INFO  GUI.RegistroAcademicoEvaluadorGUI - Registro de académico exitoso.
+2025-04-25 17:51:53 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoEvaluadorGUI - Registro de académico exitoso.
 2025-04-25 17:54:58 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - Datos inválidos en el formulario.
 2025-04-25 17:55:18 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - Datos inválidos en el formulario.
 2025-04-25 17:55:30 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - Datos inválidos en el formulario.
-2025-04-25 17:55:39 [JavaFX Application Thread] INFO  GUI.RegistroAcademicoEvaluadorGUI - Registro de académico exitoso.
+2025-04-25 17:55:39 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoEvaluadorGUI - Registro de académico exitoso.
 2025-04-27 17:54:03 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - El nombre no es valido.
 2025-04-27 17:54:14 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - El nombre no es valido.
 2025-04-29 23:23:05 [JavaFX Application Thread] WARN  GUI.ControladorGestorAcademicosGUI - El campo de busqueda se encuentra vacio

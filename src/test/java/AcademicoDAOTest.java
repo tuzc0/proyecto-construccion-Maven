@@ -17,7 +17,7 @@ class AcademicoDAOTest {
     }
 
     @Test
-    void testInsertarAcademico() {
+    void testInsertarAcademicoDatosValidos() {
         AcademicoDTO academico = new AcademicoDTO(22222, 49, "Prueba", "Insercion", 1);
 
         try {
@@ -35,7 +35,7 @@ class AcademicoDAOTest {
     }
 
     @Test
-    void testEliminarAcademicoPorNumeroDePersonal() {
+    void testEliminarAcademicoPorNumeroDePersonalDatosValidos() {
 
         String numeroDePersonal = "4";
 
@@ -55,7 +55,7 @@ class AcademicoDAOTest {
     }
 
     @Test
-    void testModificarAcademico() {
+    void testModificarAcademicoDatosValidos() {
 
         AcademicoDTO academico = new AcademicoDTO(12348, 39, "Carlos", "Lopez", 1);
 
@@ -75,7 +75,7 @@ class AcademicoDAOTest {
     }
 
     @Test
-    void testBuscarAcademicoPorNumeroDePersonal() {
+    void testBuscarAcademicoPorNumeroDePersonalDatosValidos() {
 
         int numeroDePersonal = 1001;
 

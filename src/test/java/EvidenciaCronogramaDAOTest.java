@@ -26,7 +26,7 @@ class EvidenciaCronogramaDAOTest {
     }
 
     @Test
-    void testInsertarEvidenciaCronograma() {
+    void testInsertarEvidenciaCronogramaDatosValidos() {
         EvidenciaCronogramaDTO evidencia = new EvidenciaCronogramaDTO();
         evidencia.setIdEvidencia(0);
         evidencia.setURL("http://example.com/evidencia");
@@ -41,7 +41,7 @@ class EvidenciaCronogramaDAOTest {
     }
 
     @Test
-    void testMostrarEvidenciaCronogramaPorID() {
+    void testMostrarEvidenciaCronogramaPorIDDatosValidos() {
         int idEvidencia = 1;
 
         try {

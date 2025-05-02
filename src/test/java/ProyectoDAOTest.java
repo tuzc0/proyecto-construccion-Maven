@@ -20,7 +20,7 @@ class ProyectoDAOTest {
 
     @Test
     @Order(1)
-    void testCrearNuevoProyecto() throws SQLException, IOException {
+    void testCrearNuevoProyectoDatosValidos() throws SQLException, IOException {
 
         ProyectoDTO proyecto = new ProyectoDTO(1, "Proyecto A", "Descripción A",
                 LocalDate.now().toString(), LocalDate.now().plusDays(30).toString(),
@@ -31,7 +31,7 @@ class ProyectoDAOTest {
 
     @Test
     @Order(2)
-    void testEliminarProyectoPorID() throws SQLException, IOException {
+    void testEliminarProyectoPorIDDatosValidos() throws SQLException, IOException {
 
         boolean resultado = proyectoDAO.eliminarProyectoPorID(1);
         assertTrue(resultado, "El proyecto debería haberse eliminado correctamente.");
@@ -39,7 +39,7 @@ class ProyectoDAOTest {
 
     @Test
     @Order(3)
-    void testModificarProyecto() throws SQLException, IOException {
+    void testModificarProyectoDatosValidos() throws SQLException, IOException {
 
         ProyectoDTO proyecto = new ProyectoDTO(1, "Proyecto B", "Descripción Modificada",
                 LocalDate.now().toString(), LocalDate.now().plusDays(60).toString(),
@@ -50,7 +50,7 @@ class ProyectoDAOTest {
 
     @Test
     @Order(4)
-    void testBuscarProyectoPorID() throws SQLException, IOException {
+    void testBuscarProyectoPorIDDatosValidos() throws SQLException, IOException {
 
         ProyectoDTO proyecto = proyectoDAO.buscarProyectoPorID(1);
         assertNotNull(proyecto, "El proyecto no debería ser nulo.");

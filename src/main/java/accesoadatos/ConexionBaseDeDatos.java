@@ -5,13 +5,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class ConexionBD {
+public class ConexionBaseDeDatos {
 
     private Connection conexion;
 
-    public ConexionBD() throws IOException, SQLException {
+    public ConexionBaseDeDatos() throws IOException, SQLException {
 
-        LectorPropiedadesBD propiedades = new LectorPropiedadesBD();
+        LectorPropiedadesBaseDeDatos propiedades = new LectorPropiedadesBaseDeDatos();
 
         conexion = DriverManager.getConnection(
                 propiedades.getUrl(),

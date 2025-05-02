@@ -23,9 +23,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
-public class ConsultarEstudianteGUI {
+public class ControladorGestorEstudiantesGUI {
 
-    Logger logger = Logger.getLogger(ConsultarEstudianteGUI.class.getName());
+    Logger logger = Logger.getLogger(ControladorGestorEstudiantesGUI.class.getName());
 
     @FXML
     private TextField campoMatricula;
@@ -133,7 +133,7 @@ public class ConsultarEstudianteGUI {
 
             logger.severe("Error al cargar la lista de estudiantes: " + e.getMessage());
             Utilidades utilidades = new Utilidades();
-            utilidades.mostrarVentana("/ErrorGUI.fxml");
+            utilidades.mostrarVentana("/AvisoGUI.fxml");
         }
     }
 
@@ -177,7 +177,7 @@ public class ConsultarEstudianteGUI {
 
         } catch (SQLException | IOException e) {
 
-            utilidades.mostrarVentana("/ErrorGUI.fxml");
+            utilidades.mostrarVentana("/AvisoGUI.fxml");
         }
     }
 
@@ -200,7 +200,7 @@ public class ConsultarEstudianteGUI {
             }
 
         } catch (SQLException | IOException e) {
-            new Utilidades().mostrarVentana("/ErrorGUI.fxml");
+            new Utilidades().mostrarVentana("/AvisoGUI.fxml");
         }
     }
 
@@ -218,7 +218,7 @@ public class ConsultarEstudianteGUI {
 
         } catch (IOException e) {
             logger.severe("Error al abrir la ventana de registro: " + e.getMessage());
-            new Utilidades().mostrarVentana("/ErrorGUI.fxml");
+            new Utilidades().mostrarVentana("/AvisoGUI.fxml");
         }
     }
 
@@ -240,18 +240,18 @@ public class ConsultarEstudianteGUI {
 
             if (eliminado) {
 
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "El estudiante ha sido eliminado correctamente.");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "El estudiante ha sido eliminado correctamente.");
                 cargarEstudiantes();
 
             } else {
 
-                utilidades.mostrarVentana("/ErrorGUI.fxml");
+                utilidades.mostrarVentana("/AvisoGUI.fxml");
             }
 
         } catch (SQLException | IOException e) {
 
             logger.severe("Error al eliminar el estudiante: " + e.getMessage());
-            utilidades.mostrarVentana("/ErrorGUI.fxml");
+            utilidades.mostrarVentana("/AvisoGUI.fxml");
         }
     }
 
@@ -310,9 +310,9 @@ public class ConsultarEstudianteGUI {
         }
 
         if (error) {
-            utilidades.mostrarVentana("/ErrorGUI.fxml");
+            utilidades.mostrarVentana("/AvisoGUI.fxml");
         } else {
-            utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Estudiantes eliminados exitosamente.");
+            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Estudiantes eliminados exitosamente.");
         }
 
         cargarEstudiantes();
@@ -417,27 +417,27 @@ public class ConsultarEstudianteGUI {
         try {
 
             if (verificacionUsuario.camposVacios(nombre, apellidos, matricula, correo, " ")) {
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Por favor, complete todos los campos.");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Por favor, complete todos los campos.");
                 return;
             }
 
             if (!verificacionUsuario.nombreValido(nombre)) {
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Nombre inválido.");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Nombre inválido.");
                 return;
             }
 
             if (!verificacionUsuario.apellidosValidos(apellidos)) {
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Apellidos inválidos.");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Apellidos inválidos.");
                 return;
             }
 
             if (!verificacionUsuario.matriculaValida(matricula)) {
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Matrícula inválida.");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Matrícula inválida.");
                 return;
             }
 
             if (!verificacionUsuario.correoValido(correo)) {
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Correo inválido.");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Correo inválido.");
                 return;
             }
 
@@ -456,7 +456,7 @@ public class ConsultarEstudianteGUI {
 
                 if (otroEstudiante.getMatricula() != "N/A"){
 
-                    utilidades.mostrarVentanaError("/ErrorGUI.fxml", "La matrícula ya existe.");
+                    utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "La matrícula ya existe.");
                     return;
 
                 }
@@ -466,7 +466,7 @@ public class ConsultarEstudianteGUI {
 
                 if (cuentaDAO.buscarCuentaPorID(idEstudiante).getCorreoElectronico() != "N/A") {
 
-                    utilidades.mostrarVentanaError("/ErrorGUI.fxml", "El correo ya está registrado.");
+                    utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "El correo ya está registrado.");
                     return;
 
                 }

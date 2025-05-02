@@ -19,7 +19,7 @@ class CronogramaActividadesDAOTest {
 
     @Test
     @Order(1)
-    void testCrearNuevoCronogramaDeActividades() throws SQLException, IOException {
+    void testCrearNuevoCronogramaDeActividadesDatosValidos() throws SQLException, IOException {
 
         CronogramaActividadesDTO cronograma = new CronogramaActividadesDTO(0,
                 Timestamp.valueOf("2023-10-01 08:00:00"),
@@ -31,7 +31,7 @@ class CronogramaActividadesDAOTest {
 
     @Test
     @Order(2)
-    void testBuscarCronogramaDeActividadesPorID() throws SQLException, IOException {
+    void testBuscarCronogramaDeActividadesPorIDDatosValidos() throws SQLException, IOException {
 
         CronogramaActividadesDTO cronograma = cronogramaActividadesDAO.buscarCronogramaDeActividadesPorID(1);
         assertNotNull(cronograma, "El cronograma no debería ser nulo.");
@@ -40,7 +40,7 @@ class CronogramaActividadesDAOTest {
 
     @Test
     @Order(3)
-    void testModificarCronogramaDeActividades() throws SQLException, IOException {
+    void testModificarCronogramaDeActividadesDatosValidos() throws SQLException, IOException {
 
         CronogramaActividadesDTO cronograma = new CronogramaActividadesDTO(1,
                 Timestamp.valueOf("2023-11-01 08:00:00"),

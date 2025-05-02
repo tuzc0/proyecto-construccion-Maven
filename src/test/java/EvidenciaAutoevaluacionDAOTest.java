@@ -26,7 +26,7 @@ class EvidenciaAutoevaluacionDAOTest {
     }
 
     @Test
-    void testInsertarEvidenciaAutoevaluacion() {
+    void testInsertarEvidenciaAutoevaluacionDatosValidos() {
         EvidenciaAutoevaluacionDTO evidencia = new EvidenciaAutoevaluacionDTO();
         evidencia.setIdEvidencia(1);
         evidencia.setURL("http://example.com/evidencia");
@@ -41,7 +41,7 @@ class EvidenciaAutoevaluacionDAOTest {
     }
 
     @Test
-    void testMostrarEvidenciaAutoevaluacionPorID() {
+    void testMostrarEvidenciaAutoevaluacionPorIDDatosValidos() {
         int idEvidencia = 1;
 
         try {

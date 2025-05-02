@@ -1,6 +1,6 @@
 package logica.DAOs;
 
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.AcademicoDTO;
 import logica.interfaces.IAcademicoDAO;
 import java.util.List;
@@ -24,7 +24,7 @@ public class AcademicoDAO implements IAcademicoDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, academico.getNumeroDePersonal());
             consultaPreparada.setInt(2, academico.getIdUsuario());
@@ -50,7 +50,7 @@ public class AcademicoDAO implements IAcademicoDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setString(1, numeroDePersonal);
             consultaPreparada.executeUpdate();
@@ -74,7 +74,7 @@ public class AcademicoDAO implements IAcademicoDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, academico.getNumeroDePersonal());
             consultaPreparada.setInt(2, academico.getIdUsuario());
@@ -100,7 +100,7 @@ public class AcademicoDAO implements IAcademicoDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, numeroDePersonal);
             resultadoConsulta = consultaPreparada.executeQuery();
@@ -135,7 +135,7 @@ public class AcademicoDAO implements IAcademicoDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             resultadoConsulta = consultaPreparada.executeQuery();
 

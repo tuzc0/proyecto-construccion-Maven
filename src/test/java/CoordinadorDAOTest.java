@@ -18,7 +18,7 @@ public class CoordinadorDAOTest {
 
     @Test
     @Order(1)
-    void testInsertarCoordinador() throws SQLException, IOException {
+    void testInsertarCoordinadorDatosValidos() throws SQLException, IOException {
 
         CoordinadorDTO coordinador = new CoordinadorDTO(55555, 51, "Prueba", "Coordinador", 1);
         boolean resultado = coordinadorDAO.insertarCoordinador(coordinador);
@@ -27,7 +27,7 @@ public class CoordinadorDAOTest {
 
     @Test
     @Order(2)
-    void testEliminarCoordinadorPorNumeroDePersonal() throws SQLException, IOException {
+    void testEliminarCoordinadorPorNumeroDePersonalDatosValidos() throws SQLException, IOException {
 
         int numeroDePersonal = 55555;
         boolean resultado = coordinadorDAO.eliminarCoordinadorPorNumeroDePersonal(numeroDePersonal);
@@ -36,7 +36,7 @@ public class CoordinadorDAOTest {
 
     @Test
     @Order(3)
-    void testModificarCoordinador() throws SQLException, IOException {
+    void testModificarCoordinadorDatosValidos() throws SQLException, IOException {
 
         CoordinadorDTO coordinador = new CoordinadorDTO(55555, 51, "Prueba", "Modificar Coordinador", 1);
         boolean resultado = coordinadorDAO.modificarCoordinador(coordinador);
@@ -45,7 +45,7 @@ public class CoordinadorDAOTest {
 
     @Test
     @Order(4)
-    void testBuscarCoordinadorPorNumeroDePersonal() throws SQLException, IOException {
+    void testBuscarCoordinadorPorNumeroDePersonalDatosValidos() throws SQLException, IOException {
 
         int numeroDePersonal = 55555;
         CoordinadorDTO coordinador = coordinadorDAO.buscarCoordinadorPorNumeroDePersonal(numeroDePersonal);

@@ -3,7 +3,7 @@ package GUI;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class ErrorGUI {
+public class ControladorVentanaAvisoGUI {
 
     @FXML
     private Label campoMensaje;

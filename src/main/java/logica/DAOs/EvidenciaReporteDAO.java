@@ -1,6 +1,6 @@
 package logica.DAOs;
 
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.EvidenciaReporteDTO;
 import logica.interfaces.IEvidenciaReporteDAO;
 
@@ -21,7 +21,7 @@ public class EvidenciaReporteDAO implements IEvidenciaReporteDAO {
         boolean evidenciaInsertada = false;
 
         try {
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaEvidenciaReporte = conexionBaseDeDatos.prepareStatement(insertarSQL);
             sentenciaEvidenciaReporte.setInt(1, evidenciaReporteDTO.getIdEvidencia());
             sentenciaEvidenciaReporte.setString(2, evidenciaReporteDTO.getURL());
@@ -42,7 +42,7 @@ public class EvidenciaReporteDAO implements IEvidenciaReporteDAO {
         EvidenciaReporteDTO evidenciaEncontrada = new EvidenciaReporteDTO(-1, " ", -1);
 
         try {
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaEvidenciaReporte = conexionBaseDeDatos.prepareStatement(consultaSQL);
             sentenciaEvidenciaReporte.setInt(1, idEvidencia);
             resultadoEvidenciaReporte = sentenciaEvidenciaReporte.executeQuery();

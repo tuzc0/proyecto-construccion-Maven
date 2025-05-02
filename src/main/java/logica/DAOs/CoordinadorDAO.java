@@ -1,6 +1,6 @@
 package logica.DAOs;
 
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.CoordinadorDTO;
 import logica.interfaces.ICoordinadorDAO;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class CoordinadorDAO implements ICoordinadorDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaCoordinador = conexionBaseDeDatos.prepareStatement(insertarSQLCoordinador);
             sentenciaCoordinador.setInt(1, coordinador.getNumeroDePersonal());
             sentenciaCoordinador.setInt(2, coordinador.getIdUsuario());
@@ -51,7 +51,7 @@ public class CoordinadorDAO implements ICoordinadorDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaCoordinador = conexionBaseDeDatos.prepareStatement(modificarSQLCoordinador);
             sentenciaCoordinador.setInt(1, numeroDePersonal);
             sentenciaCoordinador.executeUpdate();
@@ -76,7 +76,7 @@ public class CoordinadorDAO implements ICoordinadorDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaCoordinador = conexionBaseDeDatos.prepareStatement(modificarSQLCoordinador);
             sentenciaCoordinador.setInt(1, coordinador.getNumeroDePersonal());
             sentenciaCoordinador.setInt(2, coordinador.getIdUsuario());
@@ -102,7 +102,7 @@ public class CoordinadorDAO implements ICoordinadorDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaCoordinador = conexionBaseDeDatos.prepareStatement(consultaSQL);
             sentenciaCoordinador.setInt(1, numeroDePersonal);
             resultadoCoordinador = sentenciaCoordinador.executeQuery();

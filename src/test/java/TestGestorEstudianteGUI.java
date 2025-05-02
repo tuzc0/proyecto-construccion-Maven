@@ -4,11 +4,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class TestConsultarEstudianteGUI extends Application {
+public class TestGestorEstudianteGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/ConsultarEstudiantesGUI.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/GestorEstudiantesGUI.fxml"));
         primaryStage.setTitle("Consultar Estudiantes");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();

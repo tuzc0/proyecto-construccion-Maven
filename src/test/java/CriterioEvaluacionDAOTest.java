@@ -18,7 +18,7 @@ class CriterioEvaluacionDAOTest {
 
     @Test
     @Order(1)
-    void testCrearNuevoCriterioEvaluacion() throws SQLException, IOException {
+    void testCrearNuevoCriterioEvaluacionDatosValidos() throws SQLException, IOException {
 
         CriterioEvaluacionDTO criterio = new CriterioEvaluacionDTO(6, "Criterio de evaluación", 5, 1);
         boolean resultado = criterioDAO.crearNuevoCriterioEvaluacion(criterio);
@@ -27,7 +27,7 @@ class CriterioEvaluacionDAOTest {
 
     @Test
     @Order(2)
-    void testBuscarCriterioEvaluacionPorID() throws SQLException, IOException {
+    void testBuscarCriterioEvaluacionPorIDDatosValidos() throws SQLException, IOException {
 
         CriterioEvaluacionDTO criterio = criterioDAO.buscarCriterioEvaluacionPorID(5);
         assertEquals(5, criterio.getNumeroCriterio(), "El número de criterio debería coincidir.");
@@ -35,7 +35,7 @@ class CriterioEvaluacionDAOTest {
 
     @Test
     @Order(3)
-    void testModificarCriterioEvaluacion() throws SQLException, IOException {
+    void testModificarCriterioEvaluacionDatosValidos() throws SQLException, IOException {
 
         CriterioEvaluacionDTO criterio = new CriterioEvaluacionDTO(5, "Criterio modificado", 5, 1);
         boolean resultado = criterioDAO.modificarCriterioEvaluacion(criterio);
@@ -44,7 +44,7 @@ class CriterioEvaluacionDAOTest {
 
     @Test
     @Order(4)
-    void testEliminarCriterioEvaluacionPorID() throws SQLException, IOException {
+    void testEliminarCriterioEvaluacionPorIDDatosValidos() throws SQLException, IOException {
 
         boolean resultado = criterioDAO.eliminarCriterioEvaluacionPorID(5);
         assertTrue(resultado, "El criterio de evaluación debería haberse eliminado correctamente.");

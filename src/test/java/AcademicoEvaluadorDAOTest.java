@@ -17,7 +17,7 @@ public class AcademicoEvaluadorDAOTest {
     }
 
     @Test
-    void testInsertarAcademicoEvaluador() throws SQLException, IOException {
+    void testInsertarAcademicoEvaluadorDatosValidos() throws SQLException, IOException {
 
         AcademicoEvaluadorDTO academicoEvaluador = new AcademicoEvaluadorDTO(33333, 50, "Prueba", "Academico Evaludor", 1);
         boolean resultado = dao.insertarAcademicoEvaluador(academicoEvaluador);
@@ -25,7 +25,7 @@ public class AcademicoEvaluadorDAOTest {
     }
 
     @Test
-    void testEliminarAcademicoEvaluadorPorNumeroDePersonal() throws SQLException, IOException {
+    void testEliminarAcademicoEvaluadorPorNumeroDePersonalDatosValidos() throws SQLException, IOException {
 
         int numeroDePersonal = 33333;
         boolean resultado = dao.eliminarAcademicoEvaluadorPorNumeroDePersonal(numeroDePersonal);
@@ -33,7 +33,7 @@ public class AcademicoEvaluadorDAOTest {
     }
 
     @Test
-    void testModificarAcademicoEvaluador() throws SQLException, IOException {
+    void testModificarAcademicoEvaluadorDatosValidos() throws SQLException, IOException {
 
         AcademicoEvaluadorDTO academicoEvaluador = new AcademicoEvaluadorDTO(33333, 49, "Prueba Modificacion", "Academico Evaluador", 1);
         boolean resultado = dao.modificarAcademicoEvaluador(academicoEvaluador);
@@ -41,7 +41,7 @@ public class AcademicoEvaluadorDAOTest {
     }
 
     @Test
-    void testBuscarAcademicoEvaluadorPorNumeroDePersonal() throws SQLException, IOException {
+    void testBuscarAcademicoEvaluadorPorNumeroDePersonalDatosValidos() throws SQLException, IOException {
 
         int numeroDePersonal = 33333;
         AcademicoEvaluadorDTO academicoEvaluador = dao.buscarAcademicoEvaluadorPorNumeroDePersonal(numeroDePersonal);

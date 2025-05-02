@@ -1,6 +1,6 @@
 package logica.DAOs;
 
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.CuentaDTO;
 import logica.interfaces.ICuentaDAO;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class CuentaDAO implements ICuentaDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaCuenta = conexionBaseDeDatos.prepareStatement(insertarSQLCuenta);
             consultaCuenta.setString(1, cuenta.getCorreoElectronico());
             consultaCuenta.setString(2, cuenta.getContrasena());
@@ -51,7 +51,7 @@ public class CuentaDAO implements ICuentaDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaCuenta = conexionBaseDeDatos.prepareStatement(eliminarSQLUsuario);
             consultaCuenta.setInt(1, idUsuario);
             consultaCuenta.executeUpdate();
@@ -75,7 +75,7 @@ public class CuentaDAO implements ICuentaDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaCuenta = conexionBaseDeDatos.prepareStatement(modificarSQLUsuario);
             consultaCuenta.setString(1, cuenta.getCorreoElectronico());
             consultaCuenta.setString(2, cuenta.getContrasena());
@@ -101,7 +101,7 @@ public class CuentaDAO implements ICuentaDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaCuenta = conexionBaseDeDatos.prepareStatement(buscarSQLUsuario);
             consultaCuenta.setString(1, correo);
             resultadoConsultaCuenta = consultaCuenta.executeQuery();
@@ -131,7 +131,7 @@ public class CuentaDAO implements ICuentaDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaCuenta = conexionBaseDeDatos.prepareStatement(buscarSQLUsuario);
             consultaCuenta.setInt(1, idUsuario);
             resultadoConsultaCuenta = consultaCuenta.executeQuery();

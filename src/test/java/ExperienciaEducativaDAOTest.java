@@ -17,7 +17,7 @@ class ExperienciaEducativaDAOTest {
 
     @Test
     @Order(1)
-    void testCrearNuevaExperienciaEducativa() throws SQLException, IOException {
+    void testCrearNuevaExperienciaEducativaDatosValidos() throws SQLException, IOException {
         ExperienciaEducativaDTO experiencia = new ExperienciaEducativaDTO(1, "Matemáticas");
         boolean resultado = experienciaEducativaDAO.crearNuevaExperienciaEducativa(experiencia);
         assertTrue(resultado, "La experiencia educativa debería haberse creado correctamente.");
@@ -25,7 +25,7 @@ class ExperienciaEducativaDAOTest {
 
     @Test
     @Order(2)
-    void testModificarExperienciaEducativa() throws SQLException, IOException {
+    void testModificarExperienciaEducativaDatosValidos() throws SQLException, IOException {
         ExperienciaEducativaDTO experiencia = new ExperienciaEducativaDTO(1, "Matemáticas Avanzadas");
         boolean resultado = experienciaEducativaDAO.modificarExperienciaEducativa(experiencia);
         assertTrue(resultado, "La experiencia educativa debería haberse modificado correctamente.");
@@ -33,7 +33,7 @@ class ExperienciaEducativaDAOTest {
 
     @Test
     @Order(3)
-    void testMostrarExperienciaEducativa() throws SQLException, IOException {
+    void testMostrarExperienciaEducativaDatosValidos() throws SQLException, IOException {
         ExperienciaEducativaDTO experiencia = experienciaEducativaDAO.mostrarExperienciaEducativa();
         assertNotNull(experiencia, "La experiencia educativa no debería ser nula.");
         assertEquals(1, experiencia.getIdEE(), "El ID de la experiencia educativa debería coincidir.");

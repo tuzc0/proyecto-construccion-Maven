@@ -1,6 +1,6 @@
 package logica.DAOs;
 
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.CronogramaContieneDTO;
 import logica.interfaces.ICronogramaContieneDAO;
 import java.io.IOException;
@@ -22,7 +22,7 @@ public class CronogramaContieneDAO implements ICronogramaContieneDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, cronograma.getIdCronograma());
             consultaPreparada.setInt(2, cronograma.getIdActividad());
@@ -47,7 +47,7 @@ public class CronogramaContieneDAO implements ICronogramaContieneDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, idCronograma);
             consultaPreparada.executeUpdate();
@@ -71,7 +71,7 @@ public class CronogramaContieneDAO implements ICronogramaContieneDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, cronograma.getIdActividad());
             consultaPreparada.setInt(2, cronograma.getIdCronograma());
@@ -98,7 +98,7 @@ public class CronogramaContieneDAO implements ICronogramaContieneDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, idCronograma);
             resultadoConsulta = consultaPreparada.executeQuery();

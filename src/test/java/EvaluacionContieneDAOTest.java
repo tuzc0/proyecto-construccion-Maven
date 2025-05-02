@@ -18,7 +18,7 @@ class EvaluacionContieneDAOTest {
 
     @Test
     @Order(1)
-    void testInsertarEvaluacionContiene() throws SQLException, IOException {
+    void testInsertarEvaluacionContieneDatosValidos() throws SQLException, IOException {
 
         EvaluacionContieneDTO evaluacion = new EvaluacionContieneDTO(1, 4.5f, 3);
         boolean resultado = evaluacionContieneDAO.insertarEvaluacionContiene(evaluacion);
@@ -27,7 +27,7 @@ class EvaluacionContieneDAOTest {
 
     @Test
     @Order(2)
-    void testBuscarEvaluacionContienePorID() throws SQLException, IOException {
+    void testBuscarEvaluacionContienePorIDDatosValidos() throws SQLException, IOException {
 
         EvaluacionContieneDTO evaluacion = evaluacionContieneDAO.buscarEvaluacionContienePorID(1, 1);
         assertEquals(1, evaluacion.getIdEvaluacion(), "El ID de la evaluación debería ser 1.");
@@ -35,7 +35,7 @@ class EvaluacionContieneDAOTest {
 
     @Test
     @Order(3)
-    void testModificarCalificacion() throws SQLException, IOException {
+    void testModificarCalificacionDatosValidos() throws SQLException, IOException {
 
         boolean resultado = evaluacionContieneDAO.modificarCalificacion(new EvaluacionContieneDTO(1, 1, 1));
         assertTrue(resultado, "La modificación de la calificación debería ser exitosa.");

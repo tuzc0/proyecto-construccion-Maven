@@ -1,6 +1,6 @@
 package logica.DAOs;
 
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.AutoevaluacionDTO;
 import logica.interfaces.IAutoevaluacionDAO;
 import java.sql.Timestamp;
@@ -25,7 +25,7 @@ public class AutoevaluacionDAO implements IAutoevaluacionDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaAutoevaluacion = conexionBaseDeDatos.prepareStatement(insertarSQLAutoevaluacion);
             sentenciaAutoevaluacion.setInt(1, autoevaluacion.getIDAutoevaluacion());
             sentenciaAutoevaluacion.setTimestamp(2, autoevaluacion.getFecha());
@@ -54,7 +54,7 @@ public class AutoevaluacionDAO implements IAutoevaluacionDAO {
         int estadoActivo = 0;
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaAutoevaluacion = conexionBaseDeDatos.prepareStatement(eliminarSQLAutoevaluacion);
             sentenciaAutoevaluacion.setInt(1, estadoActivo);
             sentenciaAutoevaluacion.setInt(2, idAutoevaluacion);
@@ -80,7 +80,7 @@ public class AutoevaluacionDAO implements IAutoevaluacionDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaAutoevaluacion = conexionBaseDeDatos.prepareStatement(modificarSQLAutoevaluacion);
             sentenciaAutoevaluacion.setTimestamp(1, autoevaluacion.getFecha());
             sentenciaAutoevaluacion.setString(2, autoevaluacion.getLugar());
@@ -108,7 +108,7 @@ public class AutoevaluacionDAO implements IAutoevaluacionDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaAutoevaluacion = conexionBaseDeDatos.prepareStatement(buscarSQLAutoevaluacion);
             sentenciaAutoevaluacion.setInt(1, idAutoevaluacion);
             resultadoConsultaAutoevaluacion = sentenciaAutoevaluacion.executeQuery();

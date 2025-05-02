@@ -5,7 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.UsuarioDTO;
 import logica.interfaces.IUsuarioDAO;
 
@@ -24,7 +24,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL, PreparedStatement.RETURN_GENERATED_KEYS);
             consultaPreparada.setString(1, usuario.getNombre());
             consultaPreparada.setString(2, usuario.getApellido());
@@ -56,7 +56,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, 0);
             consultaPreparada.setInt(2, idUsuario);
@@ -81,7 +81,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(3, usuario.getIdUsuario());
             consultaPreparada.setString(2, usuario.getApellido());
@@ -107,7 +107,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, idUsuario);
             resultadoConsulta = consultaPreparada.executeQuery();

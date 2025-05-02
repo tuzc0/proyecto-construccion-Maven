@@ -18,7 +18,7 @@ class PeriodoDAOTest {
 
     @Test
     @Order(1)
-    void testCrearNuevoPeriodo() throws SQLException, IOException {
+    void testCrearNuevoPeriodoDatosValidos() throws SQLException, IOException {
 
         PeriodoDTO periodo = new PeriodoDTO(1, "Periodo 2023", 1);
         boolean resultado = periodoDAO.crearNuevoPeriodo(periodo);
@@ -27,7 +27,7 @@ class PeriodoDAOTest {
 
     @Test
     @Order(2)
-    void testEliminarPeriodoPorID() throws SQLException, IOException {
+    void testEliminarPeriodoPorIDDatosValidos() throws SQLException, IOException {
 
         boolean resultado = periodoDAO.eliminarPeriodoPorID(1);
         assertTrue(resultado, "El periodo debería haberse eliminado correctamente.");
@@ -35,7 +35,7 @@ class PeriodoDAOTest {
 
     @Test
     @Order(3)
-    void testModificarPeriodo() throws SQLException, IOException {
+    void testModificarPeriodoDatosValidos() throws SQLException, IOException {
 
         PeriodoDTO periodo = new PeriodoDTO(1, "Periodo 2023 Modificado", 1);
         boolean resultado = periodoDAO.modificarPeriodo(periodo);
@@ -44,7 +44,7 @@ class PeriodoDAOTest {
 
     @Test
     @Order(4)
-    void testMostrarPeriodoActual() throws SQLException, IOException {
+    void testMostrarPeriodoActualDatosValidos() throws SQLException, IOException {
 
         PeriodoDTO periodo = periodoDAO.mostrarPeriodoActual();
         assertEquals(1, periodo.getEstadoActivo(), "El estado del periodo debería ser activo.");

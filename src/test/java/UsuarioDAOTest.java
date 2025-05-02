@@ -24,7 +24,7 @@ class UsuarioDAOTest {
 
     @Test
     @Order(1)
-    void testInsertarUsuario() {
+    void testInsertarUsuarioDatosValidos() {
         UsuarioDTO usuario = new UsuarioDTO(0, "Prueba", "Insertar Usuario", 1);
 
         try {
@@ -40,7 +40,7 @@ class UsuarioDAOTest {
 
     @Test
     @Order(2)
-    void testEliminarUsuarioPorID() {
+    void testEliminarUsuarioPorIDDatosValidos() {
 
         try {
 
@@ -55,7 +55,7 @@ class UsuarioDAOTest {
 
     @Test
     @Order(3)
-    void testModificarUsuario() {
+    void testModificarUsuarioDatosValidos() {
 
         UsuarioDTO usuario = new UsuarioDTO(51, "Modificado", "Usuario", 1);
 
@@ -72,7 +72,7 @@ class UsuarioDAOTest {
 
     @Test
     @Order(4)
-    void testBuscarUsuarioPorID() {
+    void testBuscarUsuarioPorIDDatosValidos() {
 
         try {
             UsuarioDTO usuario = usuarioDAO.buscarUsuarioPorID(51);

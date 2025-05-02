@@ -3,7 +3,7 @@ package logica.DAOs;
 import logica.DTOs.AutoEvaluacionContieneDTO;
 import logica.interfaces.IAutoevaluacionContieneDAO;
 import java.io.IOException;
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,7 +22,7 @@ public class AutoevaluacionContieneDAO implements IAutoevaluacionContieneDAO {
 
         try {
 
-            conexion = new ConexionBD().getConnection();
+            conexion = new ConexionBaseDeDatos().getConnection();
             sentencia = conexion.prepareStatement(consultaSQL);
             sentencia.setInt(1, autoevalucion.getIdAutoevaluacion());
             sentencia.setInt(2, autoevalucion.getIdCriterio());
@@ -48,7 +48,7 @@ public class AutoevaluacionContieneDAO implements IAutoevaluacionContieneDAO {
 
         try {
 
-            conexion = new ConexionBD().getConnection();
+            conexion = new ConexionBaseDeDatos().getConnection();
             sentencia = conexion.prepareStatement(consultaSQL);
             sentencia.setFloat(1, autoevaluacion.getCalificacion());
             sentencia.setInt(2, autoevaluacion.getIdAutoevaluacion());
@@ -74,7 +74,7 @@ public class AutoevaluacionContieneDAO implements IAutoevaluacionContieneDAO {
 
         try {
 
-            conexion = new ConexionBD().getConnection();
+            conexion = new ConexionBaseDeDatos().getConnection();
             sentencia = conexion.prepareStatement(consultaSQL);
             sentencia.setInt(1, idAutoevaluacion);
             sentencia.setInt(2, idCriterio);

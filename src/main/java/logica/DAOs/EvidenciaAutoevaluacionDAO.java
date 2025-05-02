@@ -1,6 +1,6 @@
 package logica.DAOs;
 
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.EvidenciaAutoevaluacionDTO;
 import logica.interfaces.IEvidenciaAutoevaluacionDAO;
 
@@ -23,7 +23,7 @@ public class EvidenciaAutoevaluacionDAO implements IEvidenciaAutoevaluacionDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaEvidenciaAutoevaluacion = conexionBaseDeDatos.prepareStatement(insertarSQLEvidencia);
             sentenciaEvidenciaAutoevaluacion.setInt(1, evidencia.getIdEvidencia());
             sentenciaEvidenciaAutoevaluacion.setString(2, evidencia.getURL());
@@ -50,7 +50,7 @@ public class EvidenciaAutoevaluacionDAO implements IEvidenciaAutoevaluacionDAO {
         EvidenciaAutoevaluacionDTO evidenciaEncontrada = new EvidenciaAutoevaluacionDTO(-1, " ", -1);
 
         try {
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaEvidenciaAutoevaluacion = conexionBaseDeDatos.prepareStatement(consultaSQLEvidencia);
             sentenciaEvidenciaAutoevaluacion.setInt(1, idEvidencia);
             resultadoConsultaEvidenciaAutoevaluacion = sentenciaEvidenciaAutoevaluacion.executeQuery();

@@ -18,7 +18,7 @@ class AutoevaluacionContieneDAOTest {
 
     @Test
     @Order(1)
-    void testInsertarAutoevaluacionContiene() throws SQLException, IOException {
+    void testInsertarAutoevaluacionContieneDatosValidos() throws SQLException, IOException {
 
         AutoEvaluacionContieneDTO autoevaluacion = new AutoEvaluacionContieneDTO(4, 4.5f, 5);
         boolean resultado = autoevaluacionContieneDAO.insertarAutoevaluacionContiene(autoevaluacion);
@@ -27,7 +27,7 @@ class AutoevaluacionContieneDAOTest {
 
     @Test
     @Order(2)
-    void testBuscarAutoevaluacionContienePorID() throws SQLException, IOException {
+    void testBuscarAutoevaluacionContienePorIDDatosValidos() throws SQLException, IOException {
 
         AutoEvaluacionContieneDTO autoevaluacion = autoevaluacionContieneDAO.buscarAutoevaluacionContienePorID(4,4);
         assertEquals(5.0f, autoevaluacion.getCalificacion(), "La calificación debería ser 5.0");
@@ -35,7 +35,7 @@ class AutoevaluacionContieneDAOTest {
 
     @Test
     @Order(3)
-    void testModificarCalificacion() throws SQLException, IOException {
+    void testModificarCalificacionDatosValidos() throws SQLException, IOException {
 
         AutoEvaluacionContieneDTO autoevaluacion = new AutoEvaluacionContieneDTO(4, 5.0f, 4);
         boolean resultado = autoevaluacionContieneDAO.modificarCalificacion(autoevaluacion);

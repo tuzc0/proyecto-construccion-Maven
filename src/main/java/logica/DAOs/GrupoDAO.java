@@ -1,6 +1,6 @@
 package logica.DAOs;
 
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.GrupoDTO;
 import logica.interfaces.IGrupoDAO;
 import java.io.IOException;
@@ -22,7 +22,7 @@ public class GrupoDAO implements IGrupoDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaGrupo = conexionBaseDeDatos.prepareStatement(sql);
             sentenciaGrupo.setInt(1, grupo.getNRC());
             sentenciaGrupo.setString(2, grupo.getNombre());
@@ -51,7 +51,7 @@ public class GrupoDAO implements IGrupoDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaGrupo = conexionBaseDeDatos.prepareStatement(sql);
             sentenciaGrupo.setInt(1, NRC);
             sentenciaGrupo.executeUpdate();
@@ -75,7 +75,7 @@ public class GrupoDAO implements IGrupoDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaGrupo = conexionBaseDeDatos.prepareStatement(sql);
             sentenciaGrupo.setString(1, grupo.getNombre());
             sentenciaGrupo.setInt(2, grupo.getNumeroPersonal());
@@ -104,7 +104,7 @@ public class GrupoDAO implements IGrupoDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaGrupo = conexionBaseDeDatos.prepareStatement(sql);
             sentenciaGrupo.setInt(1, NRC);
             resultadoGrupo = sentenciaGrupo.executeQuery();
@@ -137,7 +137,7 @@ public class GrupoDAO implements IGrupoDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaGrupo = conexionBaseDeDatos.prepareStatement(sql);
             resultadoGrupo = sentenciaGrupo.executeQuery();
 

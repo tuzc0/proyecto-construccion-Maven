@@ -2,13 +2,13 @@ package GUI;
 
 import GUI.utilidades.Utilidades;
 import javafx.scene.control.PasswordField;
+import logica.DAOs.AcademicoEvaluadorDAO;
+import logica.DTOs.AcademicoEvaluadorDTO;
 import logica.VerificacionUsuario;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import logica.DAOs.AcademicoDAO;
 import logica.DAOs.CuentaDAO;
 import logica.DAOs.UsuarioDAO;
-import logica.DTOs.AcademicoDTO;
 import logica.DTOs.CuentaDTO;
 import logica.DTOs.UsuarioDTO;
 import org.apache.logging.log4j.LogManager;
@@ -20,9 +20,9 @@ import java.util.List;
 import javafx.scene.image.ImageView;
 import GUI.utilidades.UtilidadesContraseña;
 
-public class RegistroAcademicoGUI {
+public class ControladorRegistroAcademicoEvaluadorGUI {
 
-    private static final Logger logger = LogManager.getLogger(RegistroAcademicoGUI.class);
+    private static final Logger logger = LogManager.getLogger(ControladorRegistroAcademicoEvaluadorGUI.class);
 
     @FXML private TextField campoNombre;
     @FXML private TextField campoApellidos;
@@ -78,7 +78,13 @@ public class RegistroAcademicoGUI {
 
             if (VerificacionUsuario.camposVacios(nombre, apellidos, numeroPersonalTexto, correo, contrasena)) {
 
-                utilidades.mostrarVentanaError("/ErrorGUI", "Campos vacíos detectados en el formulario.");
+                utilidades.mostrarVentanaAviso("ErrorGUI", "Campos vacíos detectados en el formulario.");
+                return;
+            }
+
+            if (!UtilidadesContraseña.esContraseñaIgual(campoContraseña, campoConfirmarContraseña)) {
+
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Las contraseñas no coinciden.");
                 return;
             }
 
@@ -86,13 +92,7 @@ public class RegistroAcademicoGUI {
 
             if (!errores.isEmpty()) {
                 String mensajeError = String.join("\n", errores);
-                utilidades.mostrarVentanaError("/ErrorGUI.fxml", mensajeError);
-                return;
-            }
-
-            if (!UtilidadesContraseña.esContraseñaIgual(campoContraseña, campoConfirmarContraseña)) {
-
-                utilidades.mostrarVentana("/ErrorRegistroAcademico.fxml");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", mensajeError);
                 return;
             }
 
@@ -101,9 +101,9 @@ public class RegistroAcademicoGUI {
             int idUsuario = 0;
 
             CuentaDAO cuentaDAO = new CuentaDAO();
-            AcademicoDAO academicoDAO = new AcademicoDAO();
+            AcademicoEvaluadorDAO academicoevaluadorDAO = new AcademicoEvaluadorDAO();
 
-            AcademicoDTO academicoExistente = academicoDAO.buscarAcademicoPorNumeroDePersonal(numeroPersonal);
+            AcademicoEvaluadorDTO academicoExistente = academicoevaluadorDAO.buscarAcademicoEvaluadorPorNumeroDePersonal(numeroPersonal);
             CuentaDTO cuentaEncontrada = cuentaDAO.buscarCuentaPorCorreo(correo);
 
             if (academicoExistente.getNumeroDePersonal() != -1){
@@ -122,30 +122,17 @@ public class RegistroAcademicoGUI {
             idUsuario = new UsuarioDAO().insertarUsuario(usuario);
 
             CuentaDTO cuentaDTO = new CuentaDTO(correo, contrasena, idUsuario);
-            AcademicoDTO academicoDTO = new AcademicoDTO(numeroPersonal, idUsuario, nombre, apellidos, estadoActivo);
+            AcademicoEvaluadorDTO academicoDTO = new AcademicoEvaluadorDTO(numeroPersonal, idUsuario, nombre, apellidos, estadoActivo);
 
             cuentaDAO.crearNuevaCuenta(cuentaDTO);
-            academicoDAO.insertarAcademico(academicoDTO);
+            academicoevaluadorDAO.insertarAcademicoEvaluador(academicoDTO);
 
             logger.info("Registro de académico exitoso.");
             utilidades.mostrarVentana("/RegistroAcademicoExitosoGUI.fxml");
 
-        } catch (SQLException e) {
+        } catch (SQLException | IOException | NumberFormatException e) {
 
-            logger.error("Error de base de datos durante el registro del académico.", e);
-            utilidades.mostrarVentana("/ErrorRegistroAcademicoGUI.fxml");
-
-        } catch (NumberFormatException e) {
-
-            logger.error("Error de formato numérico en el número de personal.", e);
-            utilidades.mostrarVentana("/ErrorRegistroAcademicoGUI.fxml");
-        } catch (IOException e) {
-
-            logger.error("Error de entrada/salida durante el registro del académico.", e);
-            utilidades.mostrarVentana("/ErrorRegistroAcademicoGUI.fxml");
-        } catch (Exception e) {
-
-            logger.error("Error inesperado durante el registro del académico.", e);
+            logger.error("Error durante el registro del académico.", e);
             utilidades.mostrarVentana("/ErrorRegistroAcademicoGUI.fxml");
         }
     }

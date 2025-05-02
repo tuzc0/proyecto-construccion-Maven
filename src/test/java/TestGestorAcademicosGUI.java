@@ -8,7 +8,7 @@ public class TestGestorAcademicosGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/GestionarAcademicosGUI.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/GestorAcademicosGUI.fxml"));
         primaryStage.setTitle("Registrar Academicos");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();

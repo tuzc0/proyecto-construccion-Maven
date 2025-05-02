@@ -1,6 +1,6 @@
 package logica.DAOs;
 
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.EvaluacionDTO;
 import logica.interfaces.IEvaluacionDAO;
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class EvaluacionDAO implements IEvaluacionDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaEvaluacion = conexionBaseDeDatos.prepareStatement(insertarSQLEvaluacion);
             sentenciaEvaluacion.setInt(1, evaluacion.getIDEvaluacion());
             sentenciaEvaluacion.setString(2, evaluacion.getComentarios());
@@ -54,7 +54,7 @@ public class EvaluacionDAO implements IEvaluacionDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaEvaluacion = conexionBaseDeDatos.prepareStatement(eliminarSQLEvaluacion);
             sentenciaEvaluacion.setInt(1, idEvaluacion);
             sentenciaEvaluacion.setInt(2, estadoActivo);
@@ -80,7 +80,7 @@ public class EvaluacionDAO implements IEvaluacionDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaEvaluacion = conexionBaseDeDatos.prepareStatement(modificarSQLEvaluacion);
             sentenciaEvaluacion.setString(1, evaluacion.getComentarios());
             sentenciaEvaluacion.setInt(2, evaluacion.getCalificacionFinal());
@@ -109,7 +109,7 @@ public class EvaluacionDAO implements IEvaluacionDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaEvaluacion = conexionBaseDeDatos.prepareStatement(buscarSQLEvaluacion);
             sentenciaEvaluacion.setInt(1, idEvaluacion);
             ResultSet resultadoConsultaEvaluacion = sentenciaEvaluacion.executeQuery();

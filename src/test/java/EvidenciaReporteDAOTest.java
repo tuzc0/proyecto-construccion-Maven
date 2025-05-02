@@ -26,7 +26,7 @@ class EvidenciaReporteDAOTest {
     }
 
     @Test
-    void testInsertarEvidenciaReporte() {
+    void testInsertarEvidenciaReporteDatosValidos() {
         EvidenciaReporteDTO evidencia = new EvidenciaReporteDTO();
         evidencia.setIdEvidencia(0);
         evidencia.setURL("http://example.com/evidencia");
@@ -41,7 +41,7 @@ class EvidenciaReporteDAOTest {
     }
 
     @Test
-    void testMostrarEvidenciaReportePorID() {
+    void testMostrarEvidenciaReportePorIDDatosValidos() {
         int idEvidencia = 1;
 
         try {

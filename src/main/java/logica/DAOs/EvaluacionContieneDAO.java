@@ -1,6 +1,6 @@
 package logica.DAOs;
 
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.EvaluacionContieneDTO;
 import logica.interfaces.IEvaluacionContieneDAO;
 import java.io.IOException;
@@ -23,7 +23,7 @@ public class EvaluacionContieneDAO implements IEvaluacionContieneDAO {
 
         try {
 
-            conexion = new ConexionBD().getConnection();
+            conexion = new ConexionBaseDeDatos().getConnection();
             sentencia = conexion.prepareStatement(consultaSQL);
             sentencia.setInt(1, evaluacion.getIdEvaluacion());
             sentencia.setInt(2, evaluacion.getIdCriterio());
@@ -49,7 +49,7 @@ public class EvaluacionContieneDAO implements IEvaluacionContieneDAO {
 
         try {
 
-            conexion = new ConexionBD().getConnection();
+            conexion = new ConexionBaseDeDatos().getConnection();
             sentencia = conexion.prepareStatement(consultaSQL);
             sentencia.setFloat(1, evaluacion.getCalificacion());
             sentencia.setInt(2, evaluacion.getIdEvaluacion());
@@ -76,7 +76,7 @@ public class EvaluacionContieneDAO implements IEvaluacionContieneDAO {
 
         try {
 
-            conexion = new ConexionBD().getConnection();
+            conexion = new ConexionBaseDeDatos().getConnection();
             sentencia = conexion.prepareStatement(consultaSQL);
             sentencia.setInt(1, idEvaluacion);
             sentencia.setInt(2, idCriterio);

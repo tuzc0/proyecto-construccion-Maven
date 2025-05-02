@@ -1,6 +1,6 @@
 package logica.DAOs;
 
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.AcademicoEvaluadorDTO;
 import logica.interfaces.IAcademicoEvaluadorDAO;
 import java.io.IOException;
@@ -22,7 +22,7 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, academicoEvaluador.getNumeroDePersonal());
             consultaPreparada.setInt(2, academicoEvaluador.getIdUsuario());
@@ -48,7 +48,7 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, 0);
             consultaPreparada.setInt(2, numeroDePersonal);
@@ -74,7 +74,7 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, academicoEvaluador.getNumeroDePersonal());
             consultaPreparada.setInt(2, academicoEvaluador.getIdUsuario());
@@ -100,7 +100,7 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, numeroDePersonal);
             resultadoConsulta = consultaPreparada.executeQuery();

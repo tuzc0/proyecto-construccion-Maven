@@ -19,7 +19,7 @@ class ReporteContieneDAOTest {
 
     @Test
     @Order(1)
-    void testInsertarReporteContiene() throws SQLException, IOException {
+    void testInsertarReporteContieneDatosValidos() throws SQLException, IOException {
         ReporteContieneDTO reporte = new ReporteContieneDTO(3, 10,
                 Timestamp.valueOf("2023-10-01 08:00:00"),
                 Timestamp.valueOf("2023-10-01 10:00:00"), 1);
@@ -29,7 +29,7 @@ class ReporteContieneDAOTest {
 
     @Test
     @Order(2)
-    void testBuscarReporteContienePorID() throws SQLException, IOException {
+    void testBuscarReporteContienePorIDDatosValidos() throws SQLException, IOException {
         ReporteContieneDTO reporte = reporteContieneDAO.buscarReporteContienePorID(1);
         assertNotNull(reporte, "El reporte no debería ser nulo.");
         assertEquals(1, reporte.getIdReporte(), "El ID del reporte debería ser 1.");
@@ -38,7 +38,7 @@ class ReporteContieneDAOTest {
 
     @Test
     @Order(3)
-    void testModificarReporteContiene() throws SQLException, IOException {
+    void testModificarReporteContieneDatosValidos() throws SQLException, IOException {
         ReporteContieneDTO reporte = new ReporteContieneDTO(1, 11,
                 Timestamp.valueOf("2023-10-01 09:00:00"),
                 Timestamp.valueOf("2023-10-01 11:00:00"), 1);
@@ -52,7 +52,7 @@ class ReporteContieneDAOTest {
 
     @Test
     @Order(4)
-    void testEliminarReporteContienePorID() throws SQLException, IOException {
+    void testEliminarReporteContienePorIDDatosValidos() throws SQLException, IOException {
         boolean resultado = reporteContieneDAO.eliminarReporteContienePorID(1);
         assertTrue(resultado, "La eliminación lógica del reporte debería ser exitosa.");
 

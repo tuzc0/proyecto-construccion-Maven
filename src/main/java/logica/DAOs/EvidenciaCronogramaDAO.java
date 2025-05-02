@@ -1,6 +1,6 @@
 package logica.DAOs;
 
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.EvidenciaCronogramaDTO;
 import logica.interfaces.IEvidenciaCronogramaDAO;
 
@@ -21,7 +21,7 @@ public class EvidenciaCronogramaDAO implements IEvidenciaCronogramaDAO {
         boolean evidenciaInsertada = false;
 
         try {
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaEvidenciaCronograma = conexionBaseDeDatos.prepareStatement(insertarSQLEvidencia);
             sentenciaEvidenciaCronograma.setInt(1, evidenciaCronograma.getIdEvidencia());
             sentenciaEvidenciaCronograma.setString(2, evidenciaCronograma.getURL());
@@ -43,7 +43,7 @@ public class EvidenciaCronogramaDAO implements IEvidenciaCronogramaDAO {
         EvidenciaCronogramaDTO evidenciaEncontrada = new EvidenciaCronogramaDTO(-1, " ", -1);
 
         try {
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaEvidenciaCronograma = conexionBaseDeDatos.prepareStatement(consultaSQLEvidencia);
             sentenciaEvidenciaCronograma.setInt(1, idEvidencia);
             resultadoEvidenciaCronograma = sentenciaEvidenciaCronograma.executeQuery();

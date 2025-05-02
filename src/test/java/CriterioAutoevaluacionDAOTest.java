@@ -18,7 +18,7 @@ class CriterioAutoevaluacionDAOTest {
 
     @Test
     @Order(1)
-    void testCrearNuevoCriterioAutoevaluacion() throws SQLException, IOException {
+    void testCrearNuevoCriterioAutoevaluacionDatosValidos() throws SQLException, IOException {
 
         CriterioAutoevaluacionDTO criterio = new CriterioAutoevaluacionDTO(0, "Descripción del criterio", 4,1);
         boolean resultado = criterioDAO.crearNuevoCriterioAutoevaluacion(criterio);
@@ -27,7 +27,7 @@ class CriterioAutoevaluacionDAOTest {
 
     @Test
     @Order(2)
-    void testBuscarCriterioAutoevaluacionPorID() throws SQLException, IOException {
+    void testBuscarCriterioAutoevaluacionPorIDDatosValidos() throws SQLException, IOException {
 
         CriterioAutoevaluacionDTO criterio = criterioDAO.buscarCriterioAutoevaluacionPorID(4);
         assertEquals(0, criterio.getEstadoActivo(), "El estado del criterio debería ser 0.");
@@ -35,7 +35,7 @@ class CriterioAutoevaluacionDAOTest {
 
     @Test
     @Order(3)
-    void testModificarCriterioAutoevaluacion() throws SQLException, IOException {
+    void testModificarCriterioAutoevaluacionDatosValidos() throws SQLException, IOException {
 
         CriterioAutoevaluacionDTO criterio = new CriterioAutoevaluacionDTO(4, "Descripción", 4,1);
         boolean resultado = criterioDAO.modificarCriterioAutoevaluacion(criterio);
@@ -44,7 +44,7 @@ class CriterioAutoevaluacionDAOTest {
 
     @Test
     @Order(4)
-    void testEliminarCriterioAutoevaluacionPorNumeroDeCriterio() throws SQLException, IOException {
+    void testEliminarCriterioAutoevaluacionPorNumeroDeCriterioDatosValidos() throws SQLException, IOException {
 
         boolean resultado = criterioDAO.eliminarCriterioAutoevaluacionPorNumeroDeCriterio(3);
         assertTrue(resultado, "La eliminación lógica del criterio debería ser exitosa.");

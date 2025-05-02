@@ -1,6 +1,6 @@
 package logica.DAOs;
 
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.ReporteDTO;
 import logica.interfaces.IReporteDAO;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class ReporteDAO implements IReporteDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaReporte = conexionBaseDeDatos.prepareStatement(insertarSQLReporte);
             sentenciaReporte.setInt(1, reporte.getIDReporte());
             sentenciaReporte.setInt(2, reporte.getNumeroHoras());
@@ -53,7 +53,7 @@ public class ReporteDAO implements IReporteDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaReporte = conexionBaseDeDatos.prepareStatement(modificarSQLReporte);
             sentenciaReporte.setInt(1, reporte.getNumeroHoras());
             sentenciaReporte.setString(2, reporte.getMetodologia());
@@ -82,7 +82,7 @@ public class ReporteDAO implements IReporteDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaReporte = conexionBaseDeDatos.prepareStatement(buscarSQLReporte);
             sentenciaReporte.setInt(1, idReporte);
             resultadoReporte = sentenciaReporte.executeQuery();

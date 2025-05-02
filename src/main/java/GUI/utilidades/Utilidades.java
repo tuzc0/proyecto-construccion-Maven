@@ -1,6 +1,6 @@
 package GUI.utilidades;
 
-import GUI.ErrorGUI;
+import GUI.ControladorVentanaAvisoGUI;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -31,14 +31,14 @@ public class Utilidades {
         }
     }
 
-    public void mostrarVentanaError(String fxml, String mensaje) {
+    public void mostrarVentanaAviso(String fxml, String mensaje) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
             Parent root = loader.load();
 
             Object controller = loader.getController();
-            if (controller instanceof ErrorGUI) {
-                ((ErrorGUI) controller).setMensaje(mensaje);
+            if (controller instanceof ControladorVentanaAvisoGUI) {
+                ((ControladorVentanaAvisoGUI) controller).setMensaje(mensaje);
             }
 
             Stage stage = new Stage();

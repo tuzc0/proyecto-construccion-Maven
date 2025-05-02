@@ -1,6 +1,6 @@
 package logica.DAOs;
 
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.PeriodoDTO;
 import logica.interfaces.IPeriodoDAO;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class PeriodoDAO implements IPeriodoDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaPeriodo = conexionBaseDeDatos.prepareStatement(insertarSQLPeriodo);
             sentenciaPeriodo.setInt(1, periodo.getIDPeriodo());
             sentenciaPeriodo.setString(2, periodo.getDescripcion());
@@ -50,7 +50,7 @@ public class PeriodoDAO implements IPeriodoDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaPeriodo = conexionBaseDeDatos.prepareStatement(eliminarSQLPeriodo);
             sentenciaPeriodo.setInt(1, idPeriodo);
             sentenciaPeriodo.executeUpdate();
@@ -74,7 +74,7 @@ public class PeriodoDAO implements IPeriodoDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaPeriodo = conexionBaseDeDatos.prepareStatement(modificarSQLPeriodo);
             sentenciaPeriodo.setInt(3, periodo.getIDPeriodo());
             sentenciaPeriodo.setString(1, periodo.getDescripcion());
@@ -100,7 +100,7 @@ public class PeriodoDAO implements IPeriodoDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaPeriodo = conexionBaseDeDatos.prepareStatement(consultaSQLPeriodo);
             resultadoConsultaPeriodo = sentenciaPeriodo.executeQuery( );
 

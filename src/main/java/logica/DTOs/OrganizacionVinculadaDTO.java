@@ -1,21 +1,21 @@
 package logica.DTOs;
 
-public class OvDTO {
+public class OrganizacionVinculadaDTO {
 
-    private int IdOV;
+    private int IdOrganizacion;
     private String nombre;
     private String correo;
     private String numeroDeContacto;
     private String direccion;
     private int estadoActivo;
 
-    public OvDTO() {
+    public OrganizacionVinculadaDTO() {
 
     }
 
-    public OvDTO(int IdOV, String nombre, String direccion, String correo, String numeroDeContacto, int estadoActivo) {
+    public OrganizacionVinculadaDTO(int IdOrganizacion, String nombre, String direccion, String correo, String numeroDeContacto, int estadoActivo) {
 
-        this.IdOV = IdOV;
+        this.IdOrganizacion = IdOrganizacion;
         this.nombre = nombre;
         this.direccion = direccion;
         this.correo = correo;
@@ -23,14 +23,14 @@ public class OvDTO {
         this.estadoActivo = estadoActivo;
     }
 
-    public int getIdOV() {
+    public int getIdOrganizacion() {
 
-        return IdOV;
+        return IdOrganizacion;
     }
 
-    public void setIdOV(int IdOV) {
+    public void setIdOrganizacion(int IdOrganizacion) {
 
-        this.IdOV = IdOV;
+        this.IdOrganizacion = IdOrganizacion;
     }
 
     public String getNombre() {

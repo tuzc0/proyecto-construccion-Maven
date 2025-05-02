@@ -1,6 +1,6 @@
 package logica.DAOs;
 
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.ProyectoDTO;
 import logica.interfaces.IProyectoDAO;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class ProyectoDAO implements IProyectoDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaProyecto = conexionBaseDeDatos.prepareStatement(insertarSQLProyecto);
             sentenciaProyecto.setInt(1, proyecto.getIDProyecto());
             sentenciaProyecto.setString(2, proyecto.getNombre());
@@ -55,7 +55,7 @@ public class ProyectoDAO implements IProyectoDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaProyecto = conexionBaseDeDatos.prepareStatement(modificarSQLProyecto);
             sentenciaProyecto.setInt(1, 0);
             sentenciaProyecto.setInt(2, idProyecto);
@@ -80,7 +80,7 @@ public class ProyectoDAO implements IProyectoDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaProyecto = conexionBaseDeDatos.prepareStatement(modificarSQLProyecto);
             sentenciaProyecto.setString(1, proyecto.getNombre());
             sentenciaProyecto.setString(2, proyecto.getDescripcion());
@@ -110,7 +110,7 @@ public class ProyectoDAO implements IProyectoDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaProyecto = conexionBaseDeDatos.prepareStatement(consultaSQLProyecto);
             sentenciaProyecto.setInt(1, idProyecto);
             resultadoProyecto = sentenciaProyecto.executeQuery();

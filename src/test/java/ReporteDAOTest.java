@@ -19,7 +19,7 @@ class ReporteDAOTest {
 
     @Test
     @Order(1)
-    void testInsertarReporte() throws SQLException, IOException {
+    void testInsertarReporteDatosValidos() throws SQLException, IOException {
         ReporteDTO reporte = new ReporteDTO(4, 5, "Metodología Ágil", "Observaciones iniciales",
                 Timestamp.valueOf("2023-10-01 08:00:00"), "A12345");
         boolean resultado = reporteDAO.insertarReporte(reporte);
@@ -28,7 +28,7 @@ class ReporteDAOTest {
 
     @Test
     @Order(2)
-    void testBuscarReportePorID() throws SQLException, IOException {
+    void testBuscarReportePorIDDatosValidos() throws SQLException, IOException {
         ReporteDTO reporte = reporteDAO.buscarReportePorID(1);
         assertNotNull(reporte, "El reporte no debería ser nulo.");
         assertEquals(1, reporte.getIDReporte(), "El ID del reporte debería ser 1.");
@@ -37,7 +37,7 @@ class ReporteDAOTest {
 
     @Test
     @Order(3)
-    void testModificarReporte() throws SQLException, IOException {
+    void testModificarReporteDatosValidos() throws SQLException, IOException {
         ReporteDTO reporte = new ReporteDTO(1, 8, "Metodología Scrum", "Observaciones modificadas",
                 Timestamp.valueOf("2023-10-02 09:00:00"), "A12345");
         boolean resultado = reporteDAO.modificarReporte(reporte);

@@ -18,7 +18,7 @@ class RepresentanteDAOTest {
 
     @Test
     @Order(1)
-    void testInsertarRepresentante() throws SQLException, IOException {
+    void testInsertarRepresentanteDatosValidos() throws SQLException, IOException {
 
         RepresentanteDTO representante = new RepresentanteDTO(11, "correo@ejemplo.com", "1234567890", "Juan", "Pérez", 1, 1);
         boolean resultado = representanteDAO.insertarRepresentante(representante);
@@ -27,7 +27,7 @@ class RepresentanteDAOTest {
 
     @Test
     @Order(2)
-    void testEliminarRepresentantePorID() throws SQLException, IOException {
+    void testEliminarRepresentantePorIDDatosValidos() throws SQLException, IOException {
 
         boolean resultado = representanteDAO.eliminarRepresentantePorID(1);
         assertTrue(resultado, "El representante debería haberse eliminado correctamente.");
@@ -35,7 +35,7 @@ class RepresentanteDAOTest {
 
     @Test
     @Order(3)
-    void testModificarRepresentante() throws SQLException, IOException {
+    void testModificarRepresentanteDatosValidos() throws SQLException, IOException {
 
         RepresentanteDTO representante = new RepresentanteDTO(1, "nuevo@ejemplo.com", "0987654321", "Carlos", "Gómez", 2, 1);
         boolean resultado = representanteDAO.modificarRepresentante(representante);
@@ -44,7 +44,7 @@ class RepresentanteDAOTest {
 
     @Test
     @Order(4)
-    void testBuscarRepresentantePorID() throws SQLException, IOException {
+    void testBuscarRepresentantePorIDDatosValidos() throws SQLException, IOException {
 
         RepresentanteDTO representante = representanteDAO.buscarRepresentantePorID(1);
         assertEquals(1, representante.getIDRepresentante(), "El ID del representante debería coincidir.");

@@ -1,6 +1,6 @@
 package logica.DAOs;
 
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.CriterioAutoevaluacionDTO;
 import logica.interfaces.ICriterioAutoevaluacionDAO;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class CriterioAutoevaluacionDAO implements ICriterioAutoevaluacionDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaCriterio = conexionBaseDeDatos.prepareStatement(insertarSQLCriterio);
             sentenciaCriterio.setInt(1, criterio.getIDCriterio());
             sentenciaCriterio.setString(2, criterio.getDescripcion());
@@ -50,7 +50,7 @@ public class CriterioAutoevaluacionDAO implements ICriterioAutoevaluacionDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaCriterio = conexionBaseDeDatos.prepareStatement(eliminarSQLCriterio);
             sentenciaCriterio.setInt(1, numeroDeCriterio);
             sentenciaCriterio.executeUpdate();
@@ -74,7 +74,7 @@ public class CriterioAutoevaluacionDAO implements ICriterioAutoevaluacionDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaCriterio = conexionBaseDeDatos.prepareStatement(modificarSQLCriterio);
             sentenciaCriterio.setString(1, criterio.getDescripcion());
             sentenciaCriterio.setInt(2, criterio.getNumeroCriterio());
@@ -99,7 +99,7 @@ public class CriterioAutoevaluacionDAO implements ICriterioAutoevaluacionDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaCriterio = conexionBaseDeDatos.prepareStatement(buscarSQLCriterio);
             sentenciaCriterio.setInt(1, numeroDeCriterio);
             resultadoConsultaCriterio = sentenciaCriterio.executeQuery();

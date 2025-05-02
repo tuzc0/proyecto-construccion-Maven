@@ -18,7 +18,7 @@ class CronogramaContieneDAOTest {
 
     @Test
     @Order(1)
-    void testInsertarCronogramaContiene() throws SQLException, IOException {
+    void testInsertarCronogramaContieneDatosValidos() throws SQLException, IOException {
 
         CronogramaContieneDTO cronograma = new CronogramaContieneDTO(4, 10,1);
         boolean resultado = cronogramaContieneDAO.insertarCronogramaContiene(cronograma);
@@ -27,7 +27,7 @@ class CronogramaContieneDAOTest {
 
     @Test
     @Order(2)
-    void testBuscarCronogramaContienePorID() throws SQLException, IOException {
+    void testBuscarCronogramaContienePorIDDatosValidos() throws SQLException, IOException {
 
         CronogramaContieneDTO cronograma = cronogramaContieneDAO.buscarCronogramaContienePorID(1);
         assertEquals(11, cronograma.getIdActividad(), "El ID de la actividad debería ser 11.");
@@ -35,7 +35,7 @@ class CronogramaContieneDAOTest {
 
     @Test
     @Order(3)
-    void testModificarActividadesDeCronograma() throws SQLException, IOException {
+    void testModificarActividadesDeCronogramaDatosValidos() throws SQLException, IOException {
 
         CronogramaContieneDTO cronograma = new CronogramaContieneDTO(1, 12,1);
         boolean resultado = cronogramaContieneDAO.modificarActividadesDeCronograma(cronograma);
@@ -44,7 +44,7 @@ class CronogramaContieneDAOTest {
 
     @Test
     @Order(4)
-    void testEliminarCronogramaContienePorID() throws SQLException, IOException {
+    void testEliminarCronogramaContienePorIDDatosValidos() throws SQLException, IOException {
 
         boolean resultado = cronogramaContieneDAO.eliminarCronogramaContienePorID(2);
         assertTrue(resultado, "La eliminación del cronograma debería ser exitosa.");

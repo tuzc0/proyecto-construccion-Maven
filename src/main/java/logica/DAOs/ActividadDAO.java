@@ -1,6 +1,6 @@
 package logica.DAOs;
 
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.ActividadDTO;
 import logica.interfaces.IActividadDAO;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class ActividadDAO implements IActividadDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaActividad = conexionBaseDeDatos.prepareStatement(insertarSQLActividad);
             sentenciaActividad.setInt(1, actividad.getIDActividad());
             sentenciaActividad.setString(2, actividad.getNombre());
@@ -54,7 +54,7 @@ public class ActividadDAO implements IActividadDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaActividad = conexionBaseDeDatos.prepareStatement(eliminarSQLActividad);
             sentenciaActividad.setInt(1, idActividad);
             sentenciaActividad.executeUpdate();
@@ -78,7 +78,7 @@ public class ActividadDAO implements IActividadDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaActividad = conexionBaseDeDatos.prepareStatement(modificarSQLActividad);
             sentenciaActividad.setString(1, actividad.getNombre());
             sentenciaActividad.setString(2, actividad.getDuracion());
@@ -109,7 +109,7 @@ public class ActividadDAO implements IActividadDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaActividad = conexionBaseDeDatos.prepareStatement(buscarSQLActividad);
             sentenciaActividad.setInt(1, idActividad);
             resultadoConsulta = sentenciaActividad.executeQuery();

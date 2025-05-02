@@ -1,6 +1,6 @@
 package logica.DAOs;
 
-import accesoadatos.ConexionBD;
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.CronogramaActividadesDTO;
 import logica.interfaces.ICronogramaActividadesDAO;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class CronogramaActividadesDAO implements ICronogramaActividadesDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaCronograma = conexionBaseDeDatos.prepareStatement(insertarSQLCronograma);
             sentenciaCronograma.setInt(1, cronograma.getIDCronograma());
             sentenciaCronograma.setTimestamp(2, cronograma.getFechaInicio());
@@ -51,7 +51,7 @@ public class CronogramaActividadesDAO implements ICronogramaActividadesDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaCronograma = conexionBaseDeDatos.prepareStatement(modificarSQLCronograma);
             sentenciaCronograma.setTimestamp(1, cronograma.getFechaInicio());
             sentenciaCronograma.setTimestamp(2, cronograma.getFechaFinal());
@@ -78,7 +78,7 @@ public class CronogramaActividadesDAO implements ICronogramaActividadesDAO {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBD().getConnection();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaCronograma = conexionBaseDeDatos.prepareStatement(buscarSQLCronograma);
             sentenciaCronograma.setInt(1, idCronograma);
             resultadoConsultaCronograma = sentenciaCronograma.executeQuery();

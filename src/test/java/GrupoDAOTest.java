@@ -18,7 +18,7 @@ class GrupoDAOTest {
 
     @Test
     @Order(1)
-    void testCrearNuevoGrupo() throws SQLException, IOException {
+    void testCrearNuevoGrupoDatosValidos() throws SQLException, IOException {
 
         GrupoDTO grupo = new GrupoDTO(12345, "Grupo A", 1, 1, 1, 1);
         boolean resultado = grupoDAO.crearNuevoGrupo(grupo);
@@ -27,7 +27,7 @@ class GrupoDAOTest {
 
     @Test
     @Order(2)
-    void testEliminarGrupoPorNRC() throws SQLException, IOException {
+    void testEliminarGrupoPorNRCDatosValidos() throws SQLException, IOException {
 
         int NRC = 12345;
         boolean resultado = grupoDAO.eliminarGrupoPorNRC(NRC);
@@ -36,7 +36,7 @@ class GrupoDAOTest {
 
     @Test
     @Order(3)
-    void testModificarGrupo() throws SQLException, IOException {
+    void testModificarGrupoDatosValidos() throws SQLException, IOException {
 
         GrupoDTO grupo = new GrupoDTO(12345, "Grupo B", 2, 2, 2, 1);
         boolean resultado = grupoDAO.modificarGrupo(grupo);
@@ -45,7 +45,7 @@ class GrupoDAOTest {
 
     @Test
     @Order(4)
-    void testBuscarGrupoPorNRC() throws SQLException, IOException {
+    void testBuscarGrupoPorNRCDatosValidos() throws SQLException, IOException {
 
         int NRC = 12345;
         GrupoDTO grupo = grupoDAO.buscarGrupoPorNRC(NRC);
@@ -55,7 +55,7 @@ class GrupoDAOTest {
 
     @Test
     @Order(5)
-    void testMostrarGruposActivos() throws SQLException, IOException {
+    void testMostrarGruposActivosDatosValidos() throws SQLException, IOException {
 
         GrupoDTO grupo = grupoDAO.mostrarGruposActivos();
         assertNotNull(grupo, "El grupo no debería ser nulo.");

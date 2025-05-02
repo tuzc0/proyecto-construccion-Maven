@@ -19,7 +19,7 @@ class ActividadDAOTest {
 
     @Test
     @Order(1)
-    void testCrearNuevaActividad() throws SQLException, IOException {
+    void testCrearNuevaActividadDatosValidos() throws SQLException, IOException {
 
         ActividadDTO actividad = new ActividadDTO(0, "numero hitos", Timestamp.valueOf("2023-10-01 08:00:00"),
                 Timestamp.valueOf("2023-10-01 10:00:00"), "2 horas", "Actividad", 1);
@@ -29,7 +29,7 @@ class ActividadDAOTest {
 
     @Test
     @Order(2)
-    void testBuscarActividadPorID() throws SQLException, IOException {
+    void testBuscarActividadPorIDDatosValidos() throws SQLException, IOException {
 
         ActividadDTO actividad = actividadDAO.buscarActividadPorID(1);
         assertEquals(1, actividad.getIDActividad(), "El ID de la actividad debería ser 1.");
@@ -37,7 +37,7 @@ class ActividadDAOTest {
 
     @Test
     @Order(3)
-    void testModificarActividad() throws SQLException, IOException {
+    void testModificarActividadDatosValidos() throws SQLException, IOException {
 
         ActividadDTO actividad = new ActividadDTO(1, "Actividad Modificada", Timestamp.valueOf("2023-10-01 09:00:00"),
                 Timestamp.valueOf("2023-10-01 12:00:00"), "3 horas", "Actividad Modificada", 1);
@@ -48,7 +48,7 @@ class ActividadDAOTest {
 
     @Test
     @Order(4)
-    void testEliminarActividadPorID() throws SQLException, IOException {
+    void testEliminarActividadPorIDDatosValidos() throws SQLException, IOException {
 
         boolean resultado = actividadDAO.eliminarActividadPorID(1);
         ActividadDTO actividadEliminada = actividadDAO.buscarActividadPorID(1);

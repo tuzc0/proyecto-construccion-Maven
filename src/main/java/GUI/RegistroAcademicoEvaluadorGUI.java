@@ -15,6 +15,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
+
 import javafx.scene.image.ImageView;
 import GUI.utilidades.UtilidadesContraseña;
 
@@ -76,19 +78,21 @@ public class RegistroAcademicoEvaluadorGUI {
 
             if (VerificacionUsuario.camposVacios(nombre, apellidos, numeroPersonalTexto, correo, contrasena)) {
 
-                VerificacionUsuario.mostrarError("Campos vacíos detectados en el formulario.");
+                utilidades.mostrarVentanaError("ErrorGUI", "Campos vacíos detectados en el formulario.");
                 return;
             }
 
             if (!UtilidadesContraseña.esContraseñaIgual(campoContraseña, campoConfirmarContraseña)) {
 
-                utilidades.mostrarVentana("/ErrorRegistroAcadmeico.fxml");
+                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Las contraseñas no coinciden.");
                 return;
             }
 
-            if (!VerificacionUsuario.validarCampos(nombre, apellidos, numeroPersonalTexto, correo, contrasena)) {
+            List<String> errores = VerificacionUsuario.validarCampos(nombre, apellidos, numeroPersonalTexto, correo, contrasena);
 
-                VerificacionUsuario.mostrarError("Datos inválidos en el formulario.");
+            if (!errores.isEmpty()) {
+                String mensajeError = String.join("\n", errores);
+                utilidades.mostrarVentanaError("/ErrorGUI.fxml", mensajeError);
                 return;
             }
 

@@ -69,8 +69,7 @@ public class AcademicoDAO implements IAcademicoDAO {
 
     public boolean modificarAcademico(AcademicoDTO academico) throws SQLException, IOException {
 
-        String consultaSQL = "UPDATE academico SET numeroDePersonal = ?, idUsuario = ? " +
-                "WHERE numeroDePersonal = ?";
+        String consultaSQL = "UPDATE academico SET numeroDePersonal = ? WHERE idUsuario = ?";
         boolean academicoModificado = false;
 
         try {
@@ -79,7 +78,6 @@ public class AcademicoDAO implements IAcademicoDAO {
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, academico.getNumeroDePersonal());
             consultaPreparada.setInt(2, academico.getIdUsuario());
-            consultaPreparada.setInt(3, academico.getNumeroDePersonal());
             consultaPreparada.executeUpdate();
             academicoModificado = true;
 

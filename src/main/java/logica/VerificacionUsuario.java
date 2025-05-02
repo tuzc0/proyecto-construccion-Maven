@@ -3,6 +3,9 @@ package logica;
 import GUI.utilidades.Utilidades;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class VerificacionUsuario {
@@ -51,45 +54,32 @@ public class VerificacionUsuario {
         return patron.matcher(campo).matches();
     }
 
-    public static boolean camposVacios(String nombre, String apellidos, String numeroPersonal, String correo,
-                                       String contrasena) {
+    public static boolean camposVacios(String nombre, String apellidos, String numeroPersonal, String correo, String contrasena) {
 
         return nombre.isEmpty() || apellidos.isEmpty() || numeroPersonal.isEmpty()
                 || correo.isEmpty() || contrasena.isEmpty();
     }
 
-    public static void mostrarError(String mensaje) {
+    public static List<String> validarCampos(String nombre, String apellidos, String numeroPersonalTexto, String correo, String contrasena) {
 
-        logger.warn(mensaje);
-        utilidades.mostrarVentana("/ErrorRegistroAcademicoGUI.fxml");
-    }
+        List<String> errores = new ArrayList<>();
 
-    public static boolean validarCampos(String nombre, String apellidos, String numeroPersonalTexto, String correo,
-                                        String contrasena) {
-        boolean camposValidos= true;
-
-        if (!nombreValido(nombre)){
-            mostrarError("El nombre no es valido.");
-            camposValidos = false;
+        if (!nombreValido(nombre)) {
+            errores.add("El nombre no es válido.");
         }
         if (!apellidosValidos(apellidos)) {
-            mostrarError("Los apellidos no son validos.");
-            camposValidos = false;
+            errores.add("Los apellidos no son válidos.");
         }
         if (!numeroPersonalValido(numeroPersonalTexto)) {
-            mostrarError("Número de personal inválido.");
-            camposValidos = false;
+            errores.add("El número de personal no es válido.");
         }
         if (!correoValido(correo)) {
-            mostrarError("Correo inválido.");
-            camposValidos = false;
+            errores.add("El correo electrónico no es válido.");
         }
         if (!contrasenaValida(contrasena)) {
-            mostrarError("Contraseña inválida\n" +
-                    "La contraseña debe tener entre 6 y 64 caracteres y no puede contener caracteres especiales.");
-            camposValidos = false;
+            errores.add("La contraseña no es válida.");
         }
 
-        return camposValidos;
+        return errores;
     }
 }

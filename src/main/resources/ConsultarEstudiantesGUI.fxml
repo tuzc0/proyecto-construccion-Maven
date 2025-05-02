@@ -131,7 +131,7 @@
                                           <Font name="System Bold" size="14.0" />
                                        </font>
                                     </Button>
-                                    <HBox prefHeight="30.0" prefWidth="54.0" />
+                                    <HBox prefHeight="48.0" prefWidth="29.0" />
                                     <Button fx:id="botonEliminarEstudiante" mnemonicParsing="false" onAction="#eliminarEstudiante" prefHeight="30.0" prefWidth="79.0" text="Eliminar">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
@@ -152,7 +152,7 @@
             <Font name="System Bold" size="30.0" />
          </font>
       </Label>
-      <Button layoutX="37.0" layoutY="533.0" mnemonicParsing="false" onAction="#abrirVentanaRegistrarEstudiante" prefHeight="34.0" prefWidth="178.0" text="Registrar Estudiante">
+      <Button fx:id="botonRegistrarEstudiante" layoutX="37.0" layoutY="533.0" mnemonicParsing="false" onAction="#abrirVentanaRegistrarEstudiante" prefHeight="34.0" prefWidth="178.0" text="Registrar Estudiante">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
@@ -169,12 +169,12 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="botonGuardar" layoutX="795.0" layoutY="518.0" mnemonicParsing="false" onAction="#guardarCambios" prefHeight="26.0" prefWidth="79.0" text="Guardar" visible="false">
+      <Button fx:id="botonGuardar" layoutX="855.0" layoutY="518.0" mnemonicParsing="false" onAction="#guardarCambios" prefHeight="26.0" prefWidth="79.0" text="Guardar" visible="false">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="botonCancelar" layoutX="661.0" layoutY="518.0" mnemonicParsing="false" onAction="#cancelarEdicion" prefHeight="26.0" prefWidth="79.0" text="Cancelar" visible="false">
+      <Button fx:id="botonCancelar" layoutX="754.0" layoutY="518.0" mnemonicParsing="false" onAction="#cancelarEdicion" prefHeight="26.0" prefWidth="79.0" text="Cancelar" visible="false">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>

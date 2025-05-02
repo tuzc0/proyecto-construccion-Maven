@@ -93,6 +93,9 @@ public class ConsultarEstudianteGUI {
     @FXML
     private Button botonSeleccionarEstudiantes;
 
+    @FXML
+    private Button botonRegistrarEstudiante;
+
 
     private int idEstudiante = 0;
 
@@ -261,6 +264,7 @@ public class ConsultarEstudianteGUI {
         campoNumeroEstudiantesSeleccionados.setVisible(true);
         botonEditar.setDisable(true);
         botonEliminarEstudiante.setDisable(true);
+        botonRegistrarEstudiante.setDisable(true);
 
         tablaEstudiantes.getSelectionModel().getSelectedItems().addListener((ListChangeListener<EstudianteDTO>) change -> {
             int cantidadSeleccionados = tablaEstudiantes.getSelectionModel().getSelectedItems().size();
@@ -318,6 +322,7 @@ public class ConsultarEstudianteGUI {
         botonCancelarSeleccion.setVisible(false);
         botonEditar.setDisable(false);
         botonEliminarEstudiante.setDisable(false);
+        botonRegistrarEstudiante.setDisable(false);
 
         tablaEstudiantes.getSelectionModel().clearSelection();
     }
@@ -331,6 +336,7 @@ public class ConsultarEstudianteGUI {
         campoNumeroEstudiantesSeleccionados.setVisible(false);
         botonEliminarEstudiante.setDisable(false);
         botonEditar.setDisable(false);
+        botonRegistrarEstudiante.setDisable(false);
 
         tablaEstudiantes.getSelectionModel().clearSelection();
         campoNumeroEstudiantesSeleccionados.setText(" ");
@@ -362,6 +368,11 @@ public class ConsultarEstudianteGUI {
         botonCancelar.setVisible(true);
         botonSeleccionarEstudiantes.setDisable(true);
 
+        botonEditar.setVisible(false);
+        botonEliminarEstudiante.setVisible(false);
+        tablaEstudiantes.setDisable(true);
+        botonRegistrarEstudiante.setDisable(true);
+
 
 
     }
@@ -382,6 +393,11 @@ public class ConsultarEstudianteGUI {
         botonGuardar.setVisible(false);
         botonCancelar.setVisible(false);
         botonSeleccionarEstudiantes.setDisable(false);
+
+        botonEditar.setVisible(true);
+        botonEliminarEstudiante.setVisible(true);
+        tablaEstudiantes.setDisable(false);
+        botonRegistrarEstudiante.setDisable(false);
     }
 
     @FXML
@@ -475,6 +491,11 @@ public class ConsultarEstudianteGUI {
         }
 
         botonSeleccionarEstudiantes.setDisable(false);
+        botonEliminarEstudiante.setVisible(true);
+        botonEditar.setVisible(true);
+        tablaEstudiantes.setDisable(false);
+        botonRegistrarEstudiante.setDisable(false);
+
     }
 
 

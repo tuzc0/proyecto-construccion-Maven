@@ -141,7 +141,7 @@ public class EstudianteDAO implements IEstudianteDAO {
 
         List<EstudianteDTO> listaEstudiantes = new ArrayList<>();
 
-        String listarSQL = "SELECT * FROM vista_estudiante";
+        String listarSQL = "SELECT * FROM vista_estudiante WHERE estadoactivo = 1";
 
         try {
 

@@ -103,44 +103,44 @@ public class RegistroEstudianteGUI {
         try {
 
             if (verificacionUsuario.camposVacios(nombre, apellidos, matricula, correo, contraseña)) {
-                utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
-                System.out.println("Campos vacíos detectados en el formulario.");
+
+                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Por favor, complete todos los campos.");
                 return;
             }
 
             if (!verificacionUsuario.correoValido(correo)) {
-                utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
-                System.out.println("Correo inválido.");
+
+                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Correo inválido.");
                 return;
             }
 
             if (!verificacionUsuario.matriculaValida(matricula)) {
-                utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
-                System.out.println("Matrícula inválida.");
+
+                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Matrícula inválida.");
                 return;
             }
 
             if (!verificacionUsuario.contrasenaValida(contraseña)) {
-                utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
-                System.out.println("Contraseña inválida.");
+
+                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Contraseña inválida,.");
                 return;
             }
 
             if (!verificacionUsuario.nombreValido(nombre)) {
-                utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
-                System.out.println("Nombre inválido.");
+
+                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Nombre inválido.");
                 return;
             }
 
             if (!verificacionUsuario.apellidosValidos(apellidos)) {
-                utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
-                System.out.println("Apellidos inválidos.");
+
+                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Apellidos inválidos.");
                 return;
             }
 
             if (!UtilidadesContraseña.esContraseñaIgual(campoContraseña, campoConfirmarContraseña)) {
-                utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
-                System.out.println("Las contraseñas no coinciden.");
+
+                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "Las contraseñas no coinciden.");
                 return;
             }
 
@@ -153,16 +153,14 @@ public class RegistroEstudianteGUI {
 
             if (estudianteExistente.getMatricula() != "N/A"){
 
-                utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
-                System.out.println("la matricula ya existe.");
+                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "La matrícula ya existe.");
                 return;
 
             }
 
             if (cuentaEncontrada.getCorreoElectronico() != "N/A") {
 
-                utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
-                System.out.println("El correo ya existe.");
+                utilidades.mostrarVentanaError("/ErrorGUI.fxml", "El correo ya está registrado.");
                 return;
 
             }

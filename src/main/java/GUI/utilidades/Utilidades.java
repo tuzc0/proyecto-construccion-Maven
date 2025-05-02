@@ -1,5 +1,6 @@
 package GUI.utilidades;
 
+import GUI.ErrorGUI;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -29,4 +30,24 @@ public class Utilidades {
 
         }
     }
+
+    public void mostrarVentanaError(String fxml, String mensaje) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+            Parent root = loader.load();
+
+            Object controller = loader.getController();
+            if (controller instanceof ErrorGUI) {
+                ((ErrorGUI) controller).setMensaje(mensaje);
+            }
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e) {
+            logger.error("Error al cargar la ventana: " + fxml, e);
+        }
+    }
+
 }

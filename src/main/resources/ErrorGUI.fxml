@@ -5,11 +5,11 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="155.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ErrorGUI">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="155.0" prefWidth="378.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ErrorGUI">
    <children>
-      <Label fx:id="campoMensaje" layoutX="80.0" layoutY="35.0" text="Ocurrio un error ">
+      <Label fx:id="campoMensaje" layoutX="42.0" layoutY="39.0" text="Ocurrio un error ">
          <font>
-            <Font name="System Bold" size="24.0" />
+            <Font size="18.0" />
          </font>
       </Label>
       <Button layoutX="134.0" layoutY="78.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="83.0" text="aceptar">

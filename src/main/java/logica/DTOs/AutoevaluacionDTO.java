@@ -7,20 +7,22 @@ public class AutoevaluacionDTO {
     private int IDAutoevaluacion;
     private Timestamp fecha;
     private String lugar;
-    private int calificacionFinal;
+    private float calificacionFinal;
     private String idEstudiante;
+    private int estadoActivo;
 
     public AutoevaluacionDTO() {
 
     }
 
-    public AutoevaluacionDTO(int IDAutoevaluacion, Timestamp fecha, String lugar, int calificacionFinal, String idEstudiante) {
+    public AutoevaluacionDTO(int IDAutoevaluacion, Timestamp fecha, String lugar, float calificacionFinal, String idEstudiante, int estadoActivo) {
 
         this.IDAutoevaluacion = IDAutoevaluacion;
         this.fecha = fecha;
         this.lugar = lugar;
         this.calificacionFinal = calificacionFinal;
         this.idEstudiante = idEstudiante;
+        this.estadoActivo = estadoActivo;
     }
 
     public int getIDAutoevaluacion() {
@@ -53,7 +55,7 @@ public class AutoevaluacionDTO {
         this.lugar = lugar;
     }
 
-    public int getCalificacionFinal() {
+    public float getCalificacionFinal() {
 
         return calificacionFinal;
     }
@@ -63,7 +65,7 @@ public class AutoevaluacionDTO {
         this.calificacionFinal = calificacionFinal;
     }
 
-    public String getidEstudiante() {
+    public String getIdEstudiante() {
 
         return idEstudiante;
     }
@@ -71,5 +73,15 @@ public class AutoevaluacionDTO {
     public void setidEstudiante(String idEstudiante) {
 
         this.idEstudiante = idEstudiante;
+    }
+
+    public int getEstadoActivo() {
+
+        return estadoActivo;
+    }
+
+    public void setEstadoActivo(int estadoActivo) {
+
+        this.estadoActivo = estadoActivo;
     }
 }

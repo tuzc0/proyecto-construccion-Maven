@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="555.0" prefWidth="867.0" xmlns="http://javafx.com/javafx/23.0.1"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorRegistrosAcademicosGUI">
+    <children>
+        <VBox layoutX="39.0" layoutY="71.0" prefHeight="430.0" prefWidth="789.0">
+            <children>
+                <HBox prefHeight="54.0" prefWidth="703.0">
+                    <children>
+                        <HBox prefHeight="54.0" prefWidth="607.0">
+                            <children>
+                                <TextField fx:id="campoNumeroDePersonal" prefHeight="30.0" prefWidth="566.0"
+                                           promptText="Ej. S12345678" />
+                            </children>
+                        </HBox>
+                        <HBox prefHeight="54.0" prefWidth="272.0">
+                            <children>
+                                <Button fx:id="botonBuscar" mnemonicParsing="false" onAction="#buscarAcademico"
+                                        prefHeight="28.0" prefWidth="229.0" text="botonBuscar">
+                                    <graphic>
+                                        <ImageView fitHeight="20.0" fitWidth="18.0" pickOnBounds="true"
+                                                   preserveRatio="true">
+                                            <Image url="@/lupa.png" />
+                                        </ImageView>
+                                    </graphic>
+                                    <font>
+                                        <Font name="System Bold" size="12.0" />
+                                    </font>
+                                </Button>
+                            </children>
+                        </HBox>
+                    </children>
+                </HBox>
+                <HBox prefHeight="354.0" prefWidth="790.0">
+                    <children>
+                        <VBox prefHeight="336.0" prefWidth="467.0">
+                            <children>
+                                <TableView fx:id="tablaAcademicos" prefHeight="337.0" prefWidth="409.0">
+                                    <columns>
+                                        <TableColumn fx:id="columnaNumeroDePersonal" prefWidth="148.8"
+                                                     text="Numero de Personal" />
+                                        <TableColumn fx:id="columnaNombres" prefWidth="164.8" text="Nombres" />
+                                        <TableColumn fx:id="columnaApellidos" prefWidth="147.2" text="Apellidos" />
+                                    </columns>
+                                </TableView>
+                            </children>
+                        </VBox>
+                        <VBox prefHeight="336.0" prefWidth="25.0" />
+                        <VBox prefHeight="362.0" prefWidth="304.0">
+                            <children>
+                                <Label prefHeight="16.0" prefWidth="162.0" text="Detalles Academico:">
+                                    <font>
+                                        <Font name="System Bold" size="16.0" />
+                                    </font>
+                                </Label>
+                                <Label prefHeight="42.0" prefWidth="66.0" text="Nombres:">
+                                    <font>
+                                        <Font name="System Bold" size="14.0" />
+                                    </font>
+                                </Label>
+                                <StackPane prefHeight="34.0" prefWidth="254.0">
+                                    <children>
+                                        <Label fx:id="campoNombreEncontrado" prefHeight="34.0" prefWidth="254.0">
+                                            <font><Font size="14.0" /></font>
+                                        </Label>
+                                        <TextField fx:id="campoNombreEditable" prefHeight="34.0" prefWidth="254.0"
+                                                   visible="false" />
+                                    </children>
+                                </StackPane>
+                                <Label prefHeight="41.0" prefWidth="66.0" text="Apellidos:">
+                                    <font>
+                                        <Font name="System Bold" size="14.0" />
+                                    </font>
+                                </Label>
+                                <StackPane prefHeight="34.0" prefWidth="254.0">
+                                    <children>
+                                        <Label fx:id="campoApellidoEncontrado" prefHeight="34.0" prefWidth="254.0">
+                                            <font><Font size="14.0" /></font>
+                                        </Label>
+                                        <TextField fx:id="campoApellidoEditable" prefHeight="34.0" prefWidth="254.0"
+                                                   visible="false" />
+                                    </children>
+                                </StackPane>
+                                <Label prefHeight="39.0" prefWidth="151.0" text="Numero De Personal:">
+                                    <font>
+                                        <Font name="System Bold" size="14.0" />
+                                    </font>
+                                </Label>
+                                <StackPane prefHeight="34.0" prefWidth="254.0">
+                                    <children>
+                                        <Label fx:id="campoNumeroDePersonalEncontrado" prefHeight="34.0"
+                                               prefWidth="254.0">
+                                            <font><Font size="14.0" /></font>
+                                        </Label>
+                                        <TextField fx:id="campoNumeroDePersonalEditable" prefHeight="34.0"
+                                                   prefWidth="254.0" visible="false" />
+                                    </children>
+                                </StackPane>
+                                <Label prefHeight="51.0" prefWidth="146.0" text="Correo Electronico:">
+                                    <font>
+                                        <Font name="System Bold" size="14.0" />
+                                    </font>
+                                </Label>
+                                <StackPane prefHeight="34.0" prefWidth="254.0">
+                                    <children>
+                                        <Label fx:id="campoCorreoEncontrado" prefHeight="34.0" prefWidth="254.0">
+                                            <font><Font size="14.0" /></font>
+                                        </Label>
+                                        <TextField fx:id="campoCorreoEditable" prefHeight="34.0" prefWidth="254.0"
+                                                   visible="false" />
+                                    </children>
+                                </StackPane>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <Label layoutX="277.0" layoutY="26.0" prefHeight="45.0" prefWidth="313.0" text="Lista de Academicos">
+            <font><Font name="System Bold" size="30.0" /></font>
+        </Label>
+
+        <Button layoutX="39.0" layoutY="493.0" mnemonicParsing="false"
+                onAction="#abrirVentanaRegistrarAcademico" prefHeight="34.0" prefWidth="178.0"
+                text="Registrar Academico">
+            <font><Font name="System Bold" size="14.0" /></font>
+        </Button>
+
+        <Button fx:id="botonEditar" layoutX="529.0" layoutY="493.0" mnemonicParsing="false"
+                prefHeight="34.0" prefWidth="101.0" text="Editar" onAction="#editarAcademico">
+            <font><Font name="System Bold" size="14.0" /></font>
+        </Button>
+
+        <Button fx:id="botonGuardar" layoutX="639.0" layoutY="493.0" mnemonicParsing="false"
+                prefHeight="34.0" prefWidth="101.0" text="Guardar" visible="false"
+                onAction="#guardarCambios">
+            <font><Font name="System Bold" size="14.0" /></font>
+        </Button>
+
+        <Button fx:id="botonCancelar" layoutX="747.0" layoutY="493.0" mnemonicParsing="false"
+                prefHeight="34.0" prefWidth="101.0" text="Cancelar" visible="false"
+                onAction="#cancelarEdicion">
+            <font><Font name="System Bold" size="14.0" /></font>
+        </Button>
+    </children>
+</Pane>

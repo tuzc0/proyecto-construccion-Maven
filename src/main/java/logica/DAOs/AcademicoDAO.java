@@ -42,9 +42,9 @@ public class AcademicoDAO implements IAcademicoDAO {
         return academicoInsertado;
     }
 
-    public boolean eliminarAcademicoPorNumeroDePersonal(int estadoActivo, String numeroDePersonal) throws SQLException, IOException {
+    public boolean eliminarAcademicoPorNumeroDePersonal(String numeroDePersonal) throws SQLException, IOException {
 
-        String consultaSQL = "UPDATE usuario SET estadoActivo = ? WHERE idUsuario = " +
+        String consultaSQL = "UPDATE usuario SET estadoActivo = 0 WHERE idUsuario = " +
                 "(SELECT idUsuario FROM academico WHERE numeroDePersonal = ?)";
         boolean AcademicoEliminado = false;
 
@@ -52,8 +52,7 @@ public class AcademicoDAO implements IAcademicoDAO {
 
             conexionBaseDeDatos = new ConexionBD().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
-            consultaPreparada.setInt(1, estadoActivo);
-            consultaPreparada.setString(2, numeroDePersonal);
+            consultaPreparada.setString(1, numeroDePersonal);
             consultaPreparada.executeUpdate();
             AcademicoEliminado = true;
 
@@ -134,7 +133,7 @@ public class AcademicoDAO implements IAcademicoDAO {
 
         List<AcademicoDTO> academicos = new ArrayList<>();
 
-        String consultaSQL = "SELECT * FROM vista_academico_usuario";
+        String consultaSQL = "SELECT * FROM vista_academico_usuario WHERE estadoActivo = 1";
 
         try {
 

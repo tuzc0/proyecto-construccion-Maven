@@ -17,15 +17,17 @@ public class CriterioEvaluacionDAO implements ICriterioEvaluacionDAO {
 
     public boolean crearNuevoCriterioEvaluacion(CriterioEvaluacionDTO criterio) throws SQLException, IOException {
 
-        String insertarSQLCriterio = "INSERT INTO criterioevaluacion (descripcion, numeroCriterio) VALUES (?, ?)";
+        String insertarSQLCriterio = "INSERT INTO criterioevaluacion (idCriterio, descripcion, numeroCriterio, estadoActivo) VALUES (?, ?, ?, ?)";
         boolean criterioInsertado = false;
 
         try {
 
             conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaCriterio = conexionBaseDeDatos.prepareStatement(insertarSQLCriterio);
-            sentenciaCriterio.setString(1, criterio.getDescripcion());
-            sentenciaCriterio.setInt(2, criterio.getNumeroCriterio());
+            sentenciaCriterio.setInt(1, criterio.getIDCriterio());
+            sentenciaCriterio.setString(2, criterio.getDescripcion());
+            sentenciaCriterio.setInt(3, criterio.getNumeroCriterio());
+            sentenciaCriterio.setInt(4, criterio.getEstadoActivo());
             sentenciaCriterio.executeUpdate();
             criterioInsertado = true;
 
@@ -42,15 +44,14 @@ public class CriterioEvaluacionDAO implements ICriterioEvaluacionDAO {
 
     public boolean eliminarCriterioEvaluacionPorID(int idCriterio) throws SQLException, IOException {
 
-        String eliminarSQLCriterio = "UPDATE criterioevaluacion SET estadoActivo = ? WHERE numeroCriterio = ?";
+        String eliminarSQLCriterio = "UPDATE criterioevaluacion SET estadoActivo = 0 WHERE numeroCriterio = ?";
         boolean criterioEliminado = false;
 
         try {
 
             conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaCriterio = conexionBaseDeDatos.prepareStatement(eliminarSQLCriterio);
-            sentenciaCriterio.setInt(1, 0);
-            sentenciaCriterio.setInt(2, idCriterio);
+            sentenciaCriterio.setInt(1, idCriterio);
             sentenciaCriterio.executeUpdate();
             criterioEliminado = true;
 
@@ -93,7 +94,7 @@ public class CriterioEvaluacionDAO implements ICriterioEvaluacionDAO {
     public CriterioEvaluacionDTO buscarCriterioEvaluacionPorID(int numeroCriterio) throws SQLException, IOException {
 
         String buscarSQLCriterio = "SELECT * FROM criterioevaluacion WHERE numeroCriterio = ?";
-        CriterioEvaluacionDTO criterioEncontrado = new CriterioEvaluacionDTO(-1, "N/A", -1);
+        CriterioEvaluacionDTO criterioEncontrado = new CriterioEvaluacionDTO(-1, "N/A", -1,-1);
 
         try {
 
@@ -107,7 +108,8 @@ public class CriterioEvaluacionDAO implements ICriterioEvaluacionDAO {
                 int identificadorCriterio = resultadoConsultaCriterio.getInt("idCriterio");
                 String descripciones = resultadoConsultaCriterio.getString("descripcion");
                 int numeroDeCriterio = resultadoConsultaCriterio.getInt("numeroCriterio");
-                criterioEncontrado = new CriterioEvaluacionDTO(identificadorCriterio, descripciones, numeroDeCriterio);
+                int estadoActivo = resultadoConsultaCriterio.getInt("estadoActivo");
+                criterioEncontrado = new CriterioEvaluacionDTO(identificadorCriterio, descripciones, numeroDeCriterio, estadoActivo);
             }
 
         } finally {

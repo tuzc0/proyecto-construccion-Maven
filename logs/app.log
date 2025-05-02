@@ -296,3 +296,14 @@ java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '22222' for k
 2025-04-25 17:55:39 [JavaFX Application Thread] INFO  GUI.RegistroAcademicoEvaluadorGUI - Registro de académico exitoso.
 2025-04-27 17:54:03 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - El nombre no es valido.
 2025-04-27 17:54:14 [JavaFX Application Thread] WARN  logica.VerificacionUsuario - El nombre no es valido.
+2025-04-29 23:23:05 [JavaFX Application Thread] WARN  GUI.ControladorRegistrosAcademicosGUI - El campo de busqueda se encuentra vacio
+2025-04-29 23:49:31 [JavaFX Application Thread] WARN  GUI.ControladorRegistrosAcademicosGUI - El campo de busqueda se encuentra vacio
+2025-04-29 23:50:45 [JavaFX Application Thread] WARN  GUI.ControladorRegistrosAcademicosGUI - El campo de busqueda se encuentra vacio
+2025-04-30 14:30:25 [JavaFX Application Thread] INFO  GUI.ControladorRegistrosAcademicosGUI - El academico no fue encontrado
+2025-04-30 14:31:22 [JavaFX Application Thread] INFO  GUI.ControladorRegistrosAcademicosGUI - El academico no fue encontrado
+2025-04-30 14:31:42 [JavaFX Application Thread] INFO  GUI.ControladorRegistrosAcademicosGUI - El academico no fue encontrado
+2025-04-30 14:31:52 [JavaFX Application Thread] INFO  GUI.ControladorRegistrosAcademicosGUI - El academico no fue encontrado
+2025-04-30 14:32:16 [JavaFX Application Thread] INFO  GUI.ControladorRegistrosAcademicosGUI - El academico no fue encontrado
+2025-04-30 14:39:49 [JavaFX Application Thread] WARN  GUI.ControladorRegistrosAcademicosGUI - Número de personal inválido
+2025-04-30 14:40:58 [JavaFX Application Thread] WARN  GUI.ControladorRegistrosAcademicosGUI - Número de personal inválido
+2025-04-30 14:41:07 [JavaFX Application Thread] WARN  GUI.ControladorRegistrosAcademicosGUI - Número de personal inválido

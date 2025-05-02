@@ -15,8 +15,6 @@ public class GrupoDAO implements IGrupoDAO {
     PreparedStatement sentenciaGrupo = null;
     ResultSet resultadoGrupo;
 
-
-
     public boolean crearNuevoGrupo(GrupoDTO grupo) throws SQLException, IOException {
 
         boolean resultado = false;

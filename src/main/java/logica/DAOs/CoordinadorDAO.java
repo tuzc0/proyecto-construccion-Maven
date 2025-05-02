@@ -31,9 +31,12 @@ public class CoordinadorDAO implements ICoordinadorDAO {
             sentenciaCoordinador.executeUpdate();
             coordinadorInsertado = true;
 
-        } catch (SQLException e) {
+        } finally {
 
-            throw new SQLException("Error al insertar el coordinador: " + e.getMessage());
+            if (sentenciaCoordinador != null) {
+
+                sentenciaCoordinador.close();
+            }
         }
 
         return coordinadorInsertado;
@@ -54,9 +57,11 @@ public class CoordinadorDAO implements ICoordinadorDAO {
             sentenciaCoordinador.executeUpdate();
             coordinadorModificado = true;
 
-        } catch (SQLException e) {
+        } finally {
+            if (sentenciaCoordinador != null) {
 
-            throw new SQLException("Error al modificar el coordinador: " + e.getMessage());
+                sentenciaCoordinador.close();
+            }
         }
 
         return coordinadorModificado;
@@ -78,9 +83,12 @@ public class CoordinadorDAO implements ICoordinadorDAO {
             sentenciaCoordinador.executeUpdate();
             coordinadorModificado = true;
 
-        } catch (SQLException e) {
+        } finally {
 
-            throw new SQLException("Error al modificar el coordinador: " + e.getMessage());
+            if (sentenciaCoordinador != null) {
+
+                sentenciaCoordinador.close();
+            }
         }
 
         return coordinadorModificado;
@@ -108,8 +116,12 @@ public class CoordinadorDAO implements ICoordinadorDAO {
                 coordinador.setEstado(resultadoCoordinador.getInt("estadoActivo"));
             }
 
-        } catch (SQLException e) {
-            throw new SQLException("Error al buscar el coordinador: " + e.getMessage());
+        } finally {
+
+            if (sentenciaCoordinador != null) {
+
+                sentenciaCoordinador.close();
+            }
         }
 
         return coordinador;

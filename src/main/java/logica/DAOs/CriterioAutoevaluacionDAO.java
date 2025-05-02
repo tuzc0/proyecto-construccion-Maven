@@ -19,7 +19,7 @@ public class CriterioAutoevaluacionDAO implements ICriterioAutoevaluacionDAO {
 
     public boolean crearNuevoCriterioAutoevaluacion(CriterioAutoevaluacionDTO criterio) throws SQLException, IOException {
 
-        String insertarSQLCriterio = "INSERT INTO criterioautoevaluacion (idCriterio, descripciones, numeroCriterio) VALUES (?, ?, ?)";
+        String insertarSQLCriterio = "INSERT INTO criterioautoevaluacion (idCriterio, descripciones, numeroCriterio, estadoActivo) VALUES (?, ?, ?, ?)";
         boolean criterioInsertado = false;
 
         try {
@@ -45,15 +45,14 @@ public class CriterioAutoevaluacionDAO implements ICriterioAutoevaluacionDAO {
 
     public boolean eliminarCriterioAutoevaluacionPorNumeroDeCriterio(int numeroDeCriterio) throws SQLException, IOException {
 
-        String eliminarSQLCriterio = "UPDATE criterioautoevaluacion SET estadoActivo = ? WHERE numeroCriterio = ?";
+        String eliminarSQLCriterio = "UPDATE criterioautoevaluacion SET estadoActivo = 0 WHERE numeroCriterio = ?";
         boolean criterioEliminado = false;
 
         try {
 
             conexionBaseDeDatos = new ConexionBD().getConnection();
             sentenciaCriterio = conexionBaseDeDatos.prepareStatement(eliminarSQLCriterio);
-            sentenciaCriterio.setInt(1, 0);
-            sentenciaCriterio.setInt(2, numeroDeCriterio);
+            sentenciaCriterio.setInt(1, numeroDeCriterio);
             sentenciaCriterio.executeUpdate();
             criterioEliminado = true;
 
@@ -96,7 +95,7 @@ public class CriterioAutoevaluacionDAO implements ICriterioAutoevaluacionDAO {
     public CriterioAutoevaluacionDTO buscarCriterioAutoevaluacionPorID(int numeroDeCriterio) throws SQLException, IOException {
 
         String buscarSQLCriterio = "SELECT * FROM criterioautoevaluacion WHERE numeroCriterio = ?";
-        CriterioAutoevaluacionDTO criterioEncontrado = new CriterioAutoevaluacionDTO(-1, "N/A", -1);
+        CriterioAutoevaluacionDTO criterioEncontrado = new CriterioAutoevaluacionDTO(-1, "N/A", -1,-1);
 
         try {
 
@@ -110,7 +109,8 @@ public class CriterioAutoevaluacionDAO implements ICriterioAutoevaluacionDAO {
                 int idCriterio = resultadoConsultaCriterio.getInt("idCriterio");
                 String descripciones = resultadoConsultaCriterio.getString("descripciones");
                 int numeroCriterio = resultadoConsultaCriterio.getInt("numeroCriterio");
-                criterioEncontrado = new CriterioAutoevaluacionDTO(idCriterio, descripciones, numeroCriterio);
+                int estadoActivo = resultadoConsultaCriterio.getInt("estadoActivo");
+                criterioEncontrado = new CriterioAutoevaluacionDTO(idCriterio, descripciones, numeroCriterio, estadoActivo);
             }
 
         } finally {

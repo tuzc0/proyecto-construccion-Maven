@@ -1,38 +1,85 @@
-
-
 import logica.DAOs.UsuarioDAO;
 import logica.DTOs.UsuarioDTO;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.api.*;
 import java.io.IOException;
 import java.sql.SQLException;
-
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UsuarioDAOTest {
 
-    private UsuarioDAO usuarioDAO;
+    private static UsuarioDAO usuarioDAO;
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    static void setUp() {
+
         usuarioDAO = new UsuarioDAO();
     }
 
-    @AfterEach
-    void tearDown() {
+    @AfterAll
+    static void tearDown() {
+
         usuarioDAO = null;
     }
 
     @Test
+    @Order(1)
     void testInsertarUsuario() {
-        UsuarioDTO usuario = new UsuarioDTO(0, "John", "Doe", 1);
+        UsuarioDTO usuario = new UsuarioDTO(0, "Prueba", "Insertar Usuario", 1);
 
         try {
+
             int idUsuario = usuarioDAO.insertarUsuario(usuario);
-            assertEquals(19, idUsuario, "El ID del usuario insertado debe coincidir con el esperado.");
+            assertEquals(54, idUsuario, "El ID del usuario insertado debe coincidir con el esperado.");
+
         } catch (SQLException | IOException e) {
+
+            fail("Ocurrió una excepción durante la prueba: " + e.getMessage());
+        }
+    }
+
+    @Test
+    @Order(2)
+    void testEliminarUsuarioPorID() {
+
+        try {
+
+            boolean resultado = usuarioDAO.eliminarUsuarioPorID(51);
+            assertTrue(resultado, "El usuario debería haberse eliminado correctamente.");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Ocurrió una excepción durante la prueba: " + e.getMessage());
+        }
+    }
+
+    @Test
+    @Order(3)
+    void testModificarUsuario() {
+
+        UsuarioDTO usuario = new UsuarioDTO(51, "Modificado", "Usuario", 1);
+
+        try {
+
+            boolean resultado = usuarioDAO.modificarUsuario(usuario);
+            assertTrue(resultado, "El usuario debería haberse modificado correctamente.");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Ocurrió una excepción durante la prueba: " + e.getMessage());
+        }
+    }
+
+    @Test
+    @Order(4)
+    void testBuscarUsuarioPorID() {
+
+        try {
+            UsuarioDTO usuario = usuarioDAO.buscarUsuarioPorID(51);
+            assertEquals(51, usuario.getIdUsuario(), "El ID del usuario debería coincidir.");
+
+        } catch (SQLException | IOException e) {
+
             fail("Ocurrió una excepción durante la prueba: " + e.getMessage());
         }
     }

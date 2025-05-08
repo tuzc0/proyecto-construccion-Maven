@@ -6,6 +6,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -96,8 +97,12 @@ public class ControladorGestorEstudiantesGUI {
 
     private int idEstudiante = 0;
 
+
+
     @FXML
     public void initialize() {
+
+        botonSeleccionarEstudiantes.setCursor(Cursor.HAND);
 
         columnaMatricula.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMatricula()));
         columnaNombres.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNombre()));
@@ -207,7 +212,7 @@ public class ControladorGestorEstudiantesGUI {
         Utilidades utilidades = new Utilidades();
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistrarEstudiante.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistroEstudianteGUI.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));

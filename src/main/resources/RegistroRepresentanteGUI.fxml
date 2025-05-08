@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="442.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorRegistroEstudianteGUI">
+   <children>
+      <Label layoutX="134.0" layoutY="47.0" text="Registrar representante">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Label>
+      <VBox layoutX="52.0" layoutY="104.0" prefHeight="250.0" prefWidth="497.0">
+         <children>
+            <Label prefHeight="26.0" prefWidth="58.0" text="Nombre">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="campoNombre" />
+            <Label prefHeight="38.0" prefWidth="78.0" text="Apellido">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="campoApellidos" />
+            <Label prefHeight="26.0" prefWidth="130.0" text="Numero telefonico">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="campoMatricula" promptText="Ej. S12345678" />
+            <Label prefHeight="26.0" prefWidth="118.0" text="correo electronico">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <TextField fx:id="campoCorreo" prefHeight="26.0" prefWidth="498.0" promptText="Ej. ejemplo@estudiantes.uv.mx" />
+         </children>
+      </VBox>
+      <Button layoutX="320.0" layoutY="354.0" mnemonicParsing="false" onAction="#guardarEstudiante" prefHeight="31.0" prefWidth="88.0" text="registrar">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button layoutX="177.0" layoutY="354.0" mnemonicParsing="false" onAction="#cancelarRegistro" prefHeight="31.0" prefWidth="88.0" text="cancelar">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>

@@ -9,7 +9,7 @@ public class TestRegistrarEstudiante extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Parent root = FXMLLoader.load(getClass().getResource("/RegistrarEstudiante.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/RegistroEstudianteGUI.fxml"));
 
 
         primaryStage.setTitle("Test Registrar Estudiante GUI");

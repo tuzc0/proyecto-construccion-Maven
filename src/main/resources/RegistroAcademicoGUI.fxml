@@ -81,17 +81,17 @@
             </HBox>
          </children>
       </VBox>
-      <Button layoutX="325.0" layoutY="425.0" mnemonicParsing="false" onAction="#guardarAcademico" prefHeight="31.0" prefWidth="88.0" text="Registrar">
+      <Button fx:id="botonRegistrar" layoutX="325.0" layoutY="425.0" mnemonicParsing="false" onAction="#guardarAcademico" prefHeight="31.0" prefWidth="88.0" text="Registrar">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button layoutX="184.0" layoutY="425.0" mnemonicParsing="false" onAction="#cancelarRegistroAcademico" prefHeight="31.0" prefWidth="88.0" text="Cancelar">
+      <Button fx:id="botonCancelar" layoutX="184.0" layoutY="425.0" mnemonicParsing="false" onAction="#cancelarRegistroAcademico" prefHeight="31.0" prefWidth="88.0" text="Cancelar">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button contentDisplay="GRAPHIC_ONLY" layoutX="52.0" layoutY="385.0" mnemonicParsing="false" onAction="#alternarVisibilidadContrasena" text="Button">
+      <Button fx:id="botonOjo" contentDisplay="GRAPHIC_ONLY" layoutX="52.0" layoutY="385.0" mnemonicParsing="false" onAction="#alternarVisibilidadContrasena" text="Button">
          <graphic>
             <ImageView fx:id="iconoOjo" fitHeight="25.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
             </ImageView>

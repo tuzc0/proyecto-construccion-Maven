@@ -1,6 +1,8 @@
 package GUI;
 
 import GUI.utilidades.Utilidades;
+import javafx.scene.Cursor;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import logica.DAOs.AcademicoEvaluadorDAO;
 import logica.DTOs.AcademicoEvaluadorDTO;
@@ -16,7 +18,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-
 import javafx.scene.image.ImageView;
 import GUI.utilidades.UtilidadesContraseña;
 
@@ -33,6 +34,9 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
     @FXML private PasswordField campoConfirmarContraseña;
     @FXML private TextField campoContraseñaVisible;
     @FXML private TextField campoConfirmarContraseñaVisible;
+    @FXML private Button botonRegistrar;
+    @FXML private Button botonCancelar;
+    @FXML private Button botonOjo;
 
     private boolean contraseñaVisible = false;
     private final UtilidadesContraseña utilidadesContraseña = new UtilidadesContraseña();
@@ -40,6 +44,10 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
 
     @FXML
     private void initialize() {
+
+        botonRegistrar.setCursor(Cursor.HAND);
+        botonCancelar.setCursor(Cursor.HAND);
+        botonOjo.setCursor(Cursor.HAND);
 
         campoContraseñaVisible.textProperty().bindBidirectional(campoContraseña.textProperty());
         campoConfirmarContraseñaVisible.textProperty().bindBidirectional(campoConfirmarContraseña.textProperty());
@@ -78,21 +86,22 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
 
             if (VerificacionUsuario.camposVacios(nombre, apellidos, numeroPersonalTexto, correo, contrasena)) {
 
-                utilidades.mostrarVentanaAviso("ErrorGUI", "Campos vacíos detectados en el formulario.");
-                return;
-            }
-
-            if (!UtilidadesContraseña.esContraseñaIgual(campoContraseña, campoConfirmarContraseña)) {
-
-                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Las contraseñas no coinciden.");
+                utilidades.mostrarAlerta("Campos vacíos.", "Por favor, llene todos los campos.", "Faltan algunos campos por llenar.");
                 return;
             }
 
             List<String> errores = VerificacionUsuario.validarCampos(nombre, apellidos, numeroPersonalTexto, correo, contrasena);
 
             if (!errores.isEmpty()) {
+
                 String mensajeError = String.join("\n", errores);
-                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", mensajeError);
+                utilidades.mostrarAlerta("Datos inválidos.", "Por favor, introduzca datos válidos.", mensajeError);
+                return;
+            }
+
+            if (!UtilidadesContraseña.esContraseñaIgual(campoContraseña, campoConfirmarContraseña)) {
+
+                utilidades.mostrarAlerta("Contraseñas no coinciden.", "Las contraseñas no coinciden.", "Por favor, asegúrese de que la contraseña y su confirmación sean iguales.");
                 return;
             }
 
@@ -108,13 +117,13 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
 
             if (academicoExistente.getNumeroDePersonal() != -1){
 
-                utilidades.mostrarVentana("/ErrorRegistroAcademico.fxml");
+                utilidades.mostrarAlerta("Académico existente.", "El académico ya está registrado.", "Por favor, verifique que el académico no se encuentre ya registrado.");
                 return;
             }
 
-            if (cuentaEncontrada.getCorreoElectronico() != "N/A") {
+            if (!"N/A".equals(cuentaEncontrada.getCorreoElectronico())) {
 
-                utilidades.mostrarVentana("/ErrorRegistroAcademico.fxml");
+                utilidades.mostrarAlerta("Correo existente.", "El correo ya está registrado.", "Por favor, verifique que el correo no se encuentre ya registrado.");
                 return;
             }
 
@@ -124,16 +133,39 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
             CuentaDTO cuentaDTO = new CuentaDTO(correo, contrasena, idUsuario);
             AcademicoEvaluadorDTO academicoDTO = new AcademicoEvaluadorDTO(numeroPersonal, idUsuario, nombre, apellidos, estadoActivo);
 
-            cuentaDAO.crearNuevaCuenta(cuentaDTO);
-            academicoevaluadorDAO.insertarAcademicoEvaluador(academicoDTO);
+            boolean  cuentaCreadaConExito = cuentaDAO.crearNuevaCuenta(cuentaDTO);
+            boolean registroRealizadoConExito = academicoevaluadorDAO.insertarAcademicoEvaluador(academicoDTO);
 
-            logger.info("Registro de académico exitoso.");
-            utilidades.mostrarVentana("/RegistroAcademicoExitosoGUI.fxml");
+            if (cuentaCreadaConExito && registroRealizadoConExito) {
 
-        } catch (SQLException | IOException | NumberFormatException e) {
+                logger.info("Registro de académico exitoso.");
+                utilidades.mostrarAlerta("Éxito.", "Registro exitoso.", "El académico fue registrado con éxito.");
+
+            } else {
+
+                logger.warn("No se pudo modificar el académico.");
+                utilidades.mostrarAlerta("Error", "Algo salio mal.", "Ocurrio un error, por favor intentelo más tarde.");
+            }
+
+        } catch (SQLException e) {
 
             logger.error("Error durante el registro del académico.", e);
-            utilidades.mostrarVentana("/ErrorRegistroAcademicoGUI.fxml");
+            utilidades.mostrarAlerta("Error.", "Ocurrió un error. Por favor, inténtelo de nuevo más tarde.", "");
+
+        } catch (NumberFormatException e) {
+
+            logger.error("Error durante el registro del académico.", e);
+            utilidades.mostrarAlerta("Error.", "Ocurrió un error de formato.", "Verifique que el número de personal tenga exactamente 5 dígitos.");
+
+        } catch (IOException e) {
+
+            logger.error("Error durante el registro del académico.", e);
+            utilidades.mostrarAlerta("Error.", "Ocurrió un error. Por favor, inténtelo de nuevo más tarde.", "");
+
+        } catch (Exception e) {
+
+            logger.error("Error durante el registro del académico.", e);
+            utilidades.mostrarAlerta("Error.", "Ocurrió un error. Por favor, inténtelo de nuevo más tarde.", "");
         }
     }
 

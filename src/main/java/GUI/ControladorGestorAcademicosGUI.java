@@ -18,7 +18,6 @@ import logica.DTOs.CuentaDTO;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-
 import logica.DTOs.UsuarioDTO;
 import logica.VerificacionUsuario;
 import org.apache.logging.log4j.LogManager;
@@ -75,7 +74,7 @@ public class ControladorGestorAcademicosGUI {
         } catch (Exception e) {
 
             logger.warn("Error al cargar la lista de estudiantes: " + e.getMessage());
-            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al cargar la lista de académicos");
+            utilidades.mostrarAlerta("Error", "Ocurrio un error al cargar la lista de academicos.", "");
         }
     }
 
@@ -86,7 +85,7 @@ public class ControladorGestorAcademicosGUI {
 
         if (numeroDePersonal.isEmpty()) {
 
-            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Por favor ingrese un número de personal");
+            utilidades.mostrarAlerta("Error", "Por favor llene el campo de busqueda.", "Introduzca en la barra de busqueda un numero de personal de 5 digitos");
             return;
         }
 
@@ -108,7 +107,7 @@ public class ControladorGestorAcademicosGUI {
 
             } else {
 
-                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "El académico no fue encontrado");
+                utilidades.mostrarAlerta("Usuario no encontrado", "El academico no fue encontrado.", "");
                 campoNombreEncontrado.setText("");
                 campoApellidoEncontrado.setText("");
                 campoNumeroDePersonalEncontrado.setText("");
@@ -118,7 +117,7 @@ public class ControladorGestorAcademicosGUI {
         } catch (SQLException | IOException e) {
 
             logger.warn("Error al buscar el académico: " + e.getMessage());
-            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Ocurrio un error al buscar al académico");
+            utilidades.mostrarAlerta("Error", "Ocurrio un error en la busqueda", "");
         }
     }
 
@@ -138,7 +137,7 @@ public class ControladorGestorAcademicosGUI {
 
             if (academicoDTO == null || academicoDTO.getIdUsuario() == -1) {
 
-                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "El académico no fue encontrado");
+                utilidades.mostrarAlerta("Usuario no encontrado", "El academico no fue encontrado.", "");
                 return;
             }
 
@@ -154,7 +153,7 @@ public class ControladorGestorAcademicosGUI {
         } catch (SQLException | IOException e) {
 
             logger.warn("Error al mostrar detalles del académico: " + e.getMessage());
-            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al mostrar detalles del académico");
+            utilidades.mostrarAlerta("Error", "Ocurrio un error al cargar los datos del academico.", "");
         }
     }
 
@@ -173,7 +172,7 @@ public class ControladorGestorAcademicosGUI {
         } catch (IOException e) {
 
             logger.warn("Error al abrir la ventana de registro: " + e.getMessage());
-            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "En estos momentos no se puede registrar un nuevo academico");
+            utilidades.mostrarAlerta("Error", "Ocurrio un error al cargar la ventana.", "En estos momentos no es posible registrar un academico.");
         }
     }
 
@@ -202,7 +201,7 @@ public class ControladorGestorAcademicosGUI {
         if (academicoSeleccionado == null) {
 
             logger.warn("No se ha seleccionado un académico.");
-            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Por favor seleccione un académico");
+            utilidades.mostrarAlerta("Academico no seleccionado", "Por favor seleccione un academico.", "");
             return;
         }
 
@@ -219,7 +218,7 @@ public class ControladorGestorAcademicosGUI {
 
             if (VerificacionUsuario.camposVacios(nuevoNombre, nuevosApellidos, nuevoNumeroDePersonal, nuevoCorreo, contrasena)) {
 
-                utilidades.mostrarVentanaAviso("/CamposVaciosGUI.fxml", "Por favor complete todos los campos");
+                utilidades.mostrarAlerta("Campos Vacios.", "Por favor llene todos los campos.", "Faltan algunos campos por ser llenados.");
                 return;
             }
 
@@ -228,7 +227,7 @@ public class ControladorGestorAcademicosGUI {
             if (!errores.isEmpty()) {
 
                 String mensajeError = String.join("\n", errores);
-                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", mensajeError);
+                utilidades.mostrarAlerta("Datos invalidos.", "Por favor introduzca datos validos.", mensajeError);
                 return;
             }
 
@@ -243,7 +242,7 @@ public class ControladorGestorAcademicosGUI {
 
                 if (academicoDAO.buscarAcademicoPorNumeroDePersonal(numeroPersonal).getNumeroDePersonal() != -1) {
 
-                    utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "El número de personal ya existe");
+                    utilidades.mostrarAlerta("Error", "Numero de personal existente.", "El numero de personal ya se encuentra registrado dentro del sistema.");
                     return;
                 }
             }
@@ -252,7 +251,7 @@ public class ControladorGestorAcademicosGUI {
 
                 if (!cuentaDAO.buscarCuentaPorCorreo(nuevoCorreo).equals("N/A")) {
 
-                    utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "El correo electrónico ya existe");
+                    utilidades.mostrarAlerta("Error", "Correo existente.", "El correo ya se encuentra registrado dentro del sistema.");
                     return;
                 }
             }
@@ -267,7 +266,7 @@ public class ControladorGestorAcademicosGUI {
             if (usuarioModificado && academicoModificado && correoModificado) {
 
                 logger.info("El académico ha sido modificado correctamente.");
-                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "El académico ha sido modificado correctamente");
+                utilidades.mostrarAlerta("Exito", "Academico modificado con exito.", "");
                 cargarAcademicos();
                 cambiarModoEdicion(false);
 
@@ -276,7 +275,7 @@ public class ControladorGestorAcademicosGUI {
             } else {
 
                 logger.warn("No se pudo modificar el académico.");
-                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "No se pudo modificar el académico.");
+                utilidades.mostrarAlerta("Error", "Algo salio mal.", "Ocurrio un error, por favor intentelo más tarde.");
             }
 
             tablaAcademicos.setDisable(false);
@@ -285,21 +284,23 @@ public class ControladorGestorAcademicosGUI {
         } catch (SQLException e) {
 
             logger.error("Error de base de datos durante el registro del académico.", e);
-            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Ocurrio un error, por favor intente más tarde.");
+            utilidades.mostrarAlerta("Error", "Ocurrio un error, por favor intentelo de nuevo más tarde.", "");
 
         } catch (NumberFormatException e) {
 
             logger.error("Error de formato numérico en el número de personal.", e);
-            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "El número de personal debe ser un número entero.");
+            utilidades.mostrarAlerta("Error", "Ocurrio un error en el formato.",
+                    "Ocurrio un error en el formato del numero de personal, por favor revise que el numero de personal contenga 5 digitos.");
+
         } catch (IOException e) {
 
             logger.error("Error de entrada/salida durante el registro del académico.", e);
-            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Ocurrio un error, por favor intente más tarde.");
+            utilidades.mostrarAlerta("Error", "Ocurrio un error, por favor intentelo de nuevo más tarde.", "");
 
         } catch (Exception e) {
 
             logger.error("Error inesperado durante el registro del académico.", e);
-            utilidades.mostrarVentanaAviso("/ErrorRegistroAcademicoGUI.fxml", "Ocurrio un error, por facvor intente más tarde.");
+            utilidades.mostrarAlerta("Error", "Ocurrio un error, por favor intentelo de nuevo más tarde.", "");
         }
     }
 

@@ -31,16 +31,19 @@ public class UtilidadesContraseña {
         actualizarIcono(iconoOjo, contraseñaVisible);
     }
 
-    private void actualizarIcono(ImageView iconoOjo, boolean contraseñaVisible) {
+    public void actualizarIcono(ImageView iconoOjo, boolean contraseñaVisible) {
+
         String rutaIcono = contraseñaVisible ? "/ojo-abierto.png" : "/ojo-cerrado.png";
         iconoOjo.setImage(new Image(getClass().getResourceAsStream(rutaIcono)));
     }
 
     public void inicializarIcono(ImageView iconoOjo) {
+
         actualizarIcono(iconoOjo, contraseñaVisible);
     }
 
     public static boolean esContraseñaIgual(PasswordField campoContraseña, PasswordField campoConfirmarContraseña) {
+
         return campoContraseña.getText().equals(campoConfirmarContraseña.getText());
     }
 

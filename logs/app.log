@@ -629,3 +629,6 @@ java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a par
 	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
 	at java.lang.Thread.run(Thread.java:1570) [?:?]
 2025-05-02 16:33:08 [JavaFX Application Thread] INFO  GUI.ControladorGestorAcademicosGUI - El académico ha sido modificado correctamente.
+2025-05-08 00:11:45 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoEvaluadorGUI - Cancelando el registro del académico.
+2025-05-08 21:30:44 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoEvaluadorGUI - Registro de académico exitoso.
+2025-05-08 21:31:38 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoEvaluadorGUI - Registro de académico exitoso.

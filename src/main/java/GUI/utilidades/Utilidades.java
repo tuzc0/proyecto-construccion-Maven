@@ -4,10 +4,10 @@ import GUI.ControladorVentanaAvisoGUI;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.io.IOException;
 
 
@@ -50,4 +50,12 @@ public class Utilidades {
         }
     }
 
+    public void mostrarAlerta(String titulo, String cabecera, String contenido) {
+
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(cabecera);
+        alerta.setContentText(contenido);
+        alerta.showAndWait();
+    }
 }

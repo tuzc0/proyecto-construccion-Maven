@@ -1,33 +1,31 @@
 package GUI;
 
 import GUI.utilidades.Utilidades;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.Cursor;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
-import logica.DAOs.AcademicoDAO;
 import logica.DAOs.CuentaDAO;
+import logica.DAOs.AcademicoDAO;
 import logica.DAOs.UsuarioDAO;
-import logica.DTOs.AcademicoDTO;
 import logica.DTOs.CuentaDTO;
+import logica.DTOs.AcademicoDTO;
+import logica.DTOs.UsuarioDTO;
+import logica.VerificacionUsuario;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import logica.DTOs.UsuarioDTO;
-import logica.VerificacionUsuario;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.logging.Logger;
 
 public class ControladorGestorAcademicosGUI {
 
-    private static final Logger logger = LogManager.getLogger(ControladorGestorAcademicosGUI.class);
+    Logger logger = Logger.getLogger(ControladorGestorAcademicosGUI.class.getName());
 
     @FXML private TextField campoNumeroDePersonal;
+    @FXML private Button botonBuscar;
+    @FXML private Button botonEliminarSeleccionado;
     @FXML private TableView<AcademicoDTO> tablaAcademicos;
     @FXML private TableColumn<AcademicoDTO, String> columnaNumeroDePersonal;
     @FXML private TableColumn<AcademicoDTO, String> columnaNombres;
@@ -43,24 +41,40 @@ public class ControladorGestorAcademicosGUI {
     @FXML private Button botonEditar;
     @FXML private Button botonGuardar;
     @FXML private Button botonCancelar;
+    @FXML private Button botonCancelarSeleccion;
+    @FXML private Label campoNumeroAcademicosSeleccionados;
+    @FXML private Button botonEliminarAcademico;
+    @FXML private Button botonSeleccionarAcademicos;
+    @FXML private Button botonRegistrarAcademico;
 
-    Utilidades utilidades = new Utilidades();
     private int idAcademico = 0;
+    private Utilidades utilidades = new Utilidades();
 
     @FXML
     public void initialize() {
 
-        columnaNumeroDePersonal.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getNumeroDePersonal()).asObject().asString());
+        botonBuscar.setCursor(Cursor.HAND);
+        botonEliminarSeleccionado.setCursor(Cursor.HAND);
+        botonEditar.setCursor(Cursor.HAND);
+        botonGuardar.setCursor(Cursor.HAND);
+        botonCancelar.setCursor(Cursor.HAND);
+        botonCancelarSeleccion.setCursor(Cursor.HAND);
+        botonEliminarAcademico.setCursor(Cursor.HAND);
+        botonSeleccionarAcademicos.setCursor(Cursor.HAND);
+        botonRegistrarAcademico.setCursor(Cursor.HAND);
+
+        columnaNumeroDePersonal.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(String.valueOf(cellData.getValue().getNumeroDePersonal())));
         columnaNombres.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNombre()));
         columnaApellidos.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getApellido()));
 
         cargarAcademicos();
+        tablaAcademicos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         tablaAcademicos.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
-            mostrarDetallesDesdeTabla(newSel);
-        });
 
-        botonEditar.setVisible(false);
+            mostrarDetallesDesdeTabla(newSel);
+            botonEliminarSeleccionado.setDisable(newSel == null);
+        });
     }
 
     private void cargarAcademicos() {
@@ -73,8 +87,8 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (Exception e) {
 
-            logger.warn("Error al cargar la lista de estudiantes: " + e.getMessage());
-            utilidades.mostrarAlerta("Error", "Ocurrio un error al cargar la lista de academicos.", "");
+            logger.severe("Error al cargar la lista de academicos: " + e.getMessage());
+            utilidades.mostrarAlerta("Error", "Error al cargar la lista de estudiantes.", "");
         }
     }
 
@@ -85,8 +99,7 @@ public class ControladorGestorAcademicosGUI {
 
         if (numeroDePersonal.isEmpty()) {
 
-            utilidades.mostrarAlerta("Error", "Por favor llene el campo de busqueda.", "Introduzca en la barra de busqueda un numero de personal de 5 digitos");
-            return;
+            utilidades.mostrarAlerta("Error", "Debe introducir un numero de personal para buscarlo.", "Introduzca un número de personal en el campo de busqueda.");
         }
 
         try {
@@ -95,20 +108,19 @@ public class ControladorGestorAcademicosGUI {
             AcademicoDTO academicoDTO = academicoDAO.buscarAcademicoPorNumeroDePersonal(Integer.parseInt(numeroDePersonal));
             CuentaDAO cuentaDAO = new CuentaDAO();
 
-            if (academicoDTO.getNumeroDePersonal() != -1) {
+            if (academicoDTO.getIdUsuario() != -1) {
 
                 campoNombreEncontrado.setText(academicoDTO.getNombre());
                 campoApellidoEncontrado.setText(academicoDTO.getApellido());
-                campoNumeroDePersonalEncontrado.setText(String.valueOf(academicoDTO.getNumeroDePersonal()));
+                campoNumeroDePersonalEncontrado.setText(numeroDePersonal);
 
                 idAcademico = academicoDTO.getIdUsuario();
-                CuentaDTO cuentaDTO = cuentaDAO.buscarCuentaPorID(idAcademico);
-                campoCorreoEncontrado.setText(cuentaDTO.getCorreoElectronico());
+                CuentaDTO cuenta = cuentaDAO.buscarCuentaPorID(idAcademico);
+                campoCorreoEncontrado.setText(cuenta.getCorreoElectronico());
 
             } else {
 
-                utilidades.mostrarAlerta("Usuario no encontrado", "El academico no fue encontrado.", "");
-                campoNombreEncontrado.setText("");
+                campoNombreEncontrado.setText("No hay academico con ese numero de personal.");
                 campoApellidoEncontrado.setText("");
                 campoNumeroDePersonalEncontrado.setText("");
                 campoCorreoEncontrado.setText("");
@@ -116,8 +128,8 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (SQLException | IOException e) {
 
-            logger.warn("Error al buscar el académico: " + e.getMessage());
-            utilidades.mostrarAlerta("Error", "Ocurrio un error en la busqueda", "");
+            logger.severe("Error al buscar al academico: " + e.getMessage());
+            utilidades.mostrarAlerta("Error", "Ocurrio un error al buscar.", "");
         }
     }
 
@@ -125,7 +137,6 @@ public class ControladorGestorAcademicosGUI {
 
         if (academicoSeleccionado == null) {
 
-            botonEditar.setVisible(false);
             return;
         }
 
@@ -135,211 +146,297 @@ public class ControladorGestorAcademicosGUI {
             AcademicoDTO academicoDTO = academicoDAO.buscarAcademicoPorNumeroDePersonal(academicoSeleccionado.getNumeroDePersonal());
             CuentaDAO cuentaDAO = new CuentaDAO();
 
-            if (academicoDTO == null || academicoDTO.getIdUsuario() == -1) {
+            if (academicoDTO.getIdUsuario() != -1) {
 
-                utilidades.mostrarAlerta("Usuario no encontrado", "El academico no fue encontrado.", "");
-                return;
+                campoNombreEncontrado.setText(academicoDTO.getNombre());
+                campoApellidoEncontrado.setText(academicoDTO.getApellido());
+                campoNumeroDePersonalEncontrado.setText(String.valueOf(academicoDTO.getNumeroDePersonal()));
+
+                idAcademico = academicoDTO.getIdUsuario();
+                CuentaDTO cuenta = cuentaDAO.buscarCuentaPorID(idAcademico);
+                campoCorreoEncontrado.setText(cuenta.getCorreoElectronico());
             }
-
-            campoNombreEncontrado.setText(academicoDTO.getNombre());
-            campoApellidoEncontrado.setText(academicoDTO.getApellido());
-            campoNumeroDePersonalEncontrado.setText(String.valueOf(academicoDTO.getNumeroDePersonal()));
-
-            idAcademico = academicoDTO.getIdUsuario();
-            CuentaDTO cuenta = cuentaDAO.buscarCuentaPorID(idAcademico);
-            campoCorreoEncontrado.setText(cuenta.getCorreoElectronico());
-            botonEditar.setVisible(true);
 
         } catch (SQLException | IOException e) {
 
-            logger.warn("Error al mostrar detalles del académico: " + e.getMessage());
-            utilidades.mostrarAlerta("Error", "Ocurrio un error al cargar los datos del academico.", "");
+            logger.severe("Error al mostrar detalles del academico: " + e.getMessage());
+            utilidades.mostrarAlerta("Error", "Ocurrio un error al cargar los detalles del academico.", "");
         }
     }
 
     @FXML
     private void abrirVentanaRegistrarAcademico() {
 
+    }
+
+    @FXML
+    private void eliminarAcademico() {
+
+        String numeroDePersonal = campoNumeroDePersonalEncontrado.getText().trim();
+
+        if (numeroDePersonal.isEmpty()) {
+
+            utilidades.mostrarAlerta("Error", "Seleccionar un academico para eliminar.", "");
+            return;
+        }
+
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistroAcademicoGUI.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setOnHiding(event -> cargarAcademicos());
-            stage.show();
+            AcademicoDAO academicoDAO = new AcademicoDAO();
+            boolean academicoEliminado = academicoDAO.eliminarAcademicoPorNumeroDePersonal(Integer.parseInt(numeroDePersonal));
 
-        } catch (IOException e) {
+            if (academicoEliminado) {
 
-            logger.warn("Error al abrir la ventana de registro: " + e.getMessage());
-            utilidades.mostrarAlerta("Error", "Ocurrio un error al cargar la ventana.", "En estos momentos no es posible registrar un academico.");
+                utilidades.mostrarAlerta("Exito", "El academico ha sido eliminado correctamente.", "");
+                cargarAcademicos();
+
+            } else {
+
+                utilidades.mostrarAlerta("Error", "No fue posible eliminar al academico.", "");
+            }
+
+        } catch (SQLException | IOException e) {
+
+            logger.severe("Error al eliminar al academico: " + e.getMessage());
+            utilidades.mostrarAlerta("Error", "Ocurrio un error.", "Por favor, intentelo más tarde.");
         }
+    }
+
+    @FXML
+    private void activarModoSeleccion() {
+
+        botonEliminarSeleccionado.setManaged(true);
+        botonEliminarSeleccionado.setVisible(true);
+        botonCancelarSeleccion.setVisible(true);
+        campoNumeroAcademicosSeleccionados.setVisible(true);
+        botonEditar.setDisable(true);
+        botonEliminarAcademico.setDisable(true);
+        botonRegistrarAcademico.setDisable(true);
+
+        tablaAcademicos.getSelectionModel().getSelectedItems().addListener((ListChangeListener<AcademicoDTO>) change -> {
+
+            int cantidadSeleccionados = tablaAcademicos.getSelectionModel().getSelectedItems().size();
+
+            if (cantidadSeleccionados > 0) {
+
+                campoNumeroAcademicosSeleccionados.setText("Academicos seleccionados: " + cantidadSeleccionados);
+
+            } else {
+
+                campoNumeroAcademicosSeleccionados.setText(" ");
+            }
+        });
+    }
+
+    @FXML
+    private void eliminarAcademicoSeleccionado() {
+
+        ObservableList<AcademicoDTO> academicosSeleccionados = tablaAcademicos.getSelectionModel().getSelectedItems();
+
+        if (academicosSeleccionados == null || academicosSeleccionados.isEmpty()) {
+
+            utilidades.mostrarAlerta("Error", "No se han seleccionado academicos para eliminar.", "Por favor, seleccione los academicos que desea eliminar.");
+            return;
+        }
+
+        boolean errorAlEliminar = false;
+
+        try {
+
+            AcademicoDAO academicoDAO = new AcademicoDAO();
+
+            for (AcademicoDTO academicoSeleccionado : academicosSeleccionados) {
+
+                boolean eliminado = academicoDAO.eliminarAcademicoPorNumeroDePersonal(academicoSeleccionado.getNumeroDePersonal());
+
+                if (!eliminado) {
+
+                    errorAlEliminar = true;
+                }
+            }
+
+        } catch (SQLException | IOException e) {
+
+            logger.severe("Error al eliminar el academico: " + e.getMessage());
+            errorAlEliminar = true;
+        }
+
+        if (errorAlEliminar) {
+
+            utilidades.mostrarAlerta("Error", "No se pudo realizar la eliminacion de los academicos.", "Por favor, intentelo más tarde.");
+
+        } else {
+
+            utilidades.mostrarAlerta("Exito", "Academicos eliminados exitosamente.", "");
+        }
+
+        cargarAcademicos();
+        botonEliminarSeleccionado.setDisable(true);
+        botonEliminarSeleccionado.setManaged(false);
+        botonEliminarSeleccionado.setVisible(false);
+        botonCancelarSeleccion.setVisible(false);
+        botonEditar.setDisable(false);
+        botonEliminarAcademico.setDisable(false);
+        botonRegistrarAcademico.setDisable(false);
+
+        tablaAcademicos.getSelectionModel().clearSelection();
+    }
+
+    @FXML
+    private void cancelarSeleccionAcademico() {
+
+        botonEliminarSeleccionado.setManaged(false);
+        botonEliminarSeleccionado.setVisible(false);
+        botonCancelarSeleccion.setVisible(false);
+        campoNumeroAcademicosSeleccionados.setVisible(false);
+        botonEliminarAcademico.setDisable(false);
+        botonEditar.setDisable(false);
+        botonRegistrarAcademico.setDisable(false);
+
+        tablaAcademicos.getSelectionModel().clearSelection();
+        campoNumeroAcademicosSeleccionados.setText(" ");
+
     }
 
     @FXML
     private void editarAcademico() {
 
-        String nombreOriginal = campoNombreEncontrado.getText();
-        String apellidosOriginales = campoApellidoEncontrado.getText();
-        String numeroDePersonalOriginal = campoNumeroDePersonalEncontrado.getText();
-        String correoOriginal = campoCorreoEncontrado.getText();
+        campoNombreEditable.setText(campoNombreEncontrado.getText());
+        campoApellidoEditable.setText(campoApellidoEncontrado.getText());
+        campoNumeroDePersonalEditable.setText(campoNumeroDePersonalEncontrado.getText());
+        campoCorreoEditable.setText(campoCorreoEncontrado.getText());
 
-        campoNombreEditable.setText(nombreOriginal);
-        campoApellidoEditable.setText(apellidosOriginales);
-        campoNumeroDePersonalEditable.setText(numeroDePersonalOriginal);
-        campoCorreoEditable.setText(correoOriginal);
+        campoNombreEditable.setVisible(true);
+        campoApellidoEditable.setVisible(true);
+        campoNumeroDePersonalEditable.setVisible(true);
+        campoCorreoEditable.setVisible(true);
 
-        cambiarModoEdicion(true);
+        campoNombreEncontrado.setVisible(false);
+        campoApellidoEncontrado.setVisible(false);
+        campoNumeroDePersonalEncontrado.setVisible(false);
+        campoCorreoEncontrado.setVisible(false);
+
+
+        botonGuardar.setVisible(true);
+        botonCancelar.setVisible(true);
+        botonSeleccionarAcademicos.setDisable(true);
+
+        botonEditar.setVisible(false);
+        botonEliminarAcademico.setVisible(false);
         tablaAcademicos.setDisable(true);
+        botonRegistrarAcademico.setDisable(true);
+    }
+
+    @FXML
+    private void cancelarEdicion() {
+
+        campoNombreEditable.setVisible(false);
+        campoApellidoEditable.setVisible(false);
+        campoNumeroDePersonalEditable.setVisible(false);
+        campoCorreoEditable.setVisible(false);
+
+        campoNombreEncontrado.setVisible(true);
+        campoApellidoEncontrado.setVisible(true);
+        campoNumeroDePersonalEncontrado.setVisible(true);
+        campoCorreoEncontrado.setVisible(true);
+
+        botonGuardar.setVisible(false);
+        botonCancelar.setVisible(false);
+        botonSeleccionarAcademicos.setDisable(false);
+
+        botonEditar.setVisible(true);
+        botonEliminarAcademico.setVisible(true);
+        tablaAcademicos.setDisable(false);
+        botonRegistrarAcademico.setDisable(false);
     }
 
     @FXML
     private void guardarCambios() {
 
-        AcademicoDTO academicoSeleccionado = tablaAcademicos.getSelectionModel().getSelectedItem();
+        String numeroDePersonalEncontrado = campoNumeroDePersonalEncontrado.getText().trim();
+        String correoEncontrado = campoCorreoEncontrado.getText().trim();
+        String nombre = campoNombreEditable.getText().trim();
+        String apellidos = campoApellidoEditable.getText().trim();
+        String numeroDePersonal = campoNumeroDePersonalEditable.getText().trim();
+        String correo = campoCorreoEditable.getText().trim();
 
-        if (academicoSeleccionado == null) {
-
-            logger.warn("No se ha seleccionado un académico.");
-            utilidades.mostrarAlerta("Academico no seleccionado", "Por favor seleccione un academico.", "");
-            return;
-        }
-
-        String nuevoNombre = campoNombreEditable.getText().trim();
-        String nuevosApellidos = campoApellidoEditable.getText().trim();
-        String nuevoNumeroDePersonal = campoNumeroDePersonalEditable.getText().trim();
-        String nuevoCorreo = campoCorreoEditable.getText().trim();
+        VerificacionUsuario verificacionUsuario = new VerificacionUsuario();
 
         try {
 
-            CuentaDAO cuentaDAO = new CuentaDAO();
             AcademicoDAO academicoDAO = new AcademicoDAO();
-            String contrasena = cuentaDAO.buscarCuentaPorID(academicoSeleccionado.getIdUsuario()).getContrasena();
+            CuentaDAO cuentaDAO = new CuentaDAO();
+            String contraseña = cuentaDAO.buscarCuentaPorCorreo(correoEncontrado).getContrasena();
+            int idUsuario = cuentaDAO.buscarCuentaPorCorreo(correoEncontrado).getIdUsuario();
 
-            if (VerificacionUsuario.camposVacios(nuevoNombre, nuevosApellidos, nuevoNumeroDePersonal, nuevoCorreo, contrasena)) {
+            if (VerificacionUsuario.camposVacios(nombre, apellidos, numeroDePersonal, correo, contraseña)) {
 
                 utilidades.mostrarAlerta("Campos Vacios.", "Por favor llene todos los campos.", "Faltan algunos campos por ser llenados.");
                 return;
             }
 
-            List<String> errores = VerificacionUsuario.validarCampos(nuevoNombre, nuevosApellidos, nuevoNumeroDePersonal, nuevoCorreo, contrasena);
+            List<String> errores = VerificacionUsuario.validarCampos(nombre, apellidos, numeroDePersonal, correo, contraseña);
 
             if (!errores.isEmpty()) {
 
                 String mensajeError = String.join("\n", errores);
-                utilidades.mostrarAlerta("Datos invalidos.", "Por favor introduzca datos validos.", mensajeError);
+                utilidades.mostrarAlerta("Datos inválidos.", "Por favor, introduzca datos válidos.", mensajeError);
                 return;
             }
 
-            int numeroPersonal = Integer.parseInt(nuevoNumeroDePersonal);
-            int estado = academicoSeleccionado.getEstado();
-            int idAcademico = academicoSeleccionado.getIdUsuario();
+            int numeroPersonal = Integer.parseInt(numeroDePersonal);
 
-            AcademicoDTO academicoDTO = new AcademicoDTO(numeroPersonal, idAcademico, nuevoNombre, nuevosApellidos, estado);
-            CuentaDTO cuentaDTO = new CuentaDTO(nuevoCorreo, contrasena , idAcademico);
+            if (!numeroDePersonalEncontrado.equals(numeroDePersonal)) {
 
-            if (numeroPersonal != academicoSeleccionado.getNumeroDePersonal()) {
-
-                if (academicoDAO.buscarAcademicoPorNumeroDePersonal(numeroPersonal).getNumeroDePersonal() != -1) {
+                if (academicoDAO.buscarAcademicoPorNumeroDePersonal(numeroPersonal).getIdUsuario() != -1) {
 
                     utilidades.mostrarAlerta("Error", "Numero de personal existente.", "El numero de personal ya se encuentra registrado dentro del sistema.");
                     return;
                 }
             }
 
-            if (!nuevoCorreo.equals(campoCorreoEncontrado.getText())) {
+            if(!correo.equals(correoEncontrado)) {
 
-                if (!cuentaDAO.buscarCuentaPorCorreo(nuevoCorreo).equals("N/A")) {
+                if (!"N/A".equals(cuentaDAO.buscarCuentaPorCorreo(correo).getCorreoElectronico())) {
 
                     utilidades.mostrarAlerta("Error", "Correo existente.", "El correo ya se encuentra registrado dentro del sistema.");
                     return;
                 }
             }
 
-            UsuarioDAO usurioDAO = new UsuarioDAO();
-            boolean usuarioModificado = usurioDAO.modificarUsuario(new UsuarioDTO(academicoSeleccionado.getIdUsuario(), nuevoNombre, nuevosApellidos, estado));
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            UsuarioDTO usuarioDTO = new UsuarioDTO(idUsuario, nombre, apellidos, 1);
+            AcademicoDTO academicoDTO = new AcademicoDTO(numeroPersonal, idUsuario, nombre, apellidos, 1);
+            CuentaDTO cuentaDTO = new CuentaDTO(correo, contraseña, idUsuario);
+
+            boolean usuarioModificado = usuarioDAO.modificarUsuario(usuarioDTO);
             boolean academicoModificado = academicoDAO.modificarAcademico(academicoDTO);
-            boolean correoModificado = cuentaDAO.modificarCuenta(cuentaDTO);
+            boolean cuentaModificada = cuentaDAO.modificarCuenta(cuentaDTO);
 
-
-
-            if (usuarioModificado && academicoModificado && correoModificado) {
+            if (usuarioModificado && academicoModificado && cuentaModificada) {
 
                 logger.info("El académico ha sido modificado correctamente.");
                 utilidades.mostrarAlerta("Exito", "Academico modificado con exito.", "");
-                cargarAcademicos();
-                cambiarModoEdicion(false);
-
-                botonEditar.setVisible(true);
 
             } else {
 
-                logger.warn("No se pudo modificar el académico.");
-                utilidades.mostrarAlerta("Error", "Algo salio mal.", "Ocurrio un error, por favor intentelo más tarde.");
+                logger.warning("No se pudo modificar al academico.");
+                utilidades.mostrarAlerta("Exito", "Academico modificado con exito.", "");
             }
 
-            tablaAcademicos.setDisable(false);
-            botonEditar.setVisible(false);
+            cancelarEdicion();
+            cargarAcademicos();
 
-        } catch (SQLException e) {
+        } catch (SQLException | IOException | NumberFormatException e) {
 
-            logger.error("Error de base de datos durante el registro del académico.", e);
-            utilidades.mostrarAlerta("Error", "Ocurrio un error, por favor intentelo de nuevo más tarde.", "");
-
-        } catch (NumberFormatException e) {
-
-            logger.error("Error de formato numérico en el número de personal.", e);
-            utilidades.mostrarAlerta("Error", "Ocurrio un error en el formato.",
-                    "Ocurrio un error en el formato del numero de personal, por favor revise que el numero de personal contenga 5 digitos.");
-
-        } catch (IOException e) {
-
-            logger.error("Error de entrada/salida durante el registro del académico.", e);
-            utilidades.mostrarAlerta("Error", "Ocurrio un error, por favor intentelo de nuevo más tarde.", "");
-
-        } catch (Exception e) {
-
-            logger.error("Error inesperado durante el registro del académico.", e);
+            logger.severe("Error al guardar los cambios: " + e.getMessage());
             utilidades.mostrarAlerta("Error", "Ocurrio un error, por favor intentelo de nuevo más tarde.", "");
         }
-    }
 
-    @FXML
-    private void cancelarEdicion() {
-
-        cambiarModoEdicion(false);
+        botonSeleccionarAcademicos.setDisable(false);
+        botonEliminarAcademico.setVisible(true);
+        botonEditar.setVisible(true);
         tablaAcademicos.setDisable(false);
-        AcademicoDTO academicoSeleccionado = tablaAcademicos.getSelectionModel().getSelectedItem();
-
-        if (academicoSeleccionado != null) {
-
-            mostrarDetallesDesdeTabla(academicoSeleccionado);
-
-        } else {
-
-            campoNombreEncontrado.setText("");
-            campoApellidoEncontrado.setText("");
-            campoNumeroDePersonalEncontrado.setText("");
-            campoCorreoEncontrado.setText("");
-        }
-
-        botonEditar.setVisible(false);
-    }
-
-    private void cambiarModoEdicion(boolean enEdicion) {
-
-        campoNombreEditable.setVisible(enEdicion);
-        campoApellidoEditable.setVisible(enEdicion);
-        campoNumeroDePersonalEditable.setVisible(enEdicion);
-        campoCorreoEditable.setVisible(enEdicion);
-
-        campoNombreEncontrado.setVisible(!enEdicion);
-        campoApellidoEncontrado.setVisible(!enEdicion);
-        campoNumeroDePersonalEncontrado.setVisible(!enEdicion);
-        campoCorreoEncontrado.setVisible(!enEdicion);
-
-        botonEditar.setVisible(!enEdicion);
-        botonGuardar.setVisible(enEdicion);
-        botonCancelar.setVisible(enEdicion);
+        botonRegistrarAcademico.setDisable(false);
     }
 }

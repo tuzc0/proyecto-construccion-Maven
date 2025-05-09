@@ -41,7 +41,7 @@ class AcademicoDAOTest {
 
         try {
 
-            boolean resultado = academicoDAO.eliminarAcademicoPorNumeroDePersonal(numeroDePersonal);
+            boolean resultado = academicoDAO.eliminarAcademicoPorNumeroDePersonal(Integer.parseInt(numeroDePersonal));
             assertTrue(resultado, "El académico debería ser eliminado correctamente.");
 
         } catch (SQLException e) {

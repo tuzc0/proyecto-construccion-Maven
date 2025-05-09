@@ -13,23 +13,24 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="555.0" prefWidth="867.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorGestorAcademicosGUI">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="971.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorGestorAcademicosGUI">
     <children>
-        <VBox layoutX="39.0" layoutY="71.0" prefHeight="430.0" prefWidth="789.0">
+        <VBox layoutX="37.0" layoutY="80.0" prefHeight="437.0" prefWidth="910.0">
             <children>
-                <HBox prefHeight="54.0" prefWidth="703.0">
+                <HBox prefHeight="47.0" prefWidth="910.0">
                     <children>
-                        <HBox prefHeight="54.0" prefWidth="607.0">
+                        <HBox prefHeight="47.0" prefWidth="822.0">
                             <children>
-                                <TextField fx:id="campoNumeroDePersonal" prefHeight="30.0" prefWidth="566.0" promptText="Ej.12345" />
+                                <TextField fx:id="campoNumeroDePersonal" prefHeight="26.0" prefWidth="651.0" promptText="Ej. 12345" />
                             </children>
                         </HBox>
-                        <HBox prefHeight="54.0" prefWidth="272.0">
+                        <HBox prefHeight="46.0" prefWidth="395.0">
                             <children>
-                                <Button fx:id="botonBuscar" mnemonicParsing="false" onAction="#buscarAcademico" prefHeight="28.0" prefWidth="229.0" text="botonBuscar">
+                                <Button fx:id="botonBuscar" mnemonicParsing="false" onAction="#buscarAcademico" prefHeight="28.0" prefWidth="200.0" text="Buscar">
                                     <graphic>
                                         <ImageView fitHeight="20.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                             <Image url="@/lupa.png" />
+
                                         </ImageView>
                                     </graphic>
                                     <font>
@@ -40,23 +41,23 @@
                         </HBox>
                     </children>
                 </HBox>
-                <HBox prefHeight="354.0" prefWidth="790.0">
+                <HBox prefHeight="398.0" prefWidth="910.0">
                     <children>
-                        <VBox prefHeight="336.0" prefWidth="467.0">
+                        <VBox prefHeight="386.0" prefWidth="622.0">
                             <children>
-                                <TableView fx:id="tablaAcademicos" prefHeight="337.0" prefWidth="409.0">
+                                <TableView fx:id="tablaAcademicos" prefHeight="386.0" prefWidth="591.0">
                                     <columns>
-                                        <TableColumn fx:id="columnaNumeroDePersonal" prefWidth="148.8" text="Numero de Personal" />
-                                        <TableColumn fx:id="columnaNombres" prefWidth="164.8" text="Nombres" />
-                                        <TableColumn fx:id="columnaApellidos" prefWidth="147.2" text="Apellidos" />
+                                        <TableColumn fx:id="columnaNumeroDePersonal" prefWidth="127.19997787475586" text="Número de Personal" />
+                                        <TableColumn fx:id="columnaNombres" prefWidth="207.2000274658203" text="Nombres" />
+                                        <TableColumn fx:id="columnaApellidos" prefWidth="267.20000000000005" text="Apellidos" />
                                     </columns>
                                 </TableView>
                             </children>
                         </VBox>
-                        <VBox prefHeight="336.0" prefWidth="25.0" />
-                        <VBox prefHeight="362.0" prefWidth="304.0">
+                        <VBox prefHeight="394.0" prefWidth="35.0" />
+                        <VBox prefHeight="394.0" prefWidth="309.0">
                             <children>
-                                <Label prefHeight="16.0" prefWidth="162.0" text="Detalles Academico:">
+                                <Label prefHeight="23.0" prefWidth="178.0" text="Detalles Academico:">
                                     <font>
                                         <Font name="System Bold" size="16.0" />
                                     </font>
@@ -68,10 +69,12 @@
                                 </Label>
                                 <StackPane prefHeight="34.0" prefWidth="254.0">
                                     <children>
+                                        <TextField fx:id="campoNombreEditable" visible="false" />
                                         <Label fx:id="campoNombreEncontrado" prefHeight="34.0" prefWidth="254.0">
-                                            <font><Font size="14.0" /></font>
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
                                         </Label>
-                                        <TextField fx:id="campoNombreEditable" prefHeight="34.0" prefWidth="254.0" visible="false" />
                                     </children>
                                 </StackPane>
                                 <Label prefHeight="41.0" prefWidth="66.0" text="Apellidos:">
@@ -82,12 +85,14 @@
                                 <StackPane prefHeight="34.0" prefWidth="254.0">
                                     <children>
                                         <Label fx:id="campoApellidoEncontrado" prefHeight="34.0" prefWidth="254.0">
-                                            <font><Font size="14.0" /></font>
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
                                         </Label>
-                                        <TextField fx:id="campoApellidoEditable" prefHeight="34.0" prefWidth="254.0" visible="false" />
+                                        <TextField fx:id="campoApellidoEditable" visible="false" />
                                     </children>
                                 </StackPane>
-                                <Label prefHeight="39.0" prefWidth="151.0" text="Numero De Personal:">
+                                <Label prefHeight="44.0" prefWidth="84.0" text="Numero de Personal:">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
                                     </font>
@@ -95,49 +100,94 @@
                                 <StackPane prefHeight="34.0" prefWidth="254.0">
                                     <children>
                                         <Label fx:id="campoNumeroDePersonalEncontrado" prefHeight="34.0" prefWidth="254.0">
-                                            <font><Font size="14.0" /></font>
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
                                         </Label>
-                                        <TextField fx:id="campoNumeroDePersonalEditable" prefHeight="34.0" prefWidth="254.0" visible="false" />
+                                        <TextField fx:id="campoNumeroDePersonalEditable" visible="false" />
                                     </children>
                                 </StackPane>
-                                <Label prefHeight="51.0" prefWidth="146.0" text="Correo Electronico:">
+                                <Label prefHeight="38.0" prefWidth="146.0" text="Correo Electronico:">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Label>
-                                <StackPane prefHeight="34.0" prefWidth="254.0">
+                                <StackPane prefHeight="51.0" prefWidth="291.0">
                                     <children>
+                                        <TextField fx:id="campoCorreoEditable" visible="false" />
                                         <Label fx:id="campoCorreoEncontrado" prefHeight="34.0" prefWidth="254.0">
-                                            <font><Font size="14.0" /></font>
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
                                         </Label>
-                                        <TextField fx:id="campoCorreoEditable" prefHeight="34.0" prefWidth="254.0" visible="false" />
                                     </children>
                                 </StackPane>
+                                <VBox prefHeight="53.0" prefWidth="277.0">
+                                    <children>
+                                        <HBox prefHeight="48.0" prefWidth="277.0">
+                                            <children>
+                                                <Button fx:id="botonEditar" mnemonicParsing="false" onAction="#editarAcademico" prefHeight="33.0" prefWidth="86.0" text="Editar">
+                                                    <font>
+                                                        <Font name="System Bold" size="14.0" />
+                                                    </font>
+                                                </Button>
+                                                <HBox prefHeight="48.0" prefWidth="29.0" />
+                                                <Button fx:id="botonEliminarAcademico" mnemonicParsing="false" onAction="#eliminarAcademico" prefHeight="30.0" prefWidth="79.0" text="Eliminar">
+                                                    <font>
+                                                        <Font name="System Bold" size="14.0" />
+                                                    </font>
+                                                </Button>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
                             </children>
                         </VBox>
                     </children>
                 </HBox>
             </children>
         </VBox>
-
-        <Label layoutX="277.0" layoutY="26.0" prefHeight="45.0" prefWidth="313.0" text="Lista de Academicos">
-            <font><Font name="System Bold" size="30.0" /></font>
+        <Label layoutX="351.0" layoutY="23.0" prefHeight="45.0" prefWidth="283.0" text="Lista de Academicos">
+            <font>
+                <Font name="System Bold" size="30.0" />
+            </font>
         </Label>
-
-        <Button layoutX="39.0" layoutY="493.0" mnemonicParsing="false" onAction="#abrirVentanaRegistrarAcademico" prefHeight="34.0" prefWidth="178.0" text="Registrar Academico">
-            <font><Font name="System Bold" size="14.0" /></font>
+        <Button fx:id="botonRegistrarAcademico" layoutX="37.0" layoutY="533.0" mnemonicParsing="false" onAction="#abrirVentanaRegistrarAcademico" prefHeight="34.0" prefWidth="178.0" text="Registrar Academico">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
         </Button>
-
-        <Button fx:id="botonEditar" layoutX="529.0" layoutY="493.0" mnemonicParsing="false" onAction="#editarAcademico" prefHeight="34.0" prefWidth="101.0" text="Editar">
-            <font><Font name="System Bold" size="14.0" /></font>
+        <Button fx:id="botonSeleccionarAcademicos" layoutX="402.0" layoutY="533.0" mnemonicParsing="false" onAction="#activarModoSeleccion" prefHeight="34.0" prefWidth="218.0" text="Seleccionar Academicos">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
         </Button>
-
-        <Button fx:id="botonGuardar" layoutX="639.0" layoutY="493.0" mnemonicParsing="false" onAction="#guardarCambios" prefHeight="34.0" prefWidth="101.0" text="Guardar" visible="false">
-            <font><Font name="System Bold" size="14.0" /></font>
+        <Button fx:id="botonEliminarSeleccionado" disable="true" layoutX="690.0" layoutY="527.0" mnemonicParsing="false" onAction="#eliminarAcademicoSeleccionado" prefHeight="34.0" prefWidth="54.0" visible="false">
+            <graphic>
+                <ImageView fitHeight="37.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@/bote-basura.png" />
+                </ImageView>
+            </graphic>
         </Button>
-
-        <Button fx:id="botonCancelar" layoutX="747.0" layoutY="493.0" mnemonicParsing="false" onAction="#cancelarEdicion" prefHeight="34.0" prefWidth="101.0" text="Cancelar" visible="false">
-            <font><Font name="System Bold" size="14.0" /></font>
+        <Button fx:id="botonGuardar" layoutX="855.0" layoutY="518.0" mnemonicParsing="false" onAction="#guardarCambios" prefHeight="26.0" prefWidth="79.0" text="Guardar" visible="false">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
         </Button>
+        <Button fx:id="botonCancelar" layoutX="754.0" layoutY="518.0" mnemonicParsing="false" onAction="#cancelarEdicion" prefHeight="26.0" prefWidth="79.0" text="Cancelar" visible="false">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Button>
+        <Button fx:id="botonCancelarSeleccion" layoutX="776.0" layoutY="533.0" mnemonicParsing="false" onAction="#cancelarSeleccionAcademico" prefHeight="34.0" prefWidth="136.0" text="Cancelar seleccion" visible="false">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Button>
+        <Label fx:id="campoNumeroAcademicosSeleccionados" layoutX="406.0" layoutY="580.0" prefHeight="20.0" prefWidth="211.0">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
     </children>
 </Pane>

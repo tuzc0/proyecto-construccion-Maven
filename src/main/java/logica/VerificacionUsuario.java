@@ -14,7 +14,7 @@ public class VerificacionUsuario {
     private static final Utilidades utilidades = new Utilidades();
 
     private static final Pattern PATRON_CORREO_UV = Pattern.compile("^(zS\\d{8}@estudiantes\\.uv\\.mx|[a-z]+@uv\\.mx)$");
-    private static final Pattern PATRON_CORREO = Pattern.compile("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$\n");
+    private static final Pattern PATRON_CORREO = Pattern.compile("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$");
     private static final Pattern PATRON_NUMERO_PERSONAL = Pattern.compile("^\\d{5}$");
     private static final Pattern PATRON_MATRICULA = Pattern.compile("^S\\d{8}$");
     private static final Pattern PATRON_CONTRASENA = Pattern.compile("^[a-zA-Z0-9]{6,64}$");

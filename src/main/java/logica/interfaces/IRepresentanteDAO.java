@@ -14,4 +14,8 @@ public interface IRepresentanteDAO {
     boolean modificarRepresentante(RepresentanteDTO representante) throws SQLException, IOException;
 
     RepresentanteDTO buscarRepresentantePorID(int idRepresentante) throws SQLException, IOException;
+
+    RepresentanteDTO buscarRepresentantePorCorreo(String correo) throws SQLException, IOException;
+
+    RepresentanteDTO buscarRepresentantePorTelefono(String telefono) throws SQLException, IOException;
 }

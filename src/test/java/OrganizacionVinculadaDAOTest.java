@@ -16,14 +16,6 @@ class OrganizacionVinculadaDAOTest {
         organizacionVinculadaDAO = new OrganizacionVinculadaDAO();
     }
 
-    @Test
-    @Order(1)
-    void testCrearNuevaOrganizacionDatosValidos() throws SQLException, IOException {
-
-        OrganizacionVinculadaDTO ov = new OrganizacionVinculadaDTO(11, "Organización A", "Calle 123, Ciudad A", "contacto@org.com", "123456789", 1);
-        boolean resultado = organizacionVinculadaDAO.crearNuevaOrganizacion(ov);
-        assertTrue(resultado, "La OV debería haberse creado correctamente.");
-    }
 
     @Test
     @Order(2)

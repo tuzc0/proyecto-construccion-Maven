@@ -136,5 +136,65 @@ public class RepresentanteDAO implements IRepresentanteDAO {
 
         return representante;
     }
+
+    public RepresentanteDTO buscarRepresentantePorCorreo(String correo) throws SQLException, IOException {
+        RepresentanteDTO representante = new RepresentanteDTO(-1, "N/A", "N/A", "N/A", "N/A", 0, 0);
+        String buscarSQLRepresentante = "SELECT * FROM representante WHERE correo = ?";
+
+        try {
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaRepresentante = conexionBaseDeDatos.prepareStatement(buscarSQLRepresentante);
+            sentenciaRepresentante.setString(1, correo);
+            resultadoConsultaRepresentante = sentenciaRepresentante.executeQuery();
+
+            if (resultadoConsultaRepresentante.next()) {
+                representante = new RepresentanteDTO(
+                        resultadoConsultaRepresentante.getInt("idRepresentante"),
+                        resultadoConsultaRepresentante.getString("correo"),
+                        resultadoConsultaRepresentante.getString("telefono"),
+                        resultadoConsultaRepresentante.getString("nombre"),
+                        resultadoConsultaRepresentante.getString("apellidos"),
+                        resultadoConsultaRepresentante.getInt("idOV"),
+                        resultadoConsultaRepresentante.getInt("estadoActivo")
+                );
+            }
+        } finally {
+            if (sentenciaRepresentante != null) {
+                sentenciaRepresentante.close();
+            }
+        }
+
+        return representante;
+    }
+
+    public RepresentanteDTO buscarRepresentantePorTelefono(String telefono) throws SQLException, IOException {
+        RepresentanteDTO representante = new RepresentanteDTO(-1, "N/A", "N/A", "N/A", "N/A", 0, 0);
+        String buscarSQLRepresentante = "SELECT * FROM representante WHERE telefono = ?";
+
+        try {
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaRepresentante = conexionBaseDeDatos.prepareStatement(buscarSQLRepresentante);
+            sentenciaRepresentante.setString(1, telefono);
+            resultadoConsultaRepresentante = sentenciaRepresentante.executeQuery();
+
+            if (resultadoConsultaRepresentante.next()) {
+                representante = new RepresentanteDTO(
+                        resultadoConsultaRepresentante.getInt("idRepresentante"),
+                        resultadoConsultaRepresentante.getString("correo"),
+                        resultadoConsultaRepresentante.getString("telefono"),
+                        resultadoConsultaRepresentante.getString("nombre"),
+                        resultadoConsultaRepresentante.getString("apellidos"),
+                        resultadoConsultaRepresentante.getInt("idOV"),
+                        resultadoConsultaRepresentante.getInt("estadoActivo")
+                );
+            }
+        } finally {
+            if (sentenciaRepresentante != null) {
+                sentenciaRepresentante.close();
+            }
+        }
+
+        return representante;
+    }
 }
 

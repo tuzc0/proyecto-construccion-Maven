@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="703.0" prefWidth="712.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorRegistroEstudianteGUI">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="703.0" prefWidth="712.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorRegistroOrganizacionVinculadaGUI">
    <children>
       <Label layoutX="123.0" layoutY="37.0" text="Registrar organizacion vinculada ">
          <font>
@@ -22,29 +22,29 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="campoNombre" />
-            <Label prefHeight="38.0" prefWidth="78.0" text="Correo">
+            <TextField fx:id="campoNombreOrganizacion" />
+            <Label prefHeight="34.0" prefWidth="174.0" text="Correo electronico">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="campoApellidos" promptText="Ej. ejemplo@ejemplo.com" />
+            <TextField fx:id="campoCorreoOrganizacion" promptText="Ej. ejemplo@ejemplo.com" />
             <Label prefHeight="34.0" prefWidth="130.0" text="Numero de contacto">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="campoMatricula" prefHeight="26.0" prefWidth="514.0" promptText="Ej. +52 1234567890" />
+            <TextField fx:id="campoContactoOrganizacion" prefHeight="26.0" prefWidth="514.0" promptText="Ej. +52 1234567890" />
             <Label prefHeight="34.0" prefWidth="118.0" text="Direccion">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="campoCorreo" prefHeight="26.0" prefWidth="498.0" />
+            <TextField fx:id="campoDireccionOrganizacion" prefHeight="26.0" prefWidth="498.0" />
             <HBox prefHeight="30.0" prefWidth="498.0" />
          </children>
       </VBox>
-      <Button layoutX="557.0" layoutY="639.0" mnemonicParsing="false" onAction="#guardarEstudiante" prefHeight="31.0" prefWidth="98.0" text="registrar">
+      <Button layoutX="557.0" layoutY="639.0" mnemonicParsing="false" onAction="#guardarOrganizacionYRepresentante" prefHeight="31.0" prefWidth="98.0" text="registrar">
          <font>
             <Font size="14.0" />
          </font>
@@ -66,28 +66,28 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="campoNombre1" />
+            <TextField fx:id="campoNombreRepresentante" />
             <Label prefHeight="38.0" prefWidth="78.0" text="Apellido">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="campoApellidos1" />
-            <Label prefHeight="35.0" prefWidth="130.0" text="Numero telefonico">
+            <TextField fx:id="campoApellidosRepresentante" />
+            <Label prefHeight="35.0" prefWidth="130.0" text="Numero de contacto">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="campoMatricula1" prefHeight="32.0" prefWidth="603.0" promptText="Ej. +52 1234567890" />
+            <TextField fx:id="campoContactoRepresentante" prefHeight="32.0" prefWidth="603.0" promptText="Ej. +52 1234567890" />
             <Label prefHeight="30.0" prefWidth="118.0" text="Correo electronico">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="campoCorreo1" prefHeight="28.0" prefWidth="603.0" promptText="Ej. ejemplo@ejemplo.com" />
+            <TextField fx:id="campoCorreoRepresentante" prefHeight="28.0" prefWidth="603.0" promptText="Ej. ejemplo@ejemplo.com" />
          </children>
       </VBox>
-      <Button layoutX="52.0" layoutY="639.0" mnemonicParsing="false" onAction="#cancelarRegistro" prefHeight="31.0" prefWidth="192.0" text="Registrar representante">
+      <Button fx:id="botonRegistrarRepresentante" disable="true" layoutX="52.0" layoutY="639.0" mnemonicParsing="false" onAction="#registrarNuevoRepresentante" prefHeight="31.0" prefWidth="192.0" text="Registrar representante">
          <font>
             <Font size="14.0" />
          </font>

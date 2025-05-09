@@ -7,11 +7,15 @@ import java.sql.SQLException;
 
 public interface IOvDAO {
 
-    boolean crearNuevaOrganizacion(OrganizacionVinculadaDTO ov) throws SQLException, IOException;
+    int crearNuevaOrganizacion(OrganizacionVinculadaDTO ov) throws SQLException, IOException;
 
     boolean eliminarOrganizacionPorID(int idOv) throws SQLException, IOException;
 
     boolean modificarOrganizacion(OrganizacionVinculadaDTO ov) throws SQLException, IOException;
 
     OrganizacionVinculadaDTO buscarOrganizacionPorID(int idOv) throws SQLException, IOException;
+
+    OrganizacionVinculadaDTO buscarOrganizacionPorCorreo(String correo) throws SQLException, IOException;
+
+    OrganizacionVinculadaDTO buscarOrganizacionPorTelefono(String telefono) throws SQLException, IOException;
 }

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="442.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorRegistroEstudianteGUI">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="442.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorRegistroRepresentanteGUI">
    <children>
       <Label layoutX="134.0" layoutY="47.0" text="Registrar representante">
          <font>
@@ -33,7 +33,7 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="campoMatricula" promptText="Ej. S12345678" />
+            <TextField fx:id="campoContacto" promptText="Ej. S12345678" />
             <Label prefHeight="26.0" prefWidth="118.0" text="correo electronico">
                <font>
                   <Font size="13.0" />
@@ -42,7 +42,7 @@
             <TextField fx:id="campoCorreo" prefHeight="26.0" prefWidth="498.0" promptText="Ej. ejemplo@estudiantes.uv.mx" />
          </children>
       </VBox>
-      <Button layoutX="320.0" layoutY="354.0" mnemonicParsing="false" onAction="#guardarEstudiante" prefHeight="31.0" prefWidth="88.0" text="registrar">
+      <Button layoutX="320.0" layoutY="354.0" mnemonicParsing="false" onAction="#guardarRegistro" prefHeight="31.0" prefWidth="88.0" text="registrar">
          <font>
             <Font size="14.0" />
          </font>

@@ -106,6 +106,7 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
 
             idOrganizacion = organizacionDAO.crearNuevaOrganizacion(organizacionDTO);
             utilidades.mostrarAlerta("Registro exitoso", "Organización registrada", "La organización ha sido registrada exitosamente.");
+            botonRegistrarRepresentante.setDisable(false);
 
         } catch (SQLException e) {
 
@@ -135,6 +136,7 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
 
         auxiliarRegistroRepresentante.registrarRepresentante(nombreRepresentante, apellidosRepresentante, correoRepresentante, contactoRepresentante, idOrganizacion);
 
+
     }
 
     @FXML
@@ -143,7 +145,7 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
         registrarOrganizacion();
         registrarRepresentante();
 
-        botonRegistrarRepresentante.setDisable(false);
+
 
     }
 

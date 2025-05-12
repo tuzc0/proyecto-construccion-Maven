@@ -1082,3 +1082,4 @@ Caused by: java.lang.NullPointerException: Cannot invoke "javafx.scene.control.T
 	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx.fxml.jar:?]
 	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2688) ~[javafx.fxml.jar:?]
 	... 63 more
+2025-05-09 15:09:41 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoGUI - Registro de académico exitoso.

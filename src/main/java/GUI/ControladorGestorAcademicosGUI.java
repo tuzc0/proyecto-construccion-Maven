@@ -14,14 +14,15 @@ import logica.DTOs.CuentaDTO;
 import logica.DTOs.AcademicoDTO;
 import logica.DTOs.UsuarioDTO;
 import logica.VerificacionUsuario;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class ControladorGestorAcademicosGUI {
 
-    Logger logger = Logger.getLogger(ControladorGestorAcademicosGUI.class.getName());
+    private static final Logger logger = LogManager.getLogger(ControladorRegistroAcademicoGUI.class);
 
     @FXML private TextField campoNumeroDePersonal;
     @FXML private Button botonBuscar;
@@ -87,7 +88,7 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (Exception e) {
 
-            logger.severe("Error al cargar la lista de academicos: " + e.getMessage());
+            logger.error("Error al cargar la lista de academicos: " + e.getMessage());
             utilidades.mostrarAlerta("Error", "Error al cargar la lista de estudiantes.", "");
         }
     }
@@ -128,7 +129,7 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (SQLException | IOException e) {
 
-            logger.severe("Error al buscar al academico: " + e.getMessage());
+            logger.error("Error al buscar al academico: " + e.getMessage());
             utilidades.mostrarAlerta("Error", "Ocurrio un error al buscar.", "");
         }
     }
@@ -159,7 +160,7 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (SQLException | IOException e) {
 
-            logger.severe("Error al mostrar detalles del academico: " + e.getMessage());
+            logger.error("Error al mostrar detalles del academico: " + e.getMessage());
             utilidades.mostrarAlerta("Error", "Ocurrio un error al cargar los detalles del academico.", "");
         }
     }
@@ -197,7 +198,7 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (SQLException | IOException e) {
 
-            logger.severe("Error al eliminar al academico: " + e.getMessage());
+            logger.error("Error al eliminar al academico: " + e.getMessage());
             utilidades.mostrarAlerta("Error", "Ocurrio un error.", "Por favor, intentelo más tarde.");
         }
     }
@@ -257,7 +258,7 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (SQLException | IOException e) {
 
-            logger.severe("Error al eliminar el academico: " + e.getMessage());
+            logger.error("Error al eliminar el academico: " + e.getMessage());
             errorAlEliminar = true;
         }
 
@@ -420,7 +421,7 @@ public class ControladorGestorAcademicosGUI {
 
             } else {
 
-                logger.warning("No se pudo modificar al academico.");
+                logger.warn("No se pudo modificar al academico.");
                 utilidades.mostrarAlerta("Exito", "Academico modificado con exito.", "");
             }
 
@@ -429,7 +430,7 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (SQLException | IOException | NumberFormatException e) {
 
-            logger.severe("Error al guardar los cambios: " + e.getMessage());
+            logger.error("Error al guardar los cambios: " + e.getMessage());
             utilidades.mostrarAlerta("Error", "Ocurrio un error, por favor intentelo de nuevo más tarde.", "");
         }
 

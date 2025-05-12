@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AcademicoEvaluadorDAOTest {
@@ -46,5 +48,13 @@ public class AcademicoEvaluadorDAOTest {
         int numeroDePersonal = 33333;
         AcademicoEvaluadorDTO academicoEvaluador = dao.buscarAcademicoEvaluadorPorNumeroDePersonal(numeroDePersonal);
         assertEquals(numeroDePersonal, academicoEvaluador.getNumeroDePersonal(), "El número de personal debería coincidir.");
+    }
+
+    @Test
+    void testListarAcademicos() throws SQLException, IOException {
+
+        List<AcademicoEvaluadorDTO> academicos = dao.listarAcademicos();
+        AcademicoEvaluadorDTO academico = academicos.get(0);
+        assertTrue(academico.getNumeroDePersonal() > 0, "El número de personal debería ser mayor a 0.");
     }
 }

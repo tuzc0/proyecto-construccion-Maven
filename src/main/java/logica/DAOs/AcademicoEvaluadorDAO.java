@@ -1,6 +1,7 @@
 package logica.DAOs;
 
 import accesoadatos.ConexionBaseDeDatos;
+import logica.DTOs.AcademicoDTO;
 import logica.DTOs.AcademicoEvaluadorDTO;
 import logica.interfaces.IAcademicoEvaluadorDAO;
 import java.io.IOException;
@@ -8,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
 
@@ -68,8 +71,7 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
 
     public boolean modificarAcademicoEvaluador(AcademicoEvaluadorDTO academicoEvaluador) throws SQLException, IOException {
 
-        String consultaSQL = "UPDATE academicoevaluador SET numeroDePersonal = ?, idUsuario = ? " +
-                "WHERE numeroDePersonal = ?";
+        String consultaSQL = "UPDATE academicoevaluador SET numeroDePersonal = ? WHERE idUsuario = ?";
         boolean modificacionExitosa = false;
 
         try {
@@ -78,7 +80,6 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, academicoEvaluador.getNumeroDePersonal());
             consultaPreparada.setInt(2, academicoEvaluador.getIdUsuario());
-            consultaPreparada.setInt(3, academicoEvaluador.getNumeroDePersonal());
             consultaPreparada.executeUpdate();
             modificacionExitosa = true;
 
@@ -125,5 +126,40 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
         }
 
         return academicoEvaluador;
+    }
+
+    public List<AcademicoEvaluadorDTO> listarAcademicos() throws SQLException, IOException {
+
+        List<AcademicoEvaluadorDTO> academicos = new ArrayList<>();
+
+        String consultaSQL = "SELECT * FROM vista_academicoevaluador_usuario WHERE estadoActivo = 1";
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
+            resultadoConsulta = consultaPreparada.executeQuery();
+
+            while (resultadoConsulta.next()) {
+
+                int numeroDePersonalAcademico = resultadoConsulta.getInt("numeroDePersonal");
+                int idUsuario = resultadoConsulta.getInt("idUsuario");
+                String apellidos = resultadoConsulta.getString("apellidos");
+                String nombreAcademico = resultadoConsulta.getString("nombre");
+                int estadoActivo = resultadoConsulta.getInt("estadoActivo");
+
+                AcademicoEvaluadorDTO academico = new AcademicoEvaluadorDTO(numeroDePersonalAcademico, idUsuario, nombreAcademico, apellidos, estadoActivo);
+                academicos.add(academico);
+            }
+
+        } finally {
+
+            if (consultaPreparada != null) {
+
+                consultaPreparada.close();
+            }
+        }
+
+        return academicos;
     }
 }

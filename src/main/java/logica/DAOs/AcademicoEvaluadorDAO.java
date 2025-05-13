@@ -1,7 +1,6 @@
 package logica.DAOs;
 
 import accesoadatos.ConexionBaseDeDatos;
-import logica.DTOs.AcademicoDTO;
 import logica.DTOs.AcademicoEvaluadorDTO;
 import logica.interfaces.IAcademicoEvaluadorDAO;
 import java.io.IOException;
@@ -29,8 +28,10 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, academicoEvaluador.getNumeroDePersonal());
             consultaPreparada.setInt(2, academicoEvaluador.getIdUsuario());
-            consultaPreparada.executeUpdate();
-            insercionExitosa = true;
+
+            if (consultaPreparada.executeUpdate() > 0) {
+                insercionExitosa = true;
+            }
 
         } finally {
 

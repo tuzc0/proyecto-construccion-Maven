@@ -30,7 +30,7 @@ public class AcademicoDAO implements IAcademicoDAO {
             consultaPreparada.setInt(2, academico.getIdUsuario());
 
             if (consultaPreparada.executeUpdate() > 0) {
-                academicoInsertado = true;  // esta parte se encarga de verificar si se insertó correctamente o si se inserto algo
+                academicoInsertado = true;
             }
 
         } finally {
@@ -57,7 +57,7 @@ public class AcademicoDAO implements IAcademicoDAO {
             consultaPreparada.setInt(1, numeroDePersonal);
 
             if (consultaPreparada.executeUpdate() > 0) {
-                academicoEliminado = true; // aqui igual
+                academicoEliminado = true;
             }
 
         } finally {
@@ -84,7 +84,7 @@ public class AcademicoDAO implements IAcademicoDAO {
             consultaPreparada.setInt(2, academico.getIdUsuario());
 
             if (consultaPreparada.executeUpdate() > 0) {
-                academicoModificado = true; // aqui igual
+                academicoModificado = true;
             }
 
         } finally {

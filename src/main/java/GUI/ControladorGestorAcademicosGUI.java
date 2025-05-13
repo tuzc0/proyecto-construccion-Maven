@@ -89,7 +89,7 @@ public class ControladorGestorAcademicosGUI {
         } catch (Exception e) {
 
             logger.error("Error al cargar la lista de academicos: " + e.getMessage());
-            utilidades.mostrarAlerta("Error", "Error al cargar la lista de estudiantes.", "");
+            utilidades.mostrarAlerta("Error", "Error al cargar la lista de academicos.", "");
         }
     }
 
@@ -425,14 +425,23 @@ public class ControladorGestorAcademicosGUI {
                 utilidades.mostrarAlerta("Exito", "Academico modificado con exito.", "");
             }
 
+            campoNumeroDePersonalEncontrado.setText(numeroDePersonal);
+            campoCorreoEncontrado.setText(correo);
+            campoNombreEncontrado.setText(nombre);
+            campoApellidoEncontrado.setText(apellidos);
+
             cancelarEdicion();
             cargarAcademicos();
+            actualizarDatos();
 
         } catch (SQLException | IOException | NumberFormatException e) {
 
             logger.error("Error al guardar los cambios: " + e.getMessage());
             utilidades.mostrarAlerta("Error", "Ocurrio un error, por favor intentelo de nuevo más tarde.", "");
         }
+    }
+
+    private void actualizarDatos() {
 
         botonSeleccionarAcademicos.setDisable(false);
         botonEliminarAcademico.setVisible(true);

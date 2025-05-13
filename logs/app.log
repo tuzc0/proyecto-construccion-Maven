@@ -1083,3 +1083,14 @@ Caused by: java.lang.NullPointerException: Cannot invoke "javafx.scene.control.T
 	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2688) ~[javafx.fxml.jar:?]
 	... 63 more
 2025-05-09 15:09:41 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoGUI - Registro de académico exitoso.
+2025-05-11 21:21:24 [JavaFX Application Thread] ERROR GUI.ControladorRegistroAcademicoGUI - Error al cargar la lista de academicos: Cannot invoke "javafx.scene.control.TableView.setItems(javafx.collections.ObservableList)" because "this.tablaAcademicos" is null
+2025-05-11 21:24:20 [JavaFX Application Thread] ERROR GUI.ControladorRegistroAcademicoGUI - Error al cargar la lista de academicos: Cannot invoke "javafx.scene.control.TableView.setItems(javafx.collections.ObservableList)" because "this.tablaAcademicos" is null
+2025-05-11 21:24:41 [JavaFX Application Thread] ERROR GUI.ControladorRegistroAcademicoGUI - Error al cargar la lista de academicos: Cannot invoke "javafx.scene.control.TableView.setItems(javafx.collections.ObservableList)" because "this.tablaAcademicos" is null
+2025-05-11 21:31:37 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoGUI - El académico ha sido modificado correctamente.
+2025-05-11 21:33:07 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoGUI - El académico ha sido modificado correctamente.
+2025-05-11 21:40:02 [JavaFX Application Thread] ERROR GUI.ControladorRegistroAcademicoGUI - Error al cargar la lista de academicos: Cannot invoke "javafx.scene.control.TableView.setItems(javafx.collections.ObservableList)" because "this.tablaAcademicos" is null
+2025-05-11 21:42:07 [JavaFX Application Thread] ERROR GUI.ControladorRegistroAcademicoGUI - Error al cargar la lista de academicos: Cannot invoke "javafx.scene.control.TableView.setItems(javafx.collections.ObservableList)" because "this.tablaAcademicos" is null
+2025-05-11 21:45:43 [JavaFX Application Thread] ERROR GUI.ControladorRegistroAcademicoGUI - Error al cargar la lista de academicos: Cannot invoke "javafx.scene.control.TableView.setItems(javafx.collections.ObservableList)" because "this.tablaAcademicos" is null
+2025-05-11 21:50:46 [JavaFX Application Thread] ERROR GUI.ControladorRegistroAcademicoGUI - Error al cargar la lista de academicos: Cannot invoke "javafx.scene.control.TableView.setItems(javafx.collections.ObservableList)" because "this.tablaAcademicos" is null
+2025-05-11 21:59:26 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoGUI - El académico ha sido modificado correctamente.
+2025-05-11 22:35:08 [JavaFX Application Thread] INFO  GUI.ControladorRegistroAcademicoGUI - El académico ha sido modificado correctamente.

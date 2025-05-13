@@ -28,8 +28,10 @@ public class AcademicoDAO implements IAcademicoDAO {
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, academico.getNumeroDePersonal());
             consultaPreparada.setInt(2, academico.getIdUsuario());
-            consultaPreparada.executeUpdate();
-            academicoInsertado = true;
+
+            if (consultaPreparada.executeUpdate() > 0) {
+                academicoInsertado = true;  // esta parte se encarga de verificar si se insertó correctamente o si se inserto algo
+            }
 
         } finally {
 
@@ -46,15 +48,17 @@ public class AcademicoDAO implements IAcademicoDAO {
 
         String consultaSQL = "UPDATE usuario SET estadoActivo = 0 WHERE idUsuario = " +
                 "(SELECT idUsuario FROM academico WHERE numeroDePersonal = ?)";
-        boolean AcademicoEliminado = false;
+        boolean academicoEliminado = false;
 
         try {
 
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, numeroDePersonal);
-            consultaPreparada.executeUpdate();
-            AcademicoEliminado = true;
+
+            if (consultaPreparada.executeUpdate() > 0) {
+                academicoEliminado = true; // aqui igual
+            }
 
         } finally {
 
@@ -64,7 +68,7 @@ public class AcademicoDAO implements IAcademicoDAO {
             }
         }
 
-        return AcademicoEliminado;
+        return academicoEliminado;
     }
 
     public boolean modificarAcademico(AcademicoDTO academico) throws SQLException, IOException {
@@ -78,8 +82,10 @@ public class AcademicoDAO implements IAcademicoDAO {
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, academico.getNumeroDePersonal());
             consultaPreparada.setInt(2, academico.getIdUsuario());
-            consultaPreparada.executeUpdate();
-            academicoModificado = true;
+
+            if (consultaPreparada.executeUpdate() > 0) {
+                academicoModificado = true; // aqui igual
+            }
 
         } finally {
 

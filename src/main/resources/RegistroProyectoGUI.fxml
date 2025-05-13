@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="73.0" layoutY="14.0" prefHeight="26.0" prefWidth="457.0" text="Nombre: ">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></Label>
+            <TextField layoutX="73.0" layoutY="40.0" prefHeight="29.0" prefWidth="458.0" />
+            <Label layoutX="73.0" layoutY="80.0" prefHeight="26.0" prefWidth="457.0" text="Duración: ">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <TextField layoutX="73.0" layoutY="106.0" prefHeight="29.0" prefWidth="458.0" />
+            <Label layoutX="73.0" layoutY="147.0" prefHeight="26.0" prefWidth="457.0" text="Nombre: ">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </center>
+   <top>
+      <AnchorPane prefHeight="58.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="209.0" layoutY="6.0" prefHeight="46.0" prefWidth="182.0" text="Nuevo Proyecto">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </top>
+</BorderPane>

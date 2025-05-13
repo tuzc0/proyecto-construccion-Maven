@@ -67,4 +67,12 @@ public class AcademicoEvaluadorDAOTest {
         AcademicoEvaluadorDTO academicoEvaluador = dao.buscarAcademicoEvaluadorPorNumeroDePersonal(numeroDePersonal);
         assertEquals(numeroDePersonal, academicoEvaluador.getNumeroDePersonal(), "El número de personal debería coincidir.");
     }
+
+    @Test
+    void testListarAcademicos() throws SQLException, IOException {
+
+        List<AcademicoEvaluadorDTO> academicos = dao.listarAcademicos();
+        AcademicoEvaluadorDTO academico = academicos.get(0);
+        assertTrue(academico.getNumeroDePersonal() > 0, "El número de personal debería ser mayor a 0.");
+    }
 }

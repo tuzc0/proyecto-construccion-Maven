@@ -1,4 +1,4 @@
-package GUI;
+package GUI.gestionorganizacion;
 
 import GUI.utilidades.Utilidades;
 import logica.DAOs.RepresentanteDAO;

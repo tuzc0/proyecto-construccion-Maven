@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="971.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorConsultarOrganizacionGUI">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="971.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.gestionorganizacion.ControladorConsultarOrganizacionGUI">
    <children>
       <VBox layoutX="37.0" layoutY="80.0" prefHeight="437.0" prefWidth="910.0">
          <children>
@@ -42,15 +42,16 @@
             </HBox>
             <HBox prefHeight="398.0" prefWidth="910.0">
                <children>
-                  <VBox prefHeight="394.0" prefWidth="919.0">
+                  <VBox prefHeight="394.0" prefWidth="963.0">
                      <children>
-                        <TableView fx:id="tablaOrganizaciones" prefHeight="386.0" prefWidth="781.0">
-                          <columns>
-                            <TableColumn fx:id="columnaNombre" prefWidth="244.0000114440918" text="nombre" />
-                            <TableColumn fx:id="columnaCorreo" prefWidth="184.0" text="correo" />
+                        <TableView fx:id="tablaOrganizaciones" prefHeight="386.0" prefWidth="750.0">
+                           <columns>
+                              <TableColumn fx:id="columnaNombre" prefWidth="244.0000114440918" text="nombre" />
+                              <TableColumn fx:id="columnaCorreo" prefWidth="184.0" text="correo" />
                               <TableColumn fx:id="columnaContacto" prefWidth="259.1998291015625" text="numero de contacto" />
-                              <TableColumn fx:id="columnaDetalles" prefWidth="286.400146484375" />
-                          </columns>
+                              <TableColumn fx:id="columnaDetalles" minWidth="9.0" prefWidth="112.79998779296875" />
+                              <TableColumn fx:id="columnaBotonEliminar" prefWidth="109.5999755859375" />
+                           </columns>
                         </TableView>
                      </children>
                   </VBox>

@@ -1,8 +1,11 @@
+import accesoadatos.ConexionBaseDeDatos;
 import org.junit.jupiter.api.*;
 import logica.DAOs.AcademicoDAO;
 import logica.DTOs.AcademicoDTO;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -16,9 +19,25 @@ class AcademicoDAOTest {
         academicoDAO = new AcademicoDAO();
     }
 
+    @AfterAll
+    public void borrarDatos() throws SQLException, IOException {
+
+        List<Integer> createdAcademics = List.of(22222, 12348);
+
+
+        for (int numeroDePersonal : createdAcademics) {
+            String deleteSQL = "DELETE FROM academico WHERE numeroDePersonal = ?";
+            try (var statement = new ConexionBaseDeDatos().getConnection().prepareStatement(deleteSQL)) {
+                statement.setInt(1, numeroDePersonal);
+                statement.executeUpdate();
+            }
+        }
+
+    }
+
     @Test
     void testInsertarAcademicoDatosValidos() {
-        AcademicoDTO academico = new AcademicoDTO(22222, 49, "Prueba", "Insercion", 1);
+        AcademicoDTO academico = new AcademicoDTO(22222, 1, "Prueba", "Insercion", 1);
 
         try {
 
@@ -77,7 +96,7 @@ class AcademicoDAOTest {
     @Test
     void testBuscarAcademicoPorNumeroDePersonalDatosValidos() {
 
-        int numeroDePersonal = 1001;
+        int numeroDePersonal = 22222;
 
         try {
 

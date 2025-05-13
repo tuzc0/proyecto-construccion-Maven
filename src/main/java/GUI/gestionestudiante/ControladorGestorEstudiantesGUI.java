@@ -1,4 +1,4 @@
-package GUI;
+package GUI.gestionestudiante;
 
 import GUI.utilidades.Utilidades;
 import javafx.collections.FXCollections;

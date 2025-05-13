@@ -1,4 +1,4 @@
-package GUI;
+package GUI.gestionorganizacion;
 
 import GUI.utilidades.Utilidades;
 import javafx.fxml.FXML;
@@ -9,7 +9,6 @@ import logica.DAOs.OrganizacionVinculadaDAO;
 import logica.DTOs.OrganizacionVinculadaDTO;
 
 import javax.imageio.IIOException;
-import java.io.BufferedReader;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
@@ -141,5 +140,10 @@ public class ControladorGestorOrganizacionGUI {
         botonCancelar.setVisible(false);
         botonGuardar.setVisible(false);
         botonEditar.setVisible(true);
+    }
+
+    @FXML
+    public void listarRepresentantes (){
+
     }
 }

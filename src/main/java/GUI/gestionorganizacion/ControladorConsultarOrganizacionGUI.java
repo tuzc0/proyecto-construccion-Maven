@@ -1,4 +1,4 @@
-package GUI;
+package GUI.gestionorganizacion;
 
 import GUI.utilidades.Utilidades;
 import javafx.collections.FXCollections;
@@ -41,6 +41,9 @@ public class ControladorConsultarOrganizacionGUI {
     @FXML
     private TextField campoCorreo;
 
+    @FXML
+    private TableColumn <OrganizacionVinculadaDTO, Void> columnaBotonEliminar;
+
     private OrganizacionVinculadaDTO organizacionSeleccionada;
 
     public static int idOrganizacionSeleccionada;
@@ -60,6 +63,7 @@ public class ControladorConsultarOrganizacionGUI {
         cargarOrganizaciones();
 
         añadirBotonConsultarATable();
+        añadirBotonEliminarATable();
 
         tablaOrganizaciones.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -103,7 +107,7 @@ public class ControladorConsultarOrganizacionGUI {
 
         Callback<TableColumn<OrganizacionVinculadaDTO, Void>, TableCell<OrganizacionVinculadaDTO, Void>> cellFactory = param -> new TableCell<>() {
 
-            private final Button botonConsultar = new Button("Consultar Organizacion");
+            private final Button botonConsultar = new Button("Consultar");
 
             {
                 botonConsultar.setOnAction(event -> {
@@ -126,11 +130,43 @@ public class ControladorConsultarOrganizacionGUI {
         columnaDetalles.setCellFactory(cellFactory);
     }
 
+    private void añadirBotonEliminarATable() {
+
+        Callback<TableColumn<OrganizacionVinculadaDTO, Void>, TableCell<OrganizacionVinculadaDTO, Void>> cellFactory = param -> new TableCell<>() {
+
+            private final Button botonEliminar = new Button("Eliminar");
+
+            {
+                botonEliminar.setOnAction(event -> {
+                    OrganizacionVinculadaDTO organizacion = getTableView().getItems().get(getIndex());
+                    eliminarOrganizacion(organizacion);
+
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+
+                super.updateItem(item, empty);
+                if (empty || getTableView().getItems().get(getIndex()) != organizacionSeleccionada) {
+
+                    setGraphic(null);
+                } else {
+
+                    setGraphic(botonEliminar);
+                }
+            }
+        };
+
+        columnaBotonEliminar.setCellFactory(cellFactory);
+    }
+
     private void abrirVentanaDetallesOrganizacion(OrganizacionVinculadaDTO organizacion) {
 
         Utilidades utilidades = new Utilidades();
 
         try {
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestorOrganizacionGUI.fxml"));
             Parent root = loader.load();
 
@@ -147,6 +183,31 @@ public class ControladorConsultarOrganizacionGUI {
 
             logger.severe("Error al abrir la ventana de detalles de la organización: " + e.getMessage());
             utilidades.mostrarAlerta("Error", "Error al abrir la ventana", "No se pudo abrir la ventana de detalles de la organización.");
+        }
+    }
+
+    private void eliminarOrganizacion(OrganizacionVinculadaDTO organizacionSeleccionada) {
+
+        Utilidades utilidades = new Utilidades();
+
+        try {
+
+            OrganizacionVinculadaDAO organizacionDAO = new OrganizacionVinculadaDAO();
+            organizacionDAO.eliminarOrganizacionPorID(organizacionSeleccionada.getIdOrganizacion());
+            cargarOrganizaciones();
+            utilidades.mostrarAlerta("Éxito", "Organización eliminada", "La organización ha sido eliminada correctamente.");
+        } catch (IOException e) {
+
+            logger.severe("Error al eliminar la organización: " + e.getMessage());
+            utilidades.mostrarAlerta("Error", "Error de entrada/salida", "No se pudo eliminar la organización.");
+        } catch (SQLException e) {
+
+            logger.severe("Error al eliminar la organización: " + e.getMessage());
+            utilidades.mostrarAlerta("Error", "Error de SQL", "No se pudo eliminar la organización.");
+        } catch (Exception e) {
+
+            logger.severe("Error inesperado al eliminar la organización: " + e.getMessage());
+            utilidades.mostrarAlerta("Error", "Error inesperado", "No se pudo eliminar la organización.");
         }
     }
 

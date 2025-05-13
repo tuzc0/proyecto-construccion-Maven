@@ -1,4 +1,4 @@
-package GUI;
+package GUI.gestionorganizacion;
 
 
 import javafx.fxml.FXML;

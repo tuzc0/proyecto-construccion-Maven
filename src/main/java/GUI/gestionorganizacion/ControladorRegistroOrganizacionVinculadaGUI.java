@@ -1,4 +1,4 @@
-package GUI;
+package GUI.gestionorganizacion;
 
 import GUI.utilidades.Utilidades;
 import javafx.fxml.FXML;
@@ -11,8 +11,6 @@ import javafx.stage.Stage;
 import logica.DAOs.OrganizacionVinculadaDAO;
 import logica.DTOs.OrganizacionVinculadaDTO;
 import logica.VerificacionUsuario;
-import org.w3c.dom.Text;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Logger;
@@ -126,7 +124,7 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
         }
     }
 
-    private void registrarRepresentante(){
+    private void registrarRepresentante() {
 
         AuxiliarRegistroRepresentante auxiliarRegistroRepresentante = new AuxiliarRegistroRepresentante();
         String nombreRepresentante = campoNombreRepresentante.getText();
@@ -146,7 +144,6 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
         registrarRepresentante();
 
 
-
     }
 
     @FXML
@@ -164,6 +161,7 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
 
     @FXML
     private void registrarNuevoRepresentante() {
+
         Utilidades utilidades = new Utilidades();
         try {
 
@@ -178,7 +176,7 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
 
             logger.severe("Error al abrir la ventana de registro representante: " + e.getMessage());
             utilidades.mostrarAlerta("Error", "Error al abrir la ventana de registro", "No se pudo abrir la ventana de registro. Por favor, inténtelo de nuevo más tarde.");
-            e.printStackTrace();
+
         }
     }
 }

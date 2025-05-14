@@ -28,7 +28,7 @@ class EstudianteDAOTest {
 
             String deleteSQL = "DELETE FROM estudiante WHERE matricula = ?";
             try (var stmt = conexion.prepareStatement(deleteSQL)) {
-                stmt.setString(1, "A12347");
+                stmt.setString(1, "A12349");
                 stmt.executeUpdate();
             }
 
@@ -36,7 +36,7 @@ class EstudianteDAOTest {
             UsuarioDTO usuario = new UsuarioDTO(0, "Nombre", "Apellido", 1);
             int idUsuario = usuarioDAO.insertarUsuario(usuario);
 
-            EstudianteDTO estudiante = new EstudianteDTO(1, "Juan", "Pérez", "A12347", idUsuario);
+            EstudianteDTO estudiante = new EstudianteDTO(1, "Juan", "Pérez", "A12349", idUsuario);
             estudianteDAO.insertarEstudiante(estudiante);
         }
 
@@ -46,7 +46,7 @@ class EstudianteDAOTest {
     @AfterAll
     public static void limpiarDatosPrueba() throws SQLException, IOException {
 
-        List<String> estudiantesCreados = List.of("A12347", "A12341");
+        List<String> estudiantesCreados = List.of("A12349", "A12341");
 
 
         for (String matricula : estudiantesCreados) {
@@ -85,7 +85,7 @@ class EstudianteDAOTest {
     @Order(2)
     void testEliminarEstudiantePorMatriculaDatosValidos() throws SQLException, IOException {
 
-        boolean resultado = estudianteDAO.eliminarEstudiantePorMatricula(0, "A12347");
+        boolean resultado = estudianteDAO.eliminarEstudiantePorMatricula(0, "A12349");
         assertTrue(resultado, "El estudiante debería haberse eliminado correctamente.");
     }
 
@@ -93,7 +93,7 @@ class EstudianteDAOTest {
     @Order(3)
     void testModificarEstudianteDatosValidos() throws SQLException, IOException {
 
-        EstudianteDTO estudiante = new EstudianteDTO(1, "Juan", "Pérez Lopez", "A12347", 1);
+        EstudianteDTO estudiante = new EstudianteDTO(1, "Juan", "Pérez Lopez", "A12349", 1);
         boolean resultado = estudianteDAO.modificarEstudiante(estudiante);
         assertTrue(resultado, "El estudiante debería haberse modificado correctamente.");
     }
@@ -102,8 +102,8 @@ class EstudianteDAOTest {
     @Order(4)
     void testBuscarEstudiantePorMatriculaDatosValidos() throws SQLException, IOException {
 
-        EstudianteDTO estudiante = estudianteDAO.buscarEstudiantePorMatricula("A12347");
-        assertEquals("A12347", estudiante.getMatricula(), "La matrícula del estudiante debería coincidir.");
+        EstudianteDTO estudiante = estudianteDAO.buscarEstudiantePorMatricula("A12349");
+        assertEquals("A12349", estudiante.getMatricula(), "La matrícula del estudiante debería coincidir.");
     }
 
     @Test
@@ -113,4 +113,6 @@ class EstudianteDAOTest {
         List<EstudianteDTO> estudiantes = estudianteDAO.listarEstudiantes();
         assertNotNull(estudiantes, "La lista de estudiantes no debería ser nula.");
     }
+
+
 }

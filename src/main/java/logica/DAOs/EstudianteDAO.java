@@ -35,7 +35,9 @@ public class EstudianteDAO implements IEstudianteDAO {
             sentenciaEstudiante.setString(1, estudiante.getMatricula());
             sentenciaEstudiante.setInt(2, estudiante.getIdUsuario());
             sentenciaEstudiante.executeUpdate();
+
             estudianteInsertado = true;
+
 
         } finally {
 

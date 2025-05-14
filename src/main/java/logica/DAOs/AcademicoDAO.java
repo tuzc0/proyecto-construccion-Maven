@@ -29,9 +29,8 @@ public class AcademicoDAO implements IAcademicoDAO {
             consultaPreparada.setInt(1, academico.getNumeroDePersonal());
             consultaPreparada.setInt(2, academico.getIdUsuario());
 
-            if (consultaPreparada.executeUpdate() > 0) {
-                academicoInsertado = true;
-            }
+            academicoInsertado = true;
+
 
         } finally {
 

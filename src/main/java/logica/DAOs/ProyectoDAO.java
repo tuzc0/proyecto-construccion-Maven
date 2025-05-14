@@ -15,8 +15,6 @@ public class ProyectoDAO implements IProyectoDAO {
     PreparedStatement sentenciaProyecto = null;
     ResultSet resultadoProyecto;
 
-
-
     public boolean crearNuevoProyecto(ProyectoDTO proyecto) throws SQLException, IOException {
 
         String insertarSQLProyecto = "INSERT INTO proyecto VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -34,8 +32,10 @@ public class ProyectoDAO implements IProyectoDAO {
             sentenciaProyecto.setInt(6, proyecto.getIDRepresentante());
             sentenciaProyecto.setString(7, proyecto.getMatricula());
             sentenciaProyecto.setInt(8, proyecto.getEstadoActivo());
-            sentenciaProyecto.executeUpdate();
-            proyectoInsertado = true;
+
+            if (sentenciaProyecto.executeUpdate() > 0) {
+                proyectoInsertado = true;
+            }
 
         } finally {
 
@@ -59,8 +59,10 @@ public class ProyectoDAO implements IProyectoDAO {
             sentenciaProyecto = conexionBaseDeDatos.prepareStatement(modificarSQLProyecto);
             sentenciaProyecto.setInt(1, 0);
             sentenciaProyecto.setInt(2, idProyecto);
-            sentenciaProyecto.executeUpdate();
-            proyectoEliminado = true;
+
+            if (sentenciaProyecto.executeUpdate() > 0) {
+                proyectoEliminado = true;
+            }
 
         } finally {
 
@@ -89,8 +91,10 @@ public class ProyectoDAO implements IProyectoDAO {
             sentenciaProyecto.setInt(5, proyecto.getIDRepresentante());
             sentenciaProyecto.setString(6, proyecto.getMatricula());
             sentenciaProyecto.setInt(7, proyecto.getIDProyecto());
-            sentenciaProyecto.executeUpdate();
-            proyectoModificado = true;
+
+            if (sentenciaProyecto.executeUpdate() > 0) {
+                proyectoModificado = true;
+            }
 
         } finally {
 

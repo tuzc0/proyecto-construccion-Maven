@@ -29,8 +29,10 @@ public class CriterioAutoevaluacionDAO implements ICriterioAutoevaluacionDAO {
             sentenciaCriterio.setInt(1, criterio.getIDCriterio());
             sentenciaCriterio.setString(2, criterio.getDescripcion());
             sentenciaCriterio.setInt(3, criterio.getNumeroCriterio());
-            sentenciaCriterio.executeUpdate();
-            criterioInsertado = true;
+
+            if (sentenciaCriterio.executeUpdate() > 0) {
+                criterioInsertado = true;
+            }
 
         } finally {
 
@@ -53,8 +55,10 @@ public class CriterioAutoevaluacionDAO implements ICriterioAutoevaluacionDAO {
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaCriterio = conexionBaseDeDatos.prepareStatement(eliminarSQLCriterio);
             sentenciaCriterio.setInt(1, numeroDeCriterio);
-            sentenciaCriterio.executeUpdate();
-            criterioEliminado = true;
+
+            if (sentenciaCriterio.executeUpdate() > 0) {
+                criterioEliminado = true;
+            }
 
         } finally {
 
@@ -78,8 +82,10 @@ public class CriterioAutoevaluacionDAO implements ICriterioAutoevaluacionDAO {
             sentenciaCriterio = conexionBaseDeDatos.prepareStatement(modificarSQLCriterio);
             sentenciaCriterio.setString(1, criterio.getDescripcion());
             sentenciaCriterio.setInt(2, criterio.getNumeroCriterio());
-            sentenciaCriterio.executeUpdate();
-            criterioModificado = true;
+
+            if (sentenciaCriterio.executeUpdate() > 0) {
+                criterioModificado = true;
+            }
 
         } finally {
 

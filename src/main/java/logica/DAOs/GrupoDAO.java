@@ -17,7 +17,7 @@ public class GrupoDAO implements IGrupoDAO {
 
     public boolean crearNuevoGrupo(GrupoDTO grupo) throws SQLException, IOException {
 
-        boolean resultado = false;
+        boolean grupoCreadoConExito = false;
         String sql = "INSERT INTO Grupo (NRC, nombre, numeroPersonal, idEE, idPeriodo, estadoActivo) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
@@ -30,8 +30,10 @@ public class GrupoDAO implements IGrupoDAO {
             sentenciaGrupo.setInt(4, grupo.getIdEE());
             sentenciaGrupo.setInt(5, grupo.getIdPeriodo());
             sentenciaGrupo.setInt(6, 1);
-            sentenciaGrupo.executeUpdate();
-            resultado = true;
+
+            if (sentenciaGrupo.executeUpdate() > 0) {
+                grupoCreadoConExito = true;
+            }
 
         } finally {
 
@@ -41,12 +43,12 @@ public class GrupoDAO implements IGrupoDAO {
             }
         }
 
-        return resultado;
+        return grupoCreadoConExito;
     }
 
     public boolean eliminarGrupoPorNRC(int NRC) throws SQLException, IOException {
 
-        boolean resultado = false;
+        boolean grupoEliminado = false;
         String sql = "UPDATE Grupo SET estadoActivo = 0 WHERE NRC = ?";
 
         try {
@@ -54,8 +56,10 @@ public class GrupoDAO implements IGrupoDAO {
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaGrupo = conexionBaseDeDatos.prepareStatement(sql);
             sentenciaGrupo.setInt(1, NRC);
-            sentenciaGrupo.executeUpdate();
-            resultado = true;
+
+            if (sentenciaGrupo.executeUpdate() > 0) {
+                grupoEliminado = true;
+            }
 
         } finally {
 
@@ -65,12 +69,12 @@ public class GrupoDAO implements IGrupoDAO {
             }
         }
 
-        return resultado;
+        return grupoEliminado;
     }
 
     public boolean modificarGrupo(GrupoDTO grupo) throws SQLException, IOException {
 
-        boolean resultado = false;
+        boolean grupoModificado = false;
         String sql = "UPDATE Grupo SET nombre = ?, numeroPersonal = ?, idEE = ?, idPeriodo = ?, estadoActivo = ? WHERE NRC = ?";
 
         try {
@@ -83,8 +87,10 @@ public class GrupoDAO implements IGrupoDAO {
             sentenciaGrupo.setInt(4, grupo.getIdPeriodo());
             sentenciaGrupo.setInt(5, grupo.getEstadoActivo());
             sentenciaGrupo.setInt(6, grupo.getNRC());
-            sentenciaGrupo.executeUpdate();
-            resultado = true;
+
+            if (sentenciaGrupo.executeUpdate() > 0) {
+                grupoModificado = true;
+            }
 
         } finally {
 
@@ -94,7 +100,7 @@ public class GrupoDAO implements IGrupoDAO {
             }
         }
 
-        return resultado;
+        return grupoModificado;
     }
 
     public GrupoDTO buscarGrupoPorNRC(int NRC) throws SQLException, IOException {

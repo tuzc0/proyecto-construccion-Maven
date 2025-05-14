@@ -15,8 +15,6 @@ public class ReporteDAO implements IReporteDAO {
     PreparedStatement sentenciaReporte = null;
     ResultSet resultadoReporte;
 
-
-
     public boolean insertarReporte(ReporteDTO reporte) throws SQLException, IOException {
 
         String insertarSQLReporte = "INSERT INTO reporte VALUES (?, ?, ?, ?, ?, ?)";
@@ -32,8 +30,10 @@ public class ReporteDAO implements IReporteDAO {
             sentenciaReporte.setString(4, reporte.getObservaciones());
             sentenciaReporte.setTimestamp(5, reporte.getFecha());
             sentenciaReporte.setString(6, reporte.getMatricula());
-            sentenciaReporte.executeUpdate();
-            reporteInsertado = true;
+
+            if (sentenciaReporte.executeUpdate() > 0) {
+                reporteInsertado = true;
+            }
 
         } finally {
 
@@ -61,8 +61,10 @@ public class ReporteDAO implements IReporteDAO {
             sentenciaReporte.setTimestamp(4, reporte.getFecha());
             sentenciaReporte.setString(5, reporte.getMatricula());
             sentenciaReporte.setInt(6, reporte.getIDReporte());
-            sentenciaReporte.executeUpdate();
-            reporteModificado = true;
+
+            if (sentenciaReporte.executeUpdate() > 0) {
+                reporteModificado = true;
+            }
 
         } finally {
 

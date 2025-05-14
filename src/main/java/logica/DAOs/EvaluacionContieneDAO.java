@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class EvaluacionContieneDAO implements IEvaluacionContieneDAO {
 
     Connection conexion;
-    PreparedStatement sentencia = null;
+    PreparedStatement sentenciaEvaluacion = null;
     ResultSet resultadoConsulta;
 
     @Override
@@ -24,18 +24,20 @@ public class EvaluacionContieneDAO implements IEvaluacionContieneDAO {
         try {
 
             conexion = new ConexionBaseDeDatos().getConnection();
-            sentencia = conexion.prepareStatement(consultaSQL);
-            sentencia.setInt(1, evaluacion.getIdEvaluacion());
-            sentencia.setInt(2, evaluacion.getIdCriterio());
-            sentencia.setFloat(3, evaluacion.getCalificacion());
-            sentencia.executeUpdate();
-            insercionExitosa = true;
+            sentenciaEvaluacion = conexion.prepareStatement(consultaSQL);
+            sentenciaEvaluacion.setInt(1, evaluacion.getIdEvaluacion());
+            sentenciaEvaluacion.setInt(2, evaluacion.getIdCriterio());
+            sentenciaEvaluacion.setFloat(3, evaluacion.getCalificacion());
+
+            if (sentenciaEvaluacion.executeUpdate() > 0) {
+                insercionExitosa = true;
+            }
 
         } finally {
 
-            if (sentencia != null) {
+            if (sentenciaEvaluacion != null) {
 
-                sentencia.close();
+                sentenciaEvaluacion.close();
             }
         }
 
@@ -50,18 +52,20 @@ public class EvaluacionContieneDAO implements IEvaluacionContieneDAO {
         try {
 
             conexion = new ConexionBaseDeDatos().getConnection();
-            sentencia = conexion.prepareStatement(consultaSQL);
-            sentencia.setFloat(1, evaluacion.getCalificacion());
-            sentencia.setInt(2, evaluacion.getIdEvaluacion());
-            sentencia.setFloat(3, evaluacion.getIdCriterio());
-            sentencia.executeUpdate();
-            modificacionExitosa = true;
+            sentenciaEvaluacion = conexion.prepareStatement(consultaSQL);
+            sentenciaEvaluacion.setFloat(1, evaluacion.getCalificacion());
+            sentenciaEvaluacion.setInt(2, evaluacion.getIdEvaluacion());
+            sentenciaEvaluacion.setFloat(3, evaluacion.getIdCriterio());
+
+            if (sentenciaEvaluacion.executeUpdate() > 0) {
+                modificacionExitosa = true;
+            }
 
         } finally {
 
-            if (sentencia != null) {
+            if (sentenciaEvaluacion != null) {
 
-                sentencia.close();
+                sentenciaEvaluacion.close();
             }
         }
 
@@ -77,10 +81,10 @@ public class EvaluacionContieneDAO implements IEvaluacionContieneDAO {
         try {
 
             conexion = new ConexionBaseDeDatos().getConnection();
-            sentencia = conexion.prepareStatement(consultaSQL);
-            sentencia.setInt(1, idEvaluacion);
-            sentencia.setInt(2, idCriterio);
-            resultadoConsulta = sentencia.executeQuery();
+            sentenciaEvaluacion = conexion.prepareStatement(consultaSQL);
+            sentenciaEvaluacion.setInt(1, idEvaluacion);
+            sentenciaEvaluacion.setInt(2, idCriterio);
+            resultadoConsulta = sentenciaEvaluacion.executeQuery();
 
             if (resultadoConsulta.next()) {
                 evaluacionEncontrada.setIdEvaluacion(resultadoConsulta.getInt("idEvaluacion"));
@@ -90,9 +94,9 @@ public class EvaluacionContieneDAO implements IEvaluacionContieneDAO {
 
         } finally {
 
-            if (sentencia != null) {
+            if (sentenciaEvaluacion != null) {
 
-                sentencia.close();
+                sentenciaEvaluacion.close();
             }
         }
 

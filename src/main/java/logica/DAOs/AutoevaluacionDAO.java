@@ -33,8 +33,10 @@ public class AutoevaluacionDAO implements IAutoevaluacionDAO {
             sentenciaAutoevaluacion.setFloat(4, autoevaluacion.getCalificacionFinal());
             sentenciaAutoevaluacion.setString(5, autoevaluacion.getIdEstudiante());
             sentenciaAutoevaluacion.setInt(6, autoevaluacion.getEstadoActivo());
-            sentenciaAutoevaluacion.executeUpdate();
-            autoevaluacionInsertada = true;
+
+            if (sentenciaAutoevaluacion.executeUpdate() > 0) {
+                autoevaluacionInsertada = true;
+            }
 
         } finally {
 
@@ -58,8 +60,10 @@ public class AutoevaluacionDAO implements IAutoevaluacionDAO {
             sentenciaAutoevaluacion = conexionBaseDeDatos.prepareStatement(eliminarSQLAutoevaluacion);
             sentenciaAutoevaluacion.setInt(1, estadoActivo);
             sentenciaAutoevaluacion.setInt(2, idAutoevaluacion);
-            sentenciaAutoevaluacion.executeUpdate();
-            autoevaluacionEliminada = true;
+
+            if (sentenciaAutoevaluacion.executeUpdate() > 0) {
+                autoevaluacionEliminada = true;
+            }
 
         } finally {
 
@@ -87,8 +91,10 @@ public class AutoevaluacionDAO implements IAutoevaluacionDAO {
             sentenciaAutoevaluacion.setFloat(3, autoevaluacion.getCalificacionFinal());
             sentenciaAutoevaluacion.setString(4, autoevaluacion.getIdEstudiante());
             sentenciaAutoevaluacion.setInt(5, autoevaluacion.getIDAutoevaluacion());
-            sentenciaAutoevaluacion.executeUpdate();
-            autoevaluacionModificada = true;
+
+            if (sentenciaAutoevaluacion.executeUpdate() > 0) {
+                autoevaluacionModificada = true;
+            }
 
         } finally {
 

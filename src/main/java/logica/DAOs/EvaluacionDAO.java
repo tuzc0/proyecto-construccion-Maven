@@ -33,8 +33,10 @@ public class EvaluacionDAO implements IEvaluacionDAO {
             sentenciaEvaluacion.setInt(4, evaluacion.getNumeroDePersonal());
             sentenciaEvaluacion.setString(5, evaluacion.getMatriculaEstudiante());
             sentenciaEvaluacion.setInt(6, evaluacion.getEstadoActivo());
-            sentenciaEvaluacion.executeUpdate();
-            evaluacionInsertada = true;
+
+            if (sentenciaEvaluacion.executeUpdate() > 0) {
+                evaluacionInsertada = true;
+            }
 
         } finally {
 
@@ -58,8 +60,10 @@ public class EvaluacionDAO implements IEvaluacionDAO {
             sentenciaEvaluacion = conexionBaseDeDatos.prepareStatement(eliminarSQLEvaluacion);
             sentenciaEvaluacion.setInt(1, idEvaluacion);
             sentenciaEvaluacion.setInt(2, estadoActivo);
-            sentenciaEvaluacion.executeUpdate();
-            evaluacionEliminada = true;
+
+            if (sentenciaEvaluacion.executeUpdate() > 0) {
+                evaluacionEliminada = true;
+            }
 
         } finally {
 
@@ -88,8 +92,10 @@ public class EvaluacionDAO implements IEvaluacionDAO {
             sentenciaEvaluacion.setString(4, evaluacion.getMatriculaEstudiante());
             sentenciaEvaluacion.setInt(5, evaluacion.getEstadoActivo());
             sentenciaEvaluacion.setInt(6, evaluacion.getIDEvaluacion());
-            sentenciaEvaluacion.executeUpdate();
-            evaluacionModificada = true;
+
+            if (sentenciaEvaluacion.executeUpdate() > 0) {
+                evaluacionModificada = true;
+            }
 
         } finally {
 

@@ -28,8 +28,10 @@ public class EvidenciaAutoevaluacionDAO implements IEvidenciaAutoevaluacionDAO {
             sentenciaEvidenciaAutoevaluacion.setInt(1, evidencia.getIdEvidencia());
             sentenciaEvidenciaAutoevaluacion.setString(2, evidencia.getURL());
             sentenciaEvidenciaAutoevaluacion.setInt(3, evidencia.getIdAutoevaluacion());
-            sentenciaEvidenciaAutoevaluacion.executeUpdate();
-            evidenciaInsertada = true;
+
+            if (sentenciaEvidenciaAutoevaluacion.executeUpdate() > 0) {
+                evidenciaInsertada = true;
+            }
 
         } finally {
 
@@ -42,26 +44,28 @@ public class EvidenciaAutoevaluacionDAO implements IEvidenciaAutoevaluacionDAO {
         return evidenciaInsertada;
     }
 
-
-
     public EvidenciaAutoevaluacionDTO mostrarEvidenciaAutoevaluacionPorID(int idEvidencia) throws SQLException, IOException {
 
         String consultaSQLEvidencia = "SELECT * FROM evidenciaautoevaluacion WHERE idEvidencia = ?";
         EvidenciaAutoevaluacionDTO evidenciaEncontrada = new EvidenciaAutoevaluacionDTO(-1, " ", -1);
 
         try {
+
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaEvidenciaAutoevaluacion = conexionBaseDeDatos.prepareStatement(consultaSQLEvidencia);
             sentenciaEvidenciaAutoevaluacion.setInt(1, idEvidencia);
             resultadoConsultaEvidenciaAutoevaluacion = sentenciaEvidenciaAutoevaluacion.executeQuery();
 
             if (resultadoConsultaEvidenciaAutoevaluacion.next()) {
+
                 evidenciaEncontrada = new EvidenciaAutoevaluacionDTO();
                 evidenciaEncontrada.setIdEvidencia(resultadoConsultaEvidenciaAutoevaluacion.getInt("idEvidencia"));
                 evidenciaEncontrada.setURL(resultadoConsultaEvidenciaAutoevaluacion.getString("url"));
                 evidenciaEncontrada.setIdAutoevaluacion(resultadoConsultaEvidenciaAutoevaluacion.getInt("idAutoEvaluacion"));
             }
+
         } finally {
+
             if (sentenciaEvidenciaAutoevaluacion != null) {
                 sentenciaEvidenciaAutoevaluacion.close();
             }

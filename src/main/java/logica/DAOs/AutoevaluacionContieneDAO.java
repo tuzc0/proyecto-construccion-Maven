@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class AutoevaluacionContieneDAO implements IAutoevaluacionContieneDAO {
 
     Connection conexion;
-    PreparedStatement sentencia = null;
+    PreparedStatement sentenciaAutoevaluacion = null;
     ResultSet resultadoConsulta;
 
     public boolean insertarAutoevaluacionContiene(AutoEvaluacionContieneDTO autoevalucion) throws SQLException, IOException {
@@ -23,18 +23,20 @@ public class AutoevaluacionContieneDAO implements IAutoevaluacionContieneDAO {
         try {
 
             conexion = new ConexionBaseDeDatos().getConnection();
-            sentencia = conexion.prepareStatement(consultaSQL);
-            sentencia.setInt(1, autoevalucion.getIdAutoevaluacion());
-            sentencia.setInt(2, autoevalucion.getIdCriterio());
-            sentencia.setFloat(3, autoevalucion.getCalificacion());
-            sentencia.executeUpdate();
-            insercionExitosa = true;
+            sentenciaAutoevaluacion = conexion.prepareStatement(consultaSQL);
+            sentenciaAutoevaluacion.setInt(1, autoevalucion.getIdAutoevaluacion());
+            sentenciaAutoevaluacion.setInt(2, autoevalucion.getIdCriterio());
+            sentenciaAutoevaluacion.setFloat(3, autoevalucion.getCalificacion());
+
+            if (sentenciaAutoevaluacion.executeUpdate() > 0) {
+                insercionExitosa = true;
+            }
 
         } finally {
 
-            if (sentencia != null) {
+            if (sentenciaAutoevaluacion != null) {
 
-                sentencia.close();
+                sentenciaAutoevaluacion.close();
             }
         }
 
@@ -49,18 +51,20 @@ public class AutoevaluacionContieneDAO implements IAutoevaluacionContieneDAO {
         try {
 
             conexion = new ConexionBaseDeDatos().getConnection();
-            sentencia = conexion.prepareStatement(consultaSQL);
-            sentencia.setFloat(1, autoevaluacion.getCalificacion());
-            sentencia.setInt(2, autoevaluacion.getIdAutoevaluacion());
-            sentencia.setInt(3, autoevaluacion.getIdCriterio());
-            sentencia.executeUpdate();
-            modificacionExitosa = true;
+            sentenciaAutoevaluacion = conexion.prepareStatement(consultaSQL);
+            sentenciaAutoevaluacion.setFloat(1, autoevaluacion.getCalificacion());
+            sentenciaAutoevaluacion.setInt(2, autoevaluacion.getIdAutoevaluacion());
+            sentenciaAutoevaluacion.setInt(3, autoevaluacion.getIdCriterio());
+
+            if (sentenciaAutoevaluacion.executeUpdate() > 0) {
+                modificacionExitosa = true;
+            }
 
         } finally {
 
-            if (sentencia != null) {
+            if (sentenciaAutoevaluacion != null) {
 
-                sentencia.close();
+                sentenciaAutoevaluacion.close();
             }
         }
 
@@ -75,10 +79,10 @@ public class AutoevaluacionContieneDAO implements IAutoevaluacionContieneDAO {
         try {
 
             conexion = new ConexionBaseDeDatos().getConnection();
-            sentencia = conexion.prepareStatement(consultaSQL);
-            sentencia.setInt(1, idAutoevaluacion);
-            sentencia.setInt(2, idCriterio);
-            resultadoConsulta = sentencia.executeQuery();
+            sentenciaAutoevaluacion = conexion.prepareStatement(consultaSQL);
+            sentenciaAutoevaluacion.setInt(1, idAutoevaluacion);
+            sentenciaAutoevaluacion.setInt(2, idCriterio);
+            resultadoConsulta = sentenciaAutoevaluacion.executeQuery();
 
             if (resultadoConsulta.next()) {
 
@@ -89,9 +93,9 @@ public class AutoevaluacionContieneDAO implements IAutoevaluacionContieneDAO {
 
         } finally {
 
-            if (sentencia != null) {
+            if (sentenciaAutoevaluacion != null) {
 
-                sentencia.close();
+                sentenciaAutoevaluacion.close();
             }
         }
 

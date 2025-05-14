@@ -28,8 +28,10 @@ public class CoordinadorDAO implements ICoordinadorDAO {
             sentenciaCoordinador = conexionBaseDeDatos.prepareStatement(insertarSQLCoordinador);
             sentenciaCoordinador.setInt(1, coordinador.getNumeroDePersonal());
             sentenciaCoordinador.setInt(2, coordinador.getIdUsuario());
-            sentenciaCoordinador.executeUpdate();
-            coordinadorInsertado = true;
+
+            if (sentenciaCoordinador.executeUpdate() > 0) {
+                coordinadorInsertado = true;
+            }
 
         } finally {
 
@@ -44,7 +46,7 @@ public class CoordinadorDAO implements ICoordinadorDAO {
 
     public boolean eliminarCoordinadorPorNumeroDePersonal (int numeroDePersonal) throws SQLException, IOException {
 
-        boolean coordinadorModificado = false;
+        boolean coordinadorEliminado = false;
 
         String modificarSQLCoordinador = "UPDATE usuario SET estadoActivo = 0 WHERE idUsuario = " +
                 "(SELECT idUsuario FROM coordinador WHERE numeroDePersonal = ?)";
@@ -54,8 +56,10 @@ public class CoordinadorDAO implements ICoordinadorDAO {
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaCoordinador = conexionBaseDeDatos.prepareStatement(modificarSQLCoordinador);
             sentenciaCoordinador.setInt(1, numeroDePersonal);
-            sentenciaCoordinador.executeUpdate();
-            coordinadorModificado = true;
+
+            if (sentenciaCoordinador.executeUpdate() > 0) {
+                coordinadorEliminado = true;
+            }
 
         } finally {
             if (sentenciaCoordinador != null) {
@@ -64,7 +68,7 @@ public class CoordinadorDAO implements ICoordinadorDAO {
             }
         }
 
-        return coordinadorModificado;
+        return coordinadorEliminado;
     }
 
 
@@ -80,8 +84,10 @@ public class CoordinadorDAO implements ICoordinadorDAO {
             sentenciaCoordinador = conexionBaseDeDatos.prepareStatement(modificarSQLCoordinador);
             sentenciaCoordinador.setInt(1, coordinador.getNumeroDePersonal());
             sentenciaCoordinador.setInt(2, coordinador.getIdUsuario());
-            sentenciaCoordinador.executeUpdate();
-            coordinadorModificado = true;
+
+            if (sentenciaCoordinador.executeUpdate() > 0) {
+                coordinadorModificado = true;
+            }
 
         } finally {
 

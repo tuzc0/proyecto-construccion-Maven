@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class ReporteContieneDAO implements IReporteContieneDAO {
 
     Connection conexion;
-    PreparedStatement sentencia = null;
+    PreparedStatement sentenciaReporte = null;
     ResultSet resultadoConsulta;
 
     public boolean insertarReporteContiene(ReporteContieneDTO reporte) throws SQLException, IOException {
@@ -23,19 +23,21 @@ public class ReporteContieneDAO implements IReporteContieneDAO {
         try {
 
             conexion = new ConexionBaseDeDatos().getConnection();
-            sentencia = conexion.prepareStatement(consultaSQL);
-            sentencia.setInt(1, reporte.getIdReporte());
-            sentencia.setInt(2, reporte.getIdActividad());
-            sentencia.setTimestamp(3, reporte.getFechaInicioReal());
-            sentencia.setTimestamp(4, reporte.getFechaFinReal());
-            sentencia.executeUpdate();
-            insercionExitosa = true;
+            sentenciaReporte = conexion.prepareStatement(consultaSQL);
+            sentenciaReporte.setInt(1, reporte.getIdReporte());
+            sentenciaReporte.setInt(2, reporte.getIdActividad());
+            sentenciaReporte.setTimestamp(3, reporte.getFechaInicioReal());
+            sentenciaReporte.setTimestamp(4, reporte.getFechaFinReal());
+
+            if (sentenciaReporte.executeUpdate() > 0) {
+                insercionExitosa = true;
+            }
 
         } finally {
 
-            if (sentencia != null) {
+            if (sentenciaReporte != null) {
 
-                sentencia.close();
+                sentenciaReporte.close();
             }
         }
         return insercionExitosa;
@@ -49,16 +51,18 @@ public class ReporteContieneDAO implements IReporteContieneDAO {
         try {
 
             conexion = new ConexionBaseDeDatos().getConnection();
-            sentencia = conexion.prepareStatement(consultaSQL);
-            sentencia.setInt(1, idReporte);
-            sentencia.executeUpdate();
-            reporteEliminado = true;
+            sentenciaReporte = conexion.prepareStatement(consultaSQL);
+            sentenciaReporte.setInt(1, idReporte);
+
+            if (sentenciaReporte.executeUpdate() > 0) {
+                reporteEliminado = true;
+            }
 
         } finally {
 
-            if (sentencia != null) {
+            if (sentenciaReporte != null) {
 
-                sentencia.close();
+                sentenciaReporte.close();
             }
         }
         return reporteEliminado;
@@ -72,19 +76,21 @@ public class ReporteContieneDAO implements IReporteContieneDAO {
         try {
 
             conexion = new ConexionBaseDeDatos().getConnection();
-            sentencia = conexion.prepareStatement(consultaSQL);
-            sentencia.setInt(1, reporte.getIdActividad());
-            sentencia.setTimestamp(2, reporte.getFechaInicioReal());
-            sentencia.setTimestamp(3, reporte.getFechaFinReal());
-            sentencia.setInt(4, reporte.getIdReporte());
-            sentencia.executeUpdate();
-            modificacionExitosa = true;
+            sentenciaReporte = conexion.prepareStatement(consultaSQL);
+            sentenciaReporte.setInt(1, reporte.getIdActividad());
+            sentenciaReporte.setTimestamp(2, reporte.getFechaInicioReal());
+            sentenciaReporte.setTimestamp(3, reporte.getFechaFinReal());
+            sentenciaReporte.setInt(4, reporte.getIdReporte());
+
+            if (sentenciaReporte.executeUpdate() > 0) {
+                modificacionExitosa = true;
+            }
 
         } finally {
 
-            if (sentencia != null) {
+            if (sentenciaReporte != null) {
 
-                sentencia.close();
+                sentenciaReporte.close();
             }
         }
         return modificacionExitosa;
@@ -98,11 +104,12 @@ public class ReporteContieneDAO implements IReporteContieneDAO {
         try {
 
             conexion = new ConexionBaseDeDatos().getConnection();
-            sentencia = conexion.prepareStatement(consultaSQL);
-            sentencia.setInt(1, idReporte);
-            resultadoConsulta = sentencia.executeQuery();
+            sentenciaReporte = conexion.prepareStatement(consultaSQL);
+            sentenciaReporte.setInt(1, idReporte);
+            resultadoConsulta = sentenciaReporte.executeQuery();
 
             if (resultadoConsulta.next()) {
+
                 reporte.setIdReporte(resultadoConsulta.getInt("idReporte"));
                 reporte.setIdActividad(resultadoConsulta.getInt("idActividad"));
                 reporte.setFechaInicioReal(resultadoConsulta.getTimestamp("fechaInicioReal"));
@@ -111,9 +118,9 @@ public class ReporteContieneDAO implements IReporteContieneDAO {
 
         } finally {
 
-            if (sentencia != null) {
+            if (sentenciaReporte != null) {
 
-                sentencia.close();
+                sentenciaReporte.close();
             }
         }
         return reporte;

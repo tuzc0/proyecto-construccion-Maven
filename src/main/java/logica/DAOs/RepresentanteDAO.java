@@ -15,8 +15,6 @@ public class RepresentanteDAO implements IRepresentanteDAO {
     PreparedStatement sentenciaRepresentante = null;
     ResultSet resultadoConsultaRepresentante;
 
-
-
     public boolean insertarRepresentante(RepresentanteDTO representante) throws SQLException, IOException {
 
         boolean representanteInsertado = false;
@@ -33,8 +31,10 @@ public class RepresentanteDAO implements IRepresentanteDAO {
             sentenciaRepresentante.setString(5, representante.getApellidos());
             sentenciaRepresentante.setInt(6, representante.getIdOV());
             sentenciaRepresentante.setInt(7, representante.getEstadoActivo());
-            sentenciaRepresentante.executeUpdate();
-            representanteInsertado = true;
+
+            if (sentenciaRepresentante.executeUpdate() > 0) {
+                representanteInsertado = true;
+            }
 
         } finally {
 
@@ -57,8 +57,10 @@ public class RepresentanteDAO implements IRepresentanteDAO {
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaRepresentante = conexionBaseDeDatos.prepareStatement(eliminarSQLRepresentante);
             sentenciaRepresentante.setInt(1, idRepresentante);
-            sentenciaRepresentante.executeUpdate();
-            representanteEliminado = true;
+
+            if (sentenciaRepresentante.executeUpdate() > 0) {
+                representanteEliminado = true;
+            }
 
         } finally {
 
@@ -87,8 +89,10 @@ public class RepresentanteDAO implements IRepresentanteDAO {
             sentenciaRepresentante.setInt(5, representante.getIdOV());
             sentenciaRepresentante.setInt(6, representante.getEstadoActivo());
             sentenciaRepresentante.setInt(7, representante.getIDRepresentante());
-            sentenciaRepresentante.executeUpdate();
-            representanteModificado = true;
+
+            if (sentenciaRepresentante.executeUpdate() > 0) {
+                representanteModificado = true;
+            }
 
         } finally {
 
@@ -142,12 +146,14 @@ public class RepresentanteDAO implements IRepresentanteDAO {
         String buscarSQLRepresentante = "SELECT * FROM representante WHERE correo = ?";
 
         try {
+
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaRepresentante = conexionBaseDeDatos.prepareStatement(buscarSQLRepresentante);
             sentenciaRepresentante.setString(1, correo);
             resultadoConsultaRepresentante = sentenciaRepresentante.executeQuery();
 
             if (resultadoConsultaRepresentante.next()) {
+
                 representante = new RepresentanteDTO(
                         resultadoConsultaRepresentante.getInt("idRepresentante"),
                         resultadoConsultaRepresentante.getString("correo"),
@@ -159,6 +165,7 @@ public class RepresentanteDAO implements IRepresentanteDAO {
                 );
             }
         } finally {
+
             if (sentenciaRepresentante != null) {
                 sentenciaRepresentante.close();
             }
@@ -168,16 +175,19 @@ public class RepresentanteDAO implements IRepresentanteDAO {
     }
 
     public RepresentanteDTO buscarRepresentantePorTelefono(String telefono) throws SQLException, IOException {
+
         RepresentanteDTO representante = new RepresentanteDTO(-1, "N/A", "N/A", "N/A", "N/A", 0, 0);
         String buscarSQLRepresentante = "SELECT * FROM representante WHERE telefono = ?";
 
         try {
+
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaRepresentante = conexionBaseDeDatos.prepareStatement(buscarSQLRepresentante);
             sentenciaRepresentante.setString(1, telefono);
             resultadoConsultaRepresentante = sentenciaRepresentante.executeQuery();
 
             if (resultadoConsultaRepresentante.next()) {
+
                 representante = new RepresentanteDTO(
                         resultadoConsultaRepresentante.getInt("idRepresentante"),
                         resultadoConsultaRepresentante.getString("correo"),
@@ -188,7 +198,9 @@ public class RepresentanteDAO implements IRepresentanteDAO {
                         resultadoConsultaRepresentante.getInt("estadoActivo")
                 );
             }
+
         } finally {
+
             if (sentenciaRepresentante != null) {
                 sentenciaRepresentante.close();
             }

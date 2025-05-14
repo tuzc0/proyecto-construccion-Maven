@@ -30,8 +30,10 @@ public class CronogramaActividadesDAO implements ICronogramaActividadesDAO {
             sentenciaCronograma.setTimestamp(2, cronograma.getFechaInicio());
             sentenciaCronograma.setTimestamp(3, cronograma.getFechaFinal());
             sentenciaCronograma.setString(4, cronograma.getMatriculaEstudiante());
-            sentenciaCronograma.executeUpdate();
-            cronogramaInsertado = true;
+
+            if (sentenciaCronograma.executeUpdate() > 0) {
+                cronogramaInsertado = true;
+            }
 
         } finally {
 
@@ -56,8 +58,10 @@ public class CronogramaActividadesDAO implements ICronogramaActividadesDAO {
             sentenciaCronograma.setTimestamp(1, cronograma.getFechaInicio());
             sentenciaCronograma.setTimestamp(2, cronograma.getFechaFinal());
             sentenciaCronograma.setInt(3, cronograma.getIDCronograma());
-            sentenciaCronograma.executeUpdate();
-            cronogramaModificado = true;
+
+            if (sentenciaCronograma.executeUpdate() > 0) {
+                cronogramaModificado = true;
+            }
 
         } finally {
 

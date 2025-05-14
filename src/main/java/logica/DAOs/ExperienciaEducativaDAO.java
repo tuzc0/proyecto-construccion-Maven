@@ -15,9 +15,8 @@ public class ExperienciaEducativaDAO implements IExperienciaEducativaDAO {
     PreparedStatement sentenciaExperienciaEducativa = null;
     ResultSet resultadoExperienciaEducativa;
 
-
-
     public boolean crearNuevaExperienciaEducativa(ExperienciaEducativaDTO experienciaEducativa) throws SQLException, IOException {
+
         boolean experienciaEducativaInsertada = false;
 
         String insertarSQLEducativa = "INSERT INTO experienciaeducativa VALUES(?, ?)";
@@ -28,8 +27,10 @@ public class ExperienciaEducativaDAO implements IExperienciaEducativaDAO {
             sentenciaExperienciaEducativa = conexionBaseDeDatos.prepareStatement(insertarSQLEducativa);
             sentenciaExperienciaEducativa.setInt(1, experienciaEducativa.getIdEE());
             sentenciaExperienciaEducativa.setString(2, experienciaEducativa.getNombre());
-            sentenciaExperienciaEducativa.executeUpdate();
-            experienciaEducativaInsertada = true;
+
+            if (sentenciaExperienciaEducativa.executeUpdate() > 0) {
+                experienciaEducativaInsertada = true;
+            }
 
         } finally {
 
@@ -43,6 +44,7 @@ public class ExperienciaEducativaDAO implements IExperienciaEducativaDAO {
     }
 
     public boolean modificarExperienciaEducativa(ExperienciaEducativaDTO experienciaEducativa) throws SQLException, IOException {
+
         boolean experienciaEducativaModificada = false;
 
         String modificarSQLEducativa = "UPDATE experienciaeducativa SET nombre = ? WHERE idEE = ?";
@@ -53,8 +55,10 @@ public class ExperienciaEducativaDAO implements IExperienciaEducativaDAO {
             sentenciaExperienciaEducativa = conexionBaseDeDatos.prepareStatement(modificarSQLEducativa);
             sentenciaExperienciaEducativa.setString(1, experienciaEducativa.getNombre());
             sentenciaExperienciaEducativa.setInt(2, experienciaEducativa.getIdEE());
-            sentenciaExperienciaEducativa.executeUpdate();
-            experienciaEducativaModificada = true;
+
+            if (sentenciaExperienciaEducativa.executeUpdate() > 0) {
+                experienciaEducativaModificada = true;
+            }
 
         } finally {
 

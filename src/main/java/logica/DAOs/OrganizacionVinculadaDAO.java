@@ -17,14 +17,13 @@ public class OrganizacionVinculadaDAO implements IOvDAO {
     PreparedStatement sentenciaOrganizacionVinculada = null;
     ResultSet resultadoConsultaOrganizacionVinculada;
 
-
-
     public int crearNuevaOrganizacion(OrganizacionVinculadaDTO organizacionVinculada) throws SQLException, IOException {
 
         int idOrganizacionGenerado = -1;
         String insertarSQLOV = "INSERT INTO ov(nombre, correo, numeroContacto, direccion, estadoActivo) VALUES(?, ?, ?, ?, ?)";
 
         try {
+
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaOrganizacionVinculada = conexionBaseDeDatos.prepareStatement(insertarSQLOV, PreparedStatement.RETURN_GENERATED_KEYS);
 
@@ -33,17 +32,16 @@ public class OrganizacionVinculadaDAO implements IOvDAO {
             sentenciaOrganizacionVinculada.setString(3, organizacionVinculada.getNumeroDeContacto());
             sentenciaOrganizacionVinculada.setString(4, organizacionVinculada.getDireccion());
             sentenciaOrganizacionVinculada.setInt(5, organizacionVinculada.getEstadoActivo());
-
-
             sentenciaOrganizacionVinculada.executeUpdate();
 
-
             ResultSet generatedKeys = sentenciaOrganizacionVinculada.getGeneratedKeys();
+
             if (generatedKeys.next()) {
                 idOrganizacionGenerado = generatedKeys.getInt(1);
             }
 
         } finally {
+
             if (sentenciaOrganizacionVinculada != null) {
                 sentenciaOrganizacionVinculada.close();
             }
@@ -62,9 +60,10 @@ public class OrganizacionVinculadaDAO implements IOvDAO {
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaOrganizacionVinculada = conexionBaseDeDatos.prepareStatement(eliminarSQLOrganizacion);
             sentenciaOrganizacionVinculada.setInt(1, idOrganizacionVinculada);
-            sentenciaOrganizacionVinculada.executeUpdate();
 
-            organizacionVinculadaEliminada = true;
+            if (sentenciaOrganizacionVinculada.executeUpdate() > 0) {
+                organizacionVinculadaEliminada = true;
+            }
 
         } finally {
 
@@ -91,9 +90,10 @@ public class OrganizacionVinculadaDAO implements IOvDAO {
             sentenciaOrganizacionVinculada.setString(3, organizacionVinculada.getNumeroDeContacto());
             sentenciaOrganizacionVinculada.setString(4, organizacionVinculada.getDireccion());
             sentenciaOrganizacionVinculada.setInt(5, organizacionVinculada.getIdOrganizacion());
-            sentenciaOrganizacionVinculada.executeUpdate();
 
-            organizacionModificada = true;
+            if (sentenciaOrganizacionVinculada.executeUpdate() > 0) {
+                organizacionModificada = true;
+            }
 
         } finally {
 
@@ -119,6 +119,7 @@ public class OrganizacionVinculadaDAO implements IOvDAO {
             resultadoConsultaOrganizacionVinculada = sentenciaOrganizacionVinculada.executeQuery();
 
             if (resultadoConsultaOrganizacionVinculada.next()) {
+
                 organizacionVinculada.setIdOrganizacion(resultadoConsultaOrganizacionVinculada.getInt("idOV"));
                 organizacionVinculada.setNombre(resultadoConsultaOrganizacionVinculada.getString("nombre"));
                 organizacionVinculada.setCorreo(resultadoConsultaOrganizacionVinculada.getString("correo"));
@@ -139,16 +140,19 @@ public class OrganizacionVinculadaDAO implements IOvDAO {
     }
 
     public OrganizacionVinculadaDTO buscarOrganizacionPorCorreo(String correo) throws SQLException, IOException {
+
         OrganizacionVinculadaDTO organizacionVinculada = new OrganizacionVinculadaDTO(-1, "N/A", "N/A", "N/A", "N/A", 0);
         String buscarSQLOrganizacion = "SELECT * FROM ov WHERE correo = ?";
 
         try {
+
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaOrganizacionVinculada = conexionBaseDeDatos.prepareStatement(buscarSQLOrganizacion);
             sentenciaOrganizacionVinculada.setString(1, correo);
             resultadoConsultaOrganizacionVinculada = sentenciaOrganizacionVinculada.executeQuery();
 
             if (resultadoConsultaOrganizacionVinculada.next()) {
+
                 organizacionVinculada.setIdOrganizacion(resultadoConsultaOrganizacionVinculada.getInt("idOV"));
                 organizacionVinculada.setNombre(resultadoConsultaOrganizacionVinculada.getString("nombre"));
                 organizacionVinculada.setCorreo(resultadoConsultaOrganizacionVinculada.getString("correo"));
@@ -156,7 +160,9 @@ public class OrganizacionVinculadaDAO implements IOvDAO {
                 organizacionVinculada.setDireccion(resultadoConsultaOrganizacionVinculada.getString("direccion"));
                 organizacionVinculada.setEstadoActivo(resultadoConsultaOrganizacionVinculada.getInt("estadoActivo"));
             }
+
         } finally {
+
             if (sentenciaOrganizacionVinculada != null) {
                 sentenciaOrganizacionVinculada.close();
             }
@@ -166,16 +172,19 @@ public class OrganizacionVinculadaDAO implements IOvDAO {
     }
 
     public OrganizacionVinculadaDTO buscarOrganizacionPorTelefono(String numeroContacto) throws SQLException, IOException {
+
         OrganizacionVinculadaDTO organizacionVinculada = new OrganizacionVinculadaDTO(-1, "N/A", "N/A", "N/A", "N/A", 0);
         String buscarSQLOrganizacion = "SELECT * FROM ov WHERE numeroContacto = ?";
 
         try {
+
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaOrganizacionVinculada = conexionBaseDeDatos.prepareStatement(buscarSQLOrganizacion);
             sentenciaOrganizacionVinculada.setString(1, numeroContacto);
             resultadoConsultaOrganizacionVinculada = sentenciaOrganizacionVinculada.executeQuery();
 
             if (resultadoConsultaOrganizacionVinculada.next()) {
+
                 organizacionVinculada.setIdOrganizacion(resultadoConsultaOrganizacionVinculada.getInt("idOV"));
                 organizacionVinculada.setNombre(resultadoConsultaOrganizacionVinculada.getString("nombre"));
                 organizacionVinculada.setCorreo(resultadoConsultaOrganizacionVinculada.getString("correo"));
@@ -183,7 +192,9 @@ public class OrganizacionVinculadaDAO implements IOvDAO {
                 organizacionVinculada.setDireccion(resultadoConsultaOrganizacionVinculada.getString("direccion"));
                 organizacionVinculada.setEstadoActivo(resultadoConsultaOrganizacionVinculada.getInt("estadoActivo"));
             }
+
         } finally {
+
             if (sentenciaOrganizacionVinculada != null) {
                 sentenciaOrganizacionVinculada.close();
             }
@@ -193,15 +204,18 @@ public class OrganizacionVinculadaDAO implements IOvDAO {
     }
 
     public List<OrganizacionVinculadaDTO> obtenerTodasLasOrganizaciones() throws SQLException, IOException {
+
         List<OrganizacionVinculadaDTO> listaOrganizaciones = new ArrayList<>();
         String consultaSQL = "SELECT * FROM ov WHERE estadoActivo = 1";
 
         try {
+
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaOrganizacionVinculada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             resultadoConsultaOrganizacionVinculada = sentenciaOrganizacionVinculada.executeQuery();
 
             while (resultadoConsultaOrganizacionVinculada.next()) {
+
                 OrganizacionVinculadaDTO organizacion = new OrganizacionVinculadaDTO(
                         resultadoConsultaOrganizacionVinculada.getInt("idOV"),
                         resultadoConsultaOrganizacionVinculada.getString("nombre"),
@@ -212,7 +226,9 @@ public class OrganizacionVinculadaDAO implements IOvDAO {
                 );
                 listaOrganizaciones.add(organizacion);
             }
+
         } finally {
+
             if (sentenciaOrganizacionVinculada != null) {
                 sentenciaOrganizacionVinculada.close();
             }

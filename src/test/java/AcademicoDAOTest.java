@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 import logica.DAOs.AcademicoDAO;
 import logica.DTOs.AcademicoDTO;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,11 +15,11 @@ class AcademicoDAOTest {
 
     private AcademicoDAO academicoDAO;
     private UsuarioDAO usuarioDAO;
-    private final List<Integer> numerosAcademicosCreados = new java.util.ArrayList<>();
-    private final List<Integer> idsUsuariosCreados = new java.util.ArrayList<>();
+    private final List<Integer> numerosDePersonalInsertados = new java.util.ArrayList<>();
+    private final List<Integer> idsUsuariosInsertados = new java.util.ArrayList<>();
 
     @BeforeAll
-    void setUp() {
+    void inicializarDAOs() {
 
         academicoDAO = new AcademicoDAO();
         usuarioDAO = new UsuarioDAO();
@@ -27,36 +28,34 @@ class AcademicoDAOTest {
     @BeforeEach
     void prepararDatosDePrueba() {
 
-        try (var conexion = new ConexionBaseDeDatos().getConnection()) {
+        try {
 
-            for (int numero : List.of(1001, 1002, 1003)) {
+            Connection conexion = new ConexionBaseDeDatos().getConnection();
 
-                try (var stmt = conexion.prepareStatement("DELETE FROM academico WHERE numeroDePersonal = ?")) {
+            for (int numeroDePersonal : List.of(1001, 1002, 1003)) {
 
-                    stmt.setInt(1, numero);
-                    stmt.executeUpdate();
-                }
+                conexion.prepareStatement("DELETE FROM academico WHERE numeroDePersonal = " + numeroDePersonal).executeUpdate();
             }
 
-            UsuarioDTO usuario1 = new UsuarioDTO(0, "Nombre", "Prueba", 1);
-            UsuarioDTO usuario2 = new UsuarioDTO(0, "Usuario2", "Apellido2", 1);
-            UsuarioDTO usuario3 = new UsuarioDTO(0, "Usuario3", "Apellido3", 1);
+            UsuarioDTO primerUsuario = new UsuarioDTO(0, "Nombre", "Prueba", 1);
+            UsuarioDTO segundoUsuario = new UsuarioDTO(0, "Usuario2", "Apellido2", 1);
+            UsuarioDTO tercerUsuario = new UsuarioDTO(0, "Usuario3", "Apellido3", 1);
 
-            int id1 = usuarioDAO.insertarUsuario(usuario1);
-            int id2 = usuarioDAO.insertarUsuario(usuario2);
-            int id3 = usuarioDAO.insertarUsuario(usuario3);
+            int idPrimerUsuario = usuarioDAO.insertarUsuario(primerUsuario);
+            int idSegundoUsuario = usuarioDAO.insertarUsuario(segundoUsuario);
+            int idTercerUsuario = usuarioDAO.insertarUsuario(tercerUsuario);
 
-            idsUsuariosCreados.add(id1);
-            idsUsuariosCreados.add(id2);
-            idsUsuariosCreados.add(id3);
+            idsUsuariosInsertados.add(idPrimerUsuario);
+            idsUsuariosInsertados.add(idSegundoUsuario);
+            idsUsuariosInsertados.add(idTercerUsuario);
 
-            academicoDAO.insertarAcademico(new AcademicoDTO(1001, id1, "Usuario1", "Apellido1", 1));
-            academicoDAO.insertarAcademico(new AcademicoDTO(1002, id2, "Usuario2", "Apellido2", 1));
-            academicoDAO.insertarAcademico(new AcademicoDTO(1003, id3, "Usuario3", "Apellido3", 1));
+            academicoDAO.insertarAcademico(new AcademicoDTO(1001, idPrimerUsuario, "Usuario1", "Apellido1", 1));
+            academicoDAO.insertarAcademico(new AcademicoDTO(1002, idSegundoUsuario, "Usuario2", "Apellido2", 1));
+            academicoDAO.insertarAcademico(new AcademicoDTO(1003, idTercerUsuario, "Usuario3", "Apellido3", 1));
 
-            numerosAcademicosCreados.add(1001);
-            numerosAcademicosCreados.add(1002);
-            numerosAcademicosCreados.add(1003);
+            numerosDePersonalInsertados.add(1001);
+            numerosDePersonalInsertados.add(1002);
+            numerosDePersonalInsertados.add(1003);
 
         } catch (SQLException | IOException e) {
 
@@ -67,27 +66,21 @@ class AcademicoDAOTest {
     @AfterAll
     void limpiarBaseDeDatos() {
 
-        try (var conexion = new ConexionBaseDeDatos().getConnection()) {
+        try {
 
-            numerosAcademicosCreados.add(22222);
-            numerosAcademicosCreados.add(55555);
+            Connection conexion = new ConexionBaseDeDatos().getConnection();
 
-            for (int numero : numerosAcademicosCreados) {
+            numerosDePersonalInsertados.add(22222);
+            numerosDePersonalInsertados.add(55555);
 
-                try (var stmt = conexion.prepareStatement("DELETE FROM academico WHERE numeroDePersonal = ?")) {
+            for (int numeroDePersonal : numerosDePersonalInsertados) {
 
-                    stmt.setInt(1, numero);
-                    stmt.executeUpdate();
-                }
+                conexion.prepareStatement("DELETE FROM academico WHERE numeroDePersonal = " + numeroDePersonal).executeUpdate();
             }
 
-            for (int id : idsUsuariosCreados) {
+            for (int idUsuario : idsUsuariosInsertados) {
 
-                try (var stmt = conexion.prepareStatement("DELETE FROM usuario WHERE idUsuario = ?")) {
-
-                    stmt.setInt(1, id);
-                    stmt.executeUpdate();
-                }
+                conexion.prepareStatement("DELETE FROM usuario WHERE idUsuario = " + idUsuario).executeUpdate();
             }
 
         } catch (SQLException | IOException e) {
@@ -96,20 +89,19 @@ class AcademicoDAOTest {
         }
     }
 
-
     @Test
-    void testInsertarAcademicoDatosValidos() {
+    void testInsertarAcademicoConDatosValidos() {
 
         try {
 
-            UsuarioDTO usuario = new UsuarioDTO(0, "AcademicoTest", "ApellidoTest", 1);
-            int idUsuario = usuarioDAO.insertarUsuario(usuario);
-            idsUsuariosCreados.add(idUsuario);
+            UsuarioDTO usuarioPrueba = new UsuarioDTO(0, "AcademicoTest", "ApellidoTest", 1);
+            int idNuevoUsuario = usuarioDAO.insertarUsuario(usuarioPrueba);
+            idsUsuariosInsertados.add(idNuevoUsuario);
 
-            AcademicoDTO academico = new AcademicoDTO(55555, idUsuario, "Nombre", "Prueba", 1);
-            boolean resultado = academicoDAO.insertarAcademico(academico);
-            assertTrue(resultado, "El académico debería ser insertado correctamente.");
-            numerosAcademicosCreados.add(55555);
+            AcademicoDTO nuevoAcademico = new AcademicoDTO(55555, idNuevoUsuario, "Nombre", "Prueba", 1);
+            boolean insercionExitosa = academicoDAO.insertarAcademico(nuevoAcademico);
+            assertTrue(insercionExitosa, "El académico debería ser insertado correctamente.");
+            numerosDePersonalInsertados.add(55555);
 
         } catch (SQLException | IOException e) {
 
@@ -117,15 +109,14 @@ class AcademicoDAOTest {
         }
     }
 
-
     @Test
-    void testInsertarAcademicoDatosInvalidos() {
+    void testInsertarAcademicoConDatosInvalidos() {
 
-        AcademicoDTO academico = new AcademicoDTO(55555, -1, "Nombre", "Invalido", 1);
+        AcademicoDTO academicoInvalido = new AcademicoDTO(55555, -1, "Nombre", "Invalido", 1);
 
         try {
 
-            boolean resultado = academicoDAO.insertarAcademico(academico);
+            boolean resultado = academicoDAO.insertarAcademico(academicoInvalido);
             assertFalse(resultado, "El académico no debería ser insertado con datos inválidos.");
 
         } catch (SQLException | IOException e) {
@@ -135,14 +126,14 @@ class AcademicoDAOTest {
     }
 
     @Test
-    void testBuscarAcademicoPorNumeroDePersonalDatosValidos() {
+    void testBuscarAcademicoPorNumeroDePersonalConDatosValidos() {
 
-        int numeroDePersonal = 1001;
+        int numeroDePersonalExistente = 1001;
 
         try {
 
-            AcademicoDTO academico = academicoDAO.buscarAcademicoPorNumeroDePersonal(numeroDePersonal);
-            assertEquals(numeroDePersonal, academico.getNumeroDePersonal(), "El número de personal debería coincidir.");
+            AcademicoDTO academicoEncontrado = academicoDAO.buscarAcademicoPorNumeroDePersonal(numeroDePersonalExistente);
+            assertEquals(numeroDePersonalExistente, academicoEncontrado.getNumeroDePersonal(), "El número de personal debería coincidir.");
 
         } catch (SQLException | IOException e) {
 
@@ -151,14 +142,14 @@ class AcademicoDAOTest {
     }
 
     @Test
-    void testBuscarAcademicoPorNumeroDePersonalDatosInvalidos() {
+    void testBuscarAcademicoPorNumeroDePersonalConDatosInvalidos() {
 
-        int numeroDePersonal = 99999;
+        int numeroDePersonalInexistente = 99999;
 
         try {
 
-            AcademicoDTO academico = academicoDAO.buscarAcademicoPorNumeroDePersonal(numeroDePersonal);
-            assertEquals(-1, academico.getNumeroDePersonal(), "No debería encontrarse un académico con ese número.");
+            AcademicoDTO academicoEncontrado = academicoDAO.buscarAcademicoPorNumeroDePersonal(numeroDePersonalInexistente);
+            assertEquals(-1, academicoEncontrado.getNumeroDePersonal(), "No debería encontrarse un académico con ese número.");
 
         } catch (SQLException | IOException e) {
 
@@ -167,14 +158,14 @@ class AcademicoDAOTest {
     }
 
     @Test
-    void testEliminarAcademicoPorNumeroDePersonalDatosValidos() {
+    void testEliminarAcademicoPorNumeroDePersonalConDatosValidos() {
 
-        int numeroDePersonal = 1002;
+        int numeroDePersonalAEliminar = 1002;
 
         try {
 
-            boolean resultado = academicoDAO.eliminarAcademicoPorNumeroDePersonal(numeroDePersonal);
-            assertTrue(resultado, "El académico debería ser eliminado correctamente.");
+            boolean eliminadoCorrectamente = academicoDAO.eliminarAcademicoPorNumeroDePersonal(numeroDePersonalAEliminar);
+            assertTrue(eliminadoCorrectamente, "El académico debería ser eliminado correctamente.");
 
         } catch (SQLException | IOException e) {
 
@@ -183,14 +174,14 @@ class AcademicoDAOTest {
     }
 
     @Test
-    void testEliminarAcademicoPorNumeroDePersonalDatosInvalidos() {
+    void testEliminarAcademicoPorNumeroDePersonalConDatosInvalidos() {
 
-        int numeroDePersonal = 88888;
+        int numeroDePersonalInexistente = 88888;
 
         try {
 
-            boolean resultado = academicoDAO.eliminarAcademicoPorNumeroDePersonal(numeroDePersonal);
-            assertFalse(resultado, "No debería eliminarse ningún académico inexistente.");
+            boolean resultadoEliminacion = academicoDAO.eliminarAcademicoPorNumeroDePersonal(numeroDePersonalInexistente);
+            assertFalse(resultadoEliminacion, "No debería eliminarse ningún académico inexistente.");
 
         } catch (SQLException | IOException e) {
 
@@ -199,16 +190,16 @@ class AcademicoDAOTest {
     }
 
     @Test
-    void testModificarAcademicoDatosValidos() {
+    void testModificarAcademicoConDatosValidos() {
 
         try {
 
-            AcademicoDTO academicoOriginal = academicoDAO.buscarAcademicoPorNumeroDePersonal(1003);
-            int idUsuario = academicoOriginal.getIdUsuario();
+            AcademicoDTO academicoExistente = academicoDAO.buscarAcademicoPorNumeroDePersonal(1003);
+            int idUsuario = academicoExistente.getIdUsuario();
 
-            AcademicoDTO academicoModificado = new AcademicoDTO(1003, idUsuario, "NuevoNombre", "NuevoApellido", 1);
-            boolean resultado = academicoDAO.modificarAcademico(academicoModificado);
-            assertTrue(resultado, "El académico debería ser modificado correctamente.");
+            AcademicoDTO academicoActualizado = new AcademicoDTO(1003, idUsuario, "NuevoNombre", "NuevoApellido", 1);
+            boolean modificadoCorrectamente = academicoDAO.modificarAcademico(academicoActualizado);
+            assertTrue(modificadoCorrectamente, "El académico debería ser modificado correctamente.");
 
         } catch (SQLException | IOException e) {
 
@@ -216,15 +207,14 @@ class AcademicoDAOTest {
         }
     }
 
-
     @Test
-    void testModificarAcademicoDatosInvalidos() {
+    void testModificarAcademicoConDatosInvalidos() {
 
-        AcademicoDTO academico = new AcademicoDTO(1003, -100, "Nombre", "Apellido", 1);
+        AcademicoDTO academicoInvalido = new AcademicoDTO(1003, -100, "Nombre", "Apellido", 1);
 
         try {
 
-            boolean resultado = academicoDAO.modificarAcademico(academico);
+            boolean resultado = academicoDAO.modificarAcademico(academicoInvalido);
             assertFalse(resultado, "No debería modificarse un académico con datos inválidos.");
 
         } catch (SQLException | IOException e) {
@@ -233,4 +223,3 @@ class AcademicoDAOTest {
         }
     }
 }
-

@@ -56,8 +56,10 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, 0);
             consultaPreparada.setInt(2, numeroDePersonal);
-            consultaPreparada.executeUpdate();
-            eliminadoConExito = true;
+
+            if (consultaPreparada.executeUpdate() > 0) {
+                eliminadoConExito = true;
+            }
 
         } finally {
 
@@ -81,8 +83,10 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, academicoEvaluador.getNumeroDePersonal());
             consultaPreparada.setInt(2, academicoEvaluador.getIdUsuario());
-            consultaPreparada.executeUpdate();
-            modificacionExitosa = true;
+
+            if (consultaPreparada.executeUpdate() > 0) {
+                modificacionExitosa = true;
+            }
 
         } finally {
 

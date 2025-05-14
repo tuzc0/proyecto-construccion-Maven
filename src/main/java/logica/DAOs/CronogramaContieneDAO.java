@@ -12,32 +12,34 @@ import java.sql.SQLException;
 public class CronogramaContieneDAO implements ICronogramaContieneDAO {
 
     Connection conexionBaseDeDatos;
-    PreparedStatement consultaPreparada = null;
+    PreparedStatement sentenciaCronograma = null;
     ResultSet resultadoConsulta;
 
     public boolean insertarCronogramaContiene(CronogramaContieneDTO cronograma) throws SQLException, IOException {
 
         String consultaSQL = "INSERT INTO cronogramacontiene (idCronograma, idActividad, estadoActivo) VALUES (?, ?, 1)";
-        boolean insercionExitosa = false;
+        boolean cronogramaInsertado = false;
 
         try {
 
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-            consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
-            consultaPreparada.setInt(1, cronograma.getIdCronograma());
-            consultaPreparada.setInt(2, cronograma.getIdActividad());
-            consultaPreparada.executeUpdate();
-            insercionExitosa = true;
+            sentenciaCronograma = conexionBaseDeDatos.prepareStatement(consultaSQL);
+            sentenciaCronograma.setInt(1, cronograma.getIdCronograma());
+            sentenciaCronograma.setInt(2, cronograma.getIdActividad());
+
+            if (sentenciaCronograma.executeUpdate() > 0) {
+                cronogramaInsertado = true;
+            }
 
         } finally {
 
-            if (consultaPreparada != null) {
+            if (sentenciaCronograma != null) {
 
-                consultaPreparada.close();
+                sentenciaCronograma.close();
             }
         }
 
-        return insercionExitosa;
+        return cronogramaInsertado;
     }
 
     public boolean eliminarCronogramaContienePorID(int idCronograma) throws SQLException, IOException {
@@ -48,16 +50,18 @@ public class CronogramaContieneDAO implements ICronogramaContieneDAO {
         try {
 
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-            consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
-            consultaPreparada.setInt(1, idCronograma);
-            consultaPreparada.executeUpdate();
-            cronogramaEliminado = true;
+            sentenciaCronograma = conexionBaseDeDatos.prepareStatement(consultaSQL);
+            sentenciaCronograma.setInt(1, idCronograma);
+
+            if (sentenciaCronograma.executeUpdate() > 0) {
+                cronogramaEliminado = true;
+            }
 
         } finally {
 
-            if (consultaPreparada != null) {
+            if (sentenciaCronograma != null) {
 
-                consultaPreparada.close();
+                sentenciaCronograma.close();
             }
         }
 
@@ -72,18 +76,19 @@ public class CronogramaContieneDAO implements ICronogramaContieneDAO {
         try {
 
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-            consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
-            consultaPreparada.setInt(1, cronograma.getIdActividad());
-            consultaPreparada.setInt(2, cronograma.getIdCronograma());
+            sentenciaCronograma = conexionBaseDeDatos.prepareStatement(consultaSQL);
+            sentenciaCronograma.setInt(1, cronograma.getIdActividad());
+            sentenciaCronograma.setInt(2, cronograma.getIdCronograma());
 
-            consultaPreparada.executeUpdate();
-            cronogramaModificado = true;
+            if (sentenciaCronograma.executeUpdate() > 0) {
+                cronogramaModificado = true;
+            }
 
         } finally {
 
-            if (consultaPreparada != null) {
+            if (sentenciaCronograma != null) {
 
-                consultaPreparada.close();
+                sentenciaCronograma.close();
             }
         }
 
@@ -99,23 +104,22 @@ public class CronogramaContieneDAO implements ICronogramaContieneDAO {
         try {
 
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-            consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
-            consultaPreparada.setInt(1, idCronograma);
-            resultadoConsulta = consultaPreparada.executeQuery();
+            sentenciaCronograma = conexionBaseDeDatos.prepareStatement(consultaSQL);
+            sentenciaCronograma.setInt(1, idCronograma);
+            resultadoConsulta = sentenciaCronograma.executeQuery();
 
             if (resultadoConsulta.next()) {
 
                 int idActividad = resultadoConsulta.getInt("idActividad");
                 int estadoActivo = resultadoConsulta.getInt("estadoActivo");
-
                 cronograma = new CronogramaContieneDTO(idCronograma, idActividad, estadoActivo);
             }
 
         } finally {
 
-            if (consultaPreparada != null) {
+            if (sentenciaCronograma != null) {
 
-                consultaPreparada.close();
+                sentenciaCronograma.close();
             }
         }
 

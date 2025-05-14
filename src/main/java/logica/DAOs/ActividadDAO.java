@@ -33,8 +33,10 @@ public class ActividadDAO implements IActividadDAO {
             sentenciaActividad.setTimestamp(5, actividad.getFechaInicio());
             sentenciaActividad.setTimestamp(6, actividad.getFechaFin());
             sentenciaActividad.setInt(7, 1);
-            sentenciaActividad.executeUpdate();
-            actividadInsertada = true;
+
+            if (sentenciaActividad.executeUpdate() > 0) {
+                actividadInsertada = true;
+            }
 
         } finally {
 
@@ -57,8 +59,10 @@ public class ActividadDAO implements IActividadDAO {
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaActividad = conexionBaseDeDatos.prepareStatement(eliminarSQLActividad);
             sentenciaActividad.setInt(1, idActividad);
-            sentenciaActividad.executeUpdate();
-            actividadEliminada = true;
+
+            if (sentenciaActividad.executeUpdate() > 0) {
+                actividadEliminada= true;
+            }
 
         } finally {
 
@@ -87,8 +91,10 @@ public class ActividadDAO implements IActividadDAO {
             sentenciaActividad.setTimestamp(5, actividad.getFechaFin());
             sentenciaActividad.setInt(6, actividad.getIDActividad());
             sentenciaActividad.setInt(7, actividad.getEstadoActivo());
-            sentenciaActividad.executeUpdate();
-            actividadModificada = true;
+
+            if (sentenciaActividad.executeUpdate() > 0) {
+                actividadModificada = true;
+            }
 
         } finally {
 

@@ -28,8 +28,10 @@ public class EvidenciaEvaluacionDAO implements IEvidenciaEvaluacionDAO {
             sentenciaEvidenciaEvaluacion.setInt(1, evidencia.getIdEvidencia());
             sentenciaEvidenciaEvaluacion.setString(2, evidencia.getURL());
             sentenciaEvidenciaEvaluacion.setInt(3, evidencia.getIdEvaluacion());
-            sentenciaEvidenciaEvaluacion.executeUpdate();
-            evidenciaInsertada = true;
+
+            if (sentenciaEvidenciaEvaluacion.executeUpdate() > 0) {
+                evidenciaInsertada = true;
+            }
 
         } finally {
 
@@ -48,12 +50,14 @@ public class EvidenciaEvaluacionDAO implements IEvidenciaEvaluacionDAO {
         EvidenciaEvaluacionDTO evidenciaEncontrada = new EvidenciaEvaluacionDTO(-1, " ", -1);
 
         try {
+
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaEvidenciaEvaluacion = conexionBaseDeDatos.prepareStatement(consultaSQLEvidencia);
             sentenciaEvidenciaEvaluacion.setInt(1, idEvidencia);
             resultadoEvidenciaEvaluacion = sentenciaEvidenciaEvaluacion.executeQuery();
 
             if (resultadoEvidenciaEvaluacion.next()) {
+
                 evidenciaEncontrada = new EvidenciaEvaluacionDTO();
                 evidenciaEncontrada.setIdEvidencia(resultadoEvidenciaEvaluacion.getInt("idEvidencia"));
                 evidenciaEncontrada.setURL(resultadoEvidenciaEvaluacion.getString("url"));
@@ -61,6 +65,7 @@ public class EvidenciaEvaluacionDAO implements IEvidenciaEvaluacionDAO {
             }
 
         } finally {
+
             if (sentenciaEvidenciaEvaluacion != null) {
                 sentenciaEvidenciaEvaluacion.close();
             }

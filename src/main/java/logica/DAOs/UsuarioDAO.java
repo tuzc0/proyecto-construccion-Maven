@@ -15,8 +15,6 @@ public class UsuarioDAO implements IUsuarioDAO {
     PreparedStatement consultaPreparada = null;
     ResultSet resultadoConsulta;
 
-
-
     public int insertarUsuario(UsuarioDTO usuario) throws SQLException, IOException {
 
         String consultaSQL = "INSERT INTO usuario (nombre, apellidos, estadoActivo) VALUES (?, ?, ?)";
@@ -30,7 +28,6 @@ public class UsuarioDAO implements IUsuarioDAO {
             consultaPreparada.setString(2, usuario.getApellido());
             consultaPreparada.setInt(3, usuario.getEstado());
             consultaPreparada.executeUpdate();
-
 
             ResultSet generatedKeys = consultaPreparada.getGeneratedKeys();
 
@@ -60,8 +57,10 @@ public class UsuarioDAO implements IUsuarioDAO {
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, 0);
             consultaPreparada.setInt(2, idUsuario);
-            consultaPreparada.executeUpdate();
-            usuarioEliminado = true;
+
+            if (consultaPreparada.executeUpdate() > 0) {
+                usuarioEliminado = true;
+            }
 
         } finally {
 
@@ -86,8 +85,10 @@ public class UsuarioDAO implements IUsuarioDAO {
             consultaPreparada.setInt(3, usuario.getIdUsuario());
             consultaPreparada.setString(2, usuario.getApellido());
             consultaPreparada.setString(1, usuario.getNombre());
-            consultaPreparada.executeUpdate();
-            usuarioModificado = true;
+
+            if (consultaPreparada.executeUpdate() > 0) {
+                usuarioModificado = true;
+            }
 
         } finally {
 

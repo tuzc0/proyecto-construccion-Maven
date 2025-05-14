@@ -15,8 +15,6 @@ public class PeriodoDAO implements IPeriodoDAO {
     PreparedStatement sentenciaPeriodo = null;
     ResultSet resultadoConsultaPeriodo;
 
-
-
     public boolean crearNuevoPeriodo(PeriodoDTO periodo) throws SQLException, IOException {
 
         boolean periodoInsertado = false;
@@ -29,8 +27,10 @@ public class PeriodoDAO implements IPeriodoDAO {
             sentenciaPeriodo.setInt(1, periodo.getIDPeriodo());
             sentenciaPeriodo.setString(2, periodo.getDescripcion());
             sentenciaPeriodo.setInt(3, periodo.getEstadoActivo());
-            sentenciaPeriodo.executeUpdate();
-            periodoInsertado = true;
+
+            if (sentenciaPeriodo.executeUpdate() > 0) {
+                periodoInsertado = true;
+            }
 
         } finally {
 
@@ -53,8 +53,10 @@ public class PeriodoDAO implements IPeriodoDAO {
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaPeriodo = conexionBaseDeDatos.prepareStatement(eliminarSQLPeriodo);
             sentenciaPeriodo.setInt(1, idPeriodo);
-            sentenciaPeriodo.executeUpdate();
-            periodoEliminado = true;
+
+            if (sentenciaPeriodo.executeUpdate() > 0) {
+                periodoEliminado = true;
+            }
 
         } finally {
 
@@ -79,8 +81,10 @@ public class PeriodoDAO implements IPeriodoDAO {
             sentenciaPeriodo.setInt(3, periodo.getIDPeriodo());
             sentenciaPeriodo.setString(1, periodo.getDescripcion());
             sentenciaPeriodo.setInt(2, periodo.getEstadoActivo());
-            sentenciaPeriodo.executeUpdate();
-            periodoModificado = true;
+
+            if (sentenciaPeriodo.executeUpdate() > 0) {
+                periodoModificado = true;
+            }
 
         } finally {
 

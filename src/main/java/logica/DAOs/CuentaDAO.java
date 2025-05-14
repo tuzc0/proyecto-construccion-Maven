@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class CuentaDAO implements ICuentaDAO {
 
     Connection conexionBaseDeDatos;
-    PreparedStatement consultaCuenta = null;
+    PreparedStatement sentenciaCuenta = null;
     ResultSet resultadoConsultaCuenta;
 
 
@@ -20,27 +20,29 @@ public class CuentaDAO implements ICuentaDAO {
     public boolean crearNuevaCuenta(CuentaDTO cuenta) throws SQLException, IOException {
 
         String insertarSQLCuenta = "INSERT INTO cuenta VALUES(?, ?, ?)";
-        boolean usuarioInsertado = false;
+        boolean cuentaCreada = false;
 
         try {
 
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-            consultaCuenta = conexionBaseDeDatos.prepareStatement(insertarSQLCuenta);
-            consultaCuenta.setString(1, cuenta.getCorreoElectronico());
-            consultaCuenta.setString(2, cuenta.getContrasena());
-            consultaCuenta.setInt(3, cuenta.getIdUsuario());
-            consultaCuenta.executeUpdate();
-            usuarioInsertado = true;
+            sentenciaCuenta = conexionBaseDeDatos.prepareStatement(insertarSQLCuenta);
+            sentenciaCuenta.setString(1, cuenta.getCorreoElectronico());
+            sentenciaCuenta.setString(2, cuenta.getContrasena());
+            sentenciaCuenta.setInt(3, cuenta.getIdUsuario());
+
+            if (sentenciaCuenta.executeUpdate() > 0) {
+                cuentaCreada = true;
+            }
 
         } finally {
 
-            if (consultaCuenta != null) {
+            if (sentenciaCuenta != null) {
 
-                consultaCuenta.close();
+                sentenciaCuenta.close();
             }
         }
 
-        return usuarioInsertado;
+        return cuentaCreada;
     }
 
     public boolean eliminarCuentaPorID(int idUsuario) throws SQLException, IOException {
@@ -52,16 +54,18 @@ public class CuentaDAO implements ICuentaDAO {
         try {
 
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-            consultaCuenta = conexionBaseDeDatos.prepareStatement(eliminarSQLUsuario);
-            consultaCuenta.setInt(1, idUsuario);
-            consultaCuenta.executeUpdate();
-            cuentaEliminada = true;
+            sentenciaCuenta = conexionBaseDeDatos.prepareStatement(eliminarSQLUsuario);
+            sentenciaCuenta.setInt(1, idUsuario);
+
+            if (sentenciaCuenta.executeUpdate() > 0) {
+                cuentaEliminada = true;
+            }
 
         } finally {
 
-            if (consultaCuenta != null) {
+            if (sentenciaCuenta != null) {
 
-                consultaCuenta.close();
+                sentenciaCuenta.close();
             }
         }
 
@@ -76,18 +80,20 @@ public class CuentaDAO implements ICuentaDAO {
         try {
 
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-            consultaCuenta = conexionBaseDeDatos.prepareStatement(modificarSQLUsuario);
-            consultaCuenta.setString(1, cuenta.getCorreoElectronico());
-            consultaCuenta.setString(2, cuenta.getContrasena());
-            consultaCuenta.setInt(3, cuenta.getIdUsuario());
-            consultaCuenta.executeUpdate();
-            cuentaModificada = true;
+            sentenciaCuenta = conexionBaseDeDatos.prepareStatement(modificarSQLUsuario);
+            sentenciaCuenta.setString(1, cuenta.getCorreoElectronico());
+            sentenciaCuenta.setString(2, cuenta.getContrasena());
+            sentenciaCuenta.setInt(3, cuenta.getIdUsuario());
+
+            if (sentenciaCuenta.executeUpdate() > 0) {
+                cuentaModificada = true;
+            }
 
         } finally {
 
-            if (consultaCuenta != null) {
+            if (sentenciaCuenta != null) {
 
-                consultaCuenta.close();
+                sentenciaCuenta.close();
             }
         }
 
@@ -102,9 +108,9 @@ public class CuentaDAO implements ICuentaDAO {
         try {
 
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-            consultaCuenta = conexionBaseDeDatos.prepareStatement(buscarSQLUsuario);
-            consultaCuenta.setString(1, correo);
-            resultadoConsultaCuenta = consultaCuenta.executeQuery();
+            sentenciaCuenta = conexionBaseDeDatos.prepareStatement(buscarSQLUsuario);
+            sentenciaCuenta.setString(1, correo);
+            resultadoConsultaCuenta = sentenciaCuenta.executeQuery();
 
             if (resultadoConsultaCuenta.next()) {
 
@@ -115,9 +121,9 @@ public class CuentaDAO implements ICuentaDAO {
 
         } finally {
 
-            if (consultaCuenta != null) {
+            if (sentenciaCuenta != null) {
 
-                consultaCuenta.close();
+                sentenciaCuenta.close();
             }
         }
 
@@ -132,9 +138,9 @@ public class CuentaDAO implements ICuentaDAO {
         try {
 
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-            consultaCuenta = conexionBaseDeDatos.prepareStatement(buscarSQLUsuario);
-            consultaCuenta.setInt(1, idUsuario);
-            resultadoConsultaCuenta = consultaCuenta.executeQuery();
+            sentenciaCuenta = conexionBaseDeDatos.prepareStatement(buscarSQLUsuario);
+            sentenciaCuenta.setInt(1, idUsuario);
+            resultadoConsultaCuenta = sentenciaCuenta.executeQuery();
 
             if (resultadoConsultaCuenta.next()) {
 
@@ -145,9 +151,9 @@ public class CuentaDAO implements ICuentaDAO {
 
         } finally {
 
-            if (consultaCuenta != null) {
+            if (sentenciaCuenta != null) {
 
-                consultaCuenta.close();
+                sentenciaCuenta.close();
             }
         }
 

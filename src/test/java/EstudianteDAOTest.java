@@ -1,5 +1,8 @@
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DAOs.EstudianteDAO;
+import logica.DAOs.UsuarioDAO;
 import logica.DTOs.EstudianteDTO;
+import logica.DTOs.UsuarioDTO;
 import org.junit.jupiter.api.*;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -10,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class EstudianteDAOTest {
 
     private static EstudianteDAO estudianteDAO;
+    private static final List<Integer> idsUsuariosCreados = new java.util.ArrayList<>();
 
     @BeforeAll
     static void setUp() throws SQLException, IOException {
@@ -17,20 +21,71 @@ class EstudianteDAOTest {
         estudianteDAO = new EstudianteDAO();
     }
 
+    @BeforeEach
+    void prepararDatosDePrueba() throws SQLException, IOException {
+
+        try (var conexion = new ConexionBaseDeDatos().getConnection()) {
+
+            String deleteSQL = "DELETE FROM estudiante WHERE matricula = ?";
+            try (var stmt = conexion.prepareStatement(deleteSQL)) {
+                stmt.setString(1, "A12347");
+                stmt.executeUpdate();
+            }
+
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            UsuarioDTO usuario = new UsuarioDTO(0, "Nombre", "Apellido", 1);
+            int idUsuario = usuarioDAO.insertarUsuario(usuario);
+
+            EstudianteDTO estudiante = new EstudianteDTO(1, "Juan", "Pérez", "A12347", idUsuario);
+            estudianteDAO.insertarEstudiante(estudiante);
+        }
+
+
+    }
+
+    @AfterAll
+    public static void limpiarDatosPrueba() throws SQLException, IOException {
+
+        List<String> estudiantesCreados = List.of("A12347", "A12341");
+
+
+        for (String matricula : estudiantesCreados) {
+            String deleteSQL = "DELETE FROM estudiante WHERE matricula = ?";
+            try (var statement = new ConexionBaseDeDatos().getConnection().prepareStatement(deleteSQL)) {
+                statement.setString(1, matricula);
+                statement.executeUpdate();
+            }
+        }
+
+        for (int idUsuario : idsUsuariosCreados) {
+            String deleteSQL = "DELETE FROM usuario WHERE idUsuario = ?";
+            try (var statement = new ConexionBaseDeDatos().getConnection().prepareStatement(deleteSQL)) {
+                statement.setInt(1, idUsuario);
+                statement.executeUpdate();
+            }
+        }
+
+    }
+
     @Test
     @Order(1)
     void testInsertarEstudianteDatosValidos() throws SQLException, IOException {
 
-        EstudianteDTO estudiante = new EstudianteDTO(2, "Juan", "Pérez", "A12346", 1);
+        UsuarioDTO usuario = new UsuarioDTO(0, "Nombre", "Apellido", 1);
+        int idUsuario = new UsuarioDAO().insertarUsuario(usuario);
+
+        EstudianteDTO estudiante = new EstudianteDTO(1, "Juan", "Pérez", "A12341", idUsuario);
         boolean resultado = estudianteDAO.insertarEstudiante(estudiante);
         assertTrue(resultado, "El estudiante debería haberse insertado correctamente.");
+        idsUsuariosCreados.add(idUsuario);
+
     }
 
     @Test
     @Order(2)
     void testEliminarEstudiantePorMatriculaDatosValidos() throws SQLException, IOException {
 
-        boolean resultado = estudianteDAO.eliminarEstudiantePorMatricula(0, "A12345");
+        boolean resultado = estudianteDAO.eliminarEstudiantePorMatricula(0, "A12347");
         assertTrue(resultado, "El estudiante debería haberse eliminado correctamente.");
     }
 
@@ -38,7 +93,7 @@ class EstudianteDAOTest {
     @Order(3)
     void testModificarEstudianteDatosValidos() throws SQLException, IOException {
 
-        EstudianteDTO estudiante = new EstudianteDTO(2, "Juan", "Pérez", "A12345", 1);
+        EstudianteDTO estudiante = new EstudianteDTO(1, "Juan", "Pérez Lopez", "A12347", 1);
         boolean resultado = estudianteDAO.modificarEstudiante(estudiante);
         assertTrue(resultado, "El estudiante debería haberse modificado correctamente.");
     }
@@ -47,8 +102,8 @@ class EstudianteDAOTest {
     @Order(4)
     void testBuscarEstudiantePorMatriculaDatosValidos() throws SQLException, IOException {
 
-        EstudianteDTO estudiante = estudianteDAO.buscarEstudiantePorMatricula("A12345");
-        assertEquals("A12345", estudiante.getMatricula(), "La matrícula del estudiante debería coincidir.");
+        EstudianteDTO estudiante = estudianteDAO.buscarEstudiantePorMatricula("A12347");
+        assertEquals("A12347", estudiante.getMatricula(), "La matrícula del estudiante debería coincidir.");
     }
 
     @Test

@@ -60,10 +60,31 @@ public class VerificacionUsuario {
         return patron.matcher(campo).matches();
     }
 
-    public static boolean camposVacios(String nombre, String apellidos, String numeroPersonal, String correo, String contrasena) {
+    public static List<String> camposVacios(String nombre, String apellidos, String numeroPersonal, String correo, String contrasena) {
 
-        return nombre.isEmpty() || apellidos.isEmpty() || numeroPersonal.isEmpty()
-                || correo.isEmpty() || contrasena.isEmpty();
+        List<String> errores = new ArrayList<>();
+
+        if (nombre.isEmpty()) {
+            errores.add("El nombre no puede estar vacío.");
+        }
+
+        if (apellidos.isEmpty()) {
+            errores.add("Los apellidos no pueden estar vacíos.");
+        }
+
+        if (numeroPersonal.isEmpty()) {
+            errores.add("El número de personal no puede estar vacío.");
+        }
+
+        if (correo.isEmpty()) {
+            errores.add("El correo electrónico no puede estar vacío.");
+        }
+
+        if (contrasena.isEmpty()) {
+            errores.add("La contraseña no puede estar vacía.");
+        }
+
+        return errores;
     }
 
     public static List<String> validarCampos(String nombre, String apellidos, String numeroPersonalTexto, String correo, String contrasena) {
@@ -92,7 +113,7 @@ public class VerificacionUsuario {
 
         if (!contrasenaValida(contrasena)) {
 
-            errores.add("La contraseña no es válida.");
+            errores.add("La contraseña no es válida. Verifique que contenga entre 6 y 64 caracteres alfanuméricos.");
         }
 
         return errores;

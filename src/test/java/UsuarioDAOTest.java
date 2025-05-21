@@ -1,86 +1,187 @@
+import accesoadatos.ConexionBaseDeDatos;
 import logica.DAOs.UsuarioDAO;
 import logica.DTOs.UsuarioDTO;
 import org.junit.jupiter.api.*;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class UsuarioDAOTest {
+public class UsuarioDAOTest {
 
-    private static UsuarioDAO usuarioDAO;
+    private UsuarioDAO usuarioDAO;
+    private Connection conexionBaseDeDatos;
+    private final List<Integer> IDS_USUARIOS_INSERTADOS = new ArrayList<>();
 
-    @BeforeAll
-    static void setUp() {
-
-        usuarioDAO = new UsuarioDAO();
-    }
-
-    @AfterAll
-    static void tearDown() {
-
-        usuarioDAO = null;
-    }
-
-    @Test
-    @Order(1)
-    void testInsertarUsuarioDatosValidos() {
-        UsuarioDTO usuario = new UsuarioDTO(0, "Prueba", "Insertar Usuario", 1);
+    @BeforeEach
+    void prepararDatosDePrueba() {
 
         try {
 
-            int idUsuario = usuarioDAO.insertarUsuario(usuario);
-            assertEquals(54, idUsuario, "El ID del usuario insertado debe coincidir con el esperado.");
+            usuarioDAO = new UsuarioDAO();
+            IDS_USUARIOS_INSERTADOS.clear();
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
 
+            try (PreparedStatement eliminarUsuario = conexionBaseDeDatos.prepareStatement(
+
+                    "DELETE FROM usuario WHERE idUsuario BETWEEN 1000 AND 2000")) {
+                eliminarUsuario.executeUpdate();
+            }
         } catch (SQLException | IOException e) {
 
-            fail("Ocurrió una excepción durante la prueba: " + e.getMessage());
+            fail("Error al preparar los datos de prueba: " + e.getMessage());
+        }
+    }
+
+    @AfterEach
+    void limpiarDatosDePrueba() {
+
+        try {
+
+            for (int idUsuarioInsertado : IDS_USUARIOS_INSERTADOS) {
+
+                try (PreparedStatement eliminarUsuario =
+                             conexionBaseDeDatos.prepareStatement("DELETE FROM usuario WHERE idUsuario = ?")) {
+
+                    eliminarUsuario.setInt(1, idUsuarioInsertado);
+                    eliminarUsuario.executeUpdate();
+                }
+            }
+
+            conexionBaseDeDatos.close();
+
+        } catch (SQLException e) {
+
+            fail("Error al limpiar los datos de prueba: " + e.getMessage());
         }
     }
 
     @Test
-    @Order(2)
-    void testEliminarUsuarioPorIDDatosValidos() {
+    void testInsertarUsuarioConDatosValidos() {
 
         try {
 
-            boolean resultado = usuarioDAO.eliminarUsuarioPorID(51);
-            assertTrue(resultado, "El usuario debería haberse eliminado correctamente.");
+            UsuarioDTO usuarioDTO = new UsuarioDTO(0, "Luis", "González", 1);
+            int idGenerado = usuarioDAO.insertarUsuario(usuarioDTO);
+
+            IDS_USUARIOS_INSERTADOS.add(idGenerado);
+            assertTrue(idGenerado > 0, "El ID generado debería ser mayor a 0.");
 
         } catch (SQLException | IOException e) {
 
-            fail("Ocurrió una excepción durante la prueba: " + e.getMessage());
+            fail("No se esperaba una excepción: " + e.getMessage());
         }
     }
 
     @Test
-    @Order(3)
-    void testModificarUsuarioDatosValidos() {
-
-        UsuarioDTO usuario = new UsuarioDTO(51, "Modificado", "Usuario", 1);
+    void testBuscarUsuarioPorIDConUsuarioExistente() {
 
         try {
 
-            boolean resultado = usuarioDAO.modificarUsuario(usuario);
-            assertTrue(resultado, "El usuario debería haberse modificado correctamente.");
+            UsuarioDTO usuarioEsperado = new UsuarioDTO(0, "Ana", "Ramírez", 1);
+            int idInsertado = usuarioDAO.insertarUsuario(usuarioEsperado);
+            IDS_USUARIOS_INSERTADOS.add(idInsertado);
+
+            UsuarioDTO usuarioObtenido = usuarioDAO.buscarUsuarioPorID(idInsertado);
+            UsuarioDTO usuarioConIdEsperado = new UsuarioDTO(idInsertado, "Ana", "Ramírez", 1);
+
+            assertEquals(usuarioConIdEsperado, usuarioObtenido, "El usuario obtenido debería coincidir con el esperado.");
 
         } catch (SQLException | IOException e) {
 
-            fail("Ocurrió una excepción durante la prueba: " + e.getMessage());
+            fail("No se esperaba una excepción: " + e.getMessage());
         }
     }
 
     @Test
-    @Order(4)
-    void testBuscarUsuarioPorIDDatosValidos() {
+    void testBuscarUsuarioPorIDConUsuarioInexistente() {
 
         try {
-            UsuarioDTO usuario = usuarioDAO.buscarUsuarioPorID(51);
-            assertEquals(51, usuario.getIdUsuario(), "El ID del usuario debería coincidir.");
+
+            UsuarioDTO usuarioObtenido = usuarioDAO.buscarUsuarioPorID(99999);
+            UsuarioDTO usuarioEsperado = new UsuarioDTO(-1, "N/A", "N/A", 0);
+
+            assertEquals(usuarioEsperado, usuarioObtenido, "El usuario obtenido debería ser el usuario por defecto.");
 
         } catch (SQLException | IOException e) {
 
-            fail("Ocurrió una excepción durante la prueba: " + e.getMessage());
+            fail("No se esperaba una excepción: " + e.getMessage());
+        }
+    }
+
+    @Test
+    void testEliminarUsuarioPorIDConUsuarioExistente() {
+
+        try {
+
+            UsuarioDTO usuarioDTO = new UsuarioDTO(0, "Carlos", "Martínez", 1);
+            int idInsertado = usuarioDAO.insertarUsuario(usuarioDTO);
+            IDS_USUARIOS_INSERTADOS.add(idInsertado);
+
+            boolean resultadoUsuarioEliminado = usuarioDAO.eliminarUsuarioPorID(idInsertado);
+            assertTrue(resultadoUsuarioEliminado, "El usuario debería ser eliminado correctamente.");
+
+            UsuarioDTO usuarioObtenido = usuarioDAO.buscarUsuarioPorID(idInsertado);
+            assertEquals(0, usuarioObtenido.getEstado(), "El estado del usuario debería ser inactivo.");
+
+        } catch (SQLException | IOException e) {
+
+            fail("No se esperaba una excepción: " + e.getMessage());
+        }
+    }
+
+    @Test
+    void testEliminarUsuarioPorIDConUsuarioInexistente() {
+
+        try {
+
+            boolean resutadoUsuarioEliminado = usuarioDAO.eliminarUsuarioPorID(88888);
+            assertFalse(resutadoUsuarioEliminado, "No debería eliminarse un usuario inexistente.");
+
+        } catch (SQLException | IOException e) {
+
+            fail("No se esperaba una excepción: " + e.getMessage());
+        }
+    }
+
+    @Test
+    void testModificarUsuarioConUsuarioExistente() {
+
+        try {
+
+            UsuarioDTO usuarioDTOOriginal = new UsuarioDTO(0, "Elena", "Gómez", 1);
+            int idInsertado = usuarioDAO.insertarUsuario(usuarioDTOOriginal);
+            IDS_USUARIOS_INSERTADOS.add(idInsertado);
+
+            UsuarioDTO usuarioActualizado = new UsuarioDTO(idInsertado, "Elena Patricia", "Gómez Ruiz", 1);
+            boolean ResultadoModificacion = usuarioDAO.modificarUsuario(usuarioActualizado);
+
+
+            UsuarioDTO usuarioOriginal = usuarioDAO.buscarUsuarioPorID(idInsertado);
+            assertEquals(usuarioActualizado, usuarioOriginal, "El usuario en la base de datos debería coincidir con el actualizado.");
+
+        } catch (SQLException | IOException e) {
+
+            fail("No se esperaba una excepción: " + e.getMessage());
+        }
+    }
+
+    @Test
+    void testModificarUsuarioConUsuarioInexistente() {
+
+        try {
+
+            UsuarioDTO usuarioInexistente = new UsuarioDTO(77777, "Nombre", "Apellido", 1);
+            boolean resultadoUsuarioModificado = usuarioDAO.modificarUsuario(usuarioInexistente);
+
+            assertFalse(resultadoUsuarioModificado, "No debería modificarse un usuario inexistente.");
+
+        } catch (SQLException | IOException e) {
+
+            fail("No se esperaba una excepción: " + e.getMessage());
         }
     }
 }

@@ -1,5 +1,7 @@
 package logica.DTOs;
 
+import java.util.Objects;
+
 public class CriterioEvaluacionDTO {
 
     private int IDCriterio;
@@ -57,5 +59,30 @@ public class CriterioEvaluacionDTO {
     public void setEstadoActivo(int estadoActivo) {
 
         this.estadoActivo = estadoActivo;
+    }
+
+    @Override
+    public boolean equals(Object objetoAComparar) {
+
+        if (this == objetoAComparar) {
+            return true;
+        }
+
+        if (objetoAComparar == null || getClass() != objetoAComparar.getClass()) {
+            return false;
+        }
+
+        CriterioEvaluacionDTO criterioComparado = (CriterioEvaluacionDTO) objetoAComparar;
+
+        return IDCriterio == criterioComparado.IDCriterio &&
+                numeroCriterio == criterioComparado.numeroCriterio &&
+                estadoActivo == criterioComparado.estadoActivo &&
+                Objects.equals(descripcion, criterioComparado.descripcion);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(IDCriterio, descripcion, numeroCriterio, estadoActivo);
     }
 }

@@ -15,9 +15,8 @@ public class ActividadDAO implements IActividadDAO {
     PreparedStatement sentenciaActividad = null;
     ResultSet resultadoConsulta;
 
-
-
     public boolean crearNuevaActividad(ActividadDTO actividad) throws SQLException, IOException {
+
         boolean actividadInsertada = false;
 
         String insertarSQLActividad = "INSERT INTO actividad VALUES(?, ?, ?, ?, ?, ?, ?)";
@@ -32,7 +31,7 @@ public class ActividadDAO implements IActividadDAO {
             sentenciaActividad.setString(4, actividad.getHitos());
             sentenciaActividad.setTimestamp(5, actividad.getFechaInicio());
             sentenciaActividad.setTimestamp(6, actividad.getFechaFin());
-            sentenciaActividad.setInt(7, 1);
+            sentenciaActividad.setInt(7, actividad.getEstadoActivo());
 
             if (sentenciaActividad.executeUpdate() > 0) {
                 actividadInsertada = true;
@@ -50,6 +49,7 @@ public class ActividadDAO implements IActividadDAO {
     }
 
     public boolean eliminarActividadPorID(int idActividad) throws SQLException, IOException {
+
         boolean actividadEliminada = false;
 
         String eliminarSQLActividad = "UPDATE actividad SET estadoActivo = 0 WHERE IDActividad = ?";
@@ -89,8 +89,8 @@ public class ActividadDAO implements IActividadDAO {
             sentenciaActividad.setString(3, actividad.getHitos());
             sentenciaActividad.setTimestamp(4, actividad.getFechaInicio());
             sentenciaActividad.setTimestamp(5, actividad.getFechaFin());
-            sentenciaActividad.setInt(6, actividad.getIDActividad());
-            sentenciaActividad.setInt(7, actividad.getEstadoActivo());
+            sentenciaActividad.setInt(6, actividad.getEstadoActivo());
+            sentenciaActividad.setInt(7, actividad.getIDActividad());
 
             if (sentenciaActividad.executeUpdate() > 0) {
                 actividadModificada = true;
@@ -109,7 +109,7 @@ public class ActividadDAO implements IActividadDAO {
 
     public ActividadDTO buscarActividadPorID(int idActividad) throws SQLException, IOException {
 
-        ActividadDTO actividad = new ActividadDTO(-1, "Sin nombre", null, null, "Sin duración", "Sin hitos", 0);
+        ActividadDTO actividad = new ActividadDTO(-1, "Sin nombre", "Sin duración", "Sin hitos",null, null,  0);
 
         String buscarSQLActividad = "SELECT * FROM actividad WHERE IDActividad = ?";
 

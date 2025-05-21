@@ -18,6 +18,7 @@ import logica.VerificacionUsuario;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ControladorRegistroEstudianteGUI {
 
@@ -101,9 +102,17 @@ public class ControladorRegistroEstudianteGUI {
 
         try {
 
-            if (verificacionUsuario.camposVacios(nombre, apellidos, matricula, correo, contraseña)) {
 
-                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Por favor, complete todos los campos.");
+            List<String> listaDeCamposVacios = VerificacionUsuario.camposVacios(nombre, apellidos, correo, correo, contraseña);
+
+            if (!listaDeCamposVacios.isEmpty()) {
+
+                String camposVacios = String.join("\n", listaDeCamposVacios);
+                utilidades.mostrarAlerta(
+                        "Campos vacíos",
+                        "Por favor, complete todos los campos requeridos.",
+                        camposVacios
+                );
                 return;
             }
 

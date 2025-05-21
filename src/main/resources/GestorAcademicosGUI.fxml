@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="971.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorGestorAcademicosGUI">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="971.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.gestionacademico.ControladorGestorAcademicosGUI">
     <children>
         <VBox layoutX="37.0" layoutY="80.0" prefHeight="437.0" prefWidth="910.0">
             <children>
@@ -70,7 +70,7 @@
                                 <StackPane prefHeight="34.0" prefWidth="254.0">
                                     <children>
                                         <TextField fx:id="campoNombreEditable" visible="false" />
-                                        <Label fx:id="campoNombreEncontrado" prefHeight="34.0" prefWidth="254.0">
+                                        <Label fx:id="etiquetaNombreEncontrado" prefHeight="34.0" prefWidth="254.0">
                                             <font>
                                                 <Font size="14.0" />
                                             </font>
@@ -84,7 +84,7 @@
                                 </Label>
                                 <StackPane prefHeight="34.0" prefWidth="254.0">
                                     <children>
-                                        <Label fx:id="campoApellidoEncontrado" prefHeight="34.0" prefWidth="254.0">
+                                        <Label fx:id="etiquetaApellidoEncontrado" prefHeight="34.0" prefWidth="254.0">
                                             <font>
                                                 <Font size="14.0" />
                                             </font>
@@ -99,7 +99,7 @@
                                 </Label>
                                 <StackPane prefHeight="34.0" prefWidth="254.0">
                                     <children>
-                                        <Label fx:id="campoNumeroDePersonalEncontrado" prefHeight="34.0" prefWidth="254.0">
+                                        <Label fx:id="etiquetaNumeroDePersonalEncontrado" prefHeight="34.0" prefWidth="254.0">
                                             <font>
                                                 <Font size="14.0" />
                                             </font>
@@ -115,7 +115,7 @@
                                 <StackPane prefHeight="51.0" prefWidth="291.0">
                                     <children>
                                         <TextField fx:id="campoCorreoEditable" visible="false" />
-                                        <Label fx:id="campoCorreoEncontrado" prefHeight="34.0" prefWidth="254.0">
+                                        <Label fx:id="etiquetaCorreoEncontrado" prefHeight="34.0" prefWidth="254.0">
                                             <font>
                                                 <Font size="14.0" />
                                             </font>
@@ -184,7 +184,7 @@
                 <Font name="System Bold" size="12.0" />
             </font>
         </Button>
-        <Label fx:id="campoNumeroAcademicosSeleccionados" layoutX="406.0" layoutY="580.0" prefHeight="20.0" prefWidth="211.0">
+        <Label fx:id="etiquetaNumeroAcademicosSeleccionados" layoutX="406.0" layoutY="580.0" prefHeight="20.0" prefWidth="211.0">
             <font>
                 <Font size="14.0" />
             </font>

@@ -1,6 +1,7 @@
 package logica.DTOs;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class AutoevaluacionDTO {
 
@@ -83,5 +84,31 @@ public class AutoevaluacionDTO {
     public void setEstadoActivo(int estadoActivo) {
 
         this.estadoActivo = estadoActivo;
+    }
+
+    @Override
+    public boolean equals(Object objetoAComparar) {
+
+        if (this == objetoAComparar) {
+            return true;
+        }
+        if (objetoAComparar == null || getClass() != objetoAComparar.getClass()) {
+            return false;
+        }
+
+        AutoevaluacionDTO autoevaluacionComparada = (AutoevaluacionDTO) objetoAComparar;
+
+        return IDAutoevaluacion == autoevaluacionComparada.IDAutoevaluacion &&
+                Float.compare(autoevaluacionComparada.calificacionFinal, calificacionFinal) == 0 &&
+                estadoActivo == autoevaluacionComparada.estadoActivo &&
+                Objects.equals(fecha, autoevaluacionComparada.fecha) &&
+                Objects.equals(lugar, autoevaluacionComparada.lugar) &&
+                Objects.equals(idEstudiante, autoevaluacionComparada.idEstudiante);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(IDAutoevaluacion, fecha, lugar, calificacionFinal, idEstudiante, estadoActivo);
     }
 }

@@ -1,5 +1,7 @@
 package logica.DTOs;
 
+import java.util.Objects;
+
 public class UsuarioDTO {
 
     private int idUsuario;
@@ -57,5 +59,29 @@ public class UsuarioDTO {
     public void setEstado(int estado) {
 
         this.estado = estado;
+    }
+
+    @Override
+    public boolean equals(Object objetoAComparar) {
+
+        if (this == objetoAComparar) {
+            return true;
+        }
+        if (objetoAComparar == null || getClass() != objetoAComparar.getClass()) {
+            return false;
+        }
+
+        UsuarioDTO usuarioComparado = (UsuarioDTO) objetoAComparar;
+
+        return idUsuario == usuarioComparado.idUsuario &&
+                estado == usuarioComparado.estado &&
+                Objects.equals(nombre, usuarioComparado.nombre) &&
+                Objects.equals(apellido, usuarioComparado.apellido);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(idUsuario, nombre, apellido, estado);
     }
 }

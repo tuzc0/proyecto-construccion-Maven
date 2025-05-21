@@ -29,6 +29,7 @@ public class CriterioAutoevaluacionDAO implements ICriterioAutoevaluacionDAO {
             sentenciaCriterio.setInt(1, criterio.getIDCriterio());
             sentenciaCriterio.setString(2, criterio.getDescripcion());
             sentenciaCriterio.setInt(3, criterio.getNumeroCriterio());
+            sentenciaCriterio.setInt(4, criterio.getEstadoActivo());
 
             if (sentenciaCriterio.executeUpdate() > 0) {
                 criterioInsertado = true;

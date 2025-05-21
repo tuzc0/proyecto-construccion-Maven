@@ -1,6 +1,7 @@
 package logica.DTOs;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class ActividadDTO {
 
@@ -16,14 +17,14 @@ public class ActividadDTO {
 
     }
 
-    public ActividadDTO(int IDActividad, String hitos, Timestamp fechaFin, Timestamp fechaInicio, String duracion, String nombre, int estadoActivo) {
+    public ActividadDTO(int IDActividad, String nombre, String duracion, String hitos, Timestamp fechaInicio, Timestamp fechaFin, int estadoActivo) {
 
         this.IDActividad = IDActividad;
-        this.hitos = hitos;
-        this.fechaFin = fechaFin;
-        this.fechaInicio = fechaInicio;
-        this.duracion = duracion;
         this.nombre = nombre;
+        this.duracion = duracion;
+        this.hitos = hitos;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
         this.estadoActivo = estadoActivo;
     }
 
@@ -95,6 +96,33 @@ public class ActividadDTO {
     public void setEstadoActivo(int estadoActivo) {
 
         this.estadoActivo = estadoActivo;
+    }
+
+    @Override
+    public boolean equals(Object objetoAComparar) {
+
+        if (this == objetoAComparar) {
+            return true;
+        }
+        if (objetoAComparar == null || getClass() != objetoAComparar.getClass()) {
+            return false;
+        }
+
+        ActividadDTO actividadComparada = (ActividadDTO) objetoAComparar;
+
+        return IDActividad == actividadComparada.IDActividad &&
+                estadoActivo == actividadComparada.estadoActivo &&
+                Objects.equals(nombre, actividadComparada.nombre) &&
+                Objects.equals(duracion, actividadComparada.duracion) &&
+                Objects.equals(hitos, actividadComparada.hitos) &&
+                Objects.equals(fechaInicio, actividadComparada.fechaInicio) &&
+                Objects.equals(fechaFin, actividadComparada.fechaFin);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(IDActividad, nombre, duracion, hitos, fechaInicio, fechaFin, estadoActivo);
     }
 }
 

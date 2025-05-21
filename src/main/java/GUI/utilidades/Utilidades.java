@@ -58,4 +58,13 @@ public class Utilidades {
         alerta.setContentText(contenido);
         alerta.showAndWait();
     }
+
+    public void mostrarConfirmacion(String titulo, String cabecera, String contenido) {
+
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(cabecera);
+        alerta.setContentText(contenido);
+        alerta.showAndWait();
+    }
 }

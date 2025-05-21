@@ -1,4 +1,4 @@
-package GUI;
+package GUI.gestionacademicoevaluador;
 
 import GUI.utilidades.Utilidades;
 import javafx.scene.Cursor;
@@ -23,7 +23,9 @@ import GUI.utilidades.UtilidadesContraseña;
 
 public class ControladorRegistroAcademicoEvaluadorGUI {
 
-    private static final Logger logger = LogManager.getLogger(ControladorRegistroAcademicoEvaluadorGUI.class);
+    private static final Logger LOGGER   = LogManager.getLogger(ControladorRegistroAcademicoEvaluadorGUI.class);
+    private final UtilidadesContraseña UTILIDADESCONTRASEÑA = new UtilidadesContraseña();
+    private final Utilidades UTILIDADES = new Utilidades();
 
     @FXML private TextField campoNombre;
     @FXML private TextField campoApellidos;
@@ -39,8 +41,6 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
     @FXML private Button botonOjo;
 
     private boolean contraseñaVisible = false;
-    private final UtilidadesContraseña utilidadesContraseña = new UtilidadesContraseña();
-    private final Utilidades utilidades = new Utilidades();
 
     @FXML
     private void initialize() {
@@ -52,7 +52,7 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
         campoContraseñaVisible.textProperty().bindBidirectional(campoContraseña.textProperty());
         campoConfirmarContraseñaVisible.textProperty().bindBidirectional(campoConfirmarContraseña.textProperty());
 
-        utilidadesContraseña.inicializarIcono(iconoOjo);
+        UTILIDADESCONTRASEÑA.inicializarIcono(iconoOjo);
 
         campoContraseñaVisible.setVisible(false);
         campoContraseñaVisible.setManaged(false);
@@ -64,7 +64,7 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
     @FXML
     private void alternarVisibilidadContrasena() {
 
-        utilidadesContraseña.alternarVisibilidadContrasena(
+        UTILIDADESCONTRASEÑA.alternarVisibilidadContrasena(
                 campoContraseña,
                 campoContraseñaVisible,
                 campoConfirmarContraseña,
@@ -76,17 +76,24 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
     @FXML
     private void guardarAcademico() {
 
+        String nombre = campoNombre.getText().trim();
+        String apellidos = campoApellidos.getText().trim();
+        String numeroPersonalTexto = campoNumeroPersonal.getText().trim();
+        String correo = campoCorreo.getText().trim();
+        String contrasena = campoContraseña.getText().trim();
+
         try {
 
-            String nombre = campoNombre.getText().trim();
-            String apellidos = campoApellidos.getText().trim();
-            String numeroPersonalTexto = campoNumeroPersonal.getText().trim();
-            String correo = campoCorreo.getText().trim();
-            String contrasena = campoContraseña.getText().trim();
+            List<String> listaDeCamposVacios = VerificacionUsuario.camposVacios(nombre, apellidos, numeroPersonalTexto, correo, contrasena);
 
-            if (VerificacionUsuario.camposVacios(nombre, apellidos, numeroPersonalTexto, correo, contrasena)) {
+            if (!listaDeCamposVacios.isEmpty()) {
 
-                utilidades.mostrarAlerta("Campos vacíos.", "Por favor, llene todos los campos.", "Faltan algunos campos por llenar.");
+                String camposVacios = String.join("\n", listaDeCamposVacios);
+                UTILIDADES.mostrarAlerta(
+                        "Campos vacíos",
+                        "Por favor, complete todos los campos requeridos.",
+                        camposVacios
+                );
                 return;
             }
 
@@ -95,13 +102,21 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
             if (!errores.isEmpty()) {
 
                 String mensajeError = String.join("\n", errores);
-                utilidades.mostrarAlerta("Datos inválidos.", "Por favor, introduzca datos válidos.", mensajeError);
+                UTILIDADES.mostrarAlerta(
+                        "Datos inválidos",
+                        "Algunos campos contienen datos no válidos.",
+                        mensajeError
+                );
                 return;
             }
 
             if (!UtilidadesContraseña.esContraseñaIgual(campoContraseña, campoConfirmarContraseña)) {
 
-                utilidades.mostrarAlerta("Contraseñas no coinciden.", "Las contraseñas no coinciden.", "Por favor, asegúrese de que la contraseña y su confirmación sean iguales.");
+                UTILIDADES.mostrarAlerta(
+                        "Contraseñas no coinciden",
+                        "Las contraseñas ingresadas no son iguales.",
+                        "Asegúrese de que la contraseña y su confirmación coincidan exactamente."
+                );
                 return;
             }
 
@@ -117,13 +132,21 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
 
             if (academicoExistente.getNumeroDePersonal() != -1){
 
-                utilidades.mostrarAlerta("Académico existente.", "El académico ya está registrado.", "Por favor, verifique que el académico no se encuentre ya registrado.");
+                UTILIDADES.mostrarAlerta(
+                        "Número de personal duplicado",
+                        "Ya existe un académico con este número de personal.",
+                        "Verifique que el número de personal no esté ya registrado en el sistema."
+                );
                 return;
             }
 
             if (!"N/A".equals(cuentaEncontrada.getCorreoElectronico())) {
 
-                utilidades.mostrarAlerta("Correo existente.", "El correo ya está registrado.", "Por favor, verifique que el correo no se encuentre ya registrado.");
+                UTILIDADES.mostrarAlerta(
+                        "Correo electrónico duplicado",
+                        "Ya existe una cuenta registrada con este correo electrónico.",
+                        "Por favor, utilice un correo electrónico diferente."
+                );
                 return;
             }
 
@@ -138,41 +161,65 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
 
             if (cuentaCreadaConExito && registroRealizadoConExito) {
 
-                logger.info("Registro de académico exitoso.");
-                utilidades.mostrarAlerta("Éxito.", "Registro exitoso.", "El académico fue registrado con éxito.");
+                LOGGER.info("Registro de académico exitoso.");
+                UTILIDADES.mostrarAlerta(
+                        "Registro exitoso",
+                        "El académico ha sido registrado correctamente.",
+                        ""
+                );
 
             } else {
 
-                logger.warn("No se pudo modificar el académico.");
-                utilidades.mostrarAlerta("Error", "Algo salio mal.", "Ocurrio un error, por favor intentelo más tarde.");
+                LOGGER.warn("No se pudieron guardar todos los datos del académico.");
+                UTILIDADES.mostrarAlerta(
+                        "Registro incompleto",
+                        "No se pudieron guardar todos los datos.",
+                        "Por favor, verifique la información e intente nuevamente."
+                );
             }
-
-        } catch (SQLException e) {
-
-            logger.error("Error durante el registro del académico.", e);
-            utilidades.mostrarAlerta("Error.", "Ocurrió un error. Por favor, inténtelo de nuevo más tarde.", "");
 
         } catch (NumberFormatException e) {
 
-            logger.error("Error durante el registro del académico.", e);
-            utilidades.mostrarAlerta("Error.", "Ocurrió un error de formato.", "Verifique que el número de personal tenga exactamente 5 dígitos.");
+            LOGGER.error("Error de formato numérico al registrar académico: " + e.getMessage());
+            UTILIDADES.mostrarAlerta(
+                    "Error de formato",
+                    "El número de personal debe ser un valor numérico de 5 dígitos.",
+                    "Revise el campo correspondiente e intente de nuevo."
+            );
+
+        } catch (SQLException e) {
+
+            LOGGER.error("Error de base de datos al registrar académico: " + e.getMessage());
+            UTILIDADES.mostrarAlerta(
+                    "Error del sistema",
+                    "Ocurrió un error al registrar al académico.",
+                    "Por favor, inténtelo nuevamente más tarde o contacte al soporte técnico."
+            );
 
         } catch (IOException e) {
 
-            logger.error("Error durante el registro del académico.", e);
-            utilidades.mostrarAlerta("Error.", "Ocurrió un error. Por favor, inténtelo de nuevo más tarde.", "");
+            LOGGER.error("Error de entrada/salida al registrar académico: " + e.getMessage());
+            UTILIDADES.mostrarAlerta(
+                    "Error de sistema",
+                    "No se pudo completar la operación debido a un error interno.",
+                    "Por favor, inténtelo nuevamente más tarde."
+            );
 
         } catch (Exception e) {
 
-            logger.error("Error durante el registro del académico.", e);
-            utilidades.mostrarAlerta("Error.", "Ocurrió un error. Por favor, inténtelo de nuevo más tarde.", "");
+            LOGGER.error("Error inesperado al registrar académico: " + e.getMessage());
+            UTILIDADES.mostrarAlerta(
+                    "Error desconocido",
+                    "Ocurrió un error inesperado al registrar al académico.",
+                    "Por favor, inténtelo de nuevo o contacte al administrador del sistema."
+            );
         }
     }
 
     @FXML
     private void cancelarRegistroAcademico() {
 
-        logger.info("Cancelando el registro del académico.");
+        LOGGER.info("Cancelando el registro del académico.");
         campoNombre.clear();
         campoApellidos.clear();
         campoNumeroPersonal.clear();

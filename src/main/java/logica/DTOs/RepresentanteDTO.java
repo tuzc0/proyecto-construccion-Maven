@@ -7,21 +7,21 @@ public class RepresentanteDTO {
     private String telefono;
     private String nombre;
     private String apellidos;
-    private int idOV;
+    private int idOrganizacion;
     private int estadoActivo;
 
     public RepresentanteDTO() {
 
     }
 
-    public RepresentanteDTO(int IDRepresentante, String correo, String telefono, String nombre, String apellidos, int idOV, int estadoActivo) {
+    public RepresentanteDTO(int IDRepresentante, String correo, String telefono, String nombre, String apellidos, int idOrganizacion, int estadoActivo) {
 
         this.IDRepresentante = IDRepresentante;
         this.correo = correo;
         this.telefono = telefono;
         this.nombre = nombre;
         this.apellidos = apellidos;
-        this.idOV = idOV;
+        this.idOrganizacion = idOrganizacion;
         this.estadoActivo = estadoActivo;
     }
 
@@ -75,14 +75,14 @@ public class RepresentanteDTO {
         this.apellidos = apellidos;
     }
 
-    public int getIdOV() {
+    public int getIdOrganizacion() {
 
-        return idOV;
+        return idOrganizacion;
     }
 
-    public void setIdOV(int idOV) {
+    public void setIdOrganizacion(int idOrganizacion) {
 
-        this.idOV = idOV;
+        this.idOrganizacion = idOrganizacion;
     }
 
     public int getEstadoActivo() {

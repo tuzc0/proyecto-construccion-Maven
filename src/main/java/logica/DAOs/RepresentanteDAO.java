@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RepresentanteDAO implements IRepresentanteDAO {
 
@@ -29,7 +31,7 @@ public class RepresentanteDAO implements IRepresentanteDAO {
             sentenciaRepresentante.setString(3, representante.getTelefono());
             sentenciaRepresentante.setString(4, representante.getNombre());
             sentenciaRepresentante.setString(5, representante.getApellidos());
-            sentenciaRepresentante.setInt(6, representante.getIdOV());
+            sentenciaRepresentante.setInt(6, representante.getIdOrganizacion());
             sentenciaRepresentante.setInt(7, representante.getEstadoActivo());
 
             if (sentenciaRepresentante.executeUpdate() > 0) {
@@ -86,7 +88,7 @@ public class RepresentanteDAO implements IRepresentanteDAO {
             sentenciaRepresentante.setString(2, representante.getTelefono());
             sentenciaRepresentante.setString(3, representante.getNombre());
             sentenciaRepresentante.setString(4, representante.getApellidos());
-            sentenciaRepresentante.setInt(5, representante.getIdOV());
+            sentenciaRepresentante.setInt(5, representante.getIdOrganizacion());
             sentenciaRepresentante.setInt(6, representante.getEstadoActivo());
             sentenciaRepresentante.setInt(7, representante.getIDRepresentante());
 
@@ -207,6 +209,41 @@ public class RepresentanteDAO implements IRepresentanteDAO {
         }
 
         return representante;
+    }
+
+    public List<RepresentanteDTO> obtenerTodosLosRepresentantes() throws SQLException, IOException {
+
+        List<RepresentanteDTO> listaRepresentantes = new ArrayList<>();
+        String consultaSQL = "SELECT * FROM representante WHERE estadoActivo = 1";
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaRepresentante = conexionBaseDeDatos.prepareStatement(consultaSQL);
+            resultadoConsultaRepresentante = sentenciaRepresentante.executeQuery();
+
+            while (resultadoConsultaRepresentante.next()) {
+
+                RepresentanteDTO representanteDTO = new RepresentanteDTO(
+                        resultadoConsultaRepresentante.getInt("idRepresentante"),
+                        resultadoConsultaRepresentante.getString("correo"),
+                        resultadoConsultaRepresentante.getString("telefono"),
+                        resultadoConsultaRepresentante.getString("nombre"),
+                        resultadoConsultaRepresentante.getString("apellidos"),
+                        resultadoConsultaRepresentante.getInt("idOV"),
+                        resultadoConsultaRepresentante.getInt("estadoActivo")
+                );
+                listaRepresentantes.add(representanteDTO);
+            }
+
+        } finally {
+
+            if (sentenciaRepresentante != null) {
+                sentenciaRepresentante.close();
+            }
+        }
+
+        return listaRepresentantes;
     }
 }
 

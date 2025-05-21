@@ -1,5 +1,7 @@
 package logica.DTOs;
 
+import java.util.Objects;
+
 public class AcademicoEvaluadorDTO extends UsuarioDTO {
 
     private int numeroDePersonal;
@@ -22,5 +24,32 @@ public class AcademicoEvaluadorDTO extends UsuarioDTO {
     public void setNumeroDePersonal(int numeroDePersonal) {
 
         this.numeroDePersonal = numeroDePersonal;
+    }
+
+    @Override
+    public boolean equals(Object objetoAComparar) {
+
+        if (this == objetoAComparar) {
+            return true;
+        }
+
+        if (objetoAComparar == null || getClass() != objetoAComparar.getClass()) {
+            return false;
+        }
+
+        AcademicoEvaluadorDTO academicoComparado = (AcademicoEvaluadorDTO) objetoAComparar;
+
+        return numeroDePersonal == academicoComparado.numeroDePersonal &&
+                getIdUsuario() == academicoComparado.getIdUsuario() &&
+                getEstado() == academicoComparado.getEstado() &&
+                Objects.equals(getNombre(), academicoComparado.getNombre()) &&
+                Objects.equals(getApellido(), academicoComparado.getApellido());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(numeroDePersonal, getIdUsuario(), getNombre(),
+                getApellido(), getEstado());
     }
 }

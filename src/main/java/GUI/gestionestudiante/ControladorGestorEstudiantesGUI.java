@@ -20,6 +20,7 @@ import logica.DTOs.UsuarioDTO;
 import logica.VerificacionUsuario;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class ControladorGestorEstudiantesGUI {
@@ -424,8 +425,16 @@ public class ControladorGestorEstudiantesGUI {
 
         try {
 
-            if (verificacionUsuario.camposVacios(nombre, apellidos, matricula, correo, " ")) {
-                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Por favor, complete todos los campos.");
+            List<String> listaDeCamposVacios = VerificacionUsuario.camposVacios(nombre, apellidos, correo, correo, correoEncontrado);
+
+            if (!listaDeCamposVacios.isEmpty()) {
+
+                String camposVacios = String.join("\n", listaDeCamposVacios);
+                utilidades.mostrarAlerta(
+                        "Campos vacíos",
+                        "Por favor, complete todos los campos requeridos.",
+                        camposVacios
+                );
                 return;
             }
 

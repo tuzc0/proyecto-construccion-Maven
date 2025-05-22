@@ -57,7 +57,7 @@ public class ControladorGestorOrganizacionGUI {
     public void initialize() {
 
         cargarDatosOrganizacion();
-        System.out.println("ID de la organizacion seleccionada: " + idOrganizacionSeleccionada);
+
 
     }
 

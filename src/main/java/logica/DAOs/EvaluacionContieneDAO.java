@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EvaluacionContieneDAO implements IEvaluacionContieneDAO {
 
@@ -101,5 +103,52 @@ public class EvaluacionContieneDAO implements IEvaluacionContieneDAO {
         }
 
         return evaluacionEncontrada;
+    }
+
+    public List<EvaluacionContieneDTO> listarEvaluacionesPorIdEvaluacion(int idEvaluacion) throws SQLException, IOException {
+        String consultaSQL = "SELECT * FROM evaluacioncontiene WHERE idEvaluacion = ?";
+        List<EvaluacionContieneDTO> listaEvaluaciones = new ArrayList<>();
+
+        try {
+            conexion = new ConexionBaseDeDatos().getConnection();
+            sentenciaEvaluacion = conexion.prepareStatement(consultaSQL);
+            sentenciaEvaluacion.setInt(1, idEvaluacion);
+            resultadoConsulta = sentenciaEvaluacion.executeQuery();
+
+            while (resultadoConsulta.next()) {
+                EvaluacionContieneDTO evaluacion = new EvaluacionContieneDTO(
+                        resultadoConsulta.getInt("idEvaluacion"),
+                        resultadoConsulta.getFloat("calificacion"),
+                        resultadoConsulta.getInt("idCriterio")
+                );
+                listaEvaluaciones.add(evaluacion);
+            }
+        } finally {
+            if (resultadoConsulta != null) {
+                resultadoConsulta.close();
+            }
+            if (sentenciaEvaluacion != null) {
+                sentenciaEvaluacion.close();
+            }
+        }
+
+        return listaEvaluaciones;
+    }
+
+    public boolean eliminarCriteriosPorIdEvaluacion(int idEvaluacion) throws SQLException, IOException {
+        String consultaSQL = "DELETE FROM evaluacionContiene WHERE idEvaluacion = ?";
+        boolean eliminacionExitosa = false;
+
+        try (Connection conexion = new ConexionBaseDeDatos().getConnection();
+             PreparedStatement sentencia = conexion.prepareStatement(consultaSQL)) {
+
+            sentencia.setInt(1, idEvaluacion);
+
+            if (sentencia.executeUpdate() > 0) {
+                eliminacionExitosa = true;
+            }
+        }
+
+        return eliminacionExitosa;
     }
 }

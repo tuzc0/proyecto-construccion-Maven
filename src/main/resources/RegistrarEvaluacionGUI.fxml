@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="618.0" prefWidth="916.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorRegistrarEvaluacionGUI">
+   <children>
+      <Label layoutX="314.0" layoutY="30.0" text="Evaluacion de presentacion">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tablaCriteriosEvaluacion" layoutX="38.0" layoutY="121.0" prefHeight="261.0" prefWidth="840.0">
+        <columns>
+          <TableColumn fx:id="columnaNumeroCriterio" prefWidth="88.80001068115234" text="no. criterio" />
+          <TableColumn fx:id="columnaCriterio" minWidth="0.0" prefWidth="655.9999694824219" text="criterio" />
+            <TableColumn fx:id="columnaCalificacion" minWidth="0.0" prefWidth="95.199951171875" text="calificacion" />
+        </columns>
+      </TableView>
+      <TextArea fx:id="campoComentarios" layoutX="38.0" layoutY="413.0" prefHeight="130.0" prefWidth="618.0" />
+      <Label layoutX="38.0" layoutY="392.0" text="Comentarios: ">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="campoPromedio" layoutX="602.0" layoutY="525.0" />
+      <Button layoutX="762.0" layoutY="422.0" mnemonicParsing="false" onAction="#calcularPromedio" text="generar promedio " />
+      <Label layoutX="694.0" layoutY="392.0" text="promedio: ">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="promedioEvaluacionGenerado" layoutX="785.0" layoutY="392.0" prefHeight="20.0" prefWidth="42.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Button layoutX="38.0" layoutY="568.0" mnemonicParsing="false" onAction="#guardarEvaluacion" prefHeight="25.0" prefWidth="115.0" text="Guardar" />
+      <Button layoutX="212.0" layoutY="568.0" mnemonicParsing="false" onAction="#cancelarEvaluacion" prefHeight="25.0" prefWidth="115.0" text="Cancelar" />
+      <Label layoutX="38.0" layoutY="80.0" prefHeight="25.0" prefWidth="140.0" text="Estudiante evaluado:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="campoEstudianteEvaluado" layoutX="178.0" layoutY="80.0" prefHeight="25.0" prefWidth="140.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>

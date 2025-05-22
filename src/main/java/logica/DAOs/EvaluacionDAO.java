@@ -17,36 +17,38 @@ public class EvaluacionDAO implements IEvaluacionDAO {
     ResultSet resultadoConsultaEvaluacion;
 
 
-    public boolean crearNuevaEvaluacion(EvaluacionDTO evaluacion) throws SQLException, IOException {
+    public int crearNuevaEvaluacion(EvaluacionDTO evaluacion) throws SQLException, IOException {
 
         String insertarSQLEvaluacion = "INSERT INTO evaluacion (idEvaluacion, comentarios, calificacionFinal, " +
                 "numeroPersonal, idEstudiante, estadoActivo) VALUES (?, ?, ?, ?, ?, ?)";
-        boolean evaluacionInsertada = false;
+        int idEvaluacionInsertada = -1;
 
         try {
 
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-            sentenciaEvaluacion = conexionBaseDeDatos.prepareStatement(insertarSQLEvaluacion);
+            sentenciaEvaluacion = conexionBaseDeDatos.prepareStatement(insertarSQLEvaluacion, PreparedStatement.RETURN_GENERATED_KEYS);
             sentenciaEvaluacion.setInt(1, evaluacion.getIDEvaluacion());
             sentenciaEvaluacion.setString(2, evaluacion.getComentarios());
-            sentenciaEvaluacion.setInt(3, evaluacion.getCalificacionFinal());
+            sentenciaEvaluacion.setFloat(3, evaluacion.getCalificacionFinal());
             sentenciaEvaluacion.setInt(4, evaluacion.getNumeroDePersonal());
             sentenciaEvaluacion.setString(5, evaluacion.getMatriculaEstudiante());
             sentenciaEvaluacion.setInt(6, evaluacion.getEstadoActivo());
 
             if (sentenciaEvaluacion.executeUpdate() > 0) {
-                evaluacionInsertada = true;
+                ResultSet generatedKeys = sentenciaEvaluacion.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    idEvaluacionInsertada = generatedKeys.getInt(1);
+                }
             }
 
         } finally {
 
             if (sentenciaEvaluacion != null) {
-
                 sentenciaEvaluacion.close();
             }
         }
 
-        return evaluacionInsertada;
+        return idEvaluacionInsertada;
     }
 
     public boolean eliminarEvaluacionPorID(int estadoActivo, int idEvaluacion) throws SQLException, IOException {
@@ -76,6 +78,23 @@ public class EvaluacionDAO implements IEvaluacionDAO {
         return evaluacionEliminada;
     }
 
+    public boolean eliminarEvaluacionDefinitivamente(int idEvaluacion) throws SQLException, IOException {
+        String eliminarSQL = "DELETE FROM evaluacion WHERE idEvaluacion = ?";
+        boolean evaluacionEliminada = false;
+
+        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+             PreparedStatement sentencia = conexionBaseDeDatos.prepareStatement(eliminarSQL)) {
+
+            sentencia.setInt(1, idEvaluacion);
+
+            if (sentencia.executeUpdate() > 0) {
+                evaluacionEliminada = true;
+            }
+        }
+
+        return evaluacionEliminada;
+    }
+
     public boolean modificarEvaluacion(EvaluacionDTO evaluacion) throws SQLException, IOException {
 
         String modificarSQLEvaluacion = "UPDATE evaluacion SET comentarios = ?, calificacionFinal = ?, numeroPersonal = ?, " +
@@ -87,7 +106,7 @@ public class EvaluacionDAO implements IEvaluacionDAO {
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaEvaluacion = conexionBaseDeDatos.prepareStatement(modificarSQLEvaluacion);
             sentenciaEvaluacion.setString(1, evaluacion.getComentarios());
-            sentenciaEvaluacion.setInt(2, evaluacion.getCalificacionFinal());
+            sentenciaEvaluacion.setFloat(2, evaluacion.getCalificacionFinal());
             sentenciaEvaluacion.setInt(3, evaluacion.getNumeroDePersonal());
             sentenciaEvaluacion.setString(4, evaluacion.getMatriculaEstudiante());
             sentenciaEvaluacion.setInt(5, evaluacion.getEstadoActivo());
@@ -124,7 +143,7 @@ public class EvaluacionDAO implements IEvaluacionDAO {
 
                 int numeroDeEvaluacion = resultadoConsultaEvaluacion.getInt("idEvaluacion");
                 String comentario = resultadoConsultaEvaluacion.getString("comentarios");
-                int calificacion = resultadoConsultaEvaluacion.getInt("calificacionFinal");
+                float calificacion = resultadoConsultaEvaluacion.getFloat("calificacionFinal");
                 int numeroPersonal = resultadoConsultaEvaluacion.getInt("numeroPersonal");
                 String matriculaEstudiante = resultadoConsultaEvaluacion.getString("idEstudiante");
                 int estadoActivo = resultadoConsultaEvaluacion.getInt("estadoActivo");

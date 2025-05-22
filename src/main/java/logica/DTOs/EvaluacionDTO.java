@@ -4,7 +4,7 @@ public class EvaluacionDTO {
 
     private int IDEvaluacion;
     private String comentarios;
-    private int calificacionFinal;
+    private float calificacionFinal;
     private int numeroPersonal;
     private String matriculaEstudiante;
     private int estadoActivo;
@@ -13,7 +13,7 @@ public class EvaluacionDTO {
 
     }
 
-    public EvaluacionDTO(int IDEvaluacion, String comentarios, int calificacionFinal, int numeroPersonal, String matriculaEstudiante, int estadoActivo) {
+    public EvaluacionDTO(int IDEvaluacion, String comentarios, float calificacionFinal, int numeroPersonal, String matriculaEstudiante, int estadoActivo) {
 
         this.IDEvaluacion = IDEvaluacion;
         this.comentarios = comentarios;
@@ -43,12 +43,12 @@ public class EvaluacionDTO {
         this.comentarios = comentarios;
     }
 
-    public int getCalificacionFinal() {
+    public float getCalificacionFinal() {
 
         return calificacionFinal;
     }
 
-    public void setCalificacionFinal(int calificacionFinal) {
+    public void setCalificacionFinal(float calificacionFinal) {
 
         this.calificacionFinal = calificacionFinal;
     }

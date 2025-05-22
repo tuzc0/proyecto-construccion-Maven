@@ -26,7 +26,7 @@ import java.util.List;
 
 public class ControladorRegistrarEvaluacionGUI {
 
-    private static final Logger logger = LogManager.getLogger(ControladorRegistroAcademicoGUI.class);
+    private static final Logger logger = LogManager.getLogger(ControladorRegistrarEvaluacionGUI.class);
 
     Utilidades utilidades = new Utilidades();
 

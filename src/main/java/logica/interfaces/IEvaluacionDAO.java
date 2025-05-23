@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public interface IEvaluacionDAO {
 
-    boolean crearNuevaEvaluacion(EvaluacionDTO evaluacion) throws SQLException, IOException;
+    int crearNuevaEvaluacion(EvaluacionDTO evaluacion) throws SQLException, IOException;
 
     boolean eliminarEvaluacionPorID(int estadoActivo, int idEvaluacion) throws SQLException, IOException;
 

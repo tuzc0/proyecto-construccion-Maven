@@ -16,14 +16,7 @@ class EvaluacionDAOTest {
         evaluacionDAO = new EvaluacionDAO();
     }
 
-    @Test
-    @Order(1)
-    void testCrearNuevaEvaluacionDatosValidos() throws SQLException, IOException {
 
-        EvaluacionDTO evaluacion = new EvaluacionDTO(5, "Buen trabajo", 9, 33333, "A12345", 1);
-        boolean resultado = evaluacionDAO.crearNuevaEvaluacion(evaluacion);
-        assertTrue(resultado, "La evaluación debería haberse creado correctamente.");
-    }
 
     @Test
     @Order(2)

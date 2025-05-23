@@ -14,18 +14,22 @@ public class ContenedoraRepresentanteOrganizacion {
     }
 
     public RepresentanteDTO getRepresentante() {
+
         return representante;
     }
 
     public void setRepresentante(RepresentanteDTO representante) {
+
         this.representante = representante;
     }
 
     public OrganizacionVinculadaDTO getOrganizacion() {
+
         return organizacion;
     }
 
     public void setOrganizacion(OrganizacionVinculadaDTO organizacion) {
+
         this.organizacion = organizacion;
     }
 }

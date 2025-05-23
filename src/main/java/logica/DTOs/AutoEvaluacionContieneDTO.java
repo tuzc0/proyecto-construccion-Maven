@@ -1,5 +1,7 @@
 package logica.DTOs;
 
+import java.util.Objects;
+
 public class AutoEvaluacionContieneDTO {
 
     private int idAutoevaluacion;
@@ -45,5 +47,29 @@ public class AutoEvaluacionContieneDTO {
     public void setIdCriterio(int idCriterio) {
 
         this.idCriterio = idCriterio;
+    }
+
+    @Override
+    public boolean equals(Object autoEvaluacionContieneAComparar) {
+
+        if (this == autoEvaluacionContieneAComparar) {
+            return true;
+        }
+
+        if (autoEvaluacionContieneAComparar == null || getClass() != autoEvaluacionContieneAComparar.getClass()) {
+            return false;
+        }
+
+        AutoEvaluacionContieneDTO autoEvaluacionContieneDTO = (AutoEvaluacionContieneDTO) autoEvaluacionContieneAComparar;
+
+        return idAutoevaluacion == autoEvaluacionContieneDTO.idAutoevaluacion &&
+                Float.compare(autoEvaluacionContieneDTO.calificacion, calificacion) == 0 &&
+                idCriterio == autoEvaluacionContieneDTO.idCriterio;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(idAutoevaluacion, calificacion, idCriterio);
     }
 }

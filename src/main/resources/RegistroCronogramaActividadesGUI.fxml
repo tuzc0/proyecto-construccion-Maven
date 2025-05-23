@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="554.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades">
+    <bottom>
+        <AnchorPane prefHeight="58.0" prefWidth="580.0" BorderPane.alignment="CENTER">
+            <children>
+                <HBox alignment="CENTER_RIGHT" layoutX="38.0" layoutY="7.0" prefHeight="43.0" prefWidth="504.0" spacing="20.0">
+                    <children>
+                        <Button fx:id="botonRegistrar" mnemonicParsing="false" onAction="#registrarCronogramaActividad" prefHeight="33.0" prefWidth="90.0" text="Registrar" />
+                        <Button fx:id="botonCancelar" mnemonicParsing="false" onAction="#botonCancelarSeleccion" prefHeight="33.0" prefWidth="90.0" text="Cancelar" />
+                    </children>
+                </HBox>
+            </children>
+        </AnchorPane>
+    </bottom>
+    <top>
+        <AnchorPane prefHeight="63.0" prefWidth="580.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label layoutX="110.0" layoutY="14.0" prefHeight="35.0" prefWidth="360.0" text="Calendarización de actividades.">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+    </top>
+    <center>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label layoutX="36.0" layoutY="14.0" prefHeight="30.0" prefWidth="158.0" text="Agosto/Febrero:">
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                </Label>
+                <Label layoutX="36.0" layoutY="107.0" prefHeight="30.0" prefWidth="158.0" text="Septiembre/Marzo:">
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                </Label>
+                <Label layoutX="36.0" layoutY="201.0" prefHeight="30.0" prefWidth="158.0" text="Octubre/Abril:">
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                </Label>
+                <Label layoutX="36.0" layoutY="293.0" prefHeight="30.0" prefWidth="158.0" text="Noviembre/Mayo:">
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                </Label>
+                <TextArea fx:id="textoAgostoFebrero" layoutX="37.0" layoutY="44.0" prefHeight="52.0" prefWidth="505.0" promptText="Actividades a realizar en agosto o febrero dependiendo del periodo." />
+                <TextArea fx:id="textoSeptiembreMarzo" layoutX="37.0" layoutY="137.0" prefHeight="52.0" prefWidth="505.0" promptText="Actividades a realizar en septiembre o marzo dependiendo del periodo." />
+                <TextArea fx:id="textoOctubreAbril" layoutX="37.0" layoutY="231.0" prefHeight="52.0" prefWidth="505.0" promptText="Actividades a realizar en octubre o abril dependiendo del periodo." />
+                <TextArea fx:id="textoNoviembreMayo" layoutX="37.0" layoutY="323.0" prefHeight="52.0" prefWidth="505.0" promptText="Actividades a realizar en noviembre o mayo dependiendo del periodo." />
+            </children>
+        </AnchorPane>
+    </center>
+</BorderPane>

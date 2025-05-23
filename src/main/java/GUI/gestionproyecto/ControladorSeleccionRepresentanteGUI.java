@@ -1,4 +1,4 @@
-package GUI.proyecto;
+package GUI.gestionproyecto;
 
 import GUI.utilidades.Utilidades;
 import javafx.beans.property.SimpleStringProperty;

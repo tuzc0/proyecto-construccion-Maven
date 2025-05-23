@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public interface ICronogramaActividadesDAO {
 
-    boolean crearNuevoCronogramaDeActividades(CronogramaActividadesDTO cronograma) throws SQLException, IOException;
+    int crearNuevoCronogramaDeActividades(CronogramaActividadesDTO cronograma) throws SQLException, IOException;
 
     boolean modificarCronogramaDeActividades(CronogramaActividadesDTO cronograma) throws SQLException, IOException;
 

@@ -4,10 +4,7 @@ import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.CronogramaActividadesDTO;
 import logica.interfaces.ICronogramaActividadesDAO;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class CronogramaActividadesDAO implements ICronogramaActividadesDAO {
 
@@ -17,22 +14,30 @@ public class CronogramaActividadesDAO implements ICronogramaActividadesDAO {
 
 
 
-    public boolean crearNuevoCronogramaDeActividades(CronogramaActividadesDTO cronograma) throws SQLException, IOException {
+    public int crearNuevoCronogramaDeActividades(CronogramaActividadesDTO cronograma) throws SQLException, IOException {
 
-        String insertarSQLCronograma = "INSERT INTO cronogramaactividades (IDCronograma, fechaInicio, fechaFinal, idEstudiante) VALUES (?, ?, ?, ?)";
-        boolean cronogramaInsertado = false;
+        String insertarSQLCronograma = "INSERT INTO cronogramaactividades (idEstudiante, agosto_febrero, septiembre_marzo, octubre_abril, noviembre_mayo) VALUES (?, ?, ?, ?, ?)";
+        int idCronogramaInsertado = -1;
 
         try {
-
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-            sentenciaCronograma = conexionBaseDeDatos.prepareStatement(insertarSQLCronograma);
-            sentenciaCronograma.setInt(1, cronograma.getIDCronograma());
-            sentenciaCronograma.setTimestamp(2, cronograma.getFechaInicio());
-            sentenciaCronograma.setTimestamp(3, cronograma.getFechaFinal());
-            sentenciaCronograma.setString(4, cronograma.getMatriculaEstudiante());
+            sentenciaCronograma = conexionBaseDeDatos.prepareStatement(insertarSQLCronograma, Statement.RETURN_GENERATED_KEYS);
+            sentenciaCronograma.setString(1, cronograma.getMatriculaEstudiante());
+            sentenciaCronograma.setString(2, cronograma.getAgostoFebrero());
+            sentenciaCronograma.setString(3, cronograma.getSeptiembreMarzo());
+            sentenciaCronograma.setString(4, cronograma.getOctubreAbril());
+            sentenciaCronograma.setString(5, cronograma.getNoviembreMayo());
 
-            if (sentenciaCronograma.executeUpdate() > 0) {
-                cronogramaInsertado = true;
+            int filasAfectadas = sentenciaCronograma.executeUpdate();
+
+            if (filasAfectadas > 0) {
+
+                ResultSet generadorDeLlave = sentenciaCronograma.getGeneratedKeys();
+
+                if (generadorDeLlave.next()) {
+
+                    idCronogramaInsertado = generadorDeLlave.getInt(1);
+                }
             }
 
         } finally {
@@ -43,23 +48,27 @@ public class CronogramaActividadesDAO implements ICronogramaActividadesDAO {
             }
         }
 
-        return cronogramaInsertado;
+        return idCronogramaInsertado;
     }
 
     public boolean modificarCronogramaDeActividades(CronogramaActividadesDTO cronograma) throws SQLException, IOException {
 
-        String modificarSQLCronograma = "UPDATE cronogramaactividades SET fechaInicio = ?, fechaFinal = ? WHERE idCronograma = ?";
+        String modificarSQLCronograma = "UPDATE cronogramaactividades SET idEstudiante = ?, agosto_febrero = ?, septiembre_marzo = ?, octubre_abril = ?, noviembre_mayo = ? WHERE idCronograma = ?";
         boolean cronogramaModificado = false;
 
         try {
 
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaCronograma = conexionBaseDeDatos.prepareStatement(modificarSQLCronograma);
-            sentenciaCronograma.setTimestamp(1, cronograma.getFechaInicio());
-            sentenciaCronograma.setTimestamp(2, cronograma.getFechaFinal());
-            sentenciaCronograma.setInt(3, cronograma.getIDCronograma());
+            sentenciaCronograma.setString(1, cronograma.getMatriculaEstudiante());
+            sentenciaCronograma.setString(2, cronograma.getAgostoFebrero());
+            sentenciaCronograma.setString(3, cronograma.getSeptiembreMarzo());
+            sentenciaCronograma.setString(4, cronograma.getOctubreAbril());
+            sentenciaCronograma.setString(5, cronograma.getNoviembreMayo());
+            sentenciaCronograma.setInt(6, cronograma.getIDCronograma());
 
             if (sentenciaCronograma.executeUpdate() > 0) {
+
                 cronogramaModificado = true;
             }
 
@@ -76,9 +85,8 @@ public class CronogramaActividadesDAO implements ICronogramaActividadesDAO {
 
     public CronogramaActividadesDTO buscarCronogramaDeActividadesPorID(int idCronograma) throws SQLException, IOException {
 
-        CronogramaActividadesDTO cronogramaEncontrado = new CronogramaActividadesDTO(-1, null, null, "0");
-        String buscarSQLCronograma = "SELECT * FROM cronogramaactividades WHERE IDCronograma = ?";
-
+        CronogramaActividadesDTO cronogramaEncontrado = new CronogramaActividadesDTO(-1, "0", "0", "0", "0", "0");
+        String buscarSQLCronograma = "SELECT * FROM cronogramaactividades WHERE idCronograma = ?";
 
         try {
 
@@ -90,9 +98,11 @@ public class CronogramaActividadesDAO implements ICronogramaActividadesDAO {
             if (resultadoConsultaCronograma.next()) {
 
                 cronogramaEncontrado.setIDCronograma(resultadoConsultaCronograma.getInt("idCronograma"));
-                cronogramaEncontrado.setFechaInicio(resultadoConsultaCronograma.getTimestamp("fechaInicio"));
-                cronogramaEncontrado.setFechaFinal(resultadoConsultaCronograma.getTimestamp("fechaFinal"));
                 cronogramaEncontrado.setMatriculaEstudiante(resultadoConsultaCronograma.getString("idEstudiante"));
+                cronogramaEncontrado.setAgostoFebrero(resultadoConsultaCronograma.getString("agosto_febrero"));
+                cronogramaEncontrado.setSeptiembreMarzo(resultadoConsultaCronograma.getString("septiembre_marzo"));
+                cronogramaEncontrado.setOctubreAbril(resultadoConsultaCronograma.getString("octubre_abril"));
+                cronogramaEncontrado.setNoviembreMayo(resultadoConsultaCronograma.getString("noviembre_mayo"));
             }
 
         } finally {

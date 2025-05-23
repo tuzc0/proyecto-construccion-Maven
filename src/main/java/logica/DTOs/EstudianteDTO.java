@@ -37,17 +37,19 @@ public class EstudianteDTO extends UsuarioDTO {
             return false;
         }
 
-        if (!super.equals(objetoAComparar)){
-            return false;
-        }
-
         EstudianteDTO estudianteComparado = (EstudianteDTO) objetoAComparar;
 
-        return Objects.equals(matricula, estudianteComparado.matricula);
+        return Objects.equals(matricula, estudianteComparado.getMatricula()) &&
+                getIdUsuario() == estudianteComparado.getIdUsuario() &&
+                getEstado() == estudianteComparado.getEstado() &&
+                Objects.equals(getNombre(), estudianteComparado.getNombre()) &&
+                Objects.equals(getApellido(), estudianteComparado.getApellido());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), matricula);
+
+        return Objects.hash(matricula, getIdUsuario(), getNombre(),
+                getApellido(), getEstado());
     }
 }

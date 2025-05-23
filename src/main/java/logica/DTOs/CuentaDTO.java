@@ -1,5 +1,7 @@
 package logica.DTOs;
 
+import java.util.Objects;
+
 public class CuentaDTO {
 
     private String correoElectronico;
@@ -45,5 +47,29 @@ public class CuentaDTO {
     public void setIdUsuario(int idUsuario) {
 
         this.idUsuario = idUsuario;
+    }
+
+    @Override
+    public boolean equals(Object cuentaAComparar) {
+
+        if (this == cuentaAComparar) {
+            return true;
+        }
+
+        if (cuentaAComparar == null || getClass() != cuentaAComparar.getClass()) {
+            return false;
+        }
+
+        CuentaDTO cuentaDTO = (CuentaDTO) cuentaAComparar;
+
+        return idUsuario == cuentaDTO.idUsuario &&
+                Objects.equals(correoElectronico, cuentaDTO.correoElectronico) &&
+                Objects.equals(contrasena, cuentaDTO.contrasena);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(correoElectronico, contrasena, idUsuario);
     }
 }

@@ -5,20 +5,25 @@ import java.sql.Timestamp;
 public class CronogramaActividadesDTO {
 
     private int IDCronograma;
-    private Timestamp fechaInicio;
-    private Timestamp fechaFinal;
     private String matriculaEstudiante;
+    private String agostoFebrero;
+    private String septiembreMarzo;
+    private String octubreAbril;
+    private String noviembreMayo;
+
 
     public CronogramaActividadesDTO() {
 
     }
 
-    public CronogramaActividadesDTO(int IDCronograma, Timestamp fechaInicio, Timestamp fechaFinal, String matriculaEstudiante) {
+    public CronogramaActividadesDTO(int IDCronograma, String matriculaEstudiante, String agostoFebrero, String septiembreMarzo, String octubreAbril, String noviembreMayo) {
 
         this.IDCronograma = IDCronograma;
-        this.fechaInicio = fechaInicio;
-        this.fechaFinal = fechaFinal;
         this.matriculaEstudiante = matriculaEstudiante;
+        this.agostoFebrero = agostoFebrero;
+        this.septiembreMarzo = septiembreMarzo;
+        this.octubreAbril = octubreAbril;
+        this.noviembreMayo = noviembreMayo;
     }
 
     public int getIDCronograma() {
@@ -31,26 +36,6 @@ public class CronogramaActividadesDTO {
         this.IDCronograma = IDCronograma;
     }
 
-    public Timestamp getFechaInicio() {
-
-        return fechaInicio;
-    }
-
-    public void setFechaInicio(Timestamp fechaInicio) {
-
-        this.fechaInicio = fechaInicio;
-    }
-
-    public Timestamp getFechaFinal() {
-
-        return fechaFinal;
-    }
-
-    public void setFechaFinal(Timestamp fechaFinal) {
-
-        this.fechaFinal = fechaFinal;
-    }
-
     public String getMatriculaEstudiante() {
 
         return matriculaEstudiante;
@@ -59,5 +44,45 @@ public class CronogramaActividadesDTO {
     public void setMatriculaEstudiante(String matriculaEstudiante) {
 
         this.matriculaEstudiante = matriculaEstudiante;
+    }
+
+    public String getAgostoFebrero() {
+
+        return agostoFebrero;
+    }
+
+    public void setAgostoFebrero(String agostoFebrero) {
+
+        this.agostoFebrero = agostoFebrero;
+    }
+
+    public String getSeptiembreMarzo() {
+
+        return septiembreMarzo;
+    }
+
+    public void setSeptiembreMarzo(String septiembreMarzo) {
+
+        this.septiembreMarzo = septiembreMarzo;
+    }
+
+    public String getOctubreAbril() {
+
+        return octubreAbril;
+    }
+
+    public void setOctubreAbril(String octubreAbril) {
+
+        this.octubreAbril = octubreAbril;
+    }
+
+    public String getNoviembreMayo() {
+
+        return noviembreMayo;
+    }
+
+    public void setNoviembreMayo(String noviembreMayo) {
+
+        this.noviembreMayo = noviembreMayo;
     }
 }

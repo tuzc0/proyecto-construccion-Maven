@@ -1097,12 +1097,12 @@ Caused by: java.lang.NullPointerException: Cannot invoke "javafx.scene.control.T
 2025-05-16 13:49:11 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error al cargar representantes y organizaciones: Communications link failure
 
 The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
-2025-05-16 13:50:58 [JavaFX Application Thread] ERROR GUI.proyecto.ControladorSeleccionRepresentanteGUI - Error al cargar representantes y organizaciones: Communications link failure
+2025-05-16 13:50:58 [JavaFX Application Thread] ERROR GUI.gestionproyecto.ControladorSeleccionRepresentanteGUI - Error al cargar representantes y organizaciones: Communications link failure
 
 The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
-2025-05-16 15:37:07 [JavaFX Application Thread] ERROR GUI.proyecto.ControladorRegistroProyectoGUI - Error durante el registro del académico.
+2025-05-16 15:37:07 [JavaFX Application Thread] ERROR GUI.gestionproyecto.ControladorRegistroProyectoGUI - Error durante el registro del académico.
 java.lang.NullPointerException: Cannot invoke "javafx.scene.control.TextField.getText()" because "this.campoDescripcion" is null
-	at GUI.proyecto.ControladorRegistroProyectoGUI.registrarProyecto(ControladorRegistroProyectoGUI.java:61) ~[classes/:?]
+	at GUI.gestionproyecto.ControladorRegistroProyectoGUI.registrarProyecto(ControladorRegistroProyectoGUI.java:61) ~[classes/:?]
 	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
@@ -1157,9 +1157,9 @@ java.lang.NullPointerException: Cannot invoke "javafx.scene.control.TextField.ge
 	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
 	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
 	at java.lang.Thread.run(Thread.java:1570) [?:?]
-2025-05-16 15:38:32 [JavaFX Application Thread] ERROR GUI.proyecto.ControladorRegistroProyectoGUI - Error durante el registro del académico.
+2025-05-16 15:38:32 [JavaFX Application Thread] ERROR GUI.gestionproyecto.ControladorRegistroProyectoGUI - Error durante el registro del académico.
 java.lang.NullPointerException: Cannot invoke "javafx.scene.control.TextField.getText()" because "this.campoDescripcion" is null
-	at GUI.proyecto.ControladorRegistroProyectoGUI.registrarProyecto(ControladorRegistroProyectoGUI.java:61) ~[classes/:?]
+	at GUI.gestionproyecto.ControladorRegistroProyectoGUI.registrarProyecto(ControladorRegistroProyectoGUI.java:61) ~[classes/:?]
 	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
@@ -1214,9 +1214,9 @@ java.lang.NullPointerException: Cannot invoke "javafx.scene.control.TextField.ge
 	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
 	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
 	at java.lang.Thread.run(Thread.java:1570) [?:?]
-2025-05-16 15:40:31 [JavaFX Application Thread] ERROR GUI.proyecto.ControladorRegistroProyectoGUI - Error durante el registro del académico.
+2025-05-16 15:40:31 [JavaFX Application Thread] ERROR GUI.gestionproyecto.ControladorRegistroProyectoGUI - Error durante el registro del académico.
 java.lang.NullPointerException: Cannot invoke "javafx.scene.control.TextField.getText()" because "this.campoMetodologia" is null
-	at GUI.proyecto.ControladorRegistroProyectoGUI.registrarProyecto(ControladorRegistroProyectoGUI.java:65) ~[classes/:?]
+	at GUI.gestionproyecto.ControladorRegistroProyectoGUI.registrarProyecto(ControladorRegistroProyectoGUI.java:65) ~[classes/:?]
 	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
@@ -1271,10 +1271,10 @@ java.lang.NullPointerException: Cannot invoke "javafx.scene.control.TextField.ge
 	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
 	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
 	at java.lang.Thread.run(Thread.java:1570) [?:?]
-2025-05-16 15:41:26 [JavaFX Application Thread] ERROR GUI.proyecto.ControladorRegistroProyectoGUI - Error durante el registro del académico.
+2025-05-16 15:41:26 [JavaFX Application Thread] ERROR GUI.gestionproyecto.ControladorRegistroProyectoGUI - Error durante el registro del académico.
 java.lang.NullPointerException: Cannot invoke "logica.DTOs.RepresentanteDTO.getIDRepresentante()" because the return value of "logica.utilidadesproyecto.SeleccionRepresentanteOrganizacion.getRepresentanteSeleccionado()" is null
-	at GUI.proyecto.ControladorRegistroProyectoGUI.obtenerIDRepresentanteSeleccionado(ControladorRegistroProyectoGUI.java:177) ~[classes/:?]
-	at GUI.proyecto.ControladorRegistroProyectoGUI.registrarProyecto(ControladorRegistroProyectoGUI.java:80) ~[classes/:?]
+	at GUI.gestionproyecto.ControladorRegistroProyectoGUI.obtenerIDRepresentanteSeleccionado(ControladorRegistroProyectoGUI.java:177) ~[classes/:?]
+	at GUI.gestionproyecto.ControladorRegistroProyectoGUI.registrarProyecto(ControladorRegistroProyectoGUI.java:80) ~[classes/:?]
 	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
@@ -1329,7 +1329,7 @@ java.lang.NullPointerException: Cannot invoke "logica.DTOs.RepresentanteDTO.getI
 	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
 	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
 	at java.lang.Thread.run(Thread.java:1570) [?:?]
-2025-05-16 15:48:57 [JavaFX Application Thread] ERROR GUI.proyecto.ControladorRegistroProyectoGUI - Error durante el registro del académico.
+2025-05-16 15:48:57 [JavaFX Application Thread] ERROR GUI.gestionproyecto.ControladorRegistroProyectoGUI - Error durante el registro del académico.
 java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child row: a foreign key constraint fails (`sistemapracticas`.`proyecto`, CONSTRAINT `fk_proyecto_cronograma` FOREIGN KEY (`idCronograma`) REFERENCES `cronogramaactividades` (`idCronograma`) ON DELETE CASCADE ON UPDATE CASCADE)
 	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:118) ~[mysql-connector-j-8.0.33.jar:8.0.33]
 	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122) ~[mysql-connector-j-8.0.33.jar:8.0.33]
@@ -1339,7 +1339,7 @@ java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child 
 	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1320) ~[mysql-connector-j-8.0.33.jar:8.0.33]
 	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:994) ~[mysql-connector-j-8.0.33.jar:8.0.33]
 	at logica.DAOs.ProyectoDAO.crearNuevoProyecto(ProyectoDAO.java:43) ~[classes/:?]
-	at GUI.proyecto.ControladorRegistroProyectoGUI.registrarProyecto(ControladorRegistroProyectoGUI.java:96) ~[classes/:?]
+	at GUI.gestionproyecto.ControladorRegistroProyectoGUI.registrarProyecto(ControladorRegistroProyectoGUI.java:96) ~[classes/:?]
 	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
@@ -1394,13 +1394,98 @@ java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child 
 	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
 	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
 	at java.lang.Thread.run(Thread.java:1570) [?:?]
-2025-05-16 15:51:31 [JavaFX Application Thread] INFO  GUI.proyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
-2025-05-16 15:51:34 [JavaFX Application Thread] INFO  GUI.proyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
-2025-05-16 15:51:34 [JavaFX Application Thread] INFO  GUI.proyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
-2025-05-16 15:51:34 [JavaFX Application Thread] INFO  GUI.proyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
-2025-05-16 16:02:36 [JavaFX Application Thread] INFO  GUI.proyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
-2025-05-16 16:02:36 [JavaFX Application Thread] INFO  GUI.proyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
-2025-05-16 16:03:35 [JavaFX Application Thread] INFO  GUI.proyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
-2025-05-19 17:22:27 [JavaFX Application Thread] INFO  GUI.proyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
-2025-05-19 17:22:28 [JavaFX Application Thread] INFO  GUI.proyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
-2025-05-20 17:37:04 [JavaFX Application Thread] INFO  GUI.proyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-16 15:51:31 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-16 15:51:34 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-16 15:51:34 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-16 15:51:34 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-16 16:02:36 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-16 16:02:36 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-16 16:03:35 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-19 17:22:27 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-19 17:22:28 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-20 17:37:04 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-22 21:11:28 [JavaFX Application Thread] INFO  GUI.gestionacademico.ControladorRegistroAcademicoGUI - Registro de académico exitoso.
+2025-05-22 21:19:03 [JavaFX Application Thread] ERROR GUI.gestionproyecto.ControladorRegistroProyectoGUI - Error durante el registro del académico.
+java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child row: a foreign key constraint fails (`sistemapracticas`.`proyecto`, CONSTRAINT `fk_proyecto_cronograma` FOREIGN KEY (`idCronograma`) REFERENCES `cronogramaactividades` (`idCronograma`) ON DELETE CASCADE ON UPDATE CASCADE)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:118) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1061) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1009) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1320) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:994) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at logica.DAOs.ProyectoDAO.crearNuevoProyecto(ProyectoDAO.java:43) ~[classes/:?]
+	at GUI.gestionproyecto.ControladorRegistroProyectoGUI.registrarProyecto(ControladorRegistroProyectoGUI.java:97) ~[classes/:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:270) ~[javafx.base.jar:?]
+	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1855) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1726) ~[javafx.fxml.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49) ~[javafx.base.jar:?]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx.base.jar:?]
+	at javafx.scene.Node.fireEvent(Node.java:8875) ~[javafx.graphics.jar:?]
+	at javafx.scene.control.Button.fire(Button.java:203) ~[javafx.controls.jar:?]
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:207) ~[javafx.controls.jar:?]
+	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274) ~[javafx.controls.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54) ~[javafx.base.jar:?]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx.base.jar:?]
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3984) ~[javafx.graphics.jar:?]
+	at javafx.scene.Scene.processMouseEvent(Scene.java:1890) ~[javafx.graphics.jar:?]
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2708) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301) ~[javafx.graphics.jar:?]
+	at java.security.AccessController.doPrivileged(AccessController.java:400) ~[?:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:551) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.View.notifyMouse(View.java:937) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
+	at java.lang.Thread.run(Thread.java:1570) [?:?]
+2025-05-22 23:34:11 [JavaFX Application Thread] ERROR GUI.gestionproyecto.ControladorRegistroProyectoGUI - Error al cargar la ventana RegistroCronogramaActividadesGUI.fxml: No controller specified.
+/C:/Users/CLAUDIO/IdeaProjects/proyecto-construccion-Maven/target/classes/RegistroCronogramaActividadesGUI.fxml:17
+
+2025-05-22 23:37:01 [JavaFX Application Thread] ERROR GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Error de base de datos al registrar cronograma: Generated keys not requested. You need to specify Statement.RETURN_GENERATED_KEYS to Statement.executeUpdate(), Statement.executeLargeUpdate() or Connection.prepareStatement().
+2025-05-22 23:50:48 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cancelando registro de cronograma de actividades.
+2025-05-22 23:55:39 [JavaFX Application Thread] ERROR GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Error al registrar el cronograma de actividades.
+2025-05-22 23:56:21 [JavaFX Application Thread] ERROR GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Error al registrar el cronograma de actividades.
+2025-05-23 01:24:44 [JavaFX Application Thread] ERROR GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Error de base de datos al registrar cronograma: Data truncation: Data too long for column 'idEstudiante' at row 1
+2025-05-23 01:24:54 [JavaFX Application Thread] ERROR GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Error de base de datos al registrar cronograma: Data truncation: Data too long for column 'idEstudiante' at row 1
+2025-05-23 01:25:16 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cancelando registro de cronograma de actividades.
+2025-05-23 01:26:21 [JavaFX Application Thread] ERROR GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Error de base de datos al registrar cronograma: Cannot add or update a child row: a foreign key constraint fails (`sistemapracticas`.`cronogramaactividades`, CONSTRAINT `cronogramaactividades_ibfk_1` FOREIGN KEY (`idEstudiante`) REFERENCES `estudiante` (`matricula`))
+2025-05-23 03:00:48 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cancelando registro de cronograma de actividades.
+2025-05-23 14:59:03 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cronograma de actividades registrado exitosamente.
+2025-05-23 14:59:09 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cancelando registro de cronograma de actividades.
+2025-05-23 15:10:26 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cronograma de actividades registrado exitosamente.
+2025-05-23 15:11:09 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-23 15:24:46 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cronograma de actividades registrado exitosamente.
+2025-05-23 15:26:49 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cronograma de actividades registrado exitosamente.
+2025-05-23 15:27:29 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.

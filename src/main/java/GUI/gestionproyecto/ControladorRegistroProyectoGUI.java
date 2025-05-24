@@ -17,10 +17,13 @@ import logica.DTOs.ProyectoDTO;
 import logica.DTOs.RepresentanteDTO;
 import logica.utilidadesproyecto.SeleccionRepresentanteOrganizacion;
 import GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades;
+import logica.verificacion.VerificicacionGeneral;
+import logica.verificacion.VerificacionDeProyecto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ControladorRegistroProyectoGUI {
 
@@ -39,6 +42,16 @@ public class ControladorRegistroProyectoGUI {
     @FXML private Label etiquetaDuracion;
     @FXML private Label etiquetaRepresentante;
     @FXML private Label etiquetaCalendarizacion;
+    @FXML private Label contadorNombre;
+    @FXML private Label contadorDescripcionGeneral;
+    @FXML private Label contadorObjetivosGenerales;
+    @FXML private Label contadorObjetivosInmediatos;
+    @FXML private Label contadorObjetivosMediatos;
+    @FXML private Label contadorMetodologia;
+    @FXML private Label contadorRecursos;
+    @FXML private Label contadorActividades;
+    @FXML private Label contadorResponsabilidades;
+    @FXML private Label contadorDias;
     @FXML private Button botonRegistrar;
     @FXML private Button botonCancelar;
     @FXML private Button botonRegistrarCalendario;
@@ -48,6 +61,29 @@ public class ControladorRegistroProyectoGUI {
 
     @FXML
     private void initialize() {
+
+        VerificicacionGeneral verficacionGeneral = new VerificicacionGeneral();
+
+        verficacionGeneral.contadorCaracteresTextField(campoNombre,
+                contadorNombre,150);
+        verficacionGeneral.contadorCaracteresTextField(campoDescripcionGeneral,
+                contadorDescripcionGeneral,255);
+        verficacionGeneral.contadorCaracteresTextField(campoObjetivosGenerales,
+                contadorObjetivosGenerales,255);
+        verficacionGeneral.contadorCaracteresTextField(campoObjetivosInmediatos,
+                contadorObjetivosInmediatos,255);
+        verficacionGeneral.contadorCaracteresTextField(campoObjetivosMediatos,
+                contadorObjetivosMediatos,255);
+        verficacionGeneral.contadorCaracteresTextField(campoMetodologia,
+                contadorMetodologia,255);
+        verficacionGeneral.contadorCaracteresTextField(campoRecursos,
+                contadorRecursos,255);
+        verficacionGeneral.contadorCaracteresTextField(campoActividades,
+                contadorActividades,255);
+        verficacionGeneral.contadorCaracteresTextField(campoResponsabilidades,
+                contadorResponsabilidades,255);
+        verficacionGeneral.contadorCaracteresTextField(campoDias,
+                contadorDias,255);
 
         botonRegistrar.setCursor(Cursor.HAND);
         botonCancelar.setCursor(Cursor.HAND);
@@ -59,7 +95,7 @@ public class ControladorRegistroProyectoGUI {
     private void registrarProyecto() {
 
         String nombre = campoNombre.getText();
-        String descripcion = campoDescripcionGeneral.getText();
+        String descripcionGeneral = campoDescripcionGeneral.getText();
         String objetivosGenerales = campoObjetivosGenerales.getText();
         String objetivosInmediatos = campoObjetivosInmediatos.getText();
         String objetivosMediatos = campoObjetivosMediatos.getText();
@@ -72,15 +108,44 @@ public class ControladorRegistroProyectoGUI {
         String calendarizacion = etiquetaCalendarizacion.getText();
         String representante = etiquetaRepresentante.getText();
 
-        if (validarCamposVaciosReporte()) {
+        VerificacionDeProyecto verificacionDeDatos = new VerificacionDeProyecto();
 
-            UTILIDADES.mostrarAlerta("Error.",
-                    "Por favor, complete todos los campos obligatorios.",
-                    "Algunos campos se encuentran vacios.");
+        List<String> camposVacios = verificacionDeDatos.camposVaciosProyecto(
+                nombre, descripcionGeneral, objetivosGenerales, objetivosInmediatos,
+                objetivosMediatos, metodologia, recursos, actividades,
+                responsabilidades, diasyhorarios);
+
+        if (!camposVacios.isEmpty()) {
+
+            String mensaje = String.join("\n", camposVacios);
+            UTILIDADES.mostrarAlerta(
+                    "Campos vacíos",
+                    "Por favor, complete todos los campos requeridos.",
+                    mensaje
+            );
+
             return;
         }
 
-        RepresentanteDTO representanteSeleccionado = SeleccionRepresentanteOrganizacion.getRepresentanteSeleccionado();
+        List<String> erroresValidacion = verificacionDeDatos.validarCamposProyecto(
+                nombre, descripcionGeneral, objetivosGenerales, objetivosInmediatos,
+                objetivosMediatos, metodologia, recursos, actividades,
+                responsabilidades, diasyhorarios);
+
+        if (!erroresValidacion.isEmpty()) {
+
+            String mensaje = String.join("\n", erroresValidacion);
+            UTILIDADES.mostrarAlerta(
+                    "Errores de validación",
+                    "Por favor, ingrese información válida en los campos.",
+                    mensaje
+            );
+
+            return;
+        }
+
+        RepresentanteDTO representanteSeleccionado =
+                SeleccionRepresentanteOrganizacion.getRepresentanteSeleccionado();
 
         if (representanteSeleccionado == null) {
 
@@ -98,13 +163,14 @@ public class ControladorRegistroProyectoGUI {
             return;
         }
 
+        actualizarEstadoCronogramaActividades(true);
         int representanteID = obtenerIDRepresentanteSeleccionado();
         int estadoActivo = 1;
 
         ProyectoDTO proyectoDTO = new ProyectoDTO(0, nombre, objetivosGenerales,
                 objetivosInmediatos, objetivosMediatos, metodologia, recursos, actividades,
                 responsabilidades, duracion, diasyhorarios, idCronogramaTemporal,
-                estadoActivo, representanteID, descripcion);
+                estadoActivo, representanteID, descripcionGeneral);
 
         ProyectoDAO proyectoDAO = new ProyectoDAO();
 
@@ -169,26 +235,33 @@ public class ControladorRegistroProyectoGUI {
 
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistroCronogramaActividadesGUI.fxml"));
-            Parent root = loader.load();
+            FXMLLoader cargadorFXML =
+                    new FXMLLoader(getClass().getResource("/RegistroCronogramaActividadesGUI.fxml"));
+            Parent raizVentana = cargadorFXML.load();
 
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Registro de Cronograma de Actividades");
+            Stage escenarioRegistroCronograma = new Stage();
+            escenarioRegistroCronograma.setScene(new Scene(raizVentana));
+            escenarioRegistroCronograma.setTitle("Registro de Cronograma de Actividades");
 
-            ControladorRegistroCronogramaActividades controller = loader.getController();
-            controller.setEscenarioActual(stage);
+            ControladorRegistroCronogramaActividades controladorCronograma = cargadorFXML.getController();
+            controladorCronograma.setEscenarioActual(escenarioRegistroCronograma);
+            controladorCronograma.asignarControladorPadre(this);
 
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
+            escenarioRegistroCronograma.initModality(Modality.APPLICATION_MODAL);
+            escenarioRegistroCronograma.showAndWait();
 
-            this.idCronogramaTemporal = controller.getIdCronogramaRegistrado();
+            this.idCronogramaTemporal = controladorCronograma.getIdCronogramaRegistrado();
 
-        } catch (IOException e) {
+            if(idCronogramaTemporal != null && idCronogramaTemporal != -1) {
+                actualizarEstadoCronogramaActividades(true);
+            }
 
-            LOGGER.error("Error al cargar la ventana", e);
+        } catch (IOException excepcionCargaVentana) {
+
+            LOGGER.error("Error al cargar la ventana de registro de cronograma." + excepcionCargaVentana.getMessage());
             UTILIDADES.mostrarAlerta("Error",
-                    "No se pudo abrir la ventana", e.getMessage());
+                    "No se pudo cargar la ventana para registrar un cronograma de actividades.",
+                    "Por favor, inténtelo de nuevo más tarde o contacte al administrador.");
         }
     }
 
@@ -197,30 +270,40 @@ public class ControladorRegistroProyectoGUI {
 
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SeleccionarRepresentante.fxml"));
-            Stage stage = new Stage();
-            stage.setScene(new Scene(loader.load()));
+            FXMLLoader cargadorFXML = new FXMLLoader(getClass().getResource("/SeleccionarRepresentante.fxml"));
+            Stage escenarioSeleccionRepresentante = new Stage();
+            escenarioSeleccionRepresentante.setScene(new Scene(cargadorFXML.load()));
 
-            ControladorSeleccionRepresentanteGUI controladorSeleccion = loader.getController();
+            ControladorSeleccionRepresentanteGUI controladorSeleccionRepresentante = cargadorFXML.getController();
 
-            controladorSeleccion.setControladorRegistro(this);
-            stage.show();
+            controladorSeleccionRepresentante.setControladorRegistro(this);
+            escenarioSeleccionRepresentante.show();
 
-        } catch (IOException e) {
+        } catch (IOException excepcionCargaVentana) {
 
-            LOGGER.error("Error al cargar la ventana SeleccionarRepresentante.fxml: " + e.getMessage());
-            UTILIDADES.mostrarAlerta("Error", "No se pudo abrir la ventana de selección de representante.", "");
+            LOGGER.error("Error al cargar la ventana de selección de representante: " + excepcionCargaVentana.getMessage());
+            UTILIDADES.mostrarAlerta("Error",
+                    "No se pudo abrir la ventana de selección de representante.",
+                    "Por favor, inténtelo de nuevo más tarde o contacte al administrador.");
         }
     }
 
-    private boolean validarCamposVaciosReporte() {
+    public void actualizarEstadoCronogramaActividades(boolean estadoCronogramaInsertado) {
 
-        return campoNombre.getText().isEmpty() || campoDescripcionGeneral.getText().isEmpty() ||
-               campoObjetivosGenerales.getText().isEmpty() || campoObjetivosInmediatos.getText().isEmpty() ||
-               campoObjetivosMediatos.getText().isEmpty() || campoMetodologia.getText().isEmpty() ||
-               campoRecursos.getText().isEmpty() || campoActividades.getText().isEmpty() ||
-               campoResponsabilidades.getText().isEmpty() || campoDias.getText().isEmpty() || campoDescripcionGeneral.getText().isEmpty();
+        if (estadoCronogramaInsertado) {
+
+            botonRegistrarCalendario.setDisable(true);
+            botonRegistrarCalendario.setText("Cronograma Registrado");
+            etiquetaCalendarizacion.setText("Cronograma de Actividades Registrado");
+
+        } else {
+
+            botonRegistrarCalendario.setDisable(false);
+            botonRegistrarCalendario.setText("Registrar Cronograma");
+            etiquetaCalendarizacion.setText("Registrar Cronograma de Actividades");
+        }
     }
+
 
     public void setRepresentanteSeleccionado(RepresentanteDTO representante, OrganizacionVinculadaDTO organizacion) {
 

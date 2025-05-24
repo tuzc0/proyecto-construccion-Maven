@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="554.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades">
     <bottom>
         <AnchorPane prefHeight="58.0" prefWidth="580.0" BorderPane.alignment="CENTER">
             <children>
@@ -40,25 +40,32 @@
                         <Font name="System Bold" size="13.0" />
                     </font>
                 </Label>
-                <Label layoutX="36.0" layoutY="107.0" prefHeight="30.0" prefWidth="158.0" text="Septiembre/Marzo:">
-                    <font>
-                        <Font name="System Bold" size="13.0" />
-                    </font>
-                </Label>
-                <Label layoutX="36.0" layoutY="201.0" prefHeight="30.0" prefWidth="158.0" text="Octubre/Abril:">
-                    <font>
-                        <Font name="System Bold" size="13.0" />
-                    </font>
-                </Label>
-                <Label layoutX="36.0" layoutY="293.0" prefHeight="30.0" prefWidth="158.0" text="Noviembre/Mayo:">
-                    <font>
-                        <Font name="System Bold" size="13.0" />
-                    </font>
-                </Label>
                 <TextArea fx:id="textoAgostoFebrero" layoutX="37.0" layoutY="44.0" prefHeight="52.0" prefWidth="505.0" promptText="Actividades a realizar en agosto o febrero dependiendo del periodo." />
-                <TextArea fx:id="textoSeptiembreMarzo" layoutX="37.0" layoutY="137.0" prefHeight="52.0" prefWidth="505.0" promptText="Actividades a realizar en septiembre o marzo dependiendo del periodo." />
-                <TextArea fx:id="textoOctubreAbril" layoutX="37.0" layoutY="231.0" prefHeight="52.0" prefWidth="505.0" promptText="Actividades a realizar en octubre o abril dependiendo del periodo." />
-                <TextArea fx:id="textoNoviembreMayo" layoutX="37.0" layoutY="323.0" prefHeight="52.0" prefWidth="505.0" promptText="Actividades a realizar en noviembre o mayo dependiendo del periodo." />
+                <Label fx:id="contadorAgostoFebrero" layoutX="37.0" layoutY="96.0" prefHeight="17.0" prefWidth="505.0" text="0/255" />
+
+                <Label layoutX="36.0" layoutY="120.0" prefHeight="30.0" prefWidth="158.0" text="Septiembre/Marzo:">
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                </Label>
+                <TextArea fx:id="textoSeptiembreMarzo" layoutX="37.0" layoutY="150.0" prefHeight="52.0" prefWidth="505.0" promptText="Actividades a realizar en septiembre o marzo dependiendo del periodo." />
+                <Label fx:id="contadorSeptiembreMarzo" layoutX="37.0" layoutY="202.0" prefHeight="17.0" prefWidth="505.0" text="0/255" />
+
+                <Label layoutX="36.0" layoutY="226.0" prefHeight="30.0" prefWidth="158.0" text="Octubre/Abril:">
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                </Label>
+                <TextArea fx:id="textoOctubreAbril" layoutX="37.0" layoutY="256.0" prefHeight="52.0" prefWidth="505.0" promptText="Actividades a realizar en octubre o abril dependiendo del periodo." />
+                <Label fx:id="contadorOctubreAbril" layoutX="37.0" layoutY="308.0" prefHeight="17.0" prefWidth="505.0" text="0/255" />
+
+                <Label layoutX="36.0" layoutY="332.0" prefHeight="30.0" prefWidth="158.0" text="Noviembre/Mayo:">
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                </Label>
+                <TextArea fx:id="textoNoviembreMayo" layoutX="37.0" layoutY="362.0" prefHeight="52.0" prefWidth="505.0" promptText="Actividades a realizar en noviembre o mayo dependiendo del periodo." />
+                <Label fx:id="contadorNoviembreMayo" layoutX="37.0" layoutY="414.0" prefHeight="17.0" prefWidth="505.0" text="0/255" />
             </children>
         </AnchorPane>
     </center>

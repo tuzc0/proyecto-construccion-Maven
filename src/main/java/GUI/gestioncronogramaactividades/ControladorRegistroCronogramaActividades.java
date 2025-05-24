@@ -1,18 +1,21 @@
 package GUI.gestioncronogramaactividades;
 
+import GUI.gestionproyecto.ControladorRegistroProyectoGUI;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import logica.DAOs.CronogramaActividadesDAO;
 import logica.DTOs.CronogramaActividadesDTO;
+import logica.verificacion.VerificicacionGeneral;
+import logica.verificacion.VerificacionDeCronogramaActividades;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import GUI.utilidades.Utilidades;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ControladorRegistroCronogramaActividades {
@@ -23,6 +26,10 @@ public class ControladorRegistroCronogramaActividades {
     @FXML private TextArea textoSeptiembreMarzo;
     @FXML private TextArea textoOctubreAbril;
     @FXML private TextArea textoNoviembreMayo;
+    @FXML private Label contadorAgostoFebrero;
+    @FXML private Label contadorSeptiembreMarzo;
+    @FXML private Label contadorOctubreAbril;
+    @FXML private Label contadorNoviembreMayo;
     @FXML private Button botonRegistrar;
     @FXML private Button botonCancelar;
 
@@ -32,12 +39,16 @@ public class ControladorRegistroCronogramaActividades {
     @FXML
     private void initialize() {
 
+        VerificicacionGeneral verficacionGeneral = new VerificicacionGeneral();
+        int numeroMaximoDeCaracteres = 255;
+
+        verficacionGeneral.contadorCaracteresTextArea(textoAgostoFebrero, contadorAgostoFebrero, numeroMaximoDeCaracteres);
+        verficacionGeneral.contadorCaracteresTextArea(textoSeptiembreMarzo, contadorSeptiembreMarzo, numeroMaximoDeCaracteres);
+        verficacionGeneral.contadorCaracteresTextArea(textoOctubreAbril, contadorOctubreAbril, numeroMaximoDeCaracteres);
+        verficacionGeneral.contadorCaracteresTextArea(textoNoviembreMayo, contadorNoviembreMayo, numeroMaximoDeCaracteres);
+
         botonRegistrar.setCursor(Cursor.HAND);
         botonCancelar.setCursor(Cursor.HAND);
-    }
-
-    public void setEscenarioActual(Stage escenario) {
-        this.escenarioActual = escenario;
     }
 
     private Integer idCronogramaRegistrado = null;
@@ -50,7 +61,9 @@ public class ControladorRegistroCronogramaActividades {
         String octubreAbril = textoOctubreAbril.getText();
         String noviembreMayo = textoNoviembreMayo.getText();
 
-        List<String> camposVacios = camposVaciosCronogramaActividades(agostoFebrero, septiembreMarzo,
+        VerificacionDeCronogramaActividades verificacionCronograma = new VerificacionDeCronogramaActividades();
+
+        List<String> camposVacios = verificacionCronograma.camposVaciosCronogramaActividades(agostoFebrero, septiembreMarzo,
                 octubreAbril, noviembreMayo);
 
         if (!camposVacios.isEmpty()) {
@@ -64,7 +77,7 @@ public class ControladorRegistroCronogramaActividades {
             return -1;
         }
 
-        List<String> erroresValidacion = validarCamposCronograma(agostoFebrero, septiembreMarzo,
+        List<String> erroresValidacion = verificacionCronograma.validarCamposCronograma(agostoFebrero, septiembreMarzo,
                 octubreAbril, noviembreMayo);
 
         if (!erroresValidacion.isEmpty()) {
@@ -88,12 +101,16 @@ public class ControladorRegistroCronogramaActividades {
 
             int idCronogramaInsertado = cronogramaActividadesDAO.
                     crearNuevoCronogramaDeActividades(cronogramaActividadesDTO);
-            int resultadoInvalido = -1;
 
-            if (idCronogramaInsertado != resultadoInvalido) {
+            if (idCronogramaInsertado != -1) {
 
                 this.idCronogramaRegistrado = idCronogramaInsertado;
                 LOGGER.info("Cronograma de actividades registrado exitosamente.");
+
+                if(controladorPadre != null) {
+                    controladorPadre.actualizarEstadoCronogramaActividades(true);
+                }
+
                 UTILIDADES.mostrarConfirmacion(
                         "Registro exitoso",
                         "El cronograma de actividades se ha registrado correctamente.",
@@ -112,7 +129,13 @@ public class ControladorRegistroCronogramaActividades {
                 );
             }
 
-            return idCronogramaRegistrado != null ? idCronogramaRegistrado : -1;
+            if (idCronogramaRegistrado != null) {
+
+                return idCronogramaRegistrado;
+            } else {
+
+                return -1;
+            }
 
         } catch (SQLException e) {
 
@@ -136,11 +159,6 @@ public class ControladorRegistroCronogramaActividades {
         return -1;
     }
 
-    public Integer getIdCronogramaRegistrado() {
-
-        return this.idCronogramaRegistrado;
-    }
-
     @FXML
     private void botonCancelarSeleccion() {
 
@@ -161,60 +179,19 @@ public class ControladorRegistroCronogramaActividades {
         }
     }
 
-    public static List<String> camposVaciosCronogramaActividades(String agostoFebrero,
-                                                                 String septiembreMarzo,
-                                                                 String octubreAbril,
-                                                                 String noviembreMayo) {
+    public Integer getIdCronogramaRegistrado() {
 
-        List<String> errores = new ArrayList<>();
-
-        if (agostoFebrero.isEmpty()) {
-            errores.add("El campo de actividades para agosto-febrero no puede estar vacío.");
-        }
-
-        if (septiembreMarzo.isEmpty()) {
-            errores.add("El campo de actividades para septiembre-marzo no puede estar vacío.");
-        }
-
-        if (octubreAbril.isEmpty()) {
-            errores.add("El campo de actividades para octubre-abril no puede estar vacío.");
-        }
-
-        if (noviembreMayo.isEmpty()) {
-            errores.add("El campo de actividades para noviembre-mayo no puede estar vacío.");
-        }
-
-        return errores;
+        return this.idCronogramaRegistrado;
     }
 
-    public static boolean validarTextoCronogramaActividades(String texto) {
+    public void setEscenarioActual(Stage escenario) {
 
-        String[] caracteres = texto.trim().split("\\s+");
-        return caracteres.length > 3 && texto.length() <= 255;
+        this.escenarioActual = escenario;
     }
 
-    private List<String> validarCamposCronograma(String agostoFebrero, String septiembreMarzo,
-                                                 String octubreAbril, String noviembreMayo) {
+    private ControladorRegistroProyectoGUI controladorPadre;
 
-        List<String> errores = new ArrayList<>();
-
-        if (!validarTextoCronogramaActividades(agostoFebrero)) {
-            errores.add("El campo de actividades para agosto-febrero " +
-                    "debe tener más de 3 palabras y no exceder 255 caracteres.");
-        }
-        if (!validarTextoCronogramaActividades(septiembreMarzo)) {
-            errores.add("El campo de actividades para septiembre-marzo " +
-                    "debe tener más de 3 palabras y no exceder 255 caracteres.");
-        }
-        if (!validarTextoCronogramaActividades(octubreAbril)) {
-            errores.add("El campo de actividades para octubre-abril " +
-                    "debe tener más de 3 palabras y no exceder 255 caracteres.");
-        }
-        if (!validarTextoCronogramaActividades(noviembreMayo)) {
-            errores.add("El campo de actividades para noviembre-mayo debe " +
-                    "tener más de 3 palabras y no exceder 255 caracteres.");
-        }
-
-        return errores;
+    public void asignarControladorPadre(ControladorRegistroProyectoGUI controladorRegistroProyecto) {
+        this.controladorPadre = controladorRegistroProyecto;
     }
 }

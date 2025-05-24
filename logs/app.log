@@ -1489,3 +1489,27 @@ java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child 
 2025-05-23 15:24:46 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cronograma de actividades registrado exitosamente.
 2025-05-23 15:26:49 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cronograma de actividades registrado exitosamente.
 2025-05-23 15:27:29 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-23 16:03:15 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cronograma de actividades registrado exitosamente.
+2025-05-23 16:03:39 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-23 16:22:45 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cronograma de actividades registrado exitosamente.
+2025-05-23 16:27:39 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cronograma de actividades registrado exitosamente.
+2025-05-23 16:29:03 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-23 16:30:06 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cancelando registro de cronograma de actividades.
+2025-05-23 16:30:11 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-23 16:43:32 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cronograma de actividades registrado exitosamente.
+2025-05-23 16:43:37 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-23 16:44:05 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cancelando registro de cronograma de actividades.
+2025-05-23 16:58:37 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cronograma de actividades registrado exitosamente.
+2025-05-23 16:59:53 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-23 17:45:27 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cronograma de actividades registrado exitosamente.
+2025-05-23 17:45:36 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-23 18:12:15 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cancelando registro de cronograma de actividades.
+2025-05-23 19:37:25 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cronograma de actividades registrado exitosamente.
+2025-05-23 19:37:44 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cronograma de actividades registrado exitosamente.
+2025-05-23 19:37:52 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-23 19:48:51 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cronograma de actividades registrado exitosamente.
+2025-05-23 19:49:02 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-23 19:49:05 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-23 19:49:05 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-23 19:49:06 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
+2025-05-23 19:49:06 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.

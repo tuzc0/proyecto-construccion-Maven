@@ -8,7 +8,9 @@ public class ContenedoraRepresentanteOrganizacion {
     private RepresentanteDTO representante;
     private OrganizacionVinculadaDTO organizacion;
 
-    public ContenedoraRepresentanteOrganizacion(RepresentanteDTO representante, OrganizacionVinculadaDTO organizacion) {
+    public ContenedoraRepresentanteOrganizacion(RepresentanteDTO representante,
+                                                OrganizacionVinculadaDTO organizacion) {
+
         this.representante = representante;
         this.organizacion = organizacion;
     }

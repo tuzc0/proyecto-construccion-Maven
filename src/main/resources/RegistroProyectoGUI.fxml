@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="1159.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.proyecto.ControladorRegistroProyectoGUI">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="702.0" prefWidth="1159.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.gestionproyecto.ControladorRegistroProyectoGUI">
    <top>
       <AnchorPane prefHeight="58.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -37,35 +37,41 @@
                </font>
             </Label>
             <TextField fx:id="campoNombre" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <Label fx:id="contadorNombre" text="0/255" GridPane.columnIndex="0" GridPane.rowIndex="2" />
 
-            <Label text="Descripción general: " GridPane.columnIndex="0" GridPane.rowIndex="2">
+            <Label text="Descripción general: " GridPane.columnIndex="0" GridPane.rowIndex="3">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="campoDescripcionGeneral" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <TextField fx:id="campoDescripcionGeneral" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+            <Label fx:id="contadorDescripcionGeneral" text="0/255" GridPane.columnIndex="0" GridPane.rowIndex="5" />
 
-            <Label text="Objetivos generales: " GridPane.columnIndex="0" GridPane.rowIndex="4">
+            <Label text="Objetivos generales: " GridPane.columnIndex="0" GridPane.rowIndex="6">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="campoObjetivosGenerales" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+            <TextField fx:id="campoObjetivosGenerales" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+            <Label fx:id="contadorObjetivosGenerales" text="0/255" GridPane.columnIndex="0" GridPane.rowIndex="8" />
 
-            <Label text="Objetivos inmediatos: " GridPane.columnIndex="0" GridPane.rowIndex="6">
+            <Label text="Objetivos inmediatos: " GridPane.columnIndex="0" GridPane.rowIndex="9">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="campoObjetivosInmediatos" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+            <TextField fx:id="campoObjetivosInmediatos" GridPane.columnIndex="0" GridPane.rowIndex="10" />
+            <Label fx:id="contadorObjetivosInmediatos" text="0/255" GridPane.columnIndex="0" GridPane.rowIndex="11" />
 
-            <Label text="Objetivos mediatos: " GridPane.columnIndex="0" GridPane.rowIndex="8">
+            <Label text="Objetivos mediatos: " GridPane.columnIndex="0" GridPane.rowIndex="12">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="campoObjetivosMediatos" GridPane.columnIndex="0" GridPane.rowIndex="9" />
-            <HBox prefHeight="26.0" prefWidth="490.0" spacing="10" GridPane.rowIndex="10">
+            <TextField fx:id="campoObjetivosMediatos" GridPane.columnIndex="0" GridPane.rowIndex="13" />
+            <Label fx:id="contadorObjetivosMediatos" text="0/255" GridPane.columnIndex="0" GridPane.rowIndex="14" />
+
+            <HBox prefHeight="26.0" prefWidth="490.0" spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="15">
                <Label fx:id="etiquetaRepresentante" prefHeight="34.0" prefWidth="458.0" text="Seleccione un representante">
                   <font>
                      <Font name="System Bold" size="14.0" />
@@ -80,53 +86,58 @@
                </font>
             </Label>
             <TextField fx:id="campoMetodologia" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="contadorMetodologia" text="0/255" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-            <Label text="Recursos humanos, económicos y materiales:" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Label text="Recursos humanos, económicos y materiales:" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="campoRecursos" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="campoRecursos" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label fx:id="contadorRecursos" text="0/255" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
-            <Label text="Actividades y funciones:" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <Label text="Actividades y funciones:" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="campoActividades" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="campoActividades" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Label fx:id="contadorActividades" text="0/255" GridPane.columnIndex="1" GridPane.rowIndex="8" />
 
-            <Label text="Responsabilidades:" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <Label text="Responsabilidades:" GridPane.columnIndex="1" GridPane.rowIndex="9">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="campoResponsabilidades" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <TextField fx:id="campoResponsabilidades" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+            <Label fx:id="contadorResponsabilidades" text="0/255" GridPane.columnIndex="1" GridPane.rowIndex="11" />
 
-            <Label text="Días y horarios:" GridPane.columnIndex="1" GridPane.rowIndex="8">
+            <Label text="Días y horarios:" GridPane.columnIndex="1" GridPane.rowIndex="12">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="campoDias" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <TextField fx:id="campoDias" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+            <Label fx:id="contadorDias" text="0/255" GridPane.columnIndex="1" GridPane.rowIndex="14" />
 
-            <Label text="Duración: " GridPane.columnIndex="1" GridPane.rowIndex="10">
+            <Label text="Duración: " GridPane.columnIndex="1" GridPane.rowIndex="15">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="etiquetaDuracion" text="420 hrs." GridPane.columnIndex="1" GridPane.rowIndex="11">
+            <Label fx:id="etiquetaDuracion" text="420 hrs." GridPane.columnIndex="1" GridPane.rowIndex="16">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <HBox prefHeight="30.0" prefWidth="550.0" spacing="10" GridPane.rowIndex="11">
+            <HBox prefHeight="30.0" prefWidth="550.0" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="17">
                <children>
-                  <Label fx:id="etiquetaCalendarizacion" prefHeight="34.0" prefWidth="458.0" text="Seleccione un cronograma">
+                  <Label fx:id="etiquetaCalendarizacion" prefHeight="34.0" prefWidth="458.0" text="Registra un cronograma">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Button fx:id="botonSeleccionarCalendario" mnemonicParsing="false" prefHeight="30.0" prefWidth="254.0" text="Seleccionar Cronograma" />
+                  <Button fx:id="botonRegistrarCalendario" mnemonicParsing="false" onAction="#registrarCronogramaActividades" prefHeight="30.0" prefWidth="254.0" text="Registrar Cronograma" />
                </children>
             </HBox>
          </children>
@@ -136,6 +147,11 @@
          <vgap>10.0</vgap>
          <hgap>20.0</hgap>
          <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
             <RowConstraints />
             <RowConstraints />
             <RowConstraints />

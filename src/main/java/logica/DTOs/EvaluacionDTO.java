@@ -1,5 +1,7 @@
 package logica.DTOs;
 
+import java.util.Objects;
+
 public class EvaluacionDTO {
 
     private int IDEvaluacion;
@@ -82,4 +84,45 @@ public class EvaluacionDTO {
 
         this.estadoActivo = estadoActivo;
     }
+
+    @Override
+    public boolean equals(Object objetoAComparar) {
+
+        if (this == objetoAComparar) {
+            return true;
+        }
+
+        if (objetoAComparar == null || getClass() != objetoAComparar.getClass()) {
+            return false;
+        }
+
+        EvaluacionDTO evaluacionComparada = (EvaluacionDTO) objetoAComparar;
+
+        return IDEvaluacion == evaluacionComparada.IDEvaluacion &&
+                Float.compare(evaluacionComparada.calificacionFinal, calificacionFinal) == 0 &&
+                numeroPersonal == evaluacionComparada.numeroPersonal &&
+                estadoActivo == evaluacionComparada.estadoActivo &&
+                Objects.equals(comentarios, evaluacionComparada.comentarios) &&
+                Objects.equals(matriculaEstudiante, evaluacionComparada.matriculaEstudiante);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(IDEvaluacion, comentarios, calificacionFinal,
+                numeroPersonal, matriculaEstudiante, estadoActivo);
+    }
+
+    @Override
+    public String toString() {
+        return "EvaluacionDTO{" +
+                "IDEvaluacion=" + IDEvaluacion +
+                ", comentarios='" + comentarios + '\'' +
+                ", calificacionFinal=" + calificacionFinal +
+                ", numeroPersonal=" + numeroPersonal +
+                ", matriculaEstudiante='" + matriculaEstudiante + '\'' +
+                ", estadoActivo=" + estadoActivo +
+                '}';
+    }
+
 }

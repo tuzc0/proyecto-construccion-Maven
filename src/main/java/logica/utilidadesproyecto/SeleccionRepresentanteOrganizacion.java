@@ -9,18 +9,22 @@ public class SeleccionRepresentanteOrganizacion {
     private static OrganizacionVinculadaDTO organizacionSeleccionada;
 
     public static RepresentanteDTO getRepresentanteSeleccionado() {
+
         return representanteSeleccionado;
     }
 
     public static void setRepresentanteSeleccionado(RepresentanteDTO representante) {
+
         representanteSeleccionado = representante;
     }
 
     public static OrganizacionVinculadaDTO getOrganizacionSeleccionada() {
+
         return organizacionSeleccionada;
     }
 
     public static void setOrganizacionSeleccionada(OrganizacionVinculadaDTO organizacion) {
+
         organizacionSeleccionada = organizacion;
     }
 }

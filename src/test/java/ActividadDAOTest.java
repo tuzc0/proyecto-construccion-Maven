@@ -13,6 +13,7 @@ public class ActividadDAOTest {
 
     private ActividadDAO actividadDAO;
     private Connection conexionBaseDeDatos;
+
     private final List<Integer> IDS_ACTIVIDADES_CREADAS = new ArrayList<>();
 
     @BeforeEach

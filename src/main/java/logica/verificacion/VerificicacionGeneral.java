@@ -1,0 +1,32 @@
+package logica.verificacion;
+
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+
+public class VerificicacionGeneral {
+
+    public void contadorCaracteresTextArea(TextArea textoArea, Label contadorCaracteres, int numeroMaximoDeCaracteres) {
+
+        int numeroDeCaracteresMaximos = numeroMaximoDeCaracteres;
+
+        textoArea.textProperty().addListener((textoObservado, textoAnterior, textoActual) -> {
+            int cantidadCaracteresActuales = textoActual.length();
+            contadorCaracteres.setText(cantidadCaracteresActuales + "/" + numeroDeCaracteresMaximos);
+        });
+
+        contadorCaracteres.setText("0/" + numeroDeCaracteresMaximos);
+    }
+
+    public void contadorCaracteresTextField(TextField campoDeTexto, Label contadorCaracteres, int numeroMaximoDeCaracteres) {
+
+        int numeroDeCaracteresMaximos = numeroMaximoDeCaracteres;
+
+        campoDeTexto.textProperty().addListener((textoObservado, textoAnterior, textoActual) -> {
+            int cantidadCaracteresActuales = textoActual.length();
+            contadorCaracteres.setText(cantidadCaracteresActuales + "/" + numeroDeCaracteresMaximos);
+        });
+
+        contadorCaracteres.setText("0/" + numeroDeCaracteresMaximos);
+    }
+}

@@ -34,9 +34,11 @@ public class EstudianteDAO implements IEstudianteDAO {
             sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(insertarSQLEstudiante);
             sentenciaEstudiante.setString(1, estudiante.getMatricula());
             sentenciaEstudiante.setInt(2, estudiante.getIdUsuario());
-            sentenciaEstudiante.executeUpdate();
 
-            estudianteInsertado = true;
+            if (sentenciaEstudiante.executeUpdate() > 0) {
+
+                estudianteInsertado = true;
+            }
 
 
         } finally {
@@ -63,8 +65,11 @@ public class EstudianteDAO implements IEstudianteDAO {
             sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(modificarSQLEstudiante);
             sentenciaEstudiante.setInt(1, estadoActivo);
             sentenciaEstudiante.setString(2, matricula);
-            sentenciaEstudiante.executeUpdate();
-            estudianteModificado = true;
+
+            if (sentenciaEstudiante.executeUpdate() > 0) {
+
+                estudianteModificado = true;
+            }
 
         } finally {
 
@@ -89,8 +94,11 @@ public class EstudianteDAO implements IEstudianteDAO {
             sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(modificarSQLEstudiante);
             sentenciaEstudiante.setString(2, estudiante.getMatricula());
             sentenciaEstudiante.setInt(1, estudiante.getIdUsuario());
-            sentenciaEstudiante.executeUpdate();
-            estudianteModificado = true;
+
+            if (sentenciaEstudiante.executeUpdate() > 0) {
+
+                estudianteModificado = true;
+            }
 
         } finally {
 

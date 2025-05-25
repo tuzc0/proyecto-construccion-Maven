@@ -1516,3 +1516,8 @@ java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child 
 2025-05-23 22:09:46 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cancelando registro de cronograma de actividades.
 2025-05-23 22:25:40 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Cancelando el registro del proyecto.
 2025-05-23 23:58:32 [JavaFX Application Thread] INFO  GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividades - Cancelando registro de cronograma de actividades.
+2025-05-24 22:31:50 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error al validar tipo de usuario: Table 'sistemapracticas.vista_academico_evaluador' doesn't exist
+2025-05-24 22:31:53 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error al validar tipo de usuario: Table 'sistemapracticas.vista_academico_evaluador' doesn't exist
+2025-05-24 22:31:59 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error al validar tipo de usuario: Table 'sistemapracticas.vista_academico_evaluador' doesn't exist
+2025-05-24 22:33:36 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error al validar tipo de usuario: Table 'sistemapracticas.vista_academico_evaluador' doesn't exist
+2025-05-24 22:33:40 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error al validar tipo de usuario: Table 'sistemapracticas.vista_academico_evaluador' doesn't exist

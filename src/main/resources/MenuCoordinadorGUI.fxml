@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.Pane?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="561.0" prefWidth="933.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button layoutX="191.0" layoutY="120.0" mnemonicParsing="false" text="Registrar Academico" />
+      <Button layoutX="191.0" layoutY="173.0" mnemonicParsing="false" text="Consultar Academico" />
+      <Button layoutX="189.0" layoutY="245.0" mnemonicParsing="false" text="Registrar Organizacion vinculada" />
+      <Button layoutX="189.0" layoutY="303.0" mnemonicParsing="false" text="Consultar organizacion vinculada" />
+      <Button layoutX="189.0" layoutY="363.0" mnemonicParsing="false" text="registrar proyecto" />
+      <Button layoutX="189.0" layoutY="416.0" mnemonicParsing="false" text="consultar lista de proyectos" />
+      <Button layoutX="542.0" layoutY="108.0" mnemonicParsing="false" text="habilitar evaluaciones" />
+      <Button layoutX="542.0" layoutY="173.0" mnemonicParsing="false" text="consultar estadisticas" />
+   </children>
+</Pane>

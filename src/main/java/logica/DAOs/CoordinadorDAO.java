@@ -133,4 +133,32 @@ public class CoordinadorDAO implements ICoordinadorDAO {
         return coordinador;
     }
 
+    public CoordinadorDTO buscarCoordinadorPorID(int idUsuario) throws SQLException, IOException {
+        CoordinadorDTO coordinador = new CoordinadorDTO(-1, -1, "N/A", "N/A", 0);
+
+        String consultaSQL = "SELECT * FROM vista_coordinadores WHERE idUsuario = ?";
+
+        try {
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaCoordinador = conexionBaseDeDatos.prepareStatement(consultaSQL);
+            sentenciaCoordinador.setInt(1, idUsuario);
+            resultadoCoordinador = sentenciaCoordinador.executeQuery();
+
+            if (resultadoCoordinador.next()) {
+                int numeroDePersonal = resultadoCoordinador.getInt("numeroDePersonal");
+                String nombre = resultadoCoordinador.getString("nombre");
+                String apellidos = resultadoCoordinador.getString("apellidos");
+                int estadoActivo = resultadoCoordinador.getInt("estadoActivo");
+
+                coordinador = new CoordinadorDTO(numeroDePersonal, idUsuario, nombre, apellidos, estadoActivo);
+            }
+        } finally {
+            if (sentenciaCoordinador != null) {
+                sentenciaCoordinador.close();
+            }
+        }
+
+        return coordinador;
+    }
+
 }

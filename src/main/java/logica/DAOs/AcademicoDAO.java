@@ -167,5 +167,33 @@ public class AcademicoDAO implements IAcademicoDAO {
 
         return academicos;
     }
+
+    public AcademicoDTO buscarAcademicoPorID(int idUsuario) throws SQLException, IOException {
+        AcademicoDTO academico = new AcademicoDTO(-1, -1, "N/A", "N/A", 0);
+
+        String consultaSQL = "SELECT * FROM vista_academico_usuario WHERE idUsuario = ?";
+
+        try {
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
+            consultaPreparada.setInt(1, idUsuario);
+            resultadoConsulta = consultaPreparada.executeQuery();
+
+            if (resultadoConsulta.next()) {
+                int numeroDePersonal = resultadoConsulta.getInt("numeroDePersonal");
+                String apellidos = resultadoConsulta.getString("apellidos");
+                String nombre = resultadoConsulta.getString("nombre");
+                int estadoActivo = resultadoConsulta.getInt("estadoActivo");
+
+                academico = new AcademicoDTO(numeroDePersonal, idUsuario, nombre, apellidos, estadoActivo);
+            }
+        } finally {
+            if (consultaPreparada != null) {
+                consultaPreparada.close();
+            }
+        }
+
+        return academico;
+    }
 }
 

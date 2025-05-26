@@ -102,7 +102,7 @@ public class AcademicoDAO implements IAcademicoDAO {
 
         AcademicoDTO academico = new AcademicoDTO(-1, -1, "N/A", "N/A", 0);
 
-        String consultaSQL = "SELECT * FROM vista_academico_usuario WHERE numeroDePersonal = ?";
+        String consultaSQL = "SELECT * FROM vista_academicos WHERE numeroDePersonal = ?";
 
         try {
 
@@ -137,7 +137,7 @@ public class AcademicoDAO implements IAcademicoDAO {
 
         List<AcademicoDTO> academicos = new ArrayList<>();
 
-        String consultaSQL = "SELECT * FROM vista_academico_usuario WHERE estadoActivo = 1";
+        String consultaSQL = "SELECT * FROM vista_academicos WHERE estadoActivo = 1";
 
         try {
 
@@ -171,7 +171,7 @@ public class AcademicoDAO implements IAcademicoDAO {
     public AcademicoDTO buscarAcademicoPorID(int idUsuario) throws SQLException, IOException {
         AcademicoDTO academico = new AcademicoDTO(-1, -1, "N/A", "N/A", 0);
 
-        String consultaSQL = "SELECT * FROM vista_academico_usuario WHERE idUsuario = ?";
+        String consultaSQL = "SELECT * FROM vista_academicos WHERE idUsuario = ?";
 
         try {
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();

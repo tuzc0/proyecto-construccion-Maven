@@ -137,7 +137,7 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
 
         List<AcademicoEvaluadorDTO> academicos = new ArrayList<>();
 
-        String consultaSQL = "SELECT * FROM vista_academicoevaluador_usuario WHERE estadoActivo = 1";
+        String consultaSQL = "SELECT * FROM vista_evaluadores WHERE estadoActivo = 1";
 
         try {
 

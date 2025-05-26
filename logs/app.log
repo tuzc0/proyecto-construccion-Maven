@@ -1532,3 +1532,5 @@ java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child 
 2025-05-25 17:33:01 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
 2025-05-25 20:41:31 [JavaFX Application Thread] ERROR GUI.ControladorEditarPerfilEstudianteGUI - Error al actualizar el perfil del estudiante: Column 'correoElectronico' cannot be null
 2025-05-25 20:45:17 [JavaFX Application Thread] ERROR GUI.ControladorEditarPerfilEstudianteGUI - Error al actualizar el perfil del estudiante: Column 'correoElectronico' cannot be null
+2025-05-25 22:06:28 [JavaFX Application Thread] INFO  GUI.ControladorHabilitarAutoevaluacionGUI - Criterio de autoevaluación actualizado correctamente.
+2025-05-25 22:06:30 [JavaFX Application Thread] INFO  GUI.ControladorHabilitarAutoevaluacionGUI - Criterio de autoevaluación eliminado correctamente.

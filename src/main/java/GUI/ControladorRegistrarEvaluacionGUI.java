@@ -55,6 +55,8 @@ public class ControladorRegistrarEvaluacionGUI {
 
     float calificacionFinal = 0.0f;
 
+    int numeroDePersonal = ControladorInicioDeSesionGUI.numeroDePersonal;
+
 
     public String matriculaEstudianteEvaluado = ControladorConsultarEstudiantesAEvaluarGUI.matriculaEstudianteSeleccionado;
 
@@ -169,7 +171,7 @@ public class ControladorRegistrarEvaluacionGUI {
         evaluacionDTO.setMatriculaEstudiante(matriculaEstudianteEvaluado);
         evaluacionDTO.setCalificacionFinal(0.0f);
         evaluacionDTO.setEstadoActivo(1);
-        evaluacionDTO.setNumeroDePersonal(12345);
+        evaluacionDTO.setNumeroDePersonal(numeroDePersonal);
         evaluacionDTO.setIDEvaluacion(0);
 
 
@@ -299,10 +301,16 @@ public class ControladorRegistrarEvaluacionGUI {
             evaluacionDTO.setMatriculaEstudiante(matriculaEstudianteEvaluado);
             evaluacionDTO.setCalificacionFinal(calificacionFinal);
             evaluacionDTO.setEstadoActivo(1);
-            evaluacionDTO.setNumeroDePersonal(12345);
+            evaluacionDTO.setNumeroDePersonal(numeroDePersonal);
             evaluacionDTO.setIDEvaluacion(idEvaluacionGenerada);
 
             boolean actualizado = evaluacionDAO.modificarEvaluacion(evaluacionDTO);
+
+            if (calificacionFinal < 0 || calificacionFinal > 10) {
+
+                utilidades.mostrarAlerta("Error", "Debe de calcular la calificacio primero", "porfavor calcule la calificacion final");
+                return;
+            }
 
             if (actualizado) {
 

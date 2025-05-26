@@ -127,7 +127,7 @@ public class ControladorInicioDeSesionGUI {
             EstudianteDTO estudiante = estudianteDAO.buscarEstudiantePorID(idUsuario);
             if (estudiante.getIdUsuario() != -1) {
 
-                utilidades.mostrarAlerta("Inicio de sesión exitoso", "Bienvenido Estudiante", "Has iniciado sesión como estudiante.");
+                utilidades.mostrarVentana("/MenuEstudianteGUI.fxml");
                 matricula = estudiante.getMatricula();
                 return;
             }
@@ -143,7 +143,7 @@ public class ControladorInicioDeSesionGUI {
             AcademicoEvaluadorDTO academicoEvaluador = academicoEvaluadorDAO.buscarAcademicoEvaluadorPorID(idUsuario);
             if (academicoEvaluador.getIdUsuario() != -1) {
 
-                utilidades.mostrarAlerta("Inicio de sesión exitoso", "Bienvenido Evaluador Académico", "Has iniciado sesión como evaluador académico.");
+                utilidades.mostrarVentana("/MenuAcademicoEvaluadorGUI.fxml");
                 numeroDePersonal = academicoEvaluador.getNumeroDePersonal();
                 return;
             }

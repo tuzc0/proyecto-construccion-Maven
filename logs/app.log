@@ -1521,3 +1521,14 @@ java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child 
 2025-05-24 22:31:59 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error al validar tipo de usuario: Table 'sistemapracticas.vista_academico_evaluador' doesn't exist
 2025-05-24 22:33:36 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error al validar tipo de usuario: Table 'sistemapracticas.vista_academico_evaluador' doesn't exist
 2025-05-24 22:33:40 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error al validar tipo de usuario: Table 'sistemapracticas.vista_academico_evaluador' doesn't exist
+2025-05-25 17:26:50 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-05-25 17:26:53 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-05-25 17:26:56 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-05-25 17:29:48 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-05-25 17:29:51 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-05-25 17:29:54 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-05-25 17:32:56 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-05-25 17:32:59 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-05-25 17:33:01 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-05-25 20:41:31 [JavaFX Application Thread] ERROR GUI.ControladorEditarPerfilEstudianteGUI - Error al actualizar el perfil del estudiante: Column 'correoElectronico' cannot be null
+2025-05-25 20:45:17 [JavaFX Application Thread] ERROR GUI.ControladorEditarPerfilEstudianteGUI - Error al actualizar el perfil del estudiante: Column 'correoElectronico' cannot be null

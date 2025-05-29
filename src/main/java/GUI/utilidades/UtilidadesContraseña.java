@@ -31,6 +31,26 @@ public class UtilidadesContraseña {
         actualizarIcono(iconoOjo, contraseñaVisible);
     }
 
+    @FXML
+    public void visibilidadUnicaContraseña (PasswordField campoContraseña, TextField campoContraseñaVisible,
+                                              ImageView iconoOjo) {
+        if (contraseñaVisible) {
+
+            campoContraseñaVisible.setVisible(false);
+            campoContraseña.setText(campoContraseñaVisible.getText());
+            campoContraseña.setVisible(true);
+            iconoOjo.setImage(new Image(getClass().getResource("/ojo-cerrado.png").toExternalForm()));
+        } else {
+
+            campoContraseña.setVisible(false);
+            campoContraseñaVisible.setText(campoContraseña.getText());
+            campoContraseñaVisible.setVisible(true);
+            iconoOjo.setImage(new Image(getClass().getResource("/ojo-abierto.png").toExternalForm()));
+        }
+        contraseñaVisible = !contraseñaVisible;
+    }
+
+
     public void actualizarIcono(ImageView iconoOjo, boolean contraseñaVisible) {
 
         String rutaIcono = contraseñaVisible ? "/ojo-abierto.png" : "/ojo-cerrado.png";

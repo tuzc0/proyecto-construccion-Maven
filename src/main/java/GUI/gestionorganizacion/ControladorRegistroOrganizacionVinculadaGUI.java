@@ -90,20 +90,21 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
 
             OrganizacionVinculadaDTO organizacionExistente = organizacionDAO.buscarOrganizacionPorCorreo(correoOrganizacion);
 
-            if (organizacionExistente.getCorreo() != ("N/A")) {
+            if (!organizacionExistente.getCorreo().equals("N/A")) {
                 utilidades.mostrarAlerta("Error de registro", "Correo ya registrado", "El correo electrónico ya está asociado a otra organización.");
                 return;
             }
 
             organizacionExistente = organizacionDAO.buscarOrganizacionPorTelefono(contactoOrganizacion);
 
-            if (organizacionExistente.getNumeroDeContacto() != ("N/A")) {
+            if (!organizacionExistente.getNumeroDeContacto().equals("N/A")) {
                 utilidades.mostrarAlerta("Error de registro", "Número de contacto ya registrado", "El número de contacto ya está asociado a otra organización.");
                 return;
             }
 
             idOrganizacion = organizacionDAO.crearNuevaOrganizacion(organizacionDTO);
             utilidades.mostrarAlerta("Registro exitoso", "Organización registrada", "La organización ha sido registrada exitosamente.");
+            registrarRepresentante();
             botonRegistrarRepresentante.setDisable(false);
 
         } catch (SQLException e) {
@@ -141,7 +142,7 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
     private void guardarOrganizacionYRepresentante() {
 
         registrarOrganizacion();
-        registrarRepresentante();
+
 
 
     }

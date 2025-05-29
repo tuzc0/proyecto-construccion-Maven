@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="624.0" prefWidth="892.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorHabilitarAutoevaluacionGUI">
+   <children>
+      <Label layoutX="307.0" layoutY="55.0" text="Habilitar autoevaluacion">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="fechaInicio" layoutX="432.0" layoutY="116.0" />
+      <Label layoutX="301.0" layoutY="118.0" text="Fecha de inicio:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tablaCriterios" layoutX="51.0" layoutY="168.0" prefHeight="359.0" prefWidth="794.0">
+        <columns>
+          <TableColumn fx:id="columnaNumeroCriterio" prefWidth="104.0000228881836" text="no. criterio" />
+          <TableColumn fx:id="columnaDescripcion" prefWidth="689.6000061035156" text="descripcion" />
+        </columns>
+      </TableView>
+      <Button layoutX="51.0" layoutY="560.0" mnemonicParsing="false" text="habilitar autoevaluacion" />
+      <Button fx:id="botonCancelar" layoutX="219.0" layoutY="560.0" mnemonicParsing="false" text="cancelar" />
+      <Button fx:id="botonAñadirCriterio" layoutX="517.0" layoutY="560.0" mnemonicParsing="false" onAction="#abrirVentanaRegistrarCriterioAutoevaluacionGUI" text="añadir criterio" />
+      <Button fx:id="botonEliminarCriterio" layoutX="633.0" layoutY="560.0" mnemonicParsing="false" onAction="#eliminarCriterio" text="eliminar criterio" />
+      <Button fx:id="botonEditarCriterio" layoutX="758.0" layoutY="560.0" mnemonicParsing="false" onAction="#editarCriterios" text="editar criterio" />
+   </children>
+</Pane>

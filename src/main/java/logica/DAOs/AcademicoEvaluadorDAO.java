@@ -137,7 +137,7 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
 
         List<AcademicoEvaluadorDTO> academicos = new ArrayList<>();
 
-        String consultaSQL = "SELECT * FROM vista_academicoevaluador_usuario WHERE estadoActivo = 1";
+        String consultaSQL = "SELECT * FROM vista_evaluadores WHERE estadoActivo = 1";
 
         try {
 
@@ -166,5 +166,33 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
         }
 
         return academicos;
+    }
+
+    public AcademicoEvaluadorDTO buscarAcademicoEvaluadorPorID(int idUsuario) throws SQLException, IOException {
+        AcademicoEvaluadorDTO academicoEvaluador = new AcademicoEvaluadorDTO(-1, -1, "N/A", "N/A", 0);
+
+        String consultaSQL = "SELECT * FROM vista_evaluadores WHERE idUsuario = ?";
+
+        try {
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
+            consultaPreparada.setInt(1, idUsuario);
+            resultadoConsulta = consultaPreparada.executeQuery();
+
+            if (resultadoConsulta.next()) {
+                int numeroDePersonal = resultadoConsulta.getInt("numeroDePersonal");
+                String apellidos = resultadoConsulta.getString("apellidos");
+                String nombre = resultadoConsulta.getString("nombre");
+                int estadoActivo = resultadoConsulta.getInt("estadoActivo");
+
+                academicoEvaluador = new AcademicoEvaluadorDTO(numeroDePersonal, idUsuario, nombre, apellidos, estadoActivo);
+            }
+        } finally {
+            if (consultaPreparada != null) {
+                consultaPreparada.close();
+            }
+        }
+
+        return academicoEvaluador;
     }
 }

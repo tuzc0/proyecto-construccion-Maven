@@ -20,7 +20,7 @@ public class OrganizacionVinculadaDAO implements IOvDAO {
     public int crearNuevaOrganizacion(OrganizacionVinculadaDTO organizacionVinculada) throws SQLException, IOException {
 
         int idOrganizacionGenerado = -1;
-        String insertarSQLOV = "INSERT INTO ov(nombre, correo, numeroContacto, direccion, estadoActivo) VALUES(?, ?, ?, ?, ?)";
+        String insertarSQLOV = "INSERT INTO organizacionvinculada(nombre, correo, numeroContacto, direccion, estadoActivo) VALUES(?, ?, ?, ?, ?)";
 
         try {
 
@@ -53,7 +53,7 @@ public class OrganizacionVinculadaDAO implements IOvDAO {
     public boolean eliminarOrganizacionPorID(int idOrganizacionVinculada) throws SQLException, IOException {
 
         boolean organizacionVinculadaEliminada = false;
-        String eliminarSQLOrganizacion = "UPDATE ov SET estadoActivo = 0 WHERE idOV = ?";
+        String eliminarSQLOrganizacion = "UPDATE organizacionvinculada SET estadoActivo = 0 WHERE idOV = ?";
 
         try {
 
@@ -79,7 +79,7 @@ public class OrganizacionVinculadaDAO implements IOvDAO {
     public boolean modificarOrganizacion(OrganizacionVinculadaDTO organizacionVinculada) throws SQLException, IOException {
 
         boolean organizacionModificada = false;
-        String modificarSQLOV = "UPDATE ov SET nombre = ?, correo = ?, numeroContacto = ?, direccion = ? WHERE idOV = ?";
+        String modificarSQLOV = "UPDATE organizacionvinculada SET nombre = ?, correo = ?, numeroContacto = ?, direccion = ? WHERE idOV = ?";
 
         try {
 
@@ -109,7 +109,7 @@ public class OrganizacionVinculadaDAO implements IOvDAO {
     public OrganizacionVinculadaDTO buscarOrganizacionPorID(int idOrganizacion) throws SQLException, IOException {
 
         OrganizacionVinculadaDTO organizacionVinculada = new OrganizacionVinculadaDTO(-1, "N/A", "N/A", "N/A", "N/A", 0);
-        String buscarSQLOrganizacion = "SELECT * FROM ov WHERE idOV = ?";
+        String buscarSQLOrganizacion = "SELECT * FROM organizacionvinculada WHERE idOV = ?";
 
         try {
 
@@ -142,7 +142,7 @@ public class OrganizacionVinculadaDAO implements IOvDAO {
     public OrganizacionVinculadaDTO buscarOrganizacionPorCorreo(String correo) throws SQLException, IOException {
 
         OrganizacionVinculadaDTO organizacionVinculada = new OrganizacionVinculadaDTO(-1, "N/A", "N/A", "N/A", "N/A", 0);
-        String buscarSQLOrganizacion = "SELECT * FROM ov WHERE correo = ?";
+        String buscarSQLOrganizacion = "SELECT * FROM organizacionvinculada WHERE correo = ?";
 
         try {
 
@@ -174,7 +174,7 @@ public class OrganizacionVinculadaDAO implements IOvDAO {
     public OrganizacionVinculadaDTO buscarOrganizacionPorTelefono(String numeroContacto) throws SQLException, IOException {
 
         OrganizacionVinculadaDTO organizacionVinculada = new OrganizacionVinculadaDTO(-1, "N/A", "N/A", "N/A", "N/A", 0);
-        String buscarSQLOrganizacion = "SELECT * FROM ov WHERE numeroContacto = ?";
+        String buscarSQLOrganizacion = "SELECT * FROM organizacionvinculada WHERE numeroContacto = ?";
 
         try {
 
@@ -206,7 +206,7 @@ public class OrganizacionVinculadaDAO implements IOvDAO {
     public List<OrganizacionVinculadaDTO> obtenerTodasLasOrganizaciones() throws SQLException, IOException {
 
         List<OrganizacionVinculadaDTO> listaOrganizaciones = new ArrayList<>();
-        String consultaSQL = "SELECT * FROM ov WHERE estadoActivo = 1";
+        String consultaSQL = "SELECT * FROM organizacionvinculada WHERE estadoActivo = 1";
 
         try {
 

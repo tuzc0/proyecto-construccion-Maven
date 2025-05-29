@@ -2,13 +2,14 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorInicioDeSesionGUI">
    <children>
       <Label layoutX="170.0" layoutY="29.0" text="Inicio de sesion">
          <font>
@@ -25,17 +26,22 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <TextField layoutX="58.0" layoutY="147.0" prefHeight="25.0" prefWidth="495.0" />
-      <TextField layoutX="58.0" layoutY="241.0" prefHeight="25.0" prefWidth="495.0" />
-      <Button layoutX="58.0" layoutY="284.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="35.0">
+      <TextField fx:id="campoCorreo" layoutX="58.0" layoutY="147.0" prefHeight="25.0" prefWidth="495.0" />
+      <Button layoutX="58.0" layoutY="284.0" mnemonicParsing="false" onAction="#alternarVisibilidadContrasena" prefHeight="25.0" prefWidth="35.0">
          <graphic>
-            <ImageView fitHeight="25.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="iconoOjo" fitHeight="25.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" />
          </graphic>
       </Button>
-      <Button layoutX="238.0" layoutY="323.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="136.0" text="iniciar sesion">
+      <Button layoutX="238.0" layoutY="323.0" mnemonicParsing="false" onAction="#iniciarSesion" prefHeight="34.0" prefWidth="136.0" text="iniciar sesion">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
+      <StackPane layoutX="59.0" layoutY="240.0" prefHeight="25.0" prefWidth="495.0">
+         <children>
+            <TextField fx:id="campoContraseña" prefHeight="25.0" prefWidth="495.0" visible="false" />
+            <PasswordField fx:id="contraseñaCifrada" />
+         </children>
+      </StackPane>
    </children>
 </Pane>

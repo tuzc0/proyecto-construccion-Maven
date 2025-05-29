@@ -4,10 +4,7 @@ import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.ProyectoDTO;
 import logica.interfaces.IProyectoDAO;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class ProyectoDAO implements IProyectoDAO {
 
@@ -15,44 +12,62 @@ public class ProyectoDAO implements IProyectoDAO {
     PreparedStatement sentenciaProyecto = null;
     ResultSet resultadoProyecto;
 
-    public boolean crearNuevoProyecto(ProyectoDTO proyecto) throws SQLException, IOException {
+    public int crearNuevoProyecto(ProyectoDTO proyectoDTO) throws SQLException, IOException {
 
-        String insertarSQLProyecto = "INSERT INTO proyecto VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        boolean proyectoInsertado = false;
+        String sentenciaSQL = """
+        INSERT INTO proyecto (
+            nombre, objetivogeneral, objetivosinmediatos, 
+            objetivosmediatos, metodologia, recursos,
+            actividades, responsabilidades, duracion,
+            idCronograma, estadoActivo, idRepresentante,
+            descripciongeneral, usuariosDirectos, usuariosIndirectos
+        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""";
+
+        int idGenerado = -1;
 
         try {
 
-            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-            sentenciaProyecto = conexionBaseDeDatos.prepareStatement(insertarSQLProyecto);
-            sentenciaProyecto.setInt(1, proyecto.getIdProyecto());
-            sentenciaProyecto.setString(2, proyecto.getNombre());
-            sentenciaProyecto.setString(3, proyecto.getObjetivoGeneral());
-            sentenciaProyecto.setString(4, proyecto.getObjetivosInmediatos());
-            sentenciaProyecto.setString(5, proyecto.getObjetivosMediatos());
-            sentenciaProyecto.setString(6, proyecto.getMetodologia());
-            sentenciaProyecto.setString(7, proyecto.getRecursos());
-            sentenciaProyecto.setString(8, proyecto.getActividades());
-            sentenciaProyecto.setString(9, proyecto.getResponsabilidades());
-            sentenciaProyecto.setString(10, proyecto.getDuracion());
-            sentenciaProyecto.setString(11, proyecto.getDiasYHorarios());
-            sentenciaProyecto.setInt(12, proyecto.getIdCronograma());
-            sentenciaProyecto.setInt(13, proyecto.getEstadoActivo());
-            sentenciaProyecto.setInt(14, proyecto.getIdRepresentante());
-            sentenciaProyecto.setString(15, proyecto.getDescripcion());
+            Connection conn = new ConexionBaseDeDatos().getConnection();
+            sentenciaProyecto = conn.prepareStatement(sentenciaSQL, Statement.RETURN_GENERATED_KEYS);
 
-            if (sentenciaProyecto.executeUpdate() > 0) {
-                proyectoInsertado = true;
+            sentenciaProyecto.setString(1, proyectoDTO.getNombre());
+            sentenciaProyecto.setString(2, proyectoDTO.getObjetivoGeneral());
+            sentenciaProyecto.setString(3, proyectoDTO.getObjetivosInmediatos());
+            sentenciaProyecto.setString(4, proyectoDTO.getObjetivosMediatos());
+            sentenciaProyecto.setString(5, proyectoDTO.getMetodologia());
+            sentenciaProyecto.setString(6, proyectoDTO.getRecursos());
+            sentenciaProyecto.setString(7, proyectoDTO.getActividades());
+            sentenciaProyecto.setString(8, proyectoDTO.getResponsabilidades());
+            sentenciaProyecto.setString(9, proyectoDTO.getDuracion());
+
+            if (proyectoDTO.getIdCronograma() > 0) {
+                sentenciaProyecto.setInt(10, proyectoDTO.getIdCronograma());
+            } else {
+                sentenciaProyecto.setNull(10, Types.INTEGER);
+            }
+
+            sentenciaProyecto.setInt(11, proyectoDTO.getEstadoActivo());
+            sentenciaProyecto.setInt(12, proyectoDTO.getIdRepresentante());
+            sentenciaProyecto.setString(13, proyectoDTO.getDescripcion());
+            sentenciaProyecto.setInt(14, proyectoDTO.getUsuariosDirectos());
+            sentenciaProyecto.setInt(15, proyectoDTO.getUsuariosIndirectos());
+            sentenciaProyecto.executeUpdate();
+
+            ResultSet rs = sentenciaProyecto.getGeneratedKeys();
+
+            if (rs.next()) {
+
+                idGenerado = rs.getInt(1);
             }
 
         } finally {
 
             if (sentenciaProyecto != null) {
-
                 sentenciaProyecto.close();
             }
         }
 
-        return proyectoInsertado;
+        return idGenerado;
     }
 
     public boolean eliminarProyectoPorID(int idProyecto) throws SQLException, IOException {
@@ -86,7 +101,8 @@ public class ProyectoDAO implements IProyectoDAO {
 
         String modificarSQLProyecto = "UPDATE proyecto SET nombre = ?, objetivogeneral = ?, " +
                 "objetivosinmediatos = ?, objetivosmediatos = ?, metodologia = ?, recursos = ?, actividades = ?, " +
-                "diasyhorarios = ?, idCronograma = ?, estadoActivo = ?, idRepresentante = ?, descripciongeneral = ? WHERE IDProyecto = ?";
+                "diasyhorarios = ?, estadoActivo = ?, idRepresentante = ?, descripciongeneral = ? " +
+                "usuariosDirectos = ?, usuariosIndirectos = ? WHERE IDProyecto = ?";
         boolean proyectoModificado = false;
 
         try {
@@ -101,11 +117,11 @@ public class ProyectoDAO implements IProyectoDAO {
             sentenciaProyecto.setString(6, proyecto.getRecursos());
             sentenciaProyecto.setString(7, proyecto.getActividades());
             sentenciaProyecto.setString(8, proyecto.getResponsabilidades());
-            sentenciaProyecto.setString(9, proyecto.getDiasYHorarios());
-            sentenciaProyecto.setInt(10, proyecto.getIdCronograma());
-            sentenciaProyecto.setInt(11, proyecto.getIdRepresentante());
-            sentenciaProyecto.setString(12, proyecto.getDescripcion());
-            sentenciaProyecto.setInt(12, proyecto.getIdProyecto());
+            sentenciaProyecto.setInt(9, proyecto.getIdRepresentante());
+            sentenciaProyecto.setString(10, proyecto.getDescripcion());
+            sentenciaProyecto.setInt(11, proyecto.getUsuariosDirectos());
+            sentenciaProyecto.setInt(12, proyecto.getUsuariosIndirectos());
+            sentenciaProyecto.setInt(13, proyecto.getIdProyecto());
 
             if (sentenciaProyecto.executeUpdate() > 0) {
                 proyectoModificado = true;
@@ -122,12 +138,40 @@ public class ProyectoDAO implements IProyectoDAO {
         return proyectoModificado;
     }
 
+    public boolean adjuntarCronogramaProyecto(int idProyecto, int idCronograma) throws SQLException, IOException {
+
+        String modificarSQLProyecto = "UPDATE proyecto SET idCronograma = ? WHERE IDProyecto = ?";
+        boolean cronogramaAdjuntado = false;
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaProyecto = conexionBaseDeDatos.prepareStatement(modificarSQLProyecto);
+            sentenciaProyecto.setInt(1, idCronograma);
+            sentenciaProyecto.setInt(2, idProyecto);
+
+            if (sentenciaProyecto.executeUpdate() > 0) {
+                cronogramaAdjuntado = true;
+            }
+
+        } finally {
+
+            if (sentenciaProyecto != null) {
+
+                sentenciaProyecto.close();
+            }
+        }
+
+        return cronogramaAdjuntado;
+    }
+
     public ProyectoDTO buscarProyectoPorID(int idProyecto) throws SQLException, IOException {
 
         String consultaSQLProyecto = "SELECT * FROM proyecto WHERE IDProyecto = ?";
         ProyectoDTO proyecto = new ProyectoDTO(-1, null, null,
-                null, null, null, null, null,
-                null, null, null, -1, -1, -1, null);
+                null, null, null, null,
+                null, null, null, -1, -1,
+                -1, null, -1, -1);
 
         try {
 
@@ -148,11 +192,12 @@ public class ProyectoDAO implements IProyectoDAO {
                 proyecto.setActividades(resultadoProyecto.getString("actividades"));
                 proyecto.setResponsabilidades(resultadoProyecto.getString("responsabilidades"));
                 proyecto.setDuracion(resultadoProyecto.getString("duracion"));
-                proyecto.setDiasYHorarios(resultadoProyecto.getString("diasyhorarios"));
                 proyecto.setIdCronograma(resultadoProyecto.getInt("idCronograma"));
                 proyecto.setEstadoActivo(resultadoProyecto.getInt("estadoActivo"));
                 proyecto.setIdRepresentante(resultadoProyecto.getInt("idRepresentante"));
                 proyecto.setDescripcion(resultadoProyecto.getString("descripciongeneral"));
+                proyecto.setUsuariosDirectos(resultadoProyecto.getInt("usuariosDirectos"));
+                proyecto.setUsuariosIndirectos(resultadoProyecto.getInt("usuariosIndirectos"));
             }
 
         } finally {

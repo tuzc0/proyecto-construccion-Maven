@@ -4,6 +4,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
+import java.util.regex.Pattern;
+
 public class VerificicacionGeneral {
 
     public void contadorCaracteresTextArea(TextArea textoArea, Label contadorCaracteres, int numeroMaximoDeCaracteres) {
@@ -28,5 +30,10 @@ public class VerificicacionGeneral {
         });
 
         contadorCaracteres.setText("0/" + numeroDeCaracteresMaximos);
+    }
+
+    public static boolean validar(String campo, Pattern patron) {
+
+        return patron.matcher(campo).matches();
     }
 }

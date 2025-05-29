@@ -8,22 +8,27 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
+import logica.DAOs.AcademicoDAO;
 import logica.DAOs.AcademicoEvaluadorDAO;
 import logica.DAOs.CuentaDAO;
 import logica.DAOs.UsuarioDAO;
+import logica.DTOs.AcademicoDTO;
 import logica.DTOs.AcademicoEvaluadorDTO;
 import logica.DTOs.CuentaDTO;
 import logica.DTOs.UsuarioDTO;
 import logica.VerificacionUsuario;
+import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ControladorGestorAcademicoEvaluadorGUI {
 
-    private static final Logger LOGGER = LogManager.getLogger(ControladorRegistroAcademicoGUI.class);
+    private static final Logger LOGGER = LogManager.getLogger(ControladorRegistroAcademicoEvaluadorGUI.class);
     private Utilidades UTILIDADES = new Utilidades();
 
     @FXML private TextField campoNumeroDePersonal;
@@ -41,6 +46,10 @@ public class ControladorGestorAcademicoEvaluadorGUI {
     @FXML private TextField campoApellidoEditable;
     @FXML private TextField campoNumeroDePersonalEditable;
     @FXML private TextField campoCorreoEditable;
+    @FXML private Label contadorNombre;
+    @FXML private Label contadorApellidos;
+    @FXML private Label contadorNumeroPersonal;
+    @FXML private Label contadorCorreo;
     @FXML private Button botonEditar;
     @FXML private Button botonGuardar;
     @FXML private Button botonCancelar;
@@ -55,6 +64,17 @@ public class ControladorGestorAcademicoEvaluadorGUI {
     @FXML
     public void initialize() {
 
+        VerificicacionGeneral verficacionGeneral = new VerificicacionGeneral();
+
+        verficacionGeneral.contadorCaracteresTextField(
+                campoNombreEditable, contadorNombre, 50);
+        verficacionGeneral.contadorCaracteresTextField(
+                campoApellidoEditable, contadorApellidos, 50);
+        verficacionGeneral.contadorCaracteresTextField(
+                campoNumeroDePersonalEditable, contadorNumeroPersonal, 5);
+        verficacionGeneral.contadorCaracteresTextField(
+                campoCorreoEditable, contadorCorreo, 100);
+
         botonBuscar.setCursor(Cursor.HAND);
         botonEliminarSeleccionado.setCursor(Cursor.HAND);
         botonEditar.setCursor(Cursor.HAND);
@@ -66,7 +86,8 @@ public class ControladorGestorAcademicoEvaluadorGUI {
         botonRegistrarAcademico.setCursor(Cursor.HAND);
 
         columnaNumeroDePersonal.setCellValueFactory(cellData ->
-                new javafx.beans.property.SimpleStringProperty(String.valueOf(cellData.getValue().getNumeroDePersonal())));
+                new javafx.beans.property.SimpleStringProperty(
+                        String.valueOf(cellData.getValue().getNumeroDePersonal())));
 
         columnaNombres.setCellValueFactory(cellData ->
                 new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNombre()));
@@ -126,17 +147,27 @@ public class ControladorGestorAcademicoEvaluadorGUI {
 
         try {
 
-            AcademicoEvaluadorDTO academicoDTO = academicoDAO.buscarAcademicoEvaluadorPorNumeroDePersonal(Integer.parseInt(numeroDePersonal));
+            AcademicoEvaluadorDTO academicoEvaluadorDTO = academicoDAO.buscarAcademicoEvaluadorPorNumeroDePersonal(Integer.parseInt(numeroDePersonal));
 
-            if (academicoDTO.getIdUsuario() != -1) {
+            if (academicoEvaluadorDTO.getIdUsuario() != -1) {
 
-                etiquetaNombreEncontrado.setText(academicoDTO.getNombre());
-                etiquetaApellidoEncontrado.setText(academicoDTO.getApellido());
-                etiquetaNumeroDePersonalEncontrado.setText(numeroDePersonal);
+                if (academicoEvaluadorDTO.getEstado() != 0) {
 
-                idAcademico = academicoDTO.getIdUsuario();
-                CuentaDTO cuenta = cuentaDAO.buscarCuentaPorID(idAcademico);
-                etiquetaCorreoEncontrado.setText(cuenta.getCorreoElectronico());
+                    etiquetaNombreEncontrado.setText(academicoEvaluadorDTO.getNombre());
+                    etiquetaApellidoEncontrado.setText(academicoEvaluadorDTO.getApellido());
+                    etiquetaNumeroDePersonalEncontrado.setText(numeroDePersonal);
+
+                    idAcademico = academicoEvaluadorDTO.getIdUsuario();
+                    CuentaDTO cuenta = cuentaDAO.buscarCuentaPorID(idAcademico);
+                    etiquetaCorreoEncontrado.setText(cuenta.getCorreoElectronico());
+
+                } else {
+
+                    UTILIDADES.mostrarAlerta(
+                            "Académico no activo",
+                            "El académico no se encuentra activo en estos momentos.",
+                            "Verifique el estado del académico dentro del sistema.");
+                }
 
             } else {
 
@@ -178,23 +209,24 @@ public class ControladorGestorAcademicoEvaluadorGUI {
             return;
         }
 
-        AcademicoEvaluadorDAO academicoDAO = new AcademicoEvaluadorDAO();
+        AcademicoEvaluadorDAO academicoEvaluadorDAO = new AcademicoEvaluadorDAO();
         CuentaDAO cuentaDAO = new CuentaDAO();
 
         try {
 
-            AcademicoEvaluadorDTO academicoDTO =
-                    academicoDAO.buscarAcademicoEvaluadorPorNumeroDePersonal(academicoSeleccionado.getNumeroDePersonal());
+            AcademicoEvaluadorDTO academicoEvaluadorDTO =
+                    academicoEvaluadorDAO.buscarAcademicoEvaluadorPorNumeroDePersonal(
+                            academicoSeleccionado.getNumeroDePersonal());
 
-            if (academicoDTO.getIdUsuario() != -1) {
+            if (academicoEvaluadorDTO.getIdUsuario() != -1) {
 
-                etiquetaNombreEncontrado.setText(academicoDTO.getNombre());
-                etiquetaApellidoEncontrado.setText(academicoDTO.getApellido());
-                etiquetaNumeroDePersonalEncontrado.setText(String.valueOf(academicoDTO.getNumeroDePersonal()));
+                etiquetaNombreEncontrado.setText(academicoEvaluadorDTO.getNombre());
+                etiquetaApellidoEncontrado.setText(academicoEvaluadorDTO.getApellido());
+                etiquetaNumeroDePersonalEncontrado.setText(String.valueOf(academicoEvaluadorDTO.getNumeroDePersonal()));
 
-                idAcademico = academicoDTO.getIdUsuario();
-                CuentaDTO cuenta = cuentaDAO.buscarCuentaPorID(idAcademico);
-                etiquetaCorreoEncontrado.setText(cuenta.getCorreoElectronico());
+                idAcademico = academicoEvaluadorDTO.getIdUsuario();
+                CuentaDTO cuentaDTO = cuentaDAO.buscarCuentaPorID(idAcademico);
+                etiquetaCorreoEncontrado.setText(cuentaDTO.getCorreoElectronico());
             }
 
         } catch (SQLException sqlEx) {
@@ -203,12 +235,14 @@ public class ControladorGestorAcademicoEvaluadorGUI {
             UTILIDADES.mostrarAlerta(
                     "Error del sistema",
                     "No se pudieron cargar los datos del académico.",
-                    "Es posible que haya un problema con el sistema. Intenta nuevamente más tarde o contacta al administrador."
+                    "Es posible que haya un problema con el sistema. " +
+                            "Intenta nuevamente más tarde o contacta al administrador."
             );
 
         } catch (IOException ioEx) {
 
-            LOGGER.error("Error de entrada/salida al mostrar detalles del académico: " + ioEx.getMessage());
+            LOGGER.error("Error de entrada/salida al mostrar detalles del académico: " +
+                    ioEx.getMessage());
             UTILIDADES.mostrarAlerta(
                     "Error de conexión",
                     "No fue posible recuperar los detalles del académico.",
@@ -218,67 +252,43 @@ public class ControladorGestorAcademicoEvaluadorGUI {
     }
 
     @FXML
-    private void abrirVentanaRegistrarAcademico() {
+    private void abrirVentanaRegistrarAcademicoEvaluador() {
 
+        UTILIDADES.abrirVentana(
+                "/RegistroAcademicoEvaluadorGUI.fxml",
+                "Registro de Académico Evaluador",
+                (Stage) botonRegistrarAcademico.getScene().getWindow()
+        );
+        cargarAcademicos();
     }
 
-    @FXML
-    private void eliminarAcademico() {
+    private boolean eliminarAcademico(int numeroDePersonal) {
 
-        String numeroDePersonal = etiquetaNumeroDePersonalEncontrado.getText().trim();
-
-        if (numeroDePersonal.isEmpty()) {
-
-            UTILIDADES.mostrarAlerta(
-                    "Advertencia",
-                    "No se ha seleccionado un académico.",
-                    "Por favor, selecciona un académico desde la tabla antes de intentar eliminarlo."
-            );
-            return;
-        }
-
-        AcademicoEvaluadorDAO academicoDAO = new AcademicoEvaluadorDAO();
+        AcademicoDAO academicoDAO = new AcademicoDAO();
+        boolean estadoEliminacion = false;
 
         try {
 
-            boolean academicoEliminado = academicoDAO.eliminarAcademicoEvaluadorPorNumeroDePersonal(Integer.parseInt(numeroDePersonal));
+            boolean academicoEliminado = academicoDAO.
+                    eliminarAcademicoPorNumeroDePersonal(numeroDePersonal);
 
             if (academicoEliminado) {
-
-                UTILIDADES.mostrarConfirmacion(
-                        "Éxito",
-                        "Académico eliminado correctamente.",
-                        "La información ha sido actualizada correctamente."
-                );
-                cargarAcademicos();
-
+                estadoEliminacion = true;
             } else {
-
-                UTILIDADES.mostrarAlerta(
-                        "Operación fallida",
-                        "No fue posible eliminar al académico.",
-                        "Es posible que el número de personal no exista o haya ocurrido un error inesperado."
-                );
+                LOGGER.warn("No se pudo eliminar al académico con número de personal: " + numeroDePersonal);
             }
 
         } catch (SQLException sqlEx) {
 
-        LOGGER.error("Error SQL al eliminar al académico: " + sqlEx.getMessage());
-        UTILIDADES.mostrarAlerta(
-                "Error del sistema.",
-                "No se pudo eliminar al académico.",
-                "Contacte al administrador."
-        );
+            LOGGER.error("Error SQL al eliminar al académico: " + sqlEx.getMessage());
 
         } catch (IOException ioEx) {
 
-            LOGGER.error("Error de entrada/salida al eliminar al académico: " + ioEx.getMessage());
-            UTILIDADES.mostrarAlerta(
-                "Error de conexión",
-                "No se pudo completar la eliminación.",
-                "Revise su conexión a internet o inténtelo nuevamente más tarde."
-            );
+            LOGGER.error("Error de entrada/salida al eliminar al académico: " +
+                    ioEx.getMessage());
         }
+
+        return estadoEliminacion;
     }
 
     @FXML
@@ -292,7 +302,8 @@ public class ControladorGestorAcademicoEvaluadorGUI {
         botonEliminarAcademico.setDisable(true);
         botonRegistrarAcademico.setDisable(true);
 
-        tablaAcademicos.getSelectionModel().getSelectedItems().addListener((ListChangeListener<AcademicoEvaluadorDTO>) cambioSeleccion -> {
+        tablaAcademicos.getSelectionModel().getSelectedItems().addListener((ListChangeListener<AcademicoEvaluadorDTO>)
+                cambioSeleccion -> {
 
             int cantidadSeleccionados = tablaAcademicos.getSelectionModel().getSelectedItems().size();
 
@@ -310,73 +321,65 @@ public class ControladorGestorAcademicoEvaluadorGUI {
     @FXML
     private void eliminarAcademicoSeleccionado() {
 
-        ObservableList<AcademicoEvaluadorDTO> academicosSeleccionados = tablaAcademicos.getSelectionModel().getSelectedItems();
+        ObservableList<AcademicoEvaluadorDTO> academicosSeleccionados =
+                tablaAcademicos.getSelectionModel().getSelectedItems();
 
         if (academicosSeleccionados == null || academicosSeleccionados.isEmpty()) {
 
             UTILIDADES.mostrarAlerta(
                     "Error",
                     "No se han seleccionado académicos para eliminar.",
-                    "Por favor, seleccione uno o más académicos en la tabla antes de intentar eliminar."
-            );
+                    "Por favor, seleccione uno o más académicos en la tabla antes de intentar eliminar.");
             return;
         }
 
-        boolean errorAlEliminar = false;
-        AcademicoEvaluadorDAO academicoDAO = new AcademicoEvaluadorDAO();
+        List<AcademicoEvaluadorDTO> copiaAcademicosDTO = new ArrayList<>(academicosSeleccionados);
 
-        try {
+        UTILIDADES.mostrarAlertaConfirmacion(
+                "Confirmar eliminación",
+                "¿Está seguro que desea eliminar los académicos seleccionados?",
+                "Se eliminarán " + academicosSeleccionados.size() + " académicos. Esta acción no se puede deshacer.",
+                () -> {
 
-            for (AcademicoEvaluadorDTO academicoSeleccionado : academicosSeleccionados) {
+                    boolean errorAlEliminar = false;
 
-                boolean eliminado = academicoDAO.eliminarAcademicoEvaluadorPorNumeroDePersonal(academicoSeleccionado.getNumeroDePersonal());
+                    for (AcademicoEvaluadorDTO academicoSeleccionado : academicosSeleccionados) {
 
-                if (!eliminado) {
+                        if (!eliminarAcademico(academicoSeleccionado.getNumeroDePersonal())) {
+                            errorAlEliminar = true;
+                        }
+                    }
 
-                    errorAlEliminar = true;
+                    if (errorAlEliminar) {
+
+                        UTILIDADES.mostrarAlerta(
+                                "Error",
+                                "No fue posible eliminar algunos de los académicos seleccionados.",
+                                "Intentelo más tarde o contacte al administrador.");
+
+                    } else {
+                        UTILIDADES.mostrarAlerta(
+                                "Éxito",
+                                "Los académicos seleccionados han sido eliminados correctamente.",
+                                "");
+                    }
+
+                    cargarAcademicos();
+                    eliminarAcademicosSeleccionadoConcluido();
+                },
+                () -> {
+
+                    tablaAcademicos.getSelectionModel().clearSelection();
+                    for (AcademicoEvaluadorDTO academicoDTO : copiaAcademicosDTO) {
+                        tablaAcademicos.getSelectionModel().select(academicoDTO);
+                    }
+
+                    UTILIDADES.mostrarAlerta(
+                            "Operación cancelada",
+                            "La eliminación fue cancelada",
+                            "Los académicos no han sido eliminados.");
                 }
-            }
-
-        } catch (SQLException e) {
-
-            LOGGER.error("Error de base de datos al eliminar académico: " + e.getMessage());
-            UTILIDADES.mostrarAlerta(
-                "Error del sistema",
-                "Ocurrió un problema al eliminar los académicos seleccionados.",
-                "Por favor, inténtelo nuevamente más tarde o contacte al administrador."
-            );
-            errorAlEliminar = true;
-
-        } catch (IOException e) {
-
-            LOGGER.error("Error de entrada/salida al eliminar académico: " + e.getMessage());
-            UTILIDADES.mostrarAlerta(
-                "Error de Sistema",
-                "No se pudo completar la operación debido a un error interno.",
-                "Por favor, inténtelo nuevamente más tarde."
-            );
-            errorAlEliminar = true;
-        }
-
-        if (errorAlEliminar) {
-
-            UTILIDADES.mostrarAlerta(
-                    "Error",
-                    "No fue posible eliminar algunos de los académicos seleccionados.",
-                    "Revise que los académicos no estén siendo usados en otros registros y vuelva a intentarlo."
-            );
-
-        } else {
-
-            UTILIDADES.mostrarAlerta(
-                    "Éxito",
-                    "Los académicos seleccionados han sido eliminados correctamente.",
-                    ""
-            );
-        }
-
-        cargarAcademicos();
-        eliminarAcademicosSeleccionadoConcluido();
+        );
     }
 
     private void eliminarAcademicosSeleccionadoConcluido() {
@@ -388,6 +391,11 @@ public class ControladorGestorAcademicoEvaluadorGUI {
         botonEditar.setDisable(false);
         botonEliminarAcademico.setDisable(false);
         botonRegistrarAcademico.setDisable(false);
+
+        contadorNombre.setDisable(false);
+        contadorApellidos.setDisable(false);
+        contadorNumeroPersonal.setDisable(false);
+        contadorCorreo.setDisable(false);
 
         tablaAcademicos.getSelectionModel().clearSelection();
     }
@@ -425,6 +433,11 @@ public class ControladorGestorAcademicoEvaluadorGUI {
         etiquetaNumeroDePersonalEncontrado.setVisible(false);
         etiquetaCorreoEncontrado.setVisible(false);
 
+        contadorNombre.setVisible(true);
+        contadorApellidos.setVisible(true);
+        contadorNumeroPersonal.setVisible(true);
+        contadorCorreo.setVisible(true);
+
         botonGuardar.setVisible(true);
         botonCancelar.setVisible(true);
         botonSeleccionarAcademicos.setDisable(true);
@@ -448,9 +461,15 @@ public class ControladorGestorAcademicoEvaluadorGUI {
         etiquetaNumeroDePersonalEncontrado.setVisible(true);
         etiquetaCorreoEncontrado.setVisible(true);
 
+        contadorNombre.setVisible(false);
+        contadorApellidos.setVisible(false);
+        contadorNumeroPersonal.setVisible(false);
+        contadorCorreo.setVisible(false);
+
         botonGuardar.setVisible(false);
         botonCancelar.setVisible(false);
         botonSeleccionarAcademicos.setDisable(false);
+        botonBuscar.setDisable(false);
 
         botonEditar.setVisible(true);
         botonEliminarAcademico.setVisible(true);
@@ -544,7 +563,7 @@ public class ControladorGestorAcademicoEvaluadorGUI {
             if (usuarioModificado && academicoModificado && cuentaModificada) {
 
                 LOGGER.info("El académico ha sido modificado correctamente.");
-                UTILIDADES.mostrarConfirmacion(
+                UTILIDADES.mostrarMensajeConfirmacion(
                         "Éxito",
                         "Los cambios se han guardado correctamente.",
                         ""
@@ -600,5 +619,10 @@ public class ControladorGestorAcademicoEvaluadorGUI {
         botonEditar.setVisible(true);
         tablaAcademicos.setDisable(false);
         botonRegistrarAcademico.setDisable(false);
+
+        contadorNombre.setVisible(false);
+        contadorApellidos.setVisible(false);
+        contadorNumeroPersonal.setVisible(false);
+        contadorCorreo.setVisible(false);
     }
 }

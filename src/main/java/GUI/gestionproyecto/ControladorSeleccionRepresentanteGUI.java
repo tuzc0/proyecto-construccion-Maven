@@ -111,13 +111,6 @@ public class ControladorSeleccionRepresentanteGUI {
             SeleccionRepresentanteOrganizacion.setRepresentanteSeleccionado(seleccion.getRepresentante());
             SeleccionRepresentanteOrganizacion.setOrganizacionSeleccionada(seleccion.getOrganizacion());
 
-            if (controladorRegistro != null) {
-                controladorRegistro.setRepresentanteSeleccionado(
-                        seleccion.getRepresentante(),
-                        seleccion.getOrganizacion()
-                );
-            }
-
             Stage stageActual = (Stage) tablaRepresentantes.getScene().getWindow();
             stageActual.close();
 

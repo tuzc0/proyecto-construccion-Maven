@@ -30,7 +30,6 @@
                                     <graphic>
                                         <ImageView fitHeight="20.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                             <Image url="@/lupa.png" />
-
                                         </ImageView>
                                     </graphic>
                                     <font>
@@ -77,6 +76,11 @@
                                         </Label>
                                     </children>
                                 </StackPane>
+                                <Label fx:id="contadorNombre" text="0/255" style="-fx-text-fill: gray;" visible="false">
+                                    <font>
+                                        <Font size="12.0" />
+                                    </font>
+                                </Label>
                                 <Label prefHeight="41.0" prefWidth="66.0" text="Apellidos:">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
@@ -92,6 +96,11 @@
                                         <TextField fx:id="campoApellidoEditable" visible="false" />
                                     </children>
                                 </StackPane>
+                                <Label fx:id="contadorApellidos" text="0/255" style="-fx-text-fill: gray;" visible="false">
+                                    <font>
+                                        <Font size="12.0" />
+                                    </font>
+                                </Label>
                                 <Label prefHeight="43.0" prefWidth="144.0" text="Numero de Personal:">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
@@ -107,6 +116,11 @@
                                         <TextField fx:id="campoNumeroDePersonalEditable" visible="false" />
                                     </children>
                                 </StackPane>
+                                <Label fx:id="contadorNumeroPersonal" text="0/10" style="-fx-text-fill: gray;" visible="false">
+                                    <font>
+                                        <Font size="12.0" />
+                                    </font>
+                                </Label>
                                 <Label prefHeight="38.0" prefWidth="146.0" text="Correo Electronico:">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
@@ -122,6 +136,11 @@
                                         </Label>
                                     </children>
                                 </StackPane>
+                                <Label fx:id="contadorCorreo" text="0/100" style="-fx-text-fill: gray;" visible="false">
+                                    <font>
+                                        <Font size="12.0" />
+                                    </font>
+                                </Label>
                                 <VBox prefHeight="53.0" prefWidth="277.0">
                                     <children>
                                         <HBox prefHeight="48.0" prefWidth="277.0">
@@ -132,7 +151,7 @@
                                                     </font>
                                                 </Button>
                                                 <HBox prefHeight="48.0" prefWidth="29.0" />
-                                                <Button fx:id="botonEliminarAcademico" mnemonicParsing="false" onAction="#eliminarAcademico" prefHeight="30.0" prefWidth="79.0" text="Eliminar">
+                                                <Button fx:id="botonEliminarAcademico" mnemonicParsing="false" onAction="#eliminarAcademicoSeleccionado" prefHeight="30.0" prefWidth="79.0" text="Eliminar">
                                                     <font>
                                                         <Font name="System Bold" size="14.0" />
                                                     </font>

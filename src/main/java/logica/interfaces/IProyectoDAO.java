@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public interface IProyectoDAO {
 
-    boolean crearNuevoProyecto(ProyectoDTO proyecto) throws SQLException, IOException;
+    int crearNuevoProyecto(ProyectoDTO proyecto) throws SQLException, IOException;
 
     boolean eliminarProyectoPorID(int idProyecto) throws SQLException, IOException;
 

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static logica.verificacion.VerificicacionGeneral.validar;
+
 public class VerificacionUsuario {
 
     private static final Logger logger = LogManager.getLogger(VerificacionUsuario.class);
@@ -18,7 +20,7 @@ public class VerificacionUsuario {
     private static final Pattern PATRON_NUMERO_PERSONAL = Pattern.compile("^\\d{5}$");
     private static final Pattern PATRON_MATRICULA = Pattern.compile("^S\\d{8}$");
     private static final Pattern PATRON_CONTRASENA = Pattern.compile("^[a-zA-Z0-9]{6,64}$");
-    private static final Pattern PATRON_NOMBRE = Pattern.compile("^[a-zA-Z\\s]+$");
+    private static final Pattern PATRON_NOMBRE = Pattern.compile("^[\\p{L}\\s]+$");
 
     public static boolean correoValidoUV(String correo) {
 
@@ -53,11 +55,6 @@ public class VerificacionUsuario {
     public static boolean apellidosValidos(String apellidos) {
 
         return validar(apellidos, PATRON_NOMBRE);
-    }
-
-    private static boolean validar(String campo, Pattern patron) {
-
-        return patron.matcher(campo).matches();
     }
 
     public static List<String> camposVacios(String nombre, String apellidos, String numeroPersonal, String correo, String contrasena) {

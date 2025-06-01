@@ -1,10 +1,13 @@
 package logica.DAOs;
 
 import accesoadatos.ConexionBaseDeDatos;
+import logica.DTOs.AcademicoDTO;
 import logica.DTOs.ProyectoDTO;
 import logica.interfaces.IProyectoDAO;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProyectoDAO implements IProyectoDAO {
 
@@ -165,9 +168,9 @@ public class ProyectoDAO implements IProyectoDAO {
         return cronogramaAdjuntado;
     }
 
-    public ProyectoDTO buscarProyectoPorID(int idProyecto) throws SQLException, IOException {
+    public ProyectoDTO buscarProyectoPorNombre(String nombreProyecto) throws SQLException, IOException {
 
-        String consultaSQLProyecto = "SELECT * FROM proyecto WHERE IDProyecto = ?";
+        String consultaSQLProyecto = "SELECT * FROM proyecto WHERE nombre = ?";
         ProyectoDTO proyecto = new ProyectoDTO(-1, null, null,
                 null, null, null, null,
                 null, null, null, -1, -1,
@@ -177,7 +180,7 @@ public class ProyectoDAO implements IProyectoDAO {
 
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaProyecto = conexionBaseDeDatos.prepareStatement(consultaSQLProyecto);
-            sentenciaProyecto.setInt(1, idProyecto);
+            sentenciaProyecto.setString(1, nombreProyecto);
             resultadoProyecto = sentenciaProyecto.executeQuery();
 
             if (resultadoProyecto.next()) {
@@ -187,7 +190,7 @@ public class ProyectoDAO implements IProyectoDAO {
                 proyecto.setObjetivoGeneral(resultadoProyecto.getString("objetivogeneral"));
                 proyecto.setObjetivosInmediatos(resultadoProyecto.getString("objetivosinmediatos"));
                 proyecto.setObjetivosMediatos(resultadoProyecto.getString("objetivosmediatos"));
-                proyecto.setMetodologia(resultadoProyecto.getString("metododologia"));
+                proyecto.setMetodologia(resultadoProyecto.getString("metodologia"));
                 proyecto.setRecursos(resultadoProyecto.getString("recursos"));
                 proyecto.setActividades(resultadoProyecto.getString("actividades"));
                 proyecto.setResponsabilidades(resultadoProyecto.getString("responsabilidades"));
@@ -209,5 +212,51 @@ public class ProyectoDAO implements IProyectoDAO {
         }
 
         return proyecto;
+    }
+
+    public List<ProyectoDTO> listarProyectos() throws SQLException, IOException {
+
+        List<ProyectoDTO> proyectos = new ArrayList<>();
+        String consultaSQL = "SELECT * FROM proyecto WHERE estadoActivo = 1";
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaProyecto = conexionBaseDeDatos.prepareStatement(consultaSQL);
+            resultadoProyecto = sentenciaProyecto.executeQuery();
+
+            while (resultadoProyecto.next()) {
+
+                int idProyecto = resultadoProyecto.getInt("idProyecto");
+                String nombreProyecto = resultadoProyecto.getString("nombre");
+                String objetivoGeneral = resultadoProyecto.getString("objetivogeneral");
+                String objetivosInmediatos = resultadoProyecto.getString("objetivosinmediatos");
+                String objetivosMediatos = resultadoProyecto.getString("objetivosmediatos");
+                String metodologia = resultadoProyecto.getString("metodologia");
+                String recursos = resultadoProyecto.getString("recursos");
+                String actividades = resultadoProyecto.getString("actividades");
+                String responsabilidades = resultadoProyecto.getString("responsabilidades");
+                String duracion = resultadoProyecto.getString("duracion");
+                int idCronograma = resultadoProyecto.getInt("idCronograma");
+                int estadoActivo = resultadoProyecto.getInt("estadoActivo");
+                int idRepresentante = resultadoProyecto.getInt("idRepresentante");
+                String descripcion = resultadoProyecto.getString("descripciongeneral");
+                int usuariosDirectos = resultadoProyecto.getInt("usuariosDirectos");
+                int usuariosIndirectos = resultadoProyecto.getInt("usuariosIndirectos");
+
+                ProyectoDTO proyecto = new ProyectoDTO(idProyecto, nombreProyecto, objetivoGeneral,
+                        objetivosInmediatos, objetivosMediatos, metodologia, recursos, actividades, responsabilidades,
+                        duracion, idCronograma, estadoActivo, idRepresentante, descripcion, usuariosDirectos, usuariosIndirectos);
+                proyectos.add(proyecto);
+            }
+
+        } finally {
+             if (sentenciaProyecto != null) {
+
+                 sentenciaProyecto.close();
+             }
+        }
+
+        return proyectos;
     }
 }

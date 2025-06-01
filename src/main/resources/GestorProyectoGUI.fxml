@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="578.0" prefWidth="1037.0" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.gestionproyecto.ControladorDetalleProyectoGUI">
+
+    <top>
+        <VBox spacing="10">
+            <Label style="-fx-font-size: 24; -fx-font-weight: bold;" text="Detalles del Proyecto" />
+            <Separator />
+        </VBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER">
+            <VBox spacing="15" style="-fx-padding: 0 20 0 0;">
+
+                <VBox spacing="10" style="-fx-padding: 0 0 0 20;">
+                    <VBox spacing="5">
+                        <Label text="Nombre del Proyecto:" />
+                    </VBox>
+                    <Label fx:id="etiquetaNombre" prefHeight="31.0" prefWidth="582.0" />
+                    <VBox spacing="5">
+                        <Label text="Descripción General:" />
+                        <Label fx:id="etiquetaDescripcionGeneral" prefHeight="100.0" prefWidth="582.0" />
+                    </VBox>
+                    <VBox spacing="5">
+                        <Label text="Objetivo General:" />
+                        <Label fx:id="etiquetaObjetivoGeneral" prefHeight="90.0" prefWidth="582.0" />
+                    </VBox>
+                </VBox>
+
+                <HBox alignment="CENTER_LEFT" spacing="30" style="-fx-padding: 0 0 0 20;">
+                    <VBox spacing="10">
+                        <Label text="Población Atendida:" />
+                        <HBox spacing="20">
+                            <VBox spacing="5">
+                                <Label text="Usuarios Directos:" />
+                                <Label fx:id="etiquetaUsuariosDirectos" prefHeight="31.0" prefWidth="91.0" />
+                            </VBox>
+                            <VBox spacing="5">
+                                <Label text="Usuarios Indirectos:" />
+                                <Label fx:id="etiquetaUsuariosIndirectos" prefHeight="30.0" prefWidth="109.0" />
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                    <VBox spacing="5">
+                        <Label text="Duración Total (horas):" />
+                        <Label fx:id="etiquetaDuracion" style="-fx-font-weight: bold;" text="420" />
+                    </VBox>
+                </HBox>
+
+                <Label style="-fx-font-weight: bold; -fx-font-size: 16;" text="Detalles Adicionales" />
+
+                <VBox spacing="10" style="-fx-padding: 0 0 0 20;">
+                    <VBox spacing="5">
+                        <Label text="Objetivos Inmediatos:" />
+                        <Label fx:id="etiquetaObjetivosInmediatos" prefHeight="96.0" prefWidth="596.0" />
+                    </VBox>
+                    <VBox spacing="5">
+                        <Label text="Objetivos Mediatos:" />
+                        <Label fx:id="etiquetaObjetivosMediatos" prefHeight="79.0" prefWidth="596.0" />
+                    </VBox>
+                    <VBox spacing="5">
+                        <Label text="Metodología:" />
+                        <Label fx:id="etiquetaMetodologia" prefHeight="85.0" prefWidth="596.0" />
+                    </VBox>
+                    <VBox spacing="5">
+                        <Label text="Recursos humanos, económicos y materiales:" />
+                        <Label fx:id="etiquetaRecursos" prefHeight="112.0" prefWidth="582.0" />
+                    </VBox>
+                    <VBox spacing="5">
+                        <Label text="Actividades y funciones:" />
+                        <Label fx:id="etiquetaActividades" prefHeight="90.0" prefWidth="582.0" />
+                    </VBox>
+                    <VBox spacing="5">
+                        <Label text="Responsabilidades del alumno:" />
+                        <Label fx:id="etiquetaResponsabilidades" prefHeight="78.0" prefWidth="596.0" />
+                    </VBox>
+                    <Label prefHeight="34.0" prefWidth="175.0" text="Días y Horarios:" />
+                    <HBox prefHeight="180.0" prefWidth="870.0">
+                        <children>
+                            <TableView fx:id="tablaHorarios" prefHeight="180.0" prefWidth="599.0">
+                                <columns>
+                                    <TableColumn fx:id="columnaLunes" prefWidth="118.40001678466797" text="Lunes" />
+                                    <TableColumn fx:id="columnaMartes" prefWidth="124.800048828125" text="Martes" />
+                                    <TableColumn fx:id="columnaMiercoles" prefWidth="99.20001220703125" text="Miercoles" />
+                                    <TableColumn fx:id="columnaJueves" prefWidth="126.39996337890625" text="Jueves" />
+                                    <TableColumn fx:id="columnaViernes" prefWidth="129.60003662109375" text="Viernes" />
+                                </columns>
+                            </TableView>
+                        </children>
+                    </HBox>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+
+    <right>
+        <VBox spacing="15" style="-fx-padding: 20; -fx-border-color: lightgray; -fx-border-width: 0 0 0 1;">
+            <Separator />
+            <VBox spacing="10" />
+            <Separator />
+        </VBox>
+    </right>
+    <bottom>
+        <AnchorPane prefHeight="59.0" prefWidth="998.0" BorderPane.alignment="CENTER">
+            <children>
+                <HBox alignment="CENTER_RIGHT" layoutY="-2.0" prefHeight="55.0" prefWidth="446.0" spacing="15" style="-fx-padding: 20 0 0 0;">
+                    <children>
+                        <Button fx:id="botonEditar" prefHeight="41.0" prefWidth="136.0" text="Editar" />
+                        <Button fx:id="botonEstudiantesAsignados" prefHeight="37.0" prefWidth="146.0" text="Estudiantes Asignados" />
+                        <Button fx:id="botonRegresar" prefHeight="53.0" prefWidth="134.0" text="Regresar" />
+                    </children>
+                </HBox>
+            </children>
+        </AnchorPane>
+    </bottom>
+</BorderPane>

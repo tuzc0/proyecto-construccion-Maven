@@ -284,6 +284,18 @@ public class ControladorRegistroProyectoGUI {
 
         try {
 
+            ProyectoDTO proyectoExistente = proyectoDAO.buscarProyectoPorNombre(nombreProyecto);
+
+            if (proyectoExistente.getIdProyecto() != -1) {
+
+                UTILIDADES.mostrarAlerta(
+                        "Error",
+                        "El nombre del proyecto ya se encuentra registrado dentro del sistema.",
+                        "Por favor, ingrese un nombre diferente."
+                );
+                return;
+            }
+
             idProyecto = proyectoDAO.crearNuevoProyecto(proyectoDTO);
             boolean horariosInsertados = insertarHorarios(idProyecto);
 
@@ -328,7 +340,7 @@ public class ControladorRegistroProyectoGUI {
 
             LOGGER.error("Error durante el registro del proyecto.", e);
             UTILIDADES.mostrarAlerta(
-                    "Error.",
+                    "Error",
                     "Ocurrió un error. Por favor, inténtelo de nuevo más tarde.",
                     ""
             );

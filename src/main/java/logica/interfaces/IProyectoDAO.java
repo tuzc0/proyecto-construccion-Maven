@@ -13,5 +13,5 @@ public interface IProyectoDAO {
 
     boolean modificarProyecto(ProyectoDTO proyecto) throws SQLException, IOException;
 
-    ProyectoDTO buscarProyectoPorID(int idProyecto) throws SQLException, IOException;
+    ProyectoDTO buscarProyectoPorNombre(String nombreProyecto) throws SQLException, IOException;
 }

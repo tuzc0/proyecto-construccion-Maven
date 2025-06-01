@@ -1,18 +1,21 @@
 package logica.utilidadesproyecto;
 
 import logica.DTOs.OrganizacionVinculadaDTO;
+import logica.DTOs.ProyectoDTO;
 import logica.DTOs.RepresentanteDTO;
 
-public class ContenedoraRepresentanteOrganizacion {
+public class ContenedoraRepresentanteOrganizacionProyecto {
 
     private RepresentanteDTO representante;
     private OrganizacionVinculadaDTO organizacion;
+    private ProyectoDTO proyecto;
 
-    public ContenedoraRepresentanteOrganizacion(RepresentanteDTO representante,
-                                                OrganizacionVinculadaDTO organizacion) {
+    public ContenedoraRepresentanteOrganizacionProyecto(RepresentanteDTO representante,
+                                                        OrganizacionVinculadaDTO organizacion, ProyectoDTO proyecto) {
 
         this.representante = representante;
         this.organizacion = organizacion;
+        this.proyecto = proyecto;
     }
 
     public RepresentanteDTO getRepresentante() {
@@ -33,5 +36,15 @@ public class ContenedoraRepresentanteOrganizacion {
     public void setOrganizacion(OrganizacionVinculadaDTO organizacion) {
 
         this.organizacion = organizacion;
+    }
+
+    public ProyectoDTO getProyecto() {
+
+        return proyecto;
+    }
+
+    public void setProyecto(ProyectoDTO proyecto) {
+
+        this.proyecto = proyecto;
     }
 }

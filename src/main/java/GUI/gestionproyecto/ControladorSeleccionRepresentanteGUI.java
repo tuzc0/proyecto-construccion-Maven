@@ -12,7 +12,7 @@ import logica.DAOs.OrganizacionVinculadaDAO;
 import logica.DAOs.RepresentanteDAO;
 import logica.DTOs.OrganizacionVinculadaDTO;
 import logica.DTOs.RepresentanteDTO;
-import logica.utilidadesproyecto.ContenedoraRepresentanteOrganizacion;
+import logica.utilidadesproyecto.ContenedoraRepresentanteOrganizacionProyecto;
 import logica.utilidadesproyecto.SeleccionRepresentanteOrganizacion;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,9 +25,9 @@ public class ControladorSeleccionRepresentanteGUI {
     private static final Logger LOGGER = LogManager.getLogger(ControladorSeleccionRepresentanteGUI.class);
     private final Utilidades UTILIDADES = new Utilidades();
 
-    @FXML private TableView <ContenedoraRepresentanteOrganizacion> tablaRepresentantes;
-    @FXML private TableColumn<ContenedoraRepresentanteOrganizacion, String> columnaRepresentante;
-    @FXML private TableColumn<ContenedoraRepresentanteOrganizacion, String> columnaOrganizacion;
+    @FXML private TableView <ContenedoraRepresentanteOrganizacionProyecto> tablaRepresentantes;
+    @FXML private TableColumn<ContenedoraRepresentanteOrganizacionProyecto, String> columnaRepresentante;
+    @FXML private TableColumn<ContenedoraRepresentanteOrganizacionProyecto, String> columnaOrganizacion;
     @FXML private TextField campoBusqueda;
     @FXML private Button botonBuscar;
     @FXML private Button botonCancelarSeleccion;
@@ -61,7 +61,7 @@ public class ControladorSeleccionRepresentanteGUI {
             List<RepresentanteDTO> representantes = representanteDAO.obtenerTodosLosRepresentantes();
             List<OrganizacionVinculadaDTO> organizaciones = organizacionDAO.obtenerTodasLasOrganizaciones();
 
-            ObservableList<ContenedoraRepresentanteOrganizacion> listaCombinada = FXCollections.observableArrayList();
+            ObservableList<ContenedoraRepresentanteOrganizacionProyecto> listaCombinada = FXCollections.observableArrayList();
 
             for (RepresentanteDTO representante : representantes) {
 
@@ -69,7 +69,7 @@ public class ControladorSeleccionRepresentanteGUI {
 
                     if (representante.getIdOrganizacion() == organizacion.getIdOrganizacion()) {
 
-                        listaCombinada.add(new ContenedoraRepresentanteOrganizacion(representante, organizacion));
+                        listaCombinada.add(new ContenedoraRepresentanteOrganizacionProyecto(representante, organizacion, null));
                     }
                 }
             }
@@ -87,9 +87,19 @@ public class ControladorSeleccionRepresentanteGUI {
     private void buscarRepresentante() {
 
         String textoBusqueda = campoBusqueda.getText().toLowerCase();
-        ObservableList<ContenedoraRepresentanteOrganizacion> listaFiltrada = FXCollections.observableArrayList();
+        ObservableList<ContenedoraRepresentanteOrganizacionProyecto> listaFiltrada = FXCollections.observableArrayList();
 
-        for (ContenedoraRepresentanteOrganizacion contenedor : tablaRepresentantes.getItems()) {
+        if (textoBusqueda.isEmpty()) {
+
+            UTILIDADES.mostrarAlerta(
+                    "Error",
+                    "El campo de busqueda se encuentra vacio",
+                    "Por favor, ingrese el nombre del representante o nombre de la organización a buscar"
+            );
+            return;
+        }
+
+        for (ContenedoraRepresentanteOrganizacionProyecto contenedor : tablaRepresentantes.getItems()) {
 
             if (contenedor.getRepresentante().getNombre().toLowerCase().contains(textoBusqueda) ||
                 contenedor.getOrganizacion().getNombre().toLowerCase().contains(textoBusqueda)) {
@@ -98,13 +108,23 @@ public class ControladorSeleccionRepresentanteGUI {
             }
         }
 
+        if (listaFiltrada.isEmpty()) {
+
+            UTILIDADES.mostrarAlerta(
+                    "Representante u Organización no encontrados",
+                    "No se ha encontrado ningún representante u organización activo con ese nombre",
+                    "Por favor, verifique que haya ingresado bien el nombre o registre la organización"
+            );
+            return;
+        }
+
         tablaRepresentantes.setItems(listaFiltrada);
     }
 
     @FXML
     private void seleccionarRepresentante() {
 
-        ContenedoraRepresentanteOrganizacion seleccion = tablaRepresentantes.getSelectionModel().getSelectedItem();
+        ContenedoraRepresentanteOrganizacionProyecto seleccion = tablaRepresentantes.getSelectionModel().getSelectedItem();
 
         if (seleccion != null) {
 

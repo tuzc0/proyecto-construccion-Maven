@@ -5,6 +5,7 @@ import logica.DTOs.ProyectoDTO;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 public interface IHorarioProyectoDAO {
 
@@ -12,5 +13,5 @@ public interface IHorarioProyectoDAO {
 
     boolean modificarHorario(HorarioProyectoDTO horarioProyectoDTO) throws SQLException, IOException;
 
-    ProyectoDTO buscarHorarioPorIdDeProyecto(int idProyecto) throws SQLException, IOException;
+    List<HorarioProyectoDTO> buscarHorarioPorIdDeProyecto(int idProyecto) throws SQLException, IOException;
 }

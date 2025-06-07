@@ -35,7 +35,7 @@
             </Label>
             <HBox layoutX="10.0" layoutY="60.0" prefHeight="34.0" prefWidth="699.0" spacing="10.0">
                <children>
-                  <TextField fx:id="campoBusqueda" prefHeight="34.0" prefWidth="550.0" />
+                  <TextField fx:id="campoBusqueda" prefHeight="34.0" prefWidth="550.0" promptText="Ingrese el nombre de la Organización u Empresa" />
                   <Button fx:id="botonBuscar" mnemonicParsing="false" onAction="#buscarRepresentante" prefHeight="34.0" prefWidth="138.0">
                      <graphic>
                         <ImageView fitHeight="19.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">

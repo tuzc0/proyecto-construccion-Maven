@@ -6,12 +6,18 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="578.0" prefWidth="1037.0" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.gestionproyecto.ControladorDetalleProyectoGUI">
+<BorderPane prefHeight="722.0" prefWidth="1037.0" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.gestionproyecto.ControladorGestorProyectoGUI">
 
     <top>
         <VBox spacing="10">
@@ -21,85 +27,207 @@
     </top>
 
     <center>
-        <ScrollPane fitToWidth="true" hbarPolicy="NEVER">
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="1901.0" prefWidth="946.0">
             <VBox spacing="15" style="-fx-padding: 0 20 0 0;">
 
                 <VBox spacing="10" style="-fx-padding: 0 0 0 20;">
                     <VBox spacing="5">
-                        <Label text="Nombre del Proyecto:" />
+                        <Label text="Nombre del Proyecto:">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <TextArea fx:id="textoNombre" editable="false" prefHeight="29.0" prefWidth="891.0" wrapText="true" />
+                        <Label fx:id="contadorNombre" visible="false" style="-fx-font-size: 11; -fx-text-fill: gray;" text="0/255" />
                     </VBox>
-                    <Label fx:id="etiquetaNombre" prefHeight="31.0" prefWidth="582.0" />
+
                     <VBox spacing="5">
-                        <Label text="Descripción General:" />
-                        <Label fx:id="etiquetaDescripcionGeneral" prefHeight="100.0" prefWidth="582.0" />
+                        <Label text="Descripción General:">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <TextArea fx:id="textoDescripcionGeneral" editable="false" prefHeight="89.0" prefWidth="891.0" wrapText="true" />
+                        <Label fx:id="contadorDescripcion" visible="false" style="-fx-font-size: 11; -fx-text-fill: gray;" text="0/255" />
                     </VBox>
+
                     <VBox spacing="5">
-                        <Label text="Objetivo General:" />
-                        <Label fx:id="etiquetaObjetivoGeneral" prefHeight="90.0" prefWidth="582.0" />
+                        <Label text="Objetivo General:">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <TextArea fx:id="textoObjetivoGeneral" editable="false" prefHeight="100.0" prefWidth="891.0" wrapText="true" />
+                        <Label fx:id="contadorObjetivoGeneral" visible="false" style="-fx-font-size: 11; -fx-text-fill: gray;" text="0/255" />
                     </VBox>
                 </VBox>
 
-                <HBox alignment="CENTER_LEFT" spacing="30" style="-fx-padding: 0 0 0 20;">
+                <HBox alignment="TOP_LEFT" spacing="50" style="-fx-padding: 0 0 0 20;">
                     <VBox spacing="10">
-                        <Label text="Población Atendida:" />
-                        <HBox spacing="20">
-                            <VBox spacing="5">
-                                <Label text="Usuarios Directos:" />
-                                <Label fx:id="etiquetaUsuariosDirectos" prefHeight="31.0" prefWidth="91.0" />
-                            </VBox>
-                            <VBox spacing="5">
-                                <Label text="Usuarios Indirectos:" />
-                                <Label fx:id="etiquetaUsuariosIndirectos" prefHeight="30.0" prefWidth="109.0" />
-                            </VBox>
-                        </HBox>
+                        <Label style="-fx-font-weight: bold;" text="Población Atendida:">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <GridPane hgap="20" vgap="5">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="NEVER" />
+                                <ColumnConstraints hgrow="NEVER" />
+                            </columnConstraints>
+
+                            <Label text="Usuarios Directos:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                <font>
+                                    <Font name="System Bold" size="12.0" />
+                                </font>
+                            </Label>
+                            <Label fx:id="etiquetaUsuariosDirectos" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                            <TextField fx:id="campoUsuariosDirectos" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                            <Label text="Usuarios Indirectos:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                <font>
+                                    <Font name="System Bold" size="12.0" />
+                                </font>
+                            </Label>
+                            <Label fx:id="etiquetaUsuariosIndirectos" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            <TextField fx:id="campoUsuariosIndirectos" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            <rowConstraints>
+                                <RowConstraints />
+                                <RowConstraints />
+                            </rowConstraints>
+                        </GridPane>
                     </VBox>
+
                     <VBox spacing="5">
-                        <Label text="Duración Total (horas):" />
-                        <Label fx:id="etiquetaDuracion" style="-fx-font-weight: bold;" text="420" />
+                        <Label style="-fx-font-weight: bold;" text="Duración Total (horas):">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <HBox alignment="CENTER_LEFT" spacing="5">
+                            <Label fx:id="etiquetaDuracion" style="-fx-font-weight: bold;" text="420" />
+                            <TextField fx:id="campoDuracion" managed="false" visible="false" />
+                        </HBox>
                     </VBox>
                 </HBox>
 
-                <Label style="-fx-font-weight: bold; -fx-font-size: 16;" text="Detalles Adicionales" />
+                <Label prefWidth="170.0" style="-fx-font-weight: bold; -fx-font-size: 16;" text="Detalles Adicionales">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
 
                 <VBox spacing="10" style="-fx-padding: 0 0 0 20;">
                     <VBox spacing="5">
-                        <Label text="Objetivos Inmediatos:" />
-                        <Label fx:id="etiquetaObjetivosInmediatos" prefHeight="96.0" prefWidth="596.0" />
+                        <Label text="Objetivos Inmediatos:">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <TextArea fx:id="textoObjetivosInmediatos" editable="false" prefHeight="103.0" prefWidth="891.0" wrapText="true" />
+                        <Label fx:id="contadorObjetivosInmediatos" visible="false" style="-fx-font-size: 11; -fx-text-fill: gray;" text="0/255" />
                     </VBox>
+
                     <VBox spacing="5">
-                        <Label text="Objetivos Mediatos:" />
-                        <Label fx:id="etiquetaObjetivosMediatos" prefHeight="79.0" prefWidth="596.0" />
+                        <Label text="Objetivos Mediatos:">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <TextArea fx:id="textoObjetivosMediatos" editable="false" prefHeight="104.0" prefWidth="891.0" wrapText="true" />
+                        <Label fx:id="contadorObjetivosMediatos" visible="false" style="-fx-font-size: 11; -fx-text-fill: gray;" text="0/255" />
                     </VBox>
+
                     <VBox spacing="5">
-                        <Label text="Metodología:" />
-                        <Label fx:id="etiquetaMetodologia" prefHeight="85.0" prefWidth="596.0" />
+                        <Label text="Metodología:">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <TextArea fx:id="textoMetodologia" editable="false" prefHeight="117.0" prefWidth="891.0" wrapText="true" />
+                        <Label fx:id="contadorMetodologia" visible="false" style="-fx-font-size: 11; -fx-text-fill: gray;" text="0/255" />
                     </VBox>
+
                     <VBox spacing="5">
-                        <Label text="Recursos humanos, económicos y materiales:" />
-                        <Label fx:id="etiquetaRecursos" prefHeight="112.0" prefWidth="582.0" />
+                        <Label text="Recursos humanos, económicos y materiales:">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <TextArea fx:id="textoRecursos" editable="false" prefHeight="104.0" prefWidth="891.0" wrapText="true" />
+                        <Label fx:id="contadorRecursos" visible="false" style="-fx-font-size: 11; -fx-text-fill: gray;" text="0/255" />
                     </VBox>
+
                     <VBox spacing="5">
-                        <Label text="Actividades y funciones:" />
-                        <Label fx:id="etiquetaActividades" prefHeight="90.0" prefWidth="582.0" />
+                        <Label text="Actividades y funciones:">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <TextArea fx:id="textoActividades" editable="false" prefHeight="108.0" prefWidth="891.0" wrapText="true" />
+                        <Label fx:id="contadorActividades" visible="false" style="-fx-font-size: 11; -fx-text-fill: gray;" text="0/255" />
                     </VBox>
+
                     <VBox spacing="5">
-                        <Label text="Responsabilidades del alumno:" />
-                        <Label fx:id="etiquetaResponsabilidades" prefHeight="78.0" prefWidth="596.0" />
+                        <Label text="Responsabilidades del alumno:">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <TextArea fx:id="textoResponsabilidades" editable="false" prefHeight="106.0" prefWidth="891.0" wrapText="true" />
+                        <Label fx:id="contadorResponsabilidades" visible="false" style="-fx-font-size: 11; -fx-text-fill: gray;" text="0/255" />
                     </VBox>
-                    <Label prefHeight="34.0" prefWidth="175.0" text="Días y Horarios:" />
+
+                    <VBox layoutX="10.0" layoutY="146.0" spacing="5">
+                        <children>
+                            <Label prefHeight="20.0" prefWidth="121.0" text="Representante:">
+                                <font>
+                                    <Font name="System Bold" size="14.0" />
+                                </font>
+                            </Label>
+                            <HBox prefHeight="41.0" prefWidth="905.0">
+                                <children>
+                                    <Label fx:id="etiquetaRepresentante" prefHeight="51.0" prefWidth="730.0" />
+                                </children>
+                            </HBox>
+                        </children>
+                    </VBox>
+
+                    <VBox spacing="5">
+                        <children>
+                            <Label text="Organizacion:">
+                                <font>
+                                    <Font name="System Bold" size="14.0" />
+                                </font>
+                            </Label>
+                            <HBox prefHeight="41.0" prefWidth="905.0">
+                                <children>
+                                    <Label fx:id="etiquetaOrganizacion" prefHeight="51.0" prefWidth="730.0" />
+                                    <Button fx:id="botonCambiarOrganizacion" mnemonicParsing="false" onAction="#abrirVentanaSeleccionRepresentante" prefHeight="52.0" prefWidth="187.0" text="Cambiar" visible="false" />
+                                </children>
+                            </HBox>
+                        </children>
+                    </VBox>
+
+                    <Label prefHeight="35.0" prefWidth="208.0" text="Días y Horarios:">
+                        <font>
+                            <Font name="System Bold" size="24.0" />
+                        </font>
+                    </Label>
                     <HBox prefHeight="180.0" prefWidth="870.0">
                         <children>
-                            <TableView fx:id="tablaHorarios" prefHeight="180.0" prefWidth="599.0">
+                            <TableView fx:id="tablaHorarios" prefHeight="253.0" prefWidth="905.0">
                                 <columns>
-                                    <TableColumn fx:id="columnaLunes" prefWidth="118.40001678466797" text="Lunes" />
-                                    <TableColumn fx:id="columnaMartes" prefWidth="124.800048828125" text="Martes" />
-                                    <TableColumn fx:id="columnaMiercoles" prefWidth="99.20001220703125" text="Miercoles" />
-                                    <TableColumn fx:id="columnaJueves" prefWidth="126.39996337890625" text="Jueves" />
-                                    <TableColumn fx:id="columnaViernes" prefWidth="129.60003662109375" text="Viernes" />
+                                    <TableColumn fx:id="columnaLunes" prefWidth="183.20003509521484" text="Lunes" />
+                                    <TableColumn fx:id="columnaMartes" prefWidth="170.39999389648438" text="Martes" />
+                                    <TableColumn fx:id="columnaMiercoles" prefWidth="187.99996948242188" text="Miercoles" />
+                                    <TableColumn fx:id="columnaJueves" prefWidth="185.5999755859375" text="Jueves" />
+                                    <TableColumn fx:id="columnaViernes" prefWidth="185.5999755859375" text="Viernes" />
                                 </columns>
                             </TableView>
                         </children>
                     </HBox>
+
+                    <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="905.0" />
                 </VBox>
             </VBox>
         </ScrollPane>
@@ -112,14 +240,21 @@
             <Separator />
         </VBox>
     </right>
+
     <bottom>
         <AnchorPane prefHeight="59.0" prefWidth="998.0" BorderPane.alignment="CENTER">
             <children>
                 <HBox alignment="CENTER_RIGHT" layoutY="-2.0" prefHeight="55.0" prefWidth="446.0" spacing="15" style="-fx-padding: 20 0 0 0;">
                     <children>
-                        <Button fx:id="botonEditar" prefHeight="41.0" prefWidth="136.0" text="Editar" />
+                        <Button fx:id="botonEditar" onAction="#habilitarCamposParaEdicion" prefHeight="41.0" prefWidth="136.0" text="Editar" />
                         <Button fx:id="botonEstudiantesAsignados" prefHeight="37.0" prefWidth="146.0" text="Estudiantes Asignados" />
-                        <Button fx:id="botonRegresar" prefHeight="53.0" prefWidth="134.0" text="Regresar" />
+                        <Button fx:id="botonRegresar" onAction="#regresarAConsultarProyecto" prefHeight="53.0" prefWidth="134.0" text="Regresar" />
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_RIGHT" layoutX="650.0" layoutY="2.0" prefHeight="55.0" prefWidth="295.0" spacing="15" style="-fx-padding: 20 0 0 0;">
+                    <children>
+                        <Button fx:id="botonActualizar" onAction="#actualizarProyecto" prefHeight="37.0" prefWidth="146.0" text="Actualizar" visible="false" />
+                        <Button fx:id="botonCancelar" onAction="#cancelarActualizacionProyecto" prefHeight="53.0" prefWidth="134.0" text="Cancelar" visible="false" />
                     </children>
                 </HBox>
             </children>

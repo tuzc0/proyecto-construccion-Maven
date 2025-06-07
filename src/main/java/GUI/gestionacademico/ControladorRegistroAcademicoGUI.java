@@ -57,20 +57,24 @@ public class ControladorRegistroAcademicoGUI {
     private void initialize() {
 
         VerificicacionGeneral verifGen = new VerificicacionGeneral();
+        final int MAX_CARACTERES_NOMBRE = 50;
+        final int MAX_CARACTERES_NUMERO_PERSONAL = 5;
+        final int MAX_CARACTERES_CORREO = 100;
+        final int MAX_CARACTERES_CONTRASEÑA = 64;
 
         verifGen.contadorCaracteresTextField(
-                campoNombre, contadorNombre, 50);
+                campoNombre, contadorNombre, MAX_CARACTERES_NOMBRE);
         verifGen.contadorCaracteresTextField(
-                campoApellidos, contadorApellidos, 50);
+                campoApellidos, contadorApellidos, MAX_CARACTERES_NOMBRE);
         verifGen.contadorCaracteresTextField(
-                campoNumeroPersonal, contadorNumeroPersonal, 5);
+                campoNumeroPersonal, contadorNumeroPersonal, MAX_CARACTERES_NUMERO_PERSONAL);
         verifGen.contadorCaracteresTextField(
-                campoCorreo, contadorCorreo, 100);
+                campoCorreo, contadorCorreo, MAX_CARACTERES_CORREO);
         verifGen.contadorCaracteresTextField(
-                campoContraseña, contadorContraseña, 64);
+                campoContraseña, contadorContraseña, MAX_CARACTERES_CONTRASEÑA);
         verifGen.contadorCaracteresTextField(
                 campoConfirmarContraseña,
-                contadorConfirmarContraseña, 64);
+                contadorConfirmarContraseña, MAX_CARACTERES_CONTRASEÑA);
 
         campoContraseñaVisible
                 .textProperty()
@@ -181,8 +185,9 @@ public class ControladorRegistroAcademicoGUI {
                     );
             CuentaDTO cuentaEncontrada =
                     cuentaDAO.buscarCuentaPorCorreo(correo);
+            int academicoEncontrado = -1;
 
-            if (academicoExistente.getNumeroDePersonal() != -1) {
+            if (academicoExistente.getNumeroDePersonal() != academicoEncontrado) {
 
                 UTILIDADES.mostrarAlerta(
                         "Número de personal duplicado",
@@ -251,7 +256,7 @@ public class ControladorRegistroAcademicoGUI {
 
             LOGGER.error(
                     "Error de formato numérico al registrar académico: "
-                            + e.getMessage()
+                            + e
             );
 
             UTILIDADES.mostrarAlerta(
@@ -264,7 +269,7 @@ public class ControladorRegistroAcademicoGUI {
         } catch (SQLException e) {
 
             LOGGER.error("Error de base de datos al registrar académico: "
-                    + e.getMessage());
+                    + e);
             UTILIDADES.mostrarAlerta(
                     "Error del sistema",
                     "Ocurrió un error al registrar al académico.",
@@ -275,7 +280,7 @@ public class ControladorRegistroAcademicoGUI {
         } catch (IOException e) {
 
             LOGGER.error("Error de I/O al registrar académico: "
-                    + e.getMessage());
+                    + e);
             UTILIDADES.mostrarAlerta(
                     "Error de sistema",
                     "No se pudo completar la operación debido"
@@ -285,8 +290,7 @@ public class ControladorRegistroAcademicoGUI {
 
         } catch (Exception e) {
 
-            LOGGER.error("Error inesperado al registrar académico: "
-                    + e.getMessage());
+            LOGGER.error("Error inesperado al registrar académico: " + e);
             UTILIDADES.mostrarAlerta(
                     "Error desconocido",
                     "Ocurrió un error inesperado al registrar"

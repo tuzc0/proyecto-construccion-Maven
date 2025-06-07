@@ -63,15 +63,18 @@ public class ControladorGestorAcademicosGUI {
     public void initialize() {
 
         VerificicacionGeneral verficacionGeneral = new VerificicacionGeneral();
+        final int MAX_CARACTERES_NOMBRE = 50;
+        final int MAX_CARACTERES_NUMERO_PERSONAL = 5;
+        final int MAX_CARACTERES_CORREO = 100;
 
         verficacionGeneral.contadorCaracteresTextField(
-                campoNombreEditable, contadorNombre, 50);
+                campoNombreEditable, contadorNombre, MAX_CARACTERES_NOMBRE);
         verficacionGeneral.contadorCaracteresTextField(
-                campoApellidoEditable, contadorApellidos, 50);
+                campoApellidoEditable, contadorApellidos, MAX_CARACTERES_NOMBRE);
         verficacionGeneral.contadorCaracteresTextField(
-                campoNumeroDePersonalEditable, contadorNumeroPersonal, 5);
+                campoNumeroDePersonalEditable, contadorNumeroPersonal, MAX_CARACTERES_NUMERO_PERSONAL);
         verficacionGeneral.contadorCaracteresTextField(
-                campoCorreoEditable, contadorCorreo, 100);
+                campoCorreoEditable, contadorCorreo, MAX_CARACTERES_CORREO);
 
         botonBuscar.setCursor(Cursor.HAND);
         botonEliminarSeleccionado.setCursor(Cursor.HAND);
@@ -122,8 +125,7 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (Exception e) {
 
-            LOGGER.error("Error al cargar la lista de academicos: " +
-                    e.getMessage());
+            LOGGER.error("Error al cargar la lista de academicos: " + e);
             UTILIDADES.mostrarAlerta(
                     "Error al cargar académicos",
                     "No se pudo obtener la lista de académicos.",
@@ -154,10 +156,12 @@ public class ControladorGestorAcademicosGUI {
             AcademicoDTO academicoDTO =
                     academicoDAO.buscarAcademicoPorNumeroDePersonal(
                             Integer.parseInt(numeroDePersonal));
+            int academicoEncontrado = -1;
+            int academicoInactivo = 0;
 
-            if (academicoDTO.getIdUsuario() != -1) {
+            if (academicoDTO.getIdUsuario() != academicoEncontrado) {
 
-                if (academicoDTO.getEstado() != 0) {
+                if (academicoDTO.getEstado() != academicoInactivo) {
 
                     etiquetaNombreEncontrado.setText(academicoDTO.getNombre());
                     etiquetaApellidoEncontrado.setText(academicoDTO.getApellido());
@@ -191,7 +195,7 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (SQLException sqlEx) {
 
-            LOGGER.error("Error SQL al buscar al académico: " + sqlEx.getMessage());
+            LOGGER.error("Error SQL al buscar al académico: " + sqlEx);
             UTILIDADES.mostrarAlerta(
                     "Error del sistema.",
                     "Ocurrió un problema al acceder a los datos del académico.",
@@ -199,8 +203,7 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (IOException ioEx) {
 
-            LOGGER.error("Error de entrada/salida al buscar al académico: " +
-                    ioEx.getMessage());
+            LOGGER.error("Error de entrada/salida al buscar al académico: " + ioEx);
             UTILIDADES.mostrarAlerta(
                     "Error de conexión",
                     "No se pudo establecer conexión para completar la búsqueda.",
@@ -223,8 +226,9 @@ public class ControladorGestorAcademicosGUI {
             AcademicoDTO academicoDTO =
                     academicoDAO.buscarAcademicoPorNumeroDePersonal(
                             academicoSeleccionado.getNumeroDePersonal());
+            int academicoNoEncontrado = -1;
 
-            if (academicoDTO.getIdUsuario() != -1) {
+            if (academicoDTO.getIdUsuario() != academicoNoEncontrado) {
 
                 etiquetaNombreEncontrado.setText(academicoDTO.getNombre());
                 etiquetaApellidoEncontrado.setText(academicoDTO.getApellido());
@@ -239,8 +243,7 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (SQLException sqlEx) {
 
-            LOGGER.error("Error SQL al mostrar detalles del académico: " +
-                    sqlEx.getMessage());
+            LOGGER.error("Error SQL al mostrar detalles del académico: " + sqlEx);
             UTILIDADES.mostrarAlerta(
                     "Error del sistema",
                     "No se pudieron cargar los datos del académico.",
@@ -250,7 +253,7 @@ public class ControladorGestorAcademicosGUI {
         } catch (IOException ioEx) {
 
             LOGGER.error("Error de entrada/salida al mostrar detalles " +
-                    "del académico: " + ioEx.getMessage());
+                    "del académico: " + ioEx);
             UTILIDADES.mostrarAlerta(
                     "Error de conexión",
                     "No fue posible recuperar los detalles del académico.",
@@ -267,6 +270,7 @@ public class ControladorGestorAcademicosGUI {
                 "Registro de Académico",
                 (Stage) botonRegistrarAcademico.getScene().getWindow()
         );
+
         cargarAcademicos();
     }
 
@@ -287,11 +291,11 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (SQLException sqlEx) {
 
-            LOGGER.error("Error SQL al eliminar al académico: " + sqlEx.getMessage());
+            LOGGER.error("Error SQL al eliminar al académico: " + sqlEx);
 
         } catch (IOException ioEx) {
 
-            LOGGER.error("Error de entrada/salida al eliminar al académico: " + ioEx.getMessage());
+            LOGGER.error("Error de entrada/salida al eliminar al académico: " + ioEx);
         }
 
         return estadoEliminacion;
@@ -315,8 +319,9 @@ public class ControladorGestorAcademicosGUI {
                             int cantidadSeleccionados =
                                     tablaAcademicos.getSelectionModel()
                                             .getSelectedItems().size();
+                            int sinAcademicosSeleccionados = 0;
 
-                            if (cantidadSeleccionados > 0) {
+                            if (cantidadSeleccionados > sinAcademicosSeleccionados) {
                                 etiquetaNumeroAcademicosSeleccionados.setText(
                                         "Academicos seleccionados: " + cantidadSeleccionados);
                             } else {
@@ -377,6 +382,7 @@ public class ControladorGestorAcademicosGUI {
                 () -> {
 
                     tablaAcademicos.getSelectionModel().clearSelection();
+
                     for (AcademicoDTO academico : copiaAcademicos) {
                         tablaAcademicos.getSelectionModel().select(academico);
                     }
@@ -499,7 +505,6 @@ public class ControladorGestorAcademicosGUI {
                 campoNumeroDePersonalEditable.getText().trim();
         String correoEditado = campoCorreoEditable.getText().trim();
 
-        VerificacionUsuario verificacionUsuario = new VerificacionUsuario();
         AcademicoDAO academicoDAO = new AcademicoDAO();
         CuentaDAO cuentaDAO = new CuentaDAO();
 
@@ -543,11 +548,12 @@ public class ControladorGestorAcademicosGUI {
             }
 
             int numeroPersonal = Integer.parseInt(numeroDePersonalEditado);
+            int academicoNoEncontrado = -1;
 
             if (!numeroDePersonalEncontrado.equals(numeroDePersonalEditado)) {
 
                 if (academicoDAO.buscarAcademicoPorNumeroDePersonal(numeroPersonal).
-                        getIdUsuario() != -1) {
+                        getIdUsuario() != academicoNoEncontrado) {
 
                     UTILIDADES.mostrarAlerta(
                             "Número de personal duplicado",
@@ -615,7 +621,7 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (NumberFormatException e) {
 
-            LOGGER.error("Error en formato numérico: " + e.getMessage());
+            LOGGER.error("Error en formato numérico: " + e);
             UTILIDADES.mostrarAlerta(
                     "Error de formato",
                     "El número de personal debe ser un valor numérico válido.",
@@ -623,8 +629,7 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (SQLException e) {
 
-            LOGGER.error("Error de base de datos al guardar cambios: " +
-                    e.getMessage());
+            LOGGER.error("Error de base de datos al guardar cambios: " + e);
             UTILIDADES.mostrarAlerta(
                     "Error del sistema",
                     "Ocurrió un problema al guardar los cambios en el sistema.",
@@ -633,8 +638,7 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (IOException e) {
 
-            LOGGER.error("Error de entrada/salida al guardar cambios: " +
-                    e.getMessage());
+            LOGGER.error("Error de entrada/salida al guardar cambios: " + e);
             UTILIDADES.mostrarAlerta(
                     "Error de Sistema",
                     "No se pudo completar la operación debido a un error interno.",

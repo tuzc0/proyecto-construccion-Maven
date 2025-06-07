@@ -5,27 +5,32 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logica.DAOs.HorarioProyectoDAO;
 import logica.DAOs.ProyectoDAO;
 import logica.DTOs.HorarioProyectoDTO;
+import logica.DTOs.OrganizacionVinculadaDTO;
 import logica.DTOs.ProyectoDTO;
 import logica.DTOs.RepresentanteDTO;
+import logica.interfaces.ISeleccionRepresentante;
 import logica.utilidadesproyecto.SeleccionRepresentanteOrganizacion;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ControladorRegistroProyectoGUI {
+public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
 
     private static final Logger LOGGER =
             LogManager.getLogger(ControladorRegistroProyectoGUI.class);
@@ -85,38 +90,41 @@ public class ControladorRegistroProyectoGUI {
     @FXML
     private void initialize() {
 
-        int maxCaracteresNombreProyecto = 150;
-        int maxCaracteresCamposTexto = 255;
+        final int MAX_CARACTERES_NOMBRE = 150;
+        final int MAX_CARACTERES_CAMPOS_TEXTO = 255;
 
         VerificicacionGeneral verificacionGeneralUtilidad = new VerificicacionGeneral();
 
         verificacionGeneralUtilidad.contadorCaracteresTextField(campoNombre,
-                contadorNombre, maxCaracteresNombreProyecto);
+                contadorNombre, MAX_CARACTERES_NOMBRE);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoDescripcionGeneral,
-                contadorDescripcionGeneral, maxCaracteresCamposTexto);
+                contadorDescripcionGeneral, MAX_CARACTERES_CAMPOS_TEXTO);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoObjetivosGenerales,
-                contadorObjetivosGenerales, maxCaracteresCamposTexto);
+                contadorObjetivosGenerales, MAX_CARACTERES_CAMPOS_TEXTO);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoObjetivosInmediatos,
-                contadorObjetivosInmediatos, maxCaracteresCamposTexto);
+                contadorObjetivosInmediatos, MAX_CARACTERES_CAMPOS_TEXTO);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoObjetivosMediatos,
-                contadorObjetivosMediatos, maxCaracteresCamposTexto);
+                contadorObjetivosMediatos, MAX_CARACTERES_CAMPOS_TEXTO);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoMetodologia,
-                contadorMetodologia, maxCaracteresCamposTexto);
+                contadorMetodologia, MAX_CARACTERES_CAMPOS_TEXTO);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoRecursos,
-                contadorRecursos, maxCaracteresCamposTexto);
+                contadorRecursos, MAX_CARACTERES_CAMPOS_TEXTO);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoActividades,
-                contadorActividades, maxCaracteresCamposTexto);
+                contadorActividades, MAX_CARACTERES_CAMPOS_TEXTO);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoResponsabilidades,
-                contadorResponsabilidades, maxCaracteresCamposTexto);
+                contadorResponsabilidades, MAX_CARACTERES_CAMPOS_TEXTO);
 
         ObservableList<String> listaHoras = FXCollections.observableArrayList();
         ObservableList<String> listaMinutos = FXCollections.observableArrayList();
 
-        for (int hora = 0; hora < 24; hora++) {
+        final int HORAS_POR_DIA = 24;
+        final int MINUTOS_POR_HORA = 60;
+
+        for (int hora = 0; hora < HORAS_POR_DIA; hora++) {
             listaHoras.add(String.format("%02d", hora));
         }
 
-        for (int minuto = 0; minuto < 60; minuto++) {
+        for (int minuto = 0; minuto < MINUTOS_POR_HORA; minuto++) {
             listaMinutos.add(String.format("%02d", minuto));
         }
 
@@ -285,8 +293,9 @@ public class ControladorRegistroProyectoGUI {
         try {
 
             ProyectoDTO proyectoExistente = proyectoDAO.buscarProyectoPorNombre(nombreProyecto);
+            int proyectoNoEncontrado = -1;
 
-            if (proyectoExistente.getIdProyecto() != -1) {
+            if (proyectoExistente.getIdProyecto() != proyectoNoEncontrado) {
 
                 UTILIDADES.mostrarAlerta(
                         "Error",
@@ -396,37 +405,37 @@ public class ControladorRegistroProyectoGUI {
         );
     }
 
+    @Override
+    public void actualizarRepresentanteYOrganizacion() {
+
+        RepresentanteDTO representante =
+                SeleccionRepresentanteOrganizacion.getRepresentanteSeleccionado();
+        OrganizacionVinculadaDTO organizacion =
+                SeleccionRepresentanteOrganizacion.getOrganizacionSeleccionada();
+    }
+
     @FXML
     private void abrirVentanaSeleccionRepresentante() {
 
-        try {
+        Stage ventanaActual = (Stage) botonSeleccionarRepresentante.getScene().getWindow();
 
-            FXMLLoader cargadorVentanaSeleccion =
-                    new FXMLLoader(getClass().getResource("/SeleccionarRepresentante.fxml"));
-            Stage ventanaSeleccionRepresentante = new Stage();
-            ventanaSeleccionRepresentante.setScene(
-                    new Scene(cargadorVentanaSeleccion.load()));
+        FXMLLoader cargador = new FXMLLoader(getClass().getResource("/SeleccionarRepresentante.fxml"));
+        UTILIDADES.abrirVentana(
+                "/SeleccionarRepresentante.fxml",
+                "Seleccionar Representante",
+                ventanaActual);
 
-            ControladorSeleccionRepresentanteGUI controladorSeleccion =
-                    cargadorVentanaSeleccion.getController();
+        ControladorSeleccionRepresentanteGUI controlador = cargador.getController();
 
-            controladorSeleccion.setControladorRegistro(this);
-            ventanaSeleccionRepresentante.show();
-
-        } catch (IOException errorCargaVentana) {
-
-            LOGGER.error("Error al cargar la ventana de selección de representante: "
-                    + errorCargaVentana.getMessage());
-            UTILIDADES.mostrarAlerta(
-                    "Error",
-                    "No se pudo abrir la ventana de selección de representante.",
-                    "Por favor, inténtelo de nuevo más tarde o contacte al administrador.");
+        if (controlador != null) {
+            controlador.setControladorPadre(this);
         }
     }
 
     private Map<CheckBox, List<ComboBox<String>>> obtenerDiasConSusHorarios() {
 
         return Map.of(
+
                 checkLunes, List.of(
                         comboHoraLunesInicio, comboMinutosLunesInicio,
                         comboHoraLunesFin, comboMinutosLunesFin
@@ -468,11 +477,19 @@ public class ControladorRegistroProyectoGUI {
                 int minutoInicio = Integer.parseInt(horarios.get(1).getValue());
                 int horaFin = Integer.parseInt(horarios.get(2).getValue());
                 int minutoFin = Integer.parseInt(horarios.get(3).getValue());
+                int idHorario = 0;
+                int idEstudiante = 0;
+
+                Time horaInicioSQL = Time.valueOf(String.format("%02d:%02d:00", horaInicio, minutoInicio));
+                Time horaFinSQL = Time.valueOf(String.format("%02d:%02d:00", horaFin, minutoFin));
 
                 HorarioProyectoDTO horarioDTO = new HorarioProyectoDTO(
-                        0, idProyecto, diaSemana,
-                        Timestamp.valueOf(String.format("1970-01-01 %02d:%02d:00", horaInicio, minutoInicio)),
-                        Timestamp.valueOf(String.format("1970-01-01 %02d:%02d:00", horaFin, minutoFin))
+                        idHorario,
+                        idProyecto,
+                        diaSemana,
+                        horaInicioSQL,
+                        horaFinSQL,
+                        idEstudiante
                 );
 
                 horariosInsertados = horarioDAO.crearNuevoHorarioProyecto(horarioDTO);
@@ -497,6 +514,7 @@ public class ControladorRegistroProyectoGUI {
         List<String> listaErrores = new ArrayList<>();
 
         diasConHorarios.forEach((diaSeleccionado, horarios) -> {
+
             if (diaSeleccionado.isSelected() && !verificarHorarioDia(horarios)) {
                 listaErrores.add("Horario inválido para " + obtenerNombreDia(diaSeleccionado));
             }

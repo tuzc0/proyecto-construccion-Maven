@@ -51,7 +51,7 @@
                                 <Font name="System Bold" size="14" />
                             </font>
                         </Label>
-                        <TextArea fx:id="textoDescripcionGeneral" prefHeight="70.0" prefWidth="546.0" />
+                        <TextArea fx:id="textoDescripcionGeneral" prefHeight="70.0" prefWidth="546.0" wrapText="true"/>
                         <Label fx:id="contadorDescripcionGeneral" style="-fx-text-fill: gray;" text="0/255">
                             <font>
                                 <Font size="12" />
@@ -64,7 +64,7 @@
                                 <Font name="System Bold" size="14" />
                             </font>
                         </Label>
-                        <TextArea fx:id="textoObjetivosGenerales" prefHeight="78.0" prefWidth="532.0" />
+                        <TextArea fx:id="textoObjetivosGenerales" prefHeight="78.0" prefWidth="532.0" wrapText="true"/>
                         <Label fx:id="contadorObjetivosGenerales" style="-fx-text-fill: gray;" text="0/255">
                             <font>
                                 <Font size="12" />
@@ -127,7 +127,7 @@
                                 <Font name="System Bold" size="14" />
                             </font>
                         </Label>
-                        <TextArea fx:id="textoObjetivosInmediatos" prefHeight="80" prefWidth="600" />
+                        <TextArea fx:id="textoObjetivosInmediatos" prefHeight="80" prefWidth="600" wrapText="true"/>
                         <Label fx:id="contadorObjetivosInmediatos" style="-fx-text-fill: gray;" text="0/255">
                             <font>
                                 <Font size="12" />
@@ -140,7 +140,7 @@
                                 <Font name="System Bold" size="14" />
                             </font>
                         </Label>
-                        <TextArea fx:id="textoObjetivosMediatos" prefHeight="60" prefWidth="600" />
+                        <TextArea fx:id="textoObjetivosMediatos" prefHeight="60" prefWidth="600" wrapText="true"/>
                         <Label fx:id="contadorObjetivosMediatos" style="-fx-text-fill: gray;" text="0/255">
                             <font>
                                 <Font size="12" />
@@ -153,7 +153,7 @@
                                 <Font name="System Bold" size="14" />
                             </font>
                         </Label>
-                        <TextArea fx:id="textoMetodologia" prefHeight="60" prefWidth="600" />
+                        <TextArea fx:id="textoMetodologia" prefHeight="60" prefWidth="600" wrapText="true"/>
                         <Label fx:id="contadorMetodologia" style="-fx-text-fill: gray;" text="0/255">
                             <font>
                                 <Font size="12" />
@@ -166,7 +166,7 @@
                                 <Font name="System Bold" size="14" />
                             </font>
                         </Label>
-                        <TextArea fx:id="textoRecursos" prefHeight="81.0" prefWidth="532.0" />
+                        <TextArea fx:id="textoRecursos" prefHeight="81.0" prefWidth="532.0" wrapText="true"/>
                         <Label fx:id="contadorRecursos" style="-fx-text-fill: gray;" text="0/255">
                             <font>
                                 <Font size="12" />
@@ -179,7 +179,7 @@
                                 <Font name="System Bold" size="14" />
                             </font>
                         </Label>
-                        <TextArea fx:id="textoActividades" prefHeight="60" prefWidth="600" />
+                        <TextArea fx:id="textoActividades" prefHeight="60" prefWidth="600" wrapText="true"/>
                         <Label fx:id="contadorActividades" style="-fx-text-fill: gray;" text="0/255">
                             <font>
                                 <Font size="12" />
@@ -192,7 +192,7 @@
                                 <Font name="System Bold" size="14" />
                             </font>
                         </Label>
-                        <TextArea fx:id="textoResponsabilidades" prefHeight="60" prefWidth="600" />
+                        <TextArea fx:id="textoResponsabilidades" prefHeight="60" prefWidth="600" wrapText="true"/>
                         <Label fx:id="contadorResponsabilidades" style="-fx-text-fill: gray;" text="0/255">
                             <font>
                                 <Font size="12" />

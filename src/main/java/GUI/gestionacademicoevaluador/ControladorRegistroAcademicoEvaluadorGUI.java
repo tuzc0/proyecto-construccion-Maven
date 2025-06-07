@@ -57,20 +57,24 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
     private void initialize() {
 
         VerificicacionGeneral verifGen = new VerificicacionGeneral();
+        final int MAX_CARACTERES_NOMBRE = 50;
+        final int MAX_CARACTERES_NUMERO_PERSONAL = 5;
+        final int MAX_CARACTERES_CORREO = 100;
+        final int MAX_CARACTERES_CONTRASEÑA = 64;
 
         verifGen.contadorCaracteresTextField(
-                campoNombre, contadorNombre, 50);
+                campoNombre, contadorNombre, MAX_CARACTERES_NOMBRE);
         verifGen.contadorCaracteresTextField(
-                campoApellidos, contadorApellidos, 50);
+                campoApellidos, contadorApellidos, MAX_CARACTERES_NOMBRE);
         verifGen.contadorCaracteresTextField(
-                campoNumeroPersonal, contadorNumeroPersonal, 5);
+                campoNumeroPersonal, contadorNumeroPersonal, MAX_CARACTERES_NUMERO_PERSONAL);
         verifGen.contadorCaracteresTextField(
-                campoCorreo, contadorCorreo, 100);
+                campoCorreo, contadorCorreo, MAX_CARACTERES_CORREO);
         verifGen.contadorCaracteresTextField(
-                campoContraseña, contadorContraseña, 64);
+                campoContraseña, contadorContraseña, MAX_CARACTERES_CONTRASEÑA);
         verifGen.contadorCaracteresTextField(
                 campoConfirmarContraseña,
-                contadorConfirmarContraseña, 64);
+                contadorConfirmarContraseña, MAX_CARACTERES_CONTRASEÑA);
 
         botonRegistrar.setCursor(Cursor.HAND);
         botonCancelar.setCursor(Cursor.HAND);
@@ -165,16 +169,17 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
             int numeroPersonal = Integer.parseInt(numPersTxt);
             int estadoActivo = 1;
             int idUsuario = 0;
+            int encontrado = -1;
 
             CuentaDAO cuentaDAO = new CuentaDAO();
             AcademicoEvaluadorDAO evalDAO = new AcademicoEvaluadorDAO();
 
-            AcademicoEvaluadorDTO existEval =
+            AcademicoEvaluadorDTO existeAcademicoEvaludor =
                     evalDAO.buscarAcademicoEvaluadorPorNumeroDePersonal(
                             numeroPersonal
                     );
 
-            if (existEval.getNumeroDePersonal() != -1) {
+            if (existeAcademicoEvaludor.getNumeroDePersonal() != encontrado) {
 
                 UTILIDADES.mostrarAlerta(
                         "Número duplicado",
@@ -209,10 +214,10 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
                     numeroPersonal, idUsuario, nombre, apellidos, estadoActivo
             );
 
-            boolean okCuenta = cuentaDAO.crearNuevaCuenta(cuentaDTO);
-            boolean okInsert = evalDAO.insertarAcademicoEvaluador(dtoEval);
+            boolean cuentaCreada = cuentaDAO.crearNuevaCuenta(cuentaDTO);
+            boolean academicoInsertado = evalDAO.insertarAcademicoEvaluador(dtoEval);
 
-            if (okCuenta && okInsert) {
+            if (cuentaCreada && academicoInsertado) {
 
                 LOGGER.info("Registro exitoso.");
                 UTILIDADES.mostrarAlerta(
@@ -235,8 +240,7 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
         } catch (NumberFormatException e) {
 
             LOGGER.error(
-                    "Formato numérico inválido: " + e.getMessage()
-            );
+                    "Formato numérico inválido: " + e);
             UTILIDADES.mostrarAlerta(
                     "Error de formato",
                     "El número debe ser numérico de 5 dígitos.",
@@ -244,7 +248,7 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
             );
 
         } catch (SQLException e) {
-            LOGGER.error("Error BD: " + e.getMessage());
+            LOGGER.error("Error BD: " + e);
             UTILIDADES.mostrarAlerta(
                     "Error del sistema",
                     "Ocurrió un error al registrar.",
@@ -253,7 +257,7 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
 
         } catch (IOException e) {
 
-            LOGGER.error("Error I/O: " + e.getMessage());
+            LOGGER.error("Error I/O: " + e);
             UTILIDADES.mostrarAlerta(
                     "Error interno",
                     "No se pudo completar la operación.",
@@ -262,7 +266,7 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
 
         } catch (Exception e) {
 
-            LOGGER.error("Error inesperado: " + e.getMessage());
+            LOGGER.error("Error inesperado: " + e);
             UTILIDADES.mostrarAlerta(
                     "Error desconocido",
                     "Ocurrió un error inesperado.",

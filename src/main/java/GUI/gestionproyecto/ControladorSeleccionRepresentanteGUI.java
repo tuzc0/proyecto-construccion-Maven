@@ -14,6 +14,7 @@ import logica.DTOs.OrganizacionVinculadaDTO;
 import logica.DTOs.RepresentanteDTO;
 import logica.utilidadesproyecto.ContenedoraRepresentanteOrganizacionProyecto;
 import logica.utilidadesproyecto.SeleccionRepresentanteOrganizacion;
+import logica.interfaces.ISeleccionRepresentante;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.io.IOException;
@@ -35,122 +36,174 @@ public class ControladorSeleccionRepresentanteGUI {
 
     @FXML
     private void initialize() {
+        LOGGER.info("Inicializando ControladorSeleccionRepresentanteGUI");
 
         botonBuscar.setCursor(Cursor.HAND);
         botonCancelarSeleccion.setCursor(Cursor.HAND);
         botonSeleccionarRepresentante.setCursor(Cursor.HAND);
 
-        columnaRepresentante.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getRepresentante().getNombre() + " " +
-                        cellData.getValue().getRepresentante().getApellidos()));
-        columnaOrganizacion.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getOrganizacion().getNombre()));
+        columnaRepresentante.setCellValueFactory(cellData -> {
+            LOGGER.debug("Configurando columna representante para: " + cellData.getValue().getRepresentante());
+            return new SimpleStringProperty(cellData.getValue().getRepresentante().getNombre() + " " +
+                    cellData.getValue().getRepresentante().getApellidos());
+        });
+
+        columnaOrganizacion.setCellValueFactory(cellData -> {
+            LOGGER.debug("Configurando columna organización para: " + cellData.getValue().getOrganizacion());
+            return new SimpleStringProperty(cellData.getValue().getOrganizacion().getNombre());
+        });
 
         tablaRepresentantes.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        LOGGER.info("Modo de selección configurado a SINGLE");
 
         cargarRepresentantesYOrganizaciones();
     }
 
     private void cargarRepresentantesYOrganizaciones() {
+        LOGGER.info("Cargando representantes y organizaciones...");
 
         try {
-
             RepresentanteDAO representanteDAO = new RepresentanteDAO();
             OrganizacionVinculadaDAO organizacionDAO = new OrganizacionVinculadaDAO();
 
+            LOGGER.debug("Obteniendo lista de representantes...");
             List<RepresentanteDTO> representantes = representanteDAO.obtenerTodosLosRepresentantes();
+            LOGGER.debug("Obteniendo lista de organizaciones...");
             List<OrganizacionVinculadaDTO> organizaciones = organizacionDAO.obtenerTodasLasOrganizaciones();
 
+            LOGGER.info("Encontrados " + representantes.size() + " representantes y " +
+                    organizaciones.size() + " organizaciones");
+
             ObservableList<ContenedoraRepresentanteOrganizacionProyecto> listaCombinada = FXCollections.observableArrayList();
+            LOGGER.debug("Creando lista combinada de representantes y organizaciones...");
 
             for (RepresentanteDTO representante : representantes) {
-
                 for (OrganizacionVinculadaDTO organizacion : organizaciones) {
-
                     if (representante.getIdOrganizacion() == organizacion.getIdOrganizacion()) {
-
-                        listaCombinada.add(new ContenedoraRepresentanteOrganizacionProyecto(representante, organizacion, null));
+                        LOGGER.trace("Emparejando representante " + representante.getNombre() +
+                                " con organización " + organizacion.getNombre());
+                        listaCombinada.add(new ContenedoraRepresentanteOrganizacionProyecto(
+                                representante, organizacion, null));
                     }
                 }
             }
 
+            LOGGER.info("Total de emparejamientos encontrados: " + listaCombinada.size());
             tablaRepresentantes.setItems(listaCombinada);
+            LOGGER.info("Tabla de representantes actualizada");
 
-        } catch (IOException | SQLException e) {
+        } catch (SQLException e) {
+            LOGGER.error("Error SQL al cargar representantes y organizaciones: " + e.getMessage(), e);
+            UTILIDADES.mostrarAlerta("Error",
+                    "Error al cargar los datos",
+                    "No se pudo cargar la lista de representantes y organizaciones");
 
-            LOGGER.error("Error al cargar representantes y organizaciones: " + e.getMessage());
-            UTILIDADES.mostrarAlerta("Error", "Error al cargar datos", "No se pudo cargar la lista de representantes y organizaciones.");
+        } catch (IOException e) {
+            LOGGER.error("Error de IO al cargar representantes y organizaciones: " + e.getMessage(), e);
+            UTILIDADES.mostrarAlerta("Error",
+                    "Error al cargar datos",
+                    "No se pudo cargar la lista de representantes y organizaciones.");
         }
     }
 
     @FXML
     private void buscarRepresentante() {
-
         String textoBusqueda = campoBusqueda.getText().toLowerCase();
-        ObservableList<ContenedoraRepresentanteOrganizacionProyecto> listaFiltrada = FXCollections.observableArrayList();
+        LOGGER.info("Iniciando búsqueda con texto: " + textoBusqueda);
 
         if (textoBusqueda.isEmpty()) {
-
+            LOGGER.warn("Intento de búsqueda con campo vacío");
             UTILIDADES.mostrarAlerta(
                     "Error",
-                    "El campo de busqueda se encuentra vacio",
+                    "El campo de búsqueda se encuentra vacío",
                     "Por favor, ingrese el nombre del representante o nombre de la organización a buscar"
             );
             return;
         }
 
+        ObservableList<ContenedoraRepresentanteOrganizacionProyecto> listaFiltrada = FXCollections.observableArrayList();
+        LOGGER.debug("Filtrando representantes/organizaciones...");
+
         for (ContenedoraRepresentanteOrganizacionProyecto contenedor : tablaRepresentantes.getItems()) {
+            String nombreCompleto = contenedor.getRepresentante().getNombre() + " " +
+                    contenedor.getRepresentante().getApellidos();
+            String orgNombre = contenedor.getOrganizacion().getNombre();
 
-            if (contenedor.getRepresentante().getNombre().toLowerCase().contains(textoBusqueda) ||
-                contenedor.getOrganizacion().getNombre().toLowerCase().contains(textoBusqueda)) {
-
+            if (orgNombre.toLowerCase().contains(textoBusqueda) ||
+                    nombreCompleto.toLowerCase().contains(textoBusqueda)) {
+                LOGGER.trace("Coincidencia encontrada: " + nombreCompleto + " - " + orgNombre);
                 listaFiltrada.add(contenedor);
             }
         }
 
-        if (listaFiltrada.isEmpty()) {
+        LOGGER.info("Resultados de búsqueda: " + listaFiltrada.size() + " coincidencias");
+        tablaRepresentantes.setItems(listaFiltrada);
 
+        if (listaFiltrada.isEmpty()) {
+            LOGGER.info("No se encontraron coincidencias para: " + textoBusqueda);
             UTILIDADES.mostrarAlerta(
                     "Representante u Organización no encontrados",
                     "No se ha encontrado ningún representante u organización activo con ese nombre",
                     "Por favor, verifique que haya ingresado bien el nombre o registre la organización"
             );
-            return;
-        }
 
-        tablaRepresentantes.setItems(listaFiltrada);
+            cargarRepresentantesYOrganizaciones();
+        }
+    }
+
+    private ISeleccionRepresentante controladorPadre;
+
+    public void setControladorPadre(ISeleccionRepresentante controladorPadre) {
+        LOGGER.info("Estableciendo controlador padre: " + controladorPadre.getClass().getSimpleName());
+        this.controladorPadre = controladorPadre;
     }
 
     @FXML
     private void seleccionarRepresentante() {
+        LOGGER.info("Intentando seleccionar representante...");
 
-        ContenedoraRepresentanteOrganizacionProyecto seleccion = tablaRepresentantes.getSelectionModel().getSelectedItem();
+        ContenedoraRepresentanteOrganizacionProyecto seleccion =
+                tablaRepresentantes.getSelectionModel().getSelectedItem();
 
         if (seleccion != null) {
+            LOGGER.info("Representante seleccionado: " +
+                    seleccion.getRepresentante().getNombre() + " " +
+                    seleccion.getRepresentante().getApellidos());
+            LOGGER.info("Organización seleccionada: " +
+                    seleccion.getOrganizacion().getNombre());
 
+            // Almacenar selección en clase estática
             SeleccionRepresentanteOrganizacion.setRepresentanteSeleccionado(seleccion.getRepresentante());
             SeleccionRepresentanteOrganizacion.setOrganizacionSeleccionada(seleccion.getOrganizacion());
+            LOGGER.debug("Selección almacenada en SeleccionRepresentanteOrganizacion");
+
+            UTILIDADES.mostrarAlerta("Representante seleccionado. ",
+                    "Se ha seleccionado un representante y organizacion para el proyecto",
+                    "");
+
+            if (controladorPadre != null) {
+                LOGGER.debug("Notificando al controlador padre...");
+                controladorPadre.actualizarRepresentanteYOrganizacion();
+            } else {
+                LOGGER.warn("Controlador padre es nulo - no se puede notificar");
+            }
 
             Stage stageActual = (Stage) tablaRepresentantes.getScene().getWindow();
+            LOGGER.info("Cerrando ventana de selección...");
             stageActual.close();
 
         } else {
-
-            UTILIDADES.mostrarAlerta("Error", "Selección inválida", "Por favor, seleccione un representante y una organización.");
+            LOGGER.warn("Intento de selección sin elemento seleccionado");
+            UTILIDADES.mostrarAlerta("Error",
+                    "Selección inválida",
+                    "Por favor, seleccione un representante y una organización.");
         }
     }
 
     @FXML
     private void botonCancelarSeleccion() {
-
+        LOGGER.info("Cancelando selección de representante...");
         Stage stageActual = (Stage) tablaRepresentantes.getScene().getWindow();
         stageActual.close();
-    }
-
-    private ControladorRegistroProyectoGUI controladorRegistro;
-
-    public void setControladorRegistro(ControladorRegistroProyectoGUI controladorRegistro) {
-
-        this.controladorRegistro = controladorRegistro;
     }
 }

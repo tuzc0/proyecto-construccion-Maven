@@ -1,14 +1,14 @@
 package logica.DAOs;
 
 import accesoadatos.ConexionBaseDeDatos;
+import logica.DTOs.AcademicoDTO;
 import logica.DTOs.HorarioProyectoDTO;
 import logica.DTOs.ProyectoDTO;
 import logica.interfaces.IHorarioProyectoDAO;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HorarioProyectoDAO implements IHorarioProyectoDAO {
 
@@ -19,7 +19,7 @@ public class HorarioProyectoDAO implements IHorarioProyectoDAO {
 
     public boolean crearNuevoHorarioProyecto(HorarioProyectoDTO horarioProyectoDTO) throws SQLException, IOException {
 
-        String insertarHorario = "INSERT INTO horariosproyecto VALUES (?, ?, ?, ?, ?)";
+        String insertarHorario = "INSERT INTO horariosproyecto VALUES (?, ?, ?, ?, ?, ?)";
         boolean proyectoInsertado = false;
 
         try {
@@ -29,8 +29,14 @@ public class HorarioProyectoDAO implements IHorarioProyectoDAO {
             sentenciaHorarioProyecto.setInt(1, horarioProyectoDTO.getIdHorario());
             sentenciaHorarioProyecto.setInt(2, horarioProyectoDTO.getIdProyecto());
             sentenciaHorarioProyecto.setString(3, horarioProyectoDTO.getDiaSemana());
-            sentenciaHorarioProyecto.setTimestamp(4, horarioProyectoDTO.getHoraInicio());
-            sentenciaHorarioProyecto.setTimestamp(5, horarioProyectoDTO.getHoraFin());
+            sentenciaHorarioProyecto.setTime(4, horarioProyectoDTO.getHoraInicio());
+            sentenciaHorarioProyecto.setTime(5, horarioProyectoDTO.getHoraFin());
+
+            if (horarioProyectoDTO.getIdEstudiante() > 0) {
+                sentenciaHorarioProyecto.setInt(6, horarioProyectoDTO.getIdEstudiante());
+            } else {
+                sentenciaHorarioProyecto.setNull(6, Types.INTEGER);
+            }
 
             if (sentenciaHorarioProyecto.executeUpdate() > 0) {
                 proyectoInsertado = true;
@@ -57,8 +63,8 @@ public class HorarioProyectoDAO implements IHorarioProyectoDAO {
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaHorarioProyecto = conexionBaseDeDatos.prepareStatement(modificarHorario);
             sentenciaHorarioProyecto.setString(1, horarioProyectoDTO.getDiaSemana());
-            sentenciaHorarioProyecto.setTimestamp(2, horarioProyectoDTO.getHoraInicio());
-            sentenciaHorarioProyecto.setTimestamp(3, horarioProyectoDTO.getHoraFin());
+            sentenciaHorarioProyecto.setTime(2, horarioProyectoDTO.getHoraInicio());
+            sentenciaHorarioProyecto.setTime(3, horarioProyectoDTO.getHoraFin());
             sentenciaHorarioProyecto.setInt(4, horarioProyectoDTO.getIdHorario());
 
             if (sentenciaHorarioProyecto.executeUpdate() > 0) {
@@ -76,12 +82,66 @@ public class HorarioProyectoDAO implements IHorarioProyectoDAO {
         return horarioModificado;
     }
 
-    public ProyectoDTO buscarHorarioPorIdDeProyecto(int idProyecto) throws SQLException, IOException {
+    public boolean asignarHorarioAEstudiante(int matricula, int idProyecto) throws SQLException, IOException {
 
-        String buscarHorario = "SELECT * FROM horariosproyecto WHERE idProyecto = ?";
-        ProyectoDTO proyectoDTO = null;
+        String añadirEstudiante = "UPDATE horariosproyecto SET idEstudiante = ? WHERE idProyecto = ?";
+        boolean operacionExistosa = false;
 
+        try {
 
-        return proyectoDTO;
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaHorarioProyecto = conexionBaseDeDatos.prepareStatement(añadirEstudiante);
+            sentenciaHorarioProyecto.setInt(1, matricula);
+            sentenciaHorarioProyecto.setInt(2, idProyecto);
+
+            if (sentenciaHorarioProyecto.executeUpdate() > 0) {
+
+                operacionExistosa = true;
+            }
+
+        } finally {
+
+            if (sentenciaHorarioProyecto != null) {
+
+                sentenciaHorarioProyecto.close();
+            }
+        }
+
+        return operacionExistosa;
+    }
+
+    public List<HorarioProyectoDTO> buscarHorarioPorIdDeProyecto(int idProyecto) throws SQLException, IOException {
+
+        String buscarHorarioSQL = "SELECT * FROM horariosproyecto WHERE idProyecto = ?";
+        List<HorarioProyectoDTO> listaHorarios = new ArrayList<>();
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaHorarioProyecto = conexionBaseDeDatos.prepareStatement(buscarHorarioSQL);
+            sentenciaHorarioProyecto.setInt(1, idProyecto);
+            resultadoBusquedaHorario = sentenciaHorarioProyecto.executeQuery();
+
+            while (resultadoBusquedaHorario.next()) {
+
+                int iDHorario = resultadoBusquedaHorario.getInt("idHorario");
+                int iDProyecto = resultadoBusquedaHorario.getInt("idProyecto");
+                String dia = resultadoBusquedaHorario.getString("diaSemana");
+                Time horaDeInicio = resultadoBusquedaHorario.getTime("horaInicio");
+                Time horaDeFin = resultadoBusquedaHorario.getTime("horaFin");
+                int idEstudiante = resultadoBusquedaHorario.getInt("idEstudiante");
+
+                HorarioProyectoDTO horarioProyectoDTO = new HorarioProyectoDTO(iDHorario, iDProyecto, dia, horaDeInicio, horaDeFin, idEstudiante);
+                listaHorarios.add(horarioProyectoDTO);
+            }
+
+        } finally {
+
+            if (sentenciaHorarioProyecto != null) {
+                sentenciaHorarioProyecto.close();
+            }
+        }
+
+        return listaHorarios;
     }
 }

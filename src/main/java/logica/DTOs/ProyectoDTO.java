@@ -177,7 +177,7 @@ public class ProyectoDTO {
 
     public void setIdRepresentante(int idRepresentante) {
 
-        idRepresentante = idRepresentante;
+        this.idRepresentante = idRepresentante;
     }
 
     public String getDescripcion() {
@@ -186,7 +186,8 @@ public class ProyectoDTO {
 
     public void setDescripcion(String descripcion) {
 
-        this.descripcion = descripcion; }
+        this.descripcion = descripcion;
+    }
 
     public int getUsuariosDirectos() {
 
@@ -287,7 +288,7 @@ public class ProyectoDTO {
     private boolean validarTextoCamposProyecto(String texto) {
 
         String[] caracteres = texto.trim().split("\\s+");
-        return caracteres.length >= 1 && texto.length() <= 255;
+        return caracteres.length >= 3 && texto.length() <= 255;
     }
 
     public List<String> validarCamposProyecto( String campoNombre,
@@ -310,42 +311,42 @@ public class ProyectoDTO {
         }
 
         if (!validarTextoCamposProyecto(campoDescripcionGeneral)) {
-            errores.add("El campo de descripcion general debe tener una o más palabras " +
+            errores.add("El campo de descripcion general debe tener 3 o más palabras " +
                     "y no exceder 255 caracteres.");
         }
 
         if (!validarTextoCamposProyecto(campoObjetivosGenerales)) {
-            errores.add("El campo de objetivos generales debe tener una o más palabras " +
+            errores.add("El campo de objetivos generales debe tener 3 o más palabras " +
                     "y no exceder 255 caracteres.");
         }
 
         if (!validarTextoCamposProyecto(campoObjetivosInmediatos)) {
-            errores.add("El campo de objetivos inmediatos debe tener una o más palabras " +
+            errores.add("El campo de objetivos inmediatos debe tener 3 o más palabras " +
                     "y no exceder 255 caracteres.");
         }
 
         if (!validarTextoCamposProyecto(campoObjetivosMediatos)) {
-            errores.add("El campo de objetivos mediatos debe tener una o más palabras " +
+            errores.add("El campo de objetivos mediatos debe tener 3 o más palabras " +
                     "y no exceder 255 caracteres.");
         }
 
         if (!validarTextoCamposProyecto(campoMetodologia)) {
-            errores.add("El campo de metodologia debe tener una o más palabras " +
+            errores.add("El campo de metodologia debe tener de 3 o más palabras " +
                     "y no exceder 255 caracteres.");
         }
 
         if (!validarTextoCamposProyecto(campoRecursos)) {
-            errores.add("El campo de recursos debe tener una o más palabras " +
+            errores.add("El campo de recursos debe tener de 3 o más palabras " +
                     "y no exceder 255 caracteres.");
         }
 
         if (!validarTextoCamposProyecto(campoActividades)) {
-            errores.add("El campo de actividades debe tener una o más palabras " +
+            errores.add("El campo de actividades debe tener de 3 o más palabras " +
                     "y no exceder 255 caracteres.");
         }
 
         if (!validarTextoCamposProyecto(campoResponsabilidades)) {
-            errores.add("El campo de responsabilidades debe tener una o más palabras " +
+            errores.add("El campo de responsabilidades debe tener de 3 o más palabras " +
                     "y no exceder 255 caracteres.");
         }
 

@@ -1,25 +1,29 @@
 package logica.DTOs;
 
-import java.sql.Timestamp;
+import java.sql.Date;
+import java.sql.Time;
 
 public class HorarioProyectoDTO {
 
     private int idHorario;
     private int idProyecto;
     private String diaSemana;
-    private Timestamp horaInicio;
-    private Timestamp horaFin;
+    private Time horaInicio;
+    private Time horaFin;
+    private int idEstudiante;
 
     public HorarioProyectoDTO() {
     }
 
-    public HorarioProyectoDTO(int idHorario, int idProyecto, String diaSemana, Timestamp horaInicio, Timestamp horaFin) {
+    public HorarioProyectoDTO(int idHorario, int idProyecto, String diaSemana,
+                              Time horaInicio, Time horaFin, int idEstudiante) {
 
         this.idHorario = idHorario;
         this.idProyecto = idProyecto;
         this.diaSemana = diaSemana;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
+        this.idEstudiante = idEstudiante;
     }
 
     public int getIdHorario() {
@@ -52,23 +56,33 @@ public class HorarioProyectoDTO {
         this.diaSemana = diaSemana;
     }
 
-    public Timestamp getHoraInicio() {
+    public Time getHoraInicio() {
 
         return horaInicio;
     }
 
-    public void setHoraInicio(Timestamp horaInicio) {
+    public void setHoraInicio(Time horaInicio) {
 
         this.horaInicio = horaInicio;
     }
 
-    public Timestamp getHoraFin() {
+    public Time getHoraFin() {
 
         return horaFin;
     }
 
-    public void setHoraFin(Timestamp horaFin) {
+    public void setHoraFin(Time horaFin) {
 
         this.horaFin = horaFin;
+    }
+
+    public int getIdEstudiante() {
+
+        return idEstudiante;
+    }
+
+    public void setIdEstudiante(int idEstudiante) {
+
+        this.idEstudiante = idEstudiante;
     }
 }

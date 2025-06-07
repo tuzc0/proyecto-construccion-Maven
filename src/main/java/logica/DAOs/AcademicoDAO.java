@@ -169,11 +169,12 @@ public class AcademicoDAO implements IAcademicoDAO {
     }
 
     public AcademicoDTO buscarAcademicoPorID(int idUsuario) throws SQLException, IOException {
-        AcademicoDTO academico = new AcademicoDTO(-1, -1, "N/A", "N/A", 0);
 
+        AcademicoDTO academico = new AcademicoDTO(-1, -1, "N/A", "N/A", 0);
         String consultaSQL = "SELECT * FROM vista_academicos WHERE idUsuario = ?";
 
         try {
+
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             consultaPreparada = conexionBaseDeDatos.prepareStatement(consultaSQL);
             consultaPreparada.setInt(1, idUsuario);

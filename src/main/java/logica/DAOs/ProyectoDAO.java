@@ -26,7 +26,7 @@ public class ProyectoDAO implements IProyectoDAO {
             descripciongeneral, usuariosDirectos, usuariosIndirectos
         ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""";
 
-        int idGenerado = -1;
+        int idProyectoGenerado = -1;
 
         try {
 
@@ -56,11 +56,11 @@ public class ProyectoDAO implements IProyectoDAO {
             sentenciaProyecto.setInt(15, proyectoDTO.getUsuariosIndirectos());
             sentenciaProyecto.executeUpdate();
 
-            ResultSet rs = sentenciaProyecto.getGeneratedKeys();
+            ResultSet idNuevoProyecto = sentenciaProyecto.getGeneratedKeys();
 
-            if (rs.next()) {
+            if (idNuevoProyecto.next()) {
 
-                idGenerado = rs.getInt(1);
+                idProyectoGenerado = idNuevoProyecto.getInt(1);
             }
 
         } finally {
@@ -70,7 +70,7 @@ public class ProyectoDAO implements IProyectoDAO {
             }
         }
 
-        return idGenerado;
+        return idProyectoGenerado;
     }
 
     public boolean eliminarProyectoPorID(int idProyecto) throws SQLException, IOException {
@@ -104,14 +104,16 @@ public class ProyectoDAO implements IProyectoDAO {
 
         String modificarSQLProyecto = "UPDATE proyecto SET nombre = ?, objetivogeneral = ?, " +
                 "objetivosinmediatos = ?, objetivosmediatos = ?, metodologia = ?, recursos = ?, actividades = ?, " +
-                "diasyhorarios = ?, estadoActivo = ?, idRepresentante = ?, descripciongeneral = ? " +
-                "usuariosDirectos = ?, usuariosIndirectos = ? WHERE IDProyecto = ?";
+                "responsabilidades = ?, idRepresentante = ?, descripciongeneral = ?, " +
+                "usuariosDirectos = ?, usuariosIndirectos = ? WHERE idProyecto = ?";
+
         boolean proyectoModificado = false;
 
         try {
 
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaProyecto = conexionBaseDeDatos.prepareStatement(modificarSQLProyecto);
+
             sentenciaProyecto.setString(1, proyecto.getNombre());
             sentenciaProyecto.setString(2, proyecto.getObjetivoGeneral());
             sentenciaProyecto.setString(3, proyecto.getObjetivosInmediatos());
@@ -126,14 +128,15 @@ public class ProyectoDAO implements IProyectoDAO {
             sentenciaProyecto.setInt(12, proyecto.getUsuariosIndirectos());
             sentenciaProyecto.setInt(13, proyecto.getIdProyecto());
 
-            if (sentenciaProyecto.executeUpdate() > 0) {
+            int filasAfectadas = sentenciaProyecto.executeUpdate();
+
+            if (filasAfectadas > 0) {
                 proyectoModificado = true;
             }
 
         } finally {
 
             if (sentenciaProyecto != null) {
-
                 sentenciaProyecto.close();
             }
         }
@@ -170,7 +173,7 @@ public class ProyectoDAO implements IProyectoDAO {
 
     public ProyectoDTO buscarProyectoPorNombre(String nombreProyecto) throws SQLException, IOException {
 
-        String consultaSQLProyecto = "SELECT * FROM proyecto WHERE nombre = ?";
+        String consultaSQLProyecto = "SELECT * FROM proyecto WHERE LOWER(UNACCENT(nombre)) = LOWER(UNACCENT(?))";
         ProyectoDTO proyecto = new ProyectoDTO(-1, null, null,
                 null, null, null, null,
                 null, null, null, -1, -1,

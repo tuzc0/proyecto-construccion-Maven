@@ -5,7 +5,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
@@ -19,6 +22,8 @@ import logica.DAOs.RepresentanteDAO;
 import logica.DTOs.ProyectoDTO;
 import logica.DTOs.RepresentanteDTO;
 import logica.utilidadesproyecto.ContenedoraRepresentanteOrganizacionProyecto;
+import logica.verificacion.VerificicacionGeneral;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -119,7 +124,7 @@ public class ControladorConsultarProyectosGUI {
                     ContenedoraRepresentanteOrganizacionProyecto contenedor =
                             getTableView().getItems().get(getIndex());
                     ProyectoDTO proyectoDTO = contenedor.getProyecto();
-
+                    abrirVentanaDetallesProyecto(proyectoDTO);
                 });
             }
 
@@ -144,6 +149,31 @@ public class ControladorConsultarProyectosGUI {
         };
 
         columnaVerDetalles.setCellFactory(cellFactory);
+    }
+
+    private void abrirVentanaDetallesProyecto(ProyectoDTO proyectoSeleccionado) {
+
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestorProyectoGUI.fxml"));
+            Parent root = loader.load();
+
+            ControladorGestorProyectoGUI controladorGestorProyectoGUI = loader.getController();
+            controladorGestorProyectoGUI.setProyectoDTO(proyectoSeleccionado);
+            controladorGestorProyectoGUI.setControladorPadre(this);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Detalles Proyecto");
+            stage.show();
+
+        } catch (Exception e) {
+
+            LOGGER.severe("Error al abrir la ventana de detalles de la organización: " + e);
+            UTILIDADES.mostrarAlerta("Error",
+                    "Error al abrir la ventana de detalles de proyecto",
+                    "Por favor, intentelo de nuevo más tarde");
+        }
     }
 
     private void añadirBotonEliminarATabla() {
@@ -185,7 +215,7 @@ public class ControladorConsultarProyectosGUI {
         columnaEliminarProyecto.setCellFactory(cellFactory);
     }
 
-    private void cargarProyectoYOrganizacion() {
+    public void cargarProyectoYOrganizacion() {
 
         ProyectoDAO proyectoDAO = new ProyectoDAO();
         RepresentanteDAO representanteDAO = new RepresentanteDAO();
@@ -282,7 +312,6 @@ public class ControladorConsultarProyectosGUI {
 
         tablaProyectos.setItems(listaFiltrada);
     }
-
 
     private void confirmarEliminacion(ProyectoDTO proyectoAEliminar) {
 

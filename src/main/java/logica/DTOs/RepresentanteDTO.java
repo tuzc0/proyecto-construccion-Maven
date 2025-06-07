@@ -94,4 +94,17 @@ public class RepresentanteDTO {
 
         this.estadoActivo = estadoActivo;
     }
+
+    @Override
+    public String toString() {
+        return "RepresentanteDTO{" +
+                "IDRepresentante=" + IDRepresentante +
+                ", correo='" + correo + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", apellidos='" + apellidos + '\'' +
+                ", idOrganizacion=" + idOrganizacion +
+                ", estadoActivo=" + estadoActivo +
+                '}';
+    }
 }

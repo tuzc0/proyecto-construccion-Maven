@@ -1955,3 +1955,17 @@ java.sql.SQLException: Column 'metododologia' not found.
 2025-06-07 15:57:55 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorSeleccionRepresentanteGUI - Representante seleccionado: Pedro García
 2025-06-07 15:57:55 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorSeleccionRepresentanteGUI - Organización seleccionada: Organización G
 2025-06-07 15:57:56 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorSeleccionRepresentanteGUI - Cerrando ventana de selección...
+2025-06-07 19:34:58 [JavaFX Application Thread] INFO  GUI.gestionacademico.ControladorRegistroAcademicoGUI - Registro de académico exitoso.
+2025-06-07 19:35:10 [JavaFX Application Thread] INFO  GUI.gestionacademico.ControladorRegistroAcademicoGUI - El académico ha sido modificado correctamente.
+2025-06-07 19:35:24 [JavaFX Application Thread] INFO  GUI.gestionacademico.ControladorRegistroAcademicoGUI - El académico ha sido modificado correctamente.
+2025-06-07 20:19:00 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorSeleccionRepresentanteGUI - Inicializando ControladorSeleccionRepresentanteGUI
+2025-06-07 20:19:00 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorSeleccionRepresentanteGUI - Modo de selección configurado a SINGLE
+2025-06-07 20:19:00 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorSeleccionRepresentanteGUI - Cargando representantes y organizaciones...
+2025-06-07 20:19:00 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorSeleccionRepresentanteGUI - Encontrados 8 representantes y 7 organizaciones
+2025-06-07 20:19:00 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorSeleccionRepresentanteGUI - Total de emparejamientos encontrados: 7
+2025-06-07 20:19:00 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorSeleccionRepresentanteGUI - Tabla de representantes actualizada
+2025-06-07 20:19:00 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorSeleccionRepresentanteGUI - Estableciendo controlador padre: ControladorGestorProyectoGUI
+2025-06-07 20:19:05 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorSeleccionRepresentanteGUI - Intentando seleccionar representante...
+2025-06-07 20:19:05 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorSeleccionRepresentanteGUI - Representante seleccionado: Pedro García
+2025-06-07 20:19:05 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorSeleccionRepresentanteGUI - Organización seleccionada: Organización G
+2025-06-07 20:19:06 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorSeleccionRepresentanteGUI - Cerrando ventana de selección...

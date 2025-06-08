@@ -481,7 +481,7 @@ public class ControladorGestorEstudiantesGUI {
 
             if (!correoEncontrado.equals(correo)) {
 
-                if (cuentaDAO.buscarCuentaPorID(idEstudiante).getCorreoElectronico() != "N/A") {
+                if (cuentaDAO.buscarCuentaPorID(idEstudiante).getCorreoElectronico() == "N/A") {
 
                     utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "El correo ya está registrado.");
                     return;
@@ -491,7 +491,7 @@ public class ControladorGestorEstudiantesGUI {
 
             usuarioDAO.modificarUsuario(new UsuarioDTO(idEstudiante, nombre, apellidos, 1));
             cuentaDAO.modificarCuenta(new CuentaDTO(correo, contrasena, idEstudiante));
-            estudianteDAO.modificarEstudiante(new EstudianteDTO(idEstudiante, nombre, apellidos, matricula, 1));
+            estudianteDAO.modificarEstudiante(new EstudianteDTO(idEstudiante, nombre, apellidos, matricula, 1,0));
 
             campoNombreEncontrado.setText(nombre);
             campoApellidoEncontrado.setText(apellidos);

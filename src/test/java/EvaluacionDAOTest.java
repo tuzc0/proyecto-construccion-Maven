@@ -72,7 +72,7 @@ public class EvaluacionDAOTest {
 
         EstudianteDTO estudiante = new EstudianteDTO(
                 idUsuarioEst, usuarioEst.getNombre(), usuarioEst.getApellido(),
-                matricula, 1
+                matricula, 1,0
         );
         estudianteDAO.insertarEstudiante(estudiante);
         matriculasEstudiantesCreadas.add(matricula);

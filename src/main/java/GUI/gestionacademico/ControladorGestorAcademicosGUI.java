@@ -153,9 +153,10 @@ public class ControladorGestorAcademicosGUI {
 
         try {
 
+            int numeroDePersonalABuscar = Integer.parseInt(numeroDePersonal);
+
             AcademicoDTO academicoDTO =
-                    academicoDAO.buscarAcademicoPorNumeroDePersonal(
-                            Integer.parseInt(numeroDePersonal));
+                    academicoDAO.buscarAcademicoPorNumeroDePersonal(numeroDePersonalABuscar);
             int academicoEncontrado = -1;
             int academicoInactivo = 0;
 
@@ -193,7 +194,14 @@ public class ControladorGestorAcademicosGUI {
                                 "intenta con otro número.");
             }
 
-        } catch (SQLException sqlEx) {
+        } catch (NumberFormatException e) {
+            UTILIDADES.mostrarAlerta("Error de busqueda",
+            "El número de personal tiene que ser un número",
+            "Verifique que el número introducido en el campo de busqueda sea un número Ej.12345."
+            );
+        }
+
+        catch (SQLException sqlEx) {
 
             LOGGER.error("Error SQL al buscar al académico: " + sqlEx);
             UTILIDADES.mostrarAlerta(
@@ -209,6 +217,7 @@ public class ControladorGestorAcademicosGUI {
                     "No se pudo establecer conexión para completar la búsqueda.",
                     "Verifique su conexión a Internet o inténtelo nuevamente " +
                             "más tarde.");
+
         }
     }
 

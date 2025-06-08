@@ -179,7 +179,7 @@ public class ControladorRegistroEstudianteGUI {
             CuentaDTO cuentaDTO = new CuentaDTO(correo, contraseña, idUsuario);
             cuentaDAO.crearNuevaCuenta(cuentaDTO);
 
-            EstudianteDTO estudianteDTO = new EstudianteDTO(idUsuario, nombre, apellidos, matricula, estadoActivo);
+            EstudianteDTO estudianteDTO = new EstudianteDTO(idUsuario, nombre, apellidos, matricula, estadoActivo, 0);
             estudianteDAO.insertarEstudiante(estudianteDTO);
 
             utilidades.mostrarVentana("/RegistroEstudianteExitosoGUI.fxml");

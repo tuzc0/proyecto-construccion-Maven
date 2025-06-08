@@ -21,9 +21,7 @@ import logica.DAOs.ProyectoDAO;
 import logica.DAOs.RepresentanteDAO;
 import logica.DTOs.ProyectoDTO;
 import logica.DTOs.RepresentanteDTO;
-import logica.utilidadesproyecto.ContenedoraRepresentanteOrganizacionProyecto;
-import logica.verificacion.VerificicacionGeneral;
-
+import logica.utilidadesproyecto.ContenedoraOrganizacionProyecto;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -35,19 +33,19 @@ public class ControladorConsultarProyectosGUI {
             .getLogger(ControladorConsultarProyectosGUI.class.getName());
 
     @FXML
-    private TableView<ContenedoraRepresentanteOrganizacionProyecto>
+    private TableView<ContenedoraOrganizacionProyecto>
             tablaProyectos;
     @FXML
-    private TableColumn<ContenedoraRepresentanteOrganizacionProyecto, String>
+    private TableColumn<ContenedoraOrganizacionProyecto, String>
             columnaNombreProyecto;
     @FXML
-    private TableColumn<ContenedoraRepresentanteOrganizacionProyecto, String>
+    private TableColumn<ContenedoraOrganizacionProyecto, String>
             columnaNombreRepresentante;
     @FXML
-    private TableColumn<ContenedoraRepresentanteOrganizacionProyecto, Void>
+    private TableColumn<ContenedoraOrganizacionProyecto, Void>
             columnaVerDetalles;
     @FXML
-    private TableColumn<ContenedoraRepresentanteOrganizacionProyecto, Void>
+    private TableColumn<ContenedoraOrganizacionProyecto, Void>
             columnaEliminarProyecto;
     @FXML
     private TextField campoBusqueda;
@@ -114,14 +112,14 @@ public class ControladorConsultarProyectosGUI {
 
     private void añadirBotonVerDetallesATabla() {
 
-        Callback<TableColumn<ContenedoraRepresentanteOrganizacionProyecto, Void>,
-                TableCell<ContenedoraRepresentanteOrganizacionProyecto, Void>>
+        Callback<TableColumn<ContenedoraOrganizacionProyecto, Void>,
+                TableCell<ContenedoraOrganizacionProyecto, Void>>
                 cellFactory = param -> new TableCell<>() {
 
             private final Button botonVerDetalles = new Button("Ver detalles");
             {
                 botonVerDetalles.setOnAction(evento -> {
-                    ContenedoraRepresentanteOrganizacionProyecto contenedor =
+                    ContenedoraOrganizacionProyecto contenedor =
                             getTableView().getItems().get(getIndex());
                     ProyectoDTO proyectoDTO = contenedor.getProyecto();
                     abrirVentanaDetallesProyecto(proyectoDTO);
@@ -178,14 +176,14 @@ public class ControladorConsultarProyectosGUI {
 
     private void añadirBotonEliminarATabla() {
 
-        Callback<TableColumn<ContenedoraRepresentanteOrganizacionProyecto, Void>,
-                TableCell<ContenedoraRepresentanteOrganizacionProyecto, Void>>
+        Callback<TableColumn<ContenedoraOrganizacionProyecto, Void>,
+                TableCell<ContenedoraOrganizacionProyecto, Void>>
                 cellFactory = param -> new TableCell<>() {
 
             private final Button botonEliminar = new Button("Eliminar");
             {
                 botonEliminar.setOnAction(evento -> {
-                    ContenedoraRepresentanteOrganizacionProyecto contenedor =
+                    ContenedoraOrganizacionProyecto contenedor =
                             getTableView().getItems().get(getIndex());
                     ProyectoDTO proyectoDTO = contenedor.getProyecto();
                     confirmarEliminacion(proyectoDTO);
@@ -225,7 +223,7 @@ public class ControladorConsultarProyectosGUI {
             List<ProyectoDTO> proyectos = proyectoDAO.listarProyectos();
             List<RepresentanteDTO> representantes = representanteDAO.obtenerTodosLosRepresentantes();
 
-            ObservableList<ContenedoraRepresentanteOrganizacionProyecto> listaCombinada =
+            ObservableList<ContenedoraOrganizacionProyecto> listaCombinada =
                     FXCollections.observableArrayList();
 
             for (ProyectoDTO proyecto : proyectos) {
@@ -236,7 +234,7 @@ public class ControladorConsultarProyectosGUI {
 
                         listaCombinada.add(
 
-                                new ContenedoraRepresentanteOrganizacionProyecto(
+                                new ContenedoraOrganizacionProyecto(
                                         representante,
                                         null,
                                         proyecto
@@ -286,10 +284,10 @@ public class ControladorConsultarProyectosGUI {
             return;
         }
 
-        ObservableList<ContenedoraRepresentanteOrganizacionProyecto> listaFiltrada =
+        ObservableList<ContenedoraOrganizacionProyecto> listaFiltrada =
                 FXCollections.observableArrayList();
 
-        for (ContenedoraRepresentanteOrganizacionProyecto contenedor : tablaProyectos.getItems()) {
+        for (ContenedoraOrganizacionProyecto contenedor : tablaProyectos.getItems()) {
 
             String nombreProyecto = contenedor.getProyecto().getNombre().toLowerCase();
             String nombreRepresentante = contenedor.getRepresentante().getNombre().toLowerCase();

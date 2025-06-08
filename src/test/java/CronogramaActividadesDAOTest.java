@@ -59,7 +59,7 @@ public class CronogramaActividadesDAOTest {
         IDS_USUARIOS_INSERTADOS.add(idUsuario);
 
         EstudianteDTO estudianteDTO = new EstudianteDTO(idUsuario, "EstudiantePruebaCronograma",
-                "ApellidoPrueba", MATRICULA_ESTUDIANTE_TEST, 1);
+                "ApellidoPrueba", MATRICULA_ESTUDIANTE_TEST, 1,0);
         estudianteDAO.insertarEstudiante(estudianteDTO);
         MATRICULAS_ESTUDIANTES_INSERTADOS.add(MATRICULA_ESTUDIANTE_TEST);
 

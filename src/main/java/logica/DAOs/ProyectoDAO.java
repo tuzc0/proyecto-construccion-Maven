@@ -217,6 +217,52 @@ public class ProyectoDAO implements IProyectoDAO {
         return proyecto;
     }
 
+    public ProyectoDTO buscarProyectoPorID(int idProyecto) throws SQLException, IOException {
+
+        String consultaSQLProyecto = "SELECT * FROM proyecto WHERE idProyecto = ?";
+        ProyectoDTO proyecto = new ProyectoDTO(-1, null, null,
+                null, null, null, null,
+                null, null, null, -1, -1,
+                -1, null, -1, -1);
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaProyecto = conexionBaseDeDatos.prepareStatement(consultaSQLProyecto);
+            sentenciaProyecto.setInt(1, idProyecto);
+            resultadoProyecto = sentenciaProyecto.executeQuery();
+
+            if (resultadoProyecto.next()) {
+
+                proyecto.setIdProyecto(resultadoProyecto.getInt("idProyecto"));
+                proyecto.setNombre(resultadoProyecto.getString("nombre"));
+                proyecto.setObjetivoGeneral(resultadoProyecto.getString("objetivogeneral"));
+                proyecto.setObjetivosInmediatos(resultadoProyecto.getString("objetivosinmediatos"));
+                proyecto.setObjetivosMediatos(resultadoProyecto.getString("objetivosmediatos"));
+                proyecto.setMetodologia(resultadoProyecto.getString("metodologia"));
+                proyecto.setRecursos(resultadoProyecto.getString("recursos"));
+                proyecto.setActividades(resultadoProyecto.getString("actividades"));
+                proyecto.setResponsabilidades(resultadoProyecto.getString("responsabilidades"));
+                proyecto.setDuracion(resultadoProyecto.getString("duracion"));
+                proyecto.setIdCronograma(resultadoProyecto.getInt("idCronograma"));
+                proyecto.setEstadoActivo(resultadoProyecto.getInt("estadoActivo"));
+                proyecto.setIdRepresentante(resultadoProyecto.getInt("idRepresentante"));
+                proyecto.setDescripcion(resultadoProyecto.getString("descripciongeneral"));
+                proyecto.setUsuariosDirectos(resultadoProyecto.getInt("usuariosDirectos"));
+                proyecto.setUsuariosIndirectos(resultadoProyecto.getInt("usuariosIndirectos"));
+            }
+
+        } finally {
+
+            if (sentenciaProyecto != null) {
+
+                sentenciaProyecto.close();
+            }
+        }
+
+        return proyecto;
+    }
+
     public List<ProyectoDTO> listarProyectos() throws SQLException, IOException {
 
         List<ProyectoDTO> proyectos = new ArrayList<>();

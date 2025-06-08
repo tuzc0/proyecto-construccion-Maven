@@ -79,7 +79,7 @@ class EstudianteDAOTest {
             int idUsuario = usuarioDAO.insertarUsuario(usuarioDTO);
             IDS_USUARIOS_INSERTADOS.add(idUsuario);
 
-            EstudianteDTO estudianteDTO = new EstudianteDTO(idUsuario, "Juan", "Pérez", "A12345", 1);
+            EstudianteDTO estudianteDTO = new EstudianteDTO(idUsuario, "Juan", "Pérez", "A12345", 1,0);
             boolean resultadoAlInsertar = estudianteDAO.insertarEstudiante(estudianteDTO);
 
             assertTrue(resultadoAlInsertar, "El estudiante debería ser insertado correctamente.");
@@ -94,7 +94,7 @@ class EstudianteDAOTest {
     @Test
     void testInsertarEstudianteConDatosInvalidos() {
 
-        EstudianteDTO estudianteInvalido = new EstudianteDTO(-1, null, null, null, 1);
+        EstudianteDTO estudianteInvalido = new EstudianteDTO(-1, null, null, null, 1,0);
 
         assertThrows(SQLException.class, () -> estudianteDAO.insertarEstudiante(estudianteInvalido),
                 "Se esperaba una excepción debido a datos inválidos.");
@@ -109,7 +109,7 @@ class EstudianteDAOTest {
             int idUsuario = usuarioDAO.insertarUsuario(usuarioDTO);
             IDS_USUARIOS_INSERTADOS.add(idUsuario);
 
-            EstudianteDTO estudianteABuscar = new EstudianteDTO(idUsuario, "Laura", "Gómez", "A12346", 1);
+            EstudianteDTO estudianteABuscar = new EstudianteDTO(idUsuario, "Laura", "Gómez", "A12346", 1,0);
             estudianteDAO.insertarEstudiante(estudianteABuscar);
             MATRICULAS_INSERTADAS.add("A12346");
 
@@ -127,7 +127,7 @@ class EstudianteDAOTest {
 
         try {
 
-            EstudianteDTO estudianteABuscar = new EstudianteDTO(-1, "N/A", "N/A", "N/A", 0);
+            EstudianteDTO estudianteABuscar = new EstudianteDTO(-1, "N/A", "N/A", "N/A", 0,0);
             EstudianteDTO estudianteEncontrado = estudianteDAO.buscarEstudiantePorMatricula("Inexistente");
 
             assertEquals(estudianteABuscar, estudianteEncontrado,
@@ -148,11 +148,11 @@ class EstudianteDAOTest {
             int idUsuario = usuarioDAO.insertarUsuario(usuarioDTO);
             IDS_USUARIOS_INSERTADOS.add(idUsuario);
 
-            EstudianteDTO estudianteDTO = new EstudianteDTO(idUsuario, "Carlos", "Martínez", "A12347", 1);
+            EstudianteDTO estudianteDTO = new EstudianteDTO(idUsuario, "Carlos", "Martínez", "A12347", 1,0);
             estudianteDAO.insertarEstudiante(estudianteDTO);
             MATRICULAS_INSERTADAS.add("A12347");
 
-            EstudianteDTO estudianteModificado = new EstudianteDTO(idUsuario, "Carlos", "Martínez López", "A12347", 1);
+            EstudianteDTO estudianteModificado = new EstudianteDTO(idUsuario, "Carlos", "Martínez López", "A12347", 1,0);
             boolean resultadoAlModificar = estudianteDAO.modificarEstudiante(estudianteModificado);
             assertTrue(resultadoAlModificar, "El estudiante debería ser modificado correctamente.");
 
@@ -167,7 +167,7 @@ class EstudianteDAOTest {
 
         try {
 
-            EstudianteDTO estudianteInvalido = new EstudianteDTO(-1, null, null, null, 1);
+            EstudianteDTO estudianteInvalido = new EstudianteDTO(-1, null, null, null, 1,1);
             boolean resultadoModificacion = estudianteDAO.modificarEstudiante(estudianteInvalido);
             assertFalse(resultadoModificacion, "Se esperaba que la modificación fallara debido a datos inválidos.");
 
@@ -184,7 +184,7 @@ class EstudianteDAOTest {
 
         try {
 
-            EstudianteDTO estudianteInexistente = new EstudianteDTO(99999, "X", "Y", "Inexistente", 1);
+            EstudianteDTO estudianteInexistente = new EstudianteDTO(99999, "X", "Y", "Inexistente", 1,0);
             boolean resultadoAlModificar = estudianteDAO.modificarEstudiante(estudianteInexistente);
             assertFalse(resultadoAlModificar, "No debería modificarse un estudiante inexistente.");
 
@@ -203,7 +203,7 @@ class EstudianteDAOTest {
             int idUsuario = usuarioDAO.insertarUsuario(usuarioDTO);
             IDS_USUARIOS_INSERTADOS.add(idUsuario);
 
-            EstudianteDTO estudianteDTO = new EstudianteDTO(idUsuario, "Ana", "López", "A12348", 1);
+            EstudianteDTO estudianteDTO = new EstudianteDTO(idUsuario, "Ana", "López", "A12348", 1,0);
             estudianteDAO.insertarEstudiante(estudianteDTO);
             MATRICULAS_INSERTADAS.add("A12348");
 
@@ -239,7 +239,7 @@ class EstudianteDAOTest {
             int idJuan = usuarioDAO.insertarUsuario(usuarioEstudiante1);
             IDS_USUARIOS_INSERTADOS.add(idJuan);
 
-            EstudianteDTO estudianteDTO1 = new EstudianteDTO(idJuan, "Juan", "Pérez", "B10001", 1);
+            EstudianteDTO estudianteDTO1 = new EstudianteDTO(idJuan, "Juan", "Pérez", "B10001", 1,0);
             estudianteDAO.insertarEstudiante(estudianteDTO1);
             MATRICULAS_INSERTADAS.add("B10001");
 
@@ -247,7 +247,7 @@ class EstudianteDAOTest {
             int idLaura = usuarioDAO.insertarUsuario(usuarioEstudiante2);
             IDS_USUARIOS_INSERTADOS.add(idLaura);
 
-            EstudianteDTO estudianteDTO2 = new EstudianteDTO(idLaura, "Laura", "Gómez", "B10002", 1);
+            EstudianteDTO estudianteDTO2 = new EstudianteDTO(idLaura, "Laura", "Gómez", "B10002", 1,0);
             estudianteDAO.insertarEstudiante(estudianteDTO2);
             MATRICULAS_INSERTADAS.add("B10002");
 

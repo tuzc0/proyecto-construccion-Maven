@@ -23,6 +23,7 @@ import logica.utilidadesproyecto.SeleccionRepresentanteOrganizacion;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -35,55 +36,104 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
     private static final Logger LOGGER =
             LogManager.getLogger(ControladorRegistroProyectoGUI.class);
 
-    @FXML private TextField campoNombre;
-    @FXML private TextArea textoDescripcionGeneral;
-    @FXML private TextArea textoObjetivosGenerales;
-    @FXML private TextField campoUsuariosDirectos;
-    @FXML private TextField campoUsuariosIndirectos;
-    @FXML private TextArea textoObjetivosInmediatos;
-    @FXML private TextArea textoObjetivosMediatos;
-    @FXML private TextArea textoMetodologia;
-    @FXML private TextArea textoRecursos;
-    @FXML private TextArea textoActividades;
-    @FXML private TextArea textoResponsabilidades;
-    @FXML private CheckBox checkLunes;
-    @FXML private CheckBox checkMartes;
-    @FXML private CheckBox checkMiercoles;
-    @FXML private CheckBox checkJueves;
-    @FXML private CheckBox checkViernes;
-    @FXML private ComboBox<String> comboHoraLunesInicio;
-    @FXML private ComboBox<String> comboHoraLunesFin;
-    @FXML private ComboBox<String> comboMinutosLunesInicio;
-    @FXML private ComboBox<String> comboMinutosLunesFin;
-    @FXML private ComboBox<String> comboHoraMartesInicio;
-    @FXML private ComboBox<String> comboHoraMartesFin;
-    @FXML private ComboBox<String> comboMinutosMartesInicio;
-    @FXML private ComboBox<String> comboMinutosMartesFin;
-    @FXML private ComboBox<String> comboHoraMiercolesInicio;
-    @FXML private ComboBox<String> comboHoraMiercolesFin;
-    @FXML private ComboBox<String> comboMinutosMiercolesInicio;
-    @FXML private ComboBox<String> comboMinutosMiercolesFin;
-    @FXML private ComboBox<String> comboHoraJuevesInicio;
-    @FXML private ComboBox<String> comboHoraJuevesFin;
-    @FXML private ComboBox<String> comboMinutosJuevesInicio;
-    @FXML private ComboBox<String> comboMinutosJuevesFin;
-    @FXML private ComboBox<String> comboHoraViernesInicio;
-    @FXML private ComboBox<String> comboHoraViernesFin;
-    @FXML private ComboBox<String> comboMinutosViernesInicio;
-    @FXML private ComboBox<String> comboMinutosViernesFin;
-    @FXML private Label etiquetaDuracion;
-    @FXML private Label contadorNombre;
-    @FXML private Label contadorDescripcionGeneral;
-    @FXML private Label contadorObjetivosGenerales;
-    @FXML private Label contadorObjetivosInmediatos;
-    @FXML private Label contadorObjetivosMediatos;
-    @FXML private Label contadorMetodologia;
-    @FXML private Label contadorRecursos;
-    @FXML private Label contadorActividades;
-    @FXML private Label contadorResponsabilidades;
-    @FXML private Button botonRegistrar;
-    @FXML private Button botonCancelar;
-    @FXML private Button botonSeleccionarRepresentante;
+    @FXML
+    private TextField campoNombre;
+    @FXML
+    private TextArea textoDescripcionGeneral;
+    @FXML
+    private TextArea textoObjetivosGenerales;
+    @FXML
+    private TextField campoUsuariosDirectos;
+    @FXML
+    private TextField campoUsuariosIndirectos;
+    @FXML
+    private TextArea textoObjetivosInmediatos;
+    @FXML
+    private TextArea textoObjetivosMediatos;
+    @FXML
+    private TextArea textoMetodologia;
+    @FXML
+    private TextArea textoRecursos;
+    @FXML
+    private TextArea textoActividades;
+    @FXML
+    private TextArea textoResponsabilidades;
+    @FXML
+    private CheckBox checkLunes;
+    @FXML
+    private CheckBox checkMartes;
+    @FXML
+    private CheckBox checkMiercoles;
+    @FXML
+    private CheckBox checkJueves;
+    @FXML
+    private CheckBox checkViernes;
+    @FXML
+    private ComboBox<String> comboHoraLunesInicio;
+    @FXML
+    private ComboBox<String> comboHoraLunesFin;
+    @FXML
+    private ComboBox<String> comboMinutosLunesInicio;
+    @FXML
+    private ComboBox<String> comboMinutosLunesFin;
+    @FXML
+    private ComboBox<String> comboHoraMartesInicio;
+    @FXML
+    private ComboBox<String> comboHoraMartesFin;
+    @FXML
+    private ComboBox<String> comboMinutosMartesInicio;
+    @FXML
+    private ComboBox<String> comboMinutosMartesFin;
+    @FXML
+    private ComboBox<String> comboHoraMiercolesInicio;
+    @FXML
+    private ComboBox<String> comboHoraMiercolesFin;
+    @FXML
+    private ComboBox<String> comboMinutosMiercolesInicio;
+    @FXML
+    private ComboBox<String> comboMinutosMiercolesFin;
+    @FXML
+    private ComboBox<String> comboHoraJuevesInicio;
+    @FXML
+    private ComboBox<String> comboHoraJuevesFin;
+    @FXML
+    private ComboBox<String> comboMinutosJuevesInicio;
+    @FXML
+    private ComboBox<String> comboMinutosJuevesFin;
+    @FXML
+    private ComboBox<String> comboHoraViernesInicio;
+    @FXML
+    private ComboBox<String> comboHoraViernesFin;
+    @FXML
+    private ComboBox<String> comboMinutosViernesInicio;
+    @FXML
+    private ComboBox<String> comboMinutosViernesFin;
+    @FXML
+    private Label etiquetaDuracion;
+    @FXML
+    private Label contadorNombre;
+    @FXML
+    private Label contadorDescripcionGeneral;
+    @FXML
+    private Label contadorObjetivosGenerales;
+    @FXML
+    private Label contadorObjetivosInmediatos;
+    @FXML
+    private Label contadorObjetivosMediatos;
+    @FXML
+    private Label contadorMetodologia;
+    @FXML
+    private Label contadorRecursos;
+    @FXML
+    private Label contadorActividades;
+    @FXML
+    private Label contadorResponsabilidades;
+    @FXML
+    private Button botonRegistrar;
+    @FXML
+    private Button botonCancelar;
+    @FXML
+    private Button botonSeleccionarRepresentante;
 
     private final Utilidades UTILIDADES = new Utilidades();
 

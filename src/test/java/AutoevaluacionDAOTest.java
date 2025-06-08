@@ -57,9 +57,9 @@ public class AutoevaluacionDAOTest {
 
             IDS_USUARIOS_INSERTADOS.addAll(List.of(idUsuarioEstudiante1, idUsuarioEstudiante2, idUsuarioEstudiante3));
 
-            estudianteDAO.insertarEstudiante(new EstudianteDTO(idUsuarioEstudiante1, usuarioEstudiante1DTO.getNombre(), usuarioEstudiante1DTO.getApellido(), "S23014102", 1));
-            estudianteDAO.insertarEstudiante(new EstudianteDTO(idUsuarioEstudiante2, usuarioEstudiante2DTO.getNombre(), usuarioEstudiante2DTO.getApellido(), "S23014203", 1));
-            estudianteDAO.insertarEstudiante(new EstudianteDTO(idUsuarioEstudiante3, usuarioEstudiante3DTO.getNombre(), usuarioEstudiante3DTO.getApellido(), "S23014304", 1));
+            estudianteDAO.insertarEstudiante(new EstudianteDTO(idUsuarioEstudiante1, usuarioEstudiante1DTO.getNombre(), usuarioEstudiante1DTO.getApellido(), "S23014102", 1,0));
+            estudianteDAO.insertarEstudiante(new EstudianteDTO(idUsuarioEstudiante2, usuarioEstudiante2DTO.getNombre(), usuarioEstudiante2DTO.getApellido(), "S23014203", 1,0));
+            estudianteDAO.insertarEstudiante(new EstudianteDTO(idUsuarioEstudiante3, usuarioEstudiante3DTO.getNombre(), usuarioEstudiante3DTO.getApellido(), "S23014304", 1,0));
 
             MATRICULAS_INSERTADAS.addAll(List.of("S23014102", "S23014203", "S23014304"));
 
@@ -124,7 +124,7 @@ public class AutoevaluacionDAOTest {
             IDS_USUARIOS_INSERTADOS.add(idUsuarioDTO);
 
             estudianteDAO.insertarEstudiante(new EstudianteDTO(idUsuarioDTO,
-                    usuarioDTO.getNombre(), usuarioDTO.getApellido(), "S23014405", 1));
+                    usuarioDTO.getNombre(), usuarioDTO.getApellido(), "S23014405", 1,0));
             MATRICULAS_INSERTADAS.add("S23014405");
 
             AutoevaluacionDTO nuevaAutoevaluacion = new AutoevaluacionDTO(1004, Timestamp.valueOf("2023-05-06 00:00:00"),

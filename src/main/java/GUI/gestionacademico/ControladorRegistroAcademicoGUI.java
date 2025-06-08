@@ -28,7 +28,7 @@ public class ControladorRegistroAcademicoGUI {
 
     private static final Logger LOGGER =
             LogManager.getLogger(ControladorRegistroAcademicoGUI.class);
-    private final UtilidadesContraseña utilContraseña =
+    private final UtilidadesContraseña UTILIDADES_CONTRASEÑA =
             new UtilidadesContraseña();
     private final Utilidades UTILIDADES = new Utilidades();
 
@@ -84,7 +84,7 @@ public class ControladorRegistroAcademicoGUI {
                 .bindBidirectional(
                         campoConfirmarContraseña.textProperty());
 
-        utilContraseña.inicializarIcono(iconoOjo);
+        UTILIDADES_CONTRASEÑA.inicializarIcono(iconoOjo);
         botonRegistrar.setCursor(Cursor.HAND);
         botonCancelar.setCursor(Cursor.HAND);
         botonOjo.setCursor(Cursor.HAND);
@@ -98,7 +98,7 @@ public class ControladorRegistroAcademicoGUI {
     @FXML
     private void alternarVisibilidadContrasena() {
 
-        utilContraseña.alternarVisibilidadContrasena(
+        UTILIDADES_CONTRASEÑA.alternarVisibilidadContrasena(
                 campoContraseña,
                 campoContraseñaVisible,
                 campoConfirmarContraseña,
@@ -112,8 +112,7 @@ public class ControladorRegistroAcademicoGUI {
 
         String nombre = campoNombre.getText().trim();
         String apellidos = campoApellidos.getText().trim();
-        String numPersTxt =
-                campoNumeroPersonal.getText().trim();
+        String numeroDePersonalTexto = campoNumeroPersonal.getText().trim();
         String correo = campoCorreo.getText().trim();
         String contrasena = campoContraseña.getText().trim();
 
@@ -121,7 +120,7 @@ public class ControladorRegistroAcademicoGUI {
                 VerificacionUsuario.camposVacios(
                         nombre,
                         apellidos,
-                        numPersTxt,
+                        numeroDePersonalTexto,
                         correo,
                         contrasena
                 );
@@ -140,7 +139,7 @@ public class ControladorRegistroAcademicoGUI {
         List<String> errores = VerificacionUsuario.validarCampos(
                 nombre,
                 apellidos,
-                numPersTxt,
+                numeroDePersonalTexto,
                 correo,
                 contrasena
         );
@@ -172,7 +171,7 @@ public class ControladorRegistroAcademicoGUI {
 
         try {
 
-            int numeroPersonal = Integer.parseInt(numPersTxt);
+            int numeroPersonal = Integer.parseInt(numeroDePersonalTexto);
             int estadoActivo = 1;
             int idUsuario = 0;
 

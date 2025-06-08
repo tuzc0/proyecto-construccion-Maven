@@ -4,10 +4,7 @@ import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.EstudianteDTO;
 import logica.interfaces.IEstudianteDAO;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +20,7 @@ public class EstudianteDAO implements IEstudianteDAO {
 
         boolean estudianteInsertado = false;
 
-        String insertarSQLEstudiante = "INSERT INTO estudiante VALUES(?, ?)";
+        String insertarSQLEstudiante = "INSERT INTO estudiante VALUES(?, ?, ?)";
 
         try {
 
@@ -31,6 +28,12 @@ public class EstudianteDAO implements IEstudianteDAO {
             sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(insertarSQLEstudiante);
             sentenciaEstudiante.setString(1, estudiante.getMatricula());
             sentenciaEstudiante.setInt(2, estudiante.getIdUsuario());
+
+            if (estudiante.getIdProyecto() > 0) {
+                sentenciaEstudiante.setInt(3, estudiante.getIdProyecto());
+            } else {
+                sentenciaEstudiante.setNull(3, Types.INTEGER);
+            }
 
             if (sentenciaEstudiante.executeUpdate() > 0) {
 
@@ -108,10 +111,40 @@ public class EstudianteDAO implements IEstudianteDAO {
         return estudianteModificado;
     }
 
+    public boolean asignarProyecto(int idProyecto, String matricula) throws SQLException, IOException {
+
+        boolean proyectoAsignado = false;
+
+        String modificarEstudiante = "UPDATE estudiante SET idProyecto = ? WHERE matricula = ?";
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(modificarEstudiante);
+            sentenciaEstudiante.setInt(1, idProyecto);
+            sentenciaEstudiante.setString(2, matricula);
+
+            if (sentenciaEstudiante.executeUpdate() > 0) {
+
+                proyectoAsignado = true;
+            }
+
+        } finally {
+
+            if (sentenciaEstudiante != null) {
+
+                sentenciaEstudiante.close();
+            }
+        }
+
+        return proyectoAsignado;
+    }
+
 
     public EstudianteDTO buscarEstudiantePorMatricula(String matricula) throws SQLException, IOException {
 
-        EstudianteDTO estudiante = new EstudianteDTO(-1, "N/A", "N/A", "N/A", 0);
+        EstudianteDTO estudiante = new EstudianteDTO(-1, "N/A", "N/A",
+                "N/A", 0,0);
 
         String buscarSQL = "SELECT * FROM vista_estudiante WHERE matricula = ?";
 
@@ -129,8 +162,10 @@ public class EstudianteDAO implements IEstudianteDAO {
                 String apellidos = resultadoConsultaEstudiante.getString("apellidos");
                 String nombre = resultadoConsultaEstudiante.getString("nombre");
                 int estadoActivo = resultadoConsultaEstudiante.getInt("estadoActivo");
+                int idProyecto = resultadoConsultaEstudiante.getInt("idProyecto");
 
-                estudiante = new EstudianteDTO(idUsuario, nombre, apellidos, matriculaEstudiante, estadoActivo);
+                estudiante = new EstudianteDTO(idUsuario, nombre, apellidos, matriculaEstudiante,
+                        estadoActivo, idProyecto);
             }
 
         } finally {
@@ -163,8 +198,10 @@ public class EstudianteDAO implements IEstudianteDAO {
                 String apellidos = resultadoConsultaEstudiante.getString("apellidos");
                 String nombre = resultadoConsultaEstudiante.getString("nombre");
                 int estadoActivo = resultadoConsultaEstudiante.getInt("estadoActivo");
+                int idProyecto = resultadoConsultaEstudiante.getInt("idProyecto");
 
-                EstudianteDTO estudiante = new EstudianteDTO(idUsuario, nombre, apellidos, matricula, estadoActivo);
+                EstudianteDTO estudiante = new EstudianteDTO(idUsuario, nombre, apellidos, matricula,
+                        estadoActivo, idProyecto);
                 listaEstudiantes.add(estudiante);
             }
 
@@ -180,25 +217,32 @@ public class EstudianteDAO implements IEstudianteDAO {
     }
 
     public EstudianteDTO buscarEstudiantePorID(int idUsuario) throws SQLException, IOException {
-        EstudianteDTO estudiante = new EstudianteDTO(-1, "N/A", "N/A", "N/A", 0);
+
+        EstudianteDTO estudiante = new EstudianteDTO(-1, "N/A", "N/A",
+                "N/A", 0,0);
 
         String buscarSQL = "SELECT * FROM vista_estudiante WHERE idUsuario = ?";
 
         try {
+
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(buscarSQL);
             sentenciaEstudiante.setInt(1, idUsuario);
             resultadoConsultaEstudiante = sentenciaEstudiante.executeQuery();
 
             if (resultadoConsultaEstudiante.next()) {
+
                 String matricula = resultadoConsultaEstudiante.getString("matricula");
                 String apellidos = resultadoConsultaEstudiante.getString("apellidos");
                 String nombre = resultadoConsultaEstudiante.getString("nombre");
                 int estadoActivo = resultadoConsultaEstudiante.getInt("estadoActivo");
+                int idProyecto = resultadoConsultaEstudiante.getInt("idProyecto");
 
-                estudiante = new EstudianteDTO(idUsuario, nombre, apellidos, matricula, estadoActivo);
+                estudiante = new EstudianteDTO(idUsuario, nombre, apellidos, matricula, estadoActivo, idProyecto);
             }
+
         } finally {
+
             if (sentenciaEstudiante != null) {
                 sentenciaEstudiante.close();
             }

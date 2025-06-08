@@ -47,8 +47,8 @@ class AutoevaluacionContieneDAOTest {
 
             IDS_USUARIOS_INSERTADOS.addAll(List.of(idUsuarioEstudiante1, idUsuarioEstudiante2));
 
-            estudianteDAO.insertarEstudiante(new EstudianteDTO(idUsuarioEstudiante1, "Nombre1", "Apellido1", "S23014102", 1));
-            estudianteDAO.insertarEstudiante(new EstudianteDTO(idUsuarioEstudiante2, "Nombre2", "Apellido2", "S23014203", 1));
+            estudianteDAO.insertarEstudiante(new EstudianteDTO(idUsuarioEstudiante1, "Nombre1", "Apellido1", "S23014102", 1,0));
+            estudianteDAO.insertarEstudiante(new EstudianteDTO(idUsuarioEstudiante2, "Nombre2", "Apellido2", "S23014203", 1,0));
 
             MATRICULAS_ESTUDIANTES_INSERTADAS.addAll(List.of("S23014102", "S23014203"));
 

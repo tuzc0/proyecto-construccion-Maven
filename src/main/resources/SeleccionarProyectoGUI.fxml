@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="414.0" prefWidth="582.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.gestionproyecto.asignacionProyecto.ControladorSeleccionProyectoGUI">
+
+    <center>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label layoutX="169.0" layoutY="14.0" prefHeight="70.0" prefWidth="242.0" text="Seleccionar Proyecto">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+
+                <VBox layoutX="53.0" layoutY="84.0" prefHeight="263.0" prefWidth="474.0" spacing="10">
+                    <children>
+                        <Label prefHeight="35.0" prefWidth="170.0" text="Estudiante:">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="campoNombreEstudiante" prefHeight="36.0" prefWidth="486.0" />
+
+                        <Label prefHeight="35.0" prefWidth="170.0" text="Matrícula:">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="campoMatricula" prefHeight="36.0" prefWidth="486.0" />
+
+                        <Label prefHeight="35.0" prefWidth="170.0" text="Proyecto:">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <ComboBox fx:id="comboProyectos" prefHeight="56.0" prefWidth="474.0" promptText="Seleccione un proyecto" />
+                    </children>
+                </VBox>
+            </children>
+        </AnchorPane>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" prefHeight="65.0" prefWidth="582.0" spacing="20" style="-fx-padding: 10;" BorderPane.alignment="CENTER">
+            <children>
+                <Button fx:id="botonRegresar" mnemonicParsing="false" onAction="#regresar" prefHeight="45.0" prefWidth="137.0" text="Regresar" />
+                <Button fx:id="botonAsignar" mnemonicParsing="false" onAction="#asignarProyecto" prefHeight="45.0" prefWidth="137.0" text="Asignar" />
+            </children>
+        </HBox>
+    </bottom>
+</BorderPane>

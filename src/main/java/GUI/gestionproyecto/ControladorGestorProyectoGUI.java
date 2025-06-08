@@ -33,43 +33,80 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
     private static final Logger LOGGER = Logger
             .getLogger(ControladorGestorProyectoGUI.class.getName());
 
-    @FXML private TextArea textoNombre;
-    @FXML private TextArea textoDescripcionGeneral;
-    @FXML private TextArea textoObjetivoGeneral;
-    @FXML private Label etiquetaUsuariosDirectos;
-    @FXML private TextField campoUsuariosDirectos;
-    @FXML private Label etiquetaUsuariosIndirectos;
-    @FXML private TextField campoUsuariosIndirectos;
-    @FXML private Label etiquetaDuracion;
-    @FXML private TextArea textoObjetivosInmediatos;
-    @FXML private TextArea textoObjetivosMediatos;
-    @FXML private TextArea textoMetodologia;
-    @FXML private TextArea textoRecursos;
-    @FXML private TextArea textoActividades;
-    @FXML private TextArea textoResponsabilidades;
-    @FXML private TableView tablaHorarios;
-    @FXML private TableColumn<ContenedorHorarioProyectoGUI, String> columnaLunes;
-    @FXML private TableColumn<ContenedorHorarioProyectoGUI, String> columnaMartes;
-    @FXML private TableColumn<ContenedorHorarioProyectoGUI, String> columnaMiercoles;
-    @FXML private TableColumn<ContenedorHorarioProyectoGUI, String> columnaJueves;
-    @FXML private TableColumn<ContenedorHorarioProyectoGUI, String> columnaViernes;
-    @FXML private Button botonEditar;
-    @FXML private Button botonEstudiantesAsignados;
-    @FXML private Button botonRegresar;
-    @FXML private Button botonActualizar;
-    @FXML private Button botonCancelar;
-    @FXML private Button botonCambiarOrganizacion;
-    @FXML private Label etiquetaOrganizacion;
-    @FXML private Label etiquetaRepresentante;
-    @FXML private Label contadorNombre;
-    @FXML private Label contadorDescripcion;
-    @FXML private Label contadorObjetivoGeneral;
-    @FXML private Label contadorObjetivosInmediatos;
-    @FXML private Label contadorObjetivosMediatos;
-    @FXML private Label contadorMetodologia;
-    @FXML private Label contadorRecursos;
-    @FXML private Label contadorActividades;
-    @FXML private Label contadorResponsabilidades;
+    @FXML
+    private TextArea textoNombre;
+    @FXML
+    private TextArea textoDescripcionGeneral;
+    @FXML
+    private TextArea textoObjetivoGeneral;
+    @FXML
+    private Label etiquetaUsuariosDirectos;
+    @FXML
+    private TextField campoUsuariosDirectos;
+    @FXML
+    private Label etiquetaUsuariosIndirectos;
+    @FXML
+    private TextField campoUsuariosIndirectos;
+    @FXML
+    private Label etiquetaDuracion;
+    @FXML
+    private TextArea textoObjetivosInmediatos;
+    @FXML
+    private TextArea textoObjetivosMediatos;
+    @FXML
+    private TextArea textoMetodologia;
+    @FXML
+    private TextArea textoRecursos;
+    @FXML
+    private TextArea textoActividades;
+    @FXML
+    private TextArea textoResponsabilidades;
+    @FXML
+    private TableView tablaHorarios;
+    @FXML
+    private TableColumn<ContenedorHorarioProyectoGUI, String> columnaLunes;
+    @FXML
+    private TableColumn<ContenedorHorarioProyectoGUI, String> columnaMartes;
+    @FXML
+    private TableColumn<ContenedorHorarioProyectoGUI, String> columnaMiercoles;
+    @FXML
+    private TableColumn<ContenedorHorarioProyectoGUI, String> columnaJueves;
+    @FXML
+    private TableColumn<ContenedorHorarioProyectoGUI, String> columnaViernes;
+    @FXML
+    private Button botonEditar;
+    @FXML
+    private Button botonEstudiantesAsignados;
+    @FXML
+    private Button botonRegresar;
+    @FXML
+    private Button botonActualizar;
+    @FXML
+    private Button botonCancelar;
+    @FXML
+    private Button botonCambiarOrganizacion;
+    @FXML
+    private Label etiquetaOrganizacion;
+    @FXML
+    private Label etiquetaRepresentante;
+    @FXML
+    private Label contadorNombre;
+    @FXML
+    private Label contadorDescripcion;
+    @FXML
+    private Label contadorObjetivoGeneral;
+    @FXML
+    private Label contadorObjetivosInmediatos;
+    @FXML
+    private Label contadorObjetivosMediatos;
+    @FXML
+    private Label contadorMetodologia;
+    @FXML
+    private Label contadorRecursos;
+    @FXML
+    private Label contadorActividades;
+    @FXML
+    private Label contadorResponsabilidades;
 
     private final Utilidades UTILIDADES = new Utilidades();
     private ProyectoDTO proyectoSeleccionado;
@@ -120,7 +157,7 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
     }
 
     @FXML
-    private void cargarDatosProyecto( ) {
+    private void cargarDatosProyecto() {
 
         textoNombre.setText(proyectoSeleccionado.getNombre());
         textoDescripcionGeneral.setText(proyectoSeleccionado.getDescripcion());

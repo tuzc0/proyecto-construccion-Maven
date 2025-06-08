@@ -17,8 +17,6 @@ public class CriterioAutoevaluacionDAO implements ICriterioAutoevaluacionDAO {
     PreparedStatement sentenciaCriterio = null;
     ResultSet resultadoConsultaCriterio;
 
-
-
     public boolean crearNuevoCriterioAutoevaluacion(CriterioAutoevaluacionDTO criterio) throws SQLException, IOException {
 
         String insertarSQLCriterio = "INSERT INTO criterioautoevaluacion (idCriterio, descripciones, numeroCriterio, estadoActivo) VALUES (?, ?, ?, ?)";
@@ -184,6 +182,7 @@ public class CriterioAutoevaluacionDAO implements ICriterioAutoevaluacionDAO {
     }
 
     public int obtenerNumeroCriterioMasAlto() throws SQLException, IOException {
+
         String consultaSQL = "SELECT MAX(numeroCriterio) AS maxNumero FROM criterioautoevaluacion WHERE estadoActivo = 1";
         int numeroCriterioMasAlto = -1;
 
@@ -200,6 +199,7 @@ public class CriterioAutoevaluacionDAO implements ICriterioAutoevaluacionDAO {
     }
 
     public void enumerarCriterios() throws SQLException, IOException {
+
         String obtenerCriteriosSQL = "SELECT * FROM criterioautoevaluacion WHERE estadoActivo = 1";
         String actualizarCriterioSQL = "UPDATE criterioautoevaluacion SET numeroCriterio = ? WHERE idCriterio = ?";
 

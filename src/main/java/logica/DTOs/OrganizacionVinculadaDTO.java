@@ -1,5 +1,7 @@
 package logica.DTOs;
 
+import java.util.Objects;
+
 public class OrganizacionVinculadaDTO {
 
     private int IdOrganizacion;
@@ -81,5 +83,26 @@ public class OrganizacionVinculadaDTO {
     public void setEstadoActivo(int estadoActivo) {
 
         this.estadoActivo = estadoActivo;
+    }
+
+    @Override
+    public boolean equals(Object organizacionAComparar) {
+
+        if (this == organizacionAComparar) {
+            return true;
+        }
+
+        if (organizacionAComparar == null || getClass() != organizacionAComparar.getClass()) {
+            return false;
+        }
+
+        OrganizacionVinculadaDTO organizacionComparada = (OrganizacionVinculadaDTO) organizacionAComparar;
+
+        return IdOrganizacion == organizacionComparada.IdOrganizacion &&
+                estadoActivo == organizacionComparada.estadoActivo &&
+                Objects.equals(nombre, organizacionComparada.nombre) &&
+                Objects.equals(correo, organizacionComparada.correo) &&
+                Objects.equals(numeroDeContacto, organizacionComparada.numeroDeContacto) &&
+                Objects.equals(direccion, organizacionComparada.direccion);
     }
 }

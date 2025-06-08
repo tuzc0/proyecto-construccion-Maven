@@ -1,21 +1,19 @@
 package GUI;
 
 import GUI.utilidades.Utilidades;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
-import logica.ContenedorCriterios;
+import logica.ContenedorCriteriosEvaluacion;
 import logica.DAOs.CriterioEvaluacionDAO;
 import logica.DAOs.EvaluacionContieneDAO;
 import logica.DAOs.EvaluacionDAO;
 import logica.DTOs.CriterioEvaluacionDTO;
 import logica.DTOs.EvaluacionContieneDTO;
 import logica.DTOs.EvaluacionDTO;
-import logica.DTOs.OrganizacionVinculadaDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,16 +35,16 @@ public class ControladorRegistrarEvaluacionGUI {
     TextArea campoComentarios;
 
     @FXML
-    TableView<ContenedorCriterios> tablaCriteriosEvaluacion;
+    TableView<ContenedorCriteriosEvaluacion> tablaCriteriosEvaluacion;
 
     @FXML
-    TableColumn<ContenedorCriterios, String> columnaNumeroCriterio;
+    TableColumn<ContenedorCriteriosEvaluacion, String> columnaNumeroCriterio;
 
     @FXML
-    TableColumn<ContenedorCriterios, String> columnaCriterio;
+    TableColumn<ContenedorCriteriosEvaluacion, String> columnaCriterio;
 
     @FXML
-    TableColumn<ContenedorCriterios, String> columnaCalificacion;
+    TableColumn<ContenedorCriteriosEvaluacion, String> columnaCalificacion;
 
     @FXML
     Label campoEstudianteEvaluado;
@@ -83,7 +81,7 @@ public class ControladorRegistrarEvaluacionGUI {
 
         columnaCalificacion.setCellFactory(TextFieldTableCell.forTableColumn());
         columnaCalificacion.setOnEditCommit(event -> {
-            ContenedorCriterios contenedor = event.getRowValue();
+            ContenedorCriteriosEvaluacion contenedor = event.getRowValue();
             EvaluacionContieneDTO evaluacionContiene = contenedor.getEvaluacionContiene();
 
             try {
@@ -130,14 +128,14 @@ public class ControladorRegistrarEvaluacionGUI {
 
             List<CriterioEvaluacionDTO> listaCriterios = criterioEvaluacionDAO.listarCriteriosActivos();
             List<EvaluacionContieneDTO> listaEvaluacionContiene = evaluacionContieneDAO.listarEvaluacionesPorIdEvaluacion(idEvaluacionGenerada);
-            ObservableList<ContenedorCriterios> listaContenedorCriterios = FXCollections.observableArrayList();
+            ObservableList<ContenedorCriteriosEvaluacion> listaContenedorCriterios = FXCollections.observableArrayList();
 
             for (CriterioEvaluacionDTO criterio : listaCriterios){
 
                 for (EvaluacionContieneDTO evaluacionContiene : listaEvaluacionContiene){
 
                     if (criterio.getIDCriterio() == evaluacionContiene.getIdCriterio()){
-                        ContenedorCriterios contenedorCriterios = new ContenedorCriterios(criterio, evaluacionContiene);
+                        ContenedorCriteriosEvaluacion contenedorCriterios = new ContenedorCriteriosEvaluacion(criterio, evaluacionContiene);
                         listaContenedorCriterios.add(contenedorCriterios);
                     }
                 }

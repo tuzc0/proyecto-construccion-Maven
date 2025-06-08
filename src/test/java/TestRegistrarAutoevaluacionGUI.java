@@ -4,12 +4,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class TestGestorEstudianteGUI extends Application {
+public class TestRegistrarAutoevaluacionGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/GestorEstudiantesGUI.fxml"));
-        primaryStage.setTitle("Consultar Estudiantes");
+
+        Parent root = FXMLLoader.load(getClass().getResource("/RegistrarAutoevaluacionGUI.fxml"));
+
+
+        primaryStage.setTitle("Test Registrar Academico GUI");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }

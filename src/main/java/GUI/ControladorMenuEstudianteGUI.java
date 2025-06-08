@@ -12,4 +12,9 @@ public class ControladorMenuEstudianteGUI {
     public void abrirEditarPerfilEstudiante() {
         utilidades.mostrarVentana("/EditarPerfilEstudianteGUI.fxml");
     }
+
+    @FXML
+    public void abrirRegistrarAutoevaluacion() {
+        utilidades.mostrarVentana("/RegistrarAutoevaluacionGUI.fxml");
+    }
 }

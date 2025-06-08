@@ -61,7 +61,7 @@ public class AutoevaluacionDTO {
         return calificacionFinal;
     }
 
-    public void setCalificacionFinal(int calificacionFinal) {
+    public void setCalificacionFinal(float calificacionFinal) {
 
         this.calificacionFinal = calificacionFinal;
     }

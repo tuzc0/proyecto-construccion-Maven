@@ -4,12 +4,12 @@ import logica.DTOs.CriterioEvaluacionDTO;
 import logica.DTOs.EvaluacionContieneDTO;
 
 
-public class ContenedorCriterios {
+public class ContenedorCriteriosEvaluacion {
 
     private CriterioEvaluacionDTO criterioEvaluacion;
     private EvaluacionContieneDTO evaluacionContiene;
 
-    public ContenedorCriterios(CriterioEvaluacionDTO criterioEvaluacion, EvaluacionContieneDTO evaluacionContiene) {
+    public ContenedorCriteriosEvaluacion(CriterioEvaluacionDTO criterioEvaluacion, EvaluacionContieneDTO evaluacionContiene) {
         this.criterioEvaluacion = criterioEvaluacion;
         this.evaluacionContiene = evaluacionContiene;
     }

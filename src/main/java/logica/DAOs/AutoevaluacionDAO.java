@@ -17,16 +17,17 @@ public class AutoevaluacionDAO implements IAutoevaluacionDAO {
     ResultSet resultadoConsultaAutoevaluacion;
 
 
-    public boolean crearNuevaAutoevaluacion(AutoevaluacionDTO autoevaluacion) throws SQLException, IOException {
+    public int crearNuevaAutoevaluacion(AutoevaluacionDTO autoevaluacion) throws SQLException, IOException {
+
 
         String insertarSQLAutoevaluacion = "INSERT INTO autoevaluacion (idAutoevaluacion, fecha, lugar, " +
                 "calificacionFinal, idEstudiante, estadoActivo) VALUES (?, ?, ?, ?, ?, ?)";
-        boolean autoevaluacionInsertada = false;
+        int idAutoevaluacionCreada = -1;
 
         try {
 
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-            sentenciaAutoevaluacion = conexionBaseDeDatos.prepareStatement(insertarSQLAutoevaluacion);
+            sentenciaAutoevaluacion = conexionBaseDeDatos.prepareStatement(insertarSQLAutoevaluacion, PreparedStatement.RETURN_GENERATED_KEYS);
             sentenciaAutoevaluacion.setInt(1, autoevaluacion.getIDAutoevaluacion());
             sentenciaAutoevaluacion.setTimestamp(2, autoevaluacion.getFecha());
             sentenciaAutoevaluacion.setString(3, autoevaluacion.getLugar());
@@ -35,18 +36,20 @@ public class AutoevaluacionDAO implements IAutoevaluacionDAO {
             sentenciaAutoevaluacion.setInt(6, autoevaluacion.getEstadoActivo());
 
             if (sentenciaAutoevaluacion.executeUpdate() > 0) {
-                autoevaluacionInsertada = true;
+                ResultSet generatedKeys = sentenciaAutoevaluacion.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    idAutoevaluacionCreada = generatedKeys.getInt(1);
+                }
             }
 
         } finally {
 
             if (sentenciaAutoevaluacion != null) {
-
                 sentenciaAutoevaluacion.close();
             }
         }
 
-        return autoevaluacionInsertada;
+        return idAutoevaluacionCreada;
     }
 
     public boolean eliminarAutoevaluacionPorID(int idAutoevaluacion) throws SQLException, IOException {
@@ -139,6 +142,21 @@ public class AutoevaluacionDAO implements IAutoevaluacionDAO {
         }
 
         return autoevaluacion;
+    }
+
+    public void eliminarAutoevaluacionDefinitivamentePorID(int idAutoevaluacion) throws SQLException, IOException {
+        String eliminarSQLAutoevaluacion = "DELETE FROM autoevaluacion WHERE idAutoevaluacion = ?";
+
+        try {
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaAutoevaluacion = conexionBaseDeDatos.prepareStatement(eliminarSQLAutoevaluacion);
+            sentenciaAutoevaluacion.setInt(1, idAutoevaluacion);
+            sentenciaAutoevaluacion.executeUpdate();
+        } finally {
+            if (sentenciaAutoevaluacion != null) {
+                sentenciaAutoevaluacion.close();
+            }
+        }
     }
 }
 

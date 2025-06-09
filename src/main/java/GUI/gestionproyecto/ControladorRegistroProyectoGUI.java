@@ -47,6 +47,8 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
     @FXML
     private TextField campoUsuariosIndirectos;
     @FXML
+    private TextField campoEstudianteRequeridos;
+    @FXML
     private TextArea textoObjetivosInmediatos;
     @FXML
     private TextArea textoObjetivosMediatos;
@@ -249,6 +251,7 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
         String duracionProyecto = etiquetaDuracion.getText();
         String textoUsuariosDirectos = campoUsuariosDirectos.getText();
         String textoUsuariosIndirectos = campoUsuariosIndirectos.getText();
+        String textoEstudiantesRequeridos = campoEstudianteRequeridos.getText();
 
         ProyectoDTO proyectoDTO = new ProyectoDTO();
 
@@ -256,7 +259,7 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
                 nombreProyecto, descripcionProyecto, objetivosGeneralesProyecto,
                 objetivosInmediatosProyecto, objetivosMediatosProyecto, metodologiaProyecto,
                 recursosProyecto, actividadesProyecto, responsabilidadesProyecto,
-                textoUsuariosDirectos, textoUsuariosIndirectos);
+                textoUsuariosDirectos, textoUsuariosIndirectos, textoEstudiantesRequeridos);
 
         if (!camposFaltantes.isEmpty()) {
 
@@ -273,7 +276,7 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
                 nombreProyecto, descripcionProyecto, objetivosGeneralesProyecto,
                 objetivosInmediatosProyecto, objetivosMediatosProyecto, metodologiaProyecto,
                 recursosProyecto, actividadesProyecto, responsabilidadesProyecto,
-                textoUsuariosDirectos, textoUsuariosIndirectos);
+                textoUsuariosDirectos, textoUsuariosIndirectos, textoEstudiantesRequeridos);
 
         if (!erroresDeValidacion.isEmpty()) {
 
@@ -309,9 +312,6 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
             return;
         }
 
-        int usuariosDirectos = Integer.parseInt(textoUsuariosDirectos);
-        int usuariosIndirectos = Integer.parseInt(textoUsuariosIndirectos);
-
         RepresentanteDTO representanteSeleccionado =
                 SeleccionRepresentanteOrganizacion.getRepresentanteSeleccionado();
 
@@ -326,6 +326,9 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
         }
 
         int idRepresentante = representanteSeleccionado.getIDRepresentante();
+        int usuariosDirectos = Integer.parseInt(textoUsuariosDirectos);
+        int usuariosIndirectos = Integer.parseInt(textoUsuariosIndirectos);
+        int estudiantesRequedidos = Integer.parseInt(textoEstudiantesRequeridos);
         int estadoActivoProyecto = 1;
         int idProyecto = 0;
         int idCronograma = 0;
@@ -335,7 +338,7 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
                 objetivosInmediatosProyecto, objetivosMediatosProyecto, metodologiaProyecto,
                 recursosProyecto, actividadesProyecto, responsabilidadesProyecto,
                 duracionProyecto, idCronograma, estadoActivoProyecto, idRepresentante,
-                descripcionProyecto, usuariosDirectos, usuariosIndirectos
+                descripcionProyecto, usuariosDirectos, usuariosIndirectos, estudiantesRequedidos
         );
 
         ProyectoDAO proyectoDAO = new ProyectoDAO();
@@ -421,6 +424,7 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
         String duracionProyecto = etiquetaDuracion.getText();
         String textoUsuariosDirectos = campoUsuariosDirectos.getText();
         String textoUsuariosIndirectos = campoUsuariosIndirectos.getText();
+        String textoEstudiantesRequeridos = campoEstudianteRequeridos.getText();
 
         UTILIDADES.mostrarAlertaConfirmacion(
                 "Confirmar cancelación",
@@ -445,6 +449,7 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
                     etiquetaDuracion.setText(duracionProyecto);
                     campoUsuariosDirectos.setText(textoUsuariosDirectos);
                     campoUsuariosIndirectos.setText(textoUsuariosIndirectos);
+                    campoEstudianteRequeridos.setText(textoEstudiantesRequeridos);
 
                     UTILIDADES.mostrarAlerta(
                             "Operación cancelada.",
@@ -458,9 +463,9 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
     @Override
     public void actualizarRepresentanteYOrganizacion() {
 
-        RepresentanteDTO representante =
+        RepresentanteDTO representanteDTO =
                 SeleccionRepresentanteOrganizacion.getRepresentanteSeleccionado();
-        OrganizacionVinculadaDTO organizacion =
+        OrganizacionVinculadaDTO organizacionDTO =
                 SeleccionRepresentanteOrganizacion.getOrganizacionSeleccionada();
     }
 
@@ -469,13 +474,13 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
 
         Stage ventanaActual = (Stage) botonSeleccionarRepresentante.getScene().getWindow();
 
-        FXMLLoader cargador = new FXMLLoader(getClass().getResource("/SeleccionarRepresentante.fxml"));
+        FXMLLoader cargadorVentana = new FXMLLoader(getClass().getResource("/SeleccionarRepresentante.fxml"));
         UTILIDADES.abrirVentana(
                 "/SeleccionarRepresentante.fxml",
                 "Seleccionar Representante",
                 ventanaActual);
 
-        ControladorSeleccionRepresentanteGUI controlador = cargador.getController();
+        ControladorSeleccionRepresentanteGUI controlador = cargadorVentana.getController();
 
         if (controlador != null) {
             controlador.setControladorPadre(this);

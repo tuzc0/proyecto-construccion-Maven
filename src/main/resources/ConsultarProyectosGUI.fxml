@@ -63,7 +63,6 @@
       <AnchorPane prefHeight="61.0" prefWidth="938.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="botonRegistrar" layoutX="29.0" layoutY="13.0" mnemonicParsing="false" onAction="#abrirVentanaRegistroProyecto" prefHeight="34.0" prefWidth="164.0" text="Registrar Proyecto" />
-            <Button fx:id="botonRegresar" layoutX="783.0" layoutY="13.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="164.0" text="Regresar" />
          </children>
       </AnchorPane>
    </bottom>

@@ -51,8 +51,6 @@ public class ControladorConsultarProyectosGUI {
     private TextField campoBusqueda;
     @FXML
     private Button botonRegistrar;
-    @FXML
-    private Button botonRegresar;
 
     private final Utilidades UTILIDADES = new Utilidades();
     private ProyectoDTO proyectoSeleccionado;
@@ -107,7 +105,6 @@ public class ControladorConsultarProyectosGUI {
         añadirBotonVerDetallesATabla();
 
         botonRegistrar.setCursor(Cursor.HAND);
-        botonRegresar.setCursor(Cursor.HAND);
     }
 
     private void añadirBotonVerDetallesATabla() {

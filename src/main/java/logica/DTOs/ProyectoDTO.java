@@ -23,6 +23,8 @@ public class ProyectoDTO {
     private String descripcion;
     private int usuariosDirectos;
     private int usuariosIndirectos;
+    private int estudiantesRequeridos;
+    private int estudiantesAsignados;
 
     public ProyectoDTO() {
     }
@@ -31,7 +33,7 @@ public class ProyectoDTO {
                        String objetivosInmediatos, String objetivosMediatos, String metodologia,
                        String recursos, String actividades, String responsabilidades, String duracion,
                        int idCronograma, int estadoActivo, int idRepresentante, String descripcion,
-                       int usuariosDirectos, int usuariosIndirectos) {
+                       int usuariosDirectos, int usuariosIndirectos, int estudiantesRequeridos) {
 
         this.idProyecto = idProyecto;
         this.nombre = nombre;
@@ -49,6 +51,7 @@ public class ProyectoDTO {
         this.descripcion = descripcion;
         this.usuariosDirectos = usuariosDirectos;
         this.usuariosIndirectos = usuariosIndirectos;
+        this.estudiantesRequeridos = estudiantesRequeridos;
     }
 
     public int getIdProyecto() {
@@ -209,12 +212,22 @@ public class ProyectoDTO {
         this.usuariosIndirectos = usuariosIndirectos;
     }
 
-    private static final Pattern PATRON_USUARIOS_DIRECTOS_INDIRECTOS =
-            Pattern.compile("^[0-9]+$");
+    public int getEstudiantesRequeridos() {
 
-    private static boolean usuarioValido(String numeroUsuarios) {
+        return estudiantesRequeridos;
+    }
 
-        return validar(numeroUsuarios, PATRON_USUARIOS_DIRECTOS_INDIRECTOS);
+    public void setestudiantesRequeridos(int estudiantesRequeridos) {
+
+        this.estudiantesRequeridos = estudiantesRequeridos;
+    }
+
+    public int getEstudiantesAsignados() {
+        return estudiantesAsignados;
+    }
+
+    public void setEstudiantesAsignados(int estudiantesAsignados) {
+        this.estudiantesAsignados = estudiantesAsignados;
     }
 
     public List<String> camposVaciosProyecto(String campoNombre,
@@ -227,7 +240,8 @@ public class ProyectoDTO {
                                              String campoActividades,
                                              String campoResponsabilidades,
                                              String usuariosDirectos,
-                                             String usuariosIndirectos)
+                                             String usuariosIndirectos,
+                                             String estudiantesRequeridos)
     {
 
         List<String> errores = new ArrayList<>();
@@ -276,7 +290,19 @@ public class ProyectoDTO {
             errores.add("El campo de usuarios indirectos no puede estar vacío.");
         }
 
+        if (estudiantesRequeridos.isEmpty()) {
+            errores.add("El campo de estudiantes requeridos no puede estar vacío.");
+        }
+
         return errores;
+    }
+
+    private static final Pattern PATRON_USUARIOS_DIRECTOS_INDIRECTOS_ESTUDIANTES_REQUERIDOS =
+            Pattern.compile("^[0-9]+$");
+
+    private static boolean usuarioValido(String numeroUsuarios) {
+
+        return validar(numeroUsuarios, PATRON_USUARIOS_DIRECTOS_INDIRECTOS_ESTUDIANTES_REQUERIDOS);
     }
 
     private boolean validarNombreProyecto(String nombre) {
@@ -301,7 +327,8 @@ public class ProyectoDTO {
                                                String campoActividades,
                                                String campoResponsabilidades,
                                                String usuariosDirectos,
-                                               String usuariosIndirectos) {
+                                               String usuariosIndirectos,
+                                               String estudiantesRequeridos) {
 
         List<String> errores = new ArrayList<>();
 
@@ -356,6 +383,10 @@ public class ProyectoDTO {
 
         if(!usuarioValido(usuariosIndirectos)) {
             errores.add("El campo de usuarios indirectos debe ser un número entero positivo.");
+        }
+
+        if(!usuarioValido(estudiantesRequeridos)) {
+            errores.add("El campo de estudiantes requeridos debe ser un número entero positivo");
         }
 
         return errores;

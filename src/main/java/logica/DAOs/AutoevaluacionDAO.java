@@ -158,5 +158,34 @@ public class AutoevaluacionDAO implements IAutoevaluacionDAO {
             }
         }
     }
+
+    public AutoevaluacionDTO buscarAutoevaluacionPorMatricula(String matricula) throws SQLException, IOException {
+        String buscarSQLAutoevaluacion = "SELECT * FROM autoevaluacion WHERE idEstudiante = ?";
+        AutoevaluacionDTO autoevaluacion = new AutoevaluacionDTO(-1, null, " ", -1, " ", -1);
+
+        try {
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaAutoevaluacion = conexionBaseDeDatos.prepareStatement(buscarSQLAutoevaluacion);
+            sentenciaAutoevaluacion.setString(1, matricula);
+            resultadoConsultaAutoevaluacion = sentenciaAutoevaluacion.executeQuery();
+
+            if (resultadoConsultaAutoevaluacion.next()) {
+                int IDAutoevaluacion = resultadoConsultaAutoevaluacion.getInt("idAutoevaluacion");
+                Timestamp fecha = resultadoConsultaAutoevaluacion.getTimestamp("fecha");
+                String lugar = resultadoConsultaAutoevaluacion.getString("lugar");
+                float calificacionFinal = resultadoConsultaAutoevaluacion.getFloat("calificacionFinal");
+                String idEstudiante = resultadoConsultaAutoevaluacion.getString("idEstudiante");
+                int estatoActivo = resultadoConsultaAutoevaluacion.getInt("estadoActivo");
+                autoevaluacion = new AutoevaluacionDTO(IDAutoevaluacion, fecha, lugar, calificacionFinal, idEstudiante, estatoActivo);
+            }
+
+        } finally {
+            if (sentenciaAutoevaluacion != null) {
+                sentenciaAutoevaluacion.close();
+            }
+        }
+        return autoevaluacion;
+    }
+
 }
 

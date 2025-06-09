@@ -5,10 +5,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logica.DAOs.AutoevaluacionContieneDAO;
 import logica.DAOs.AutoevaluacionDAO;
+import logica.DTOs.AutoevaluacionDTO;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
@@ -21,6 +23,43 @@ public class ControladorMenuEstudianteGUI {
 
     Utilidades utilidades = new Utilidades();
     Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorRegistrarAutoevaluacionGUI.class);
+
+    @FXML
+    private Button botonRegistrarAutoevaluacion;
+
+    @FXML
+    private Button botonConsultarAutoevaluacion;
+
+    private String matricula = ControladorInicioDeSesionGUI.matricula;
+
+
+    @FXML
+    public void initialize() {
+        verificarAutoevaluacionRegistrada();
+    }
+
+    private void verificarAutoevaluacionRegistrada() {
+        AutoevaluacionDAO autoevaluacionDAO = new AutoevaluacionDAO();
+
+        try {
+
+            AutoevaluacionDTO autoevaluacion = autoevaluacionDAO.buscarAutoevaluacionPorMatricula(matricula);
+
+            if (autoevaluacion.getIDAutoevaluacion() == -1) {
+
+                botonRegistrarAutoevaluacion.setDisable(false);
+                botonConsultarAutoevaluacion.setDisable(true);
+                logger.info("No se encontró una autoevaluación vinculada a la matrícula: " + matricula);
+            } else {
+
+                botonConsultarAutoevaluacion.setDisable(false);
+                botonRegistrarAutoevaluacion.setDisable(true);
+                logger.info("Se encontró una autoevaluación vinculada a la matrícula: " + matricula);
+            }
+        } catch (Exception e) {
+            logger.error("Error al verificar autoevaluación: " + e.getMessage());
+        }
+    }
 
     @FXML
     public void abrirEditarPerfilEstudiante() {
@@ -38,6 +77,11 @@ public class ControladorMenuEstudianteGUI {
             stage.setTitle("Registrar Autoevaluación");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
+
+            stage.setOnHidden(event -> {
+
+                verificarAutoevaluacionRegistrada();
+            });
 
             stage.setOnCloseRequest(event -> {
                 eliminarEvaluacion();
@@ -78,9 +122,18 @@ public class ControladorMenuEstudianteGUI {
     }
 
     @FXML
+    public void abrirConsultarAutoevaluacion() {
+
+        utilidades.mostrarVentana("/ConsultarAutoevaluacionGUI.fxml");
+
+
+    }
+
+    @FXML
     public void abrirConsultarEvaluacionesEstudiante() {
 
         utilidades.mostrarVentana("/ConsultarEvaluacionesEstudianteGUI.fxml");
+
     }
 
 

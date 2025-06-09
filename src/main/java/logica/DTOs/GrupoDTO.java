@@ -5,7 +5,6 @@ public class GrupoDTO {
     private int NRC;
     private String nombre;
     private int numeroPersonal;
-    private int idEE;
     private int idPeriodo;
     private int estadoActivo;
 
@@ -13,12 +12,11 @@ public class GrupoDTO {
 
     }
 
-    public GrupoDTO(int NRC, String nombre, int numeroPersonal, int idEE, int idPeriodo, int estadoActivo) {
+    public GrupoDTO(int NRC, String nombre, int numeroPersonal, int idPeriodo, int estadoActivo) {
 
         this.NRC = NRC;
         this.nombre = nombre;
         this.numeroPersonal = numeroPersonal;
-        this.idEE = idEE;
         this.idPeriodo = idPeriodo;
         this.estadoActivo = estadoActivo;
     }
@@ -53,15 +51,6 @@ public class GrupoDTO {
         this.numeroPersonal = numeroPersonal;
     }
 
-    public int getIdEE() {
-
-        return idEE;
-    }
-
-    public void setIdEE(int idEE) {
-
-        this.idEE = idEE;
-    }
 
     public int getIdPeriodo() {
 

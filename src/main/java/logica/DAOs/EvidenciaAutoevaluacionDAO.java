@@ -44,16 +44,16 @@ public class EvidenciaAutoevaluacionDAO implements IEvidenciaAutoevaluacionDAO {
         return evidenciaInsertada;
     }
 
-    public EvidenciaAutoevaluacionDTO mostrarEvidenciaAutoevaluacionPorID(int idEvidencia) throws SQLException, IOException {
+    public EvidenciaAutoevaluacionDTO mostrarEvidenciaAutoevaluacionPorID(int idAutoevaluacion) throws SQLException, IOException {
 
-        String consultaSQLEvidencia = "SELECT * FROM evidenciaautoevaluacion WHERE idEvidencia = ?";
+        String consultaSQLEvidencia = "SELECT * FROM evidenciaautoevaluacion WHERE idAutoevaluacion = ?";
         EvidenciaAutoevaluacionDTO evidenciaEncontrada = new EvidenciaAutoevaluacionDTO(-1, " ", -1);
 
         try {
 
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaEvidenciaAutoevaluacion = conexionBaseDeDatos.prepareStatement(consultaSQLEvidencia);
-            sentenciaEvidenciaAutoevaluacion.setInt(1, idEvidencia);
+            sentenciaEvidenciaAutoevaluacion.setInt(1, idAutoevaluacion);
             resultadoConsultaEvidenciaAutoevaluacion = sentenciaEvidenciaAutoevaluacion.executeQuery();
 
             if (resultadoConsultaEvidenciaAutoevaluacion.next()) {

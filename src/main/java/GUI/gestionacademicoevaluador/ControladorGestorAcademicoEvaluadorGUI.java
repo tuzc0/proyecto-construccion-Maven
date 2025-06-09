@@ -1,6 +1,5 @@
 package GUI.gestionacademicoevaluador;
 
-import GUI.gestionacademico.ControladorRegistroAcademicoGUI;
 import GUI.utilidades.Utilidades;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -13,7 +12,6 @@ import logica.DAOs.AcademicoDAO;
 import logica.DAOs.AcademicoEvaluadorDAO;
 import logica.DAOs.CuentaDAO;
 import logica.DAOs.UsuarioDAO;
-import logica.DTOs.AcademicoDTO;
 import logica.DTOs.AcademicoEvaluadorDTO;
 import logica.DTOs.CuentaDTO;
 import logica.DTOs.UsuarioDTO;
@@ -573,7 +571,7 @@ public class ControladorGestorAcademicoEvaluadorGUI {
             if (usuarioModificado && academicoModificado && cuentaModificada) {
 
                 LOGGER.info("El académico ha sido modificado correctamente.");
-                UTILIDADES.mostrarMensajeConfirmacion(
+                UTILIDADES.mostrarAlertaConfirmacion(
                         "Éxito",
                         "Los cambios se han guardado correctamente.",
                         ""

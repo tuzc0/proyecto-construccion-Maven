@@ -63,7 +63,7 @@ public class CoordinadorDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("Error en @BeforeEach al preparar datos: " + e.getMessage());
+            fail("Error en @BeforeEach al preparar datos: " + e);
         }
     }
 
@@ -90,7 +90,7 @@ public class CoordinadorDAOTest {
 
         } catch (SQLException e) {
 
-            fail("Error en @AfterEach al limpiar datos: " + e.getMessage());
+            fail("Error en @AfterEach al limpiar datos: " + e);
         }
     }
 
@@ -111,7 +111,7 @@ public class CoordinadorDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba una excepción: " + e.getMessage());
+            fail("No se esperaba una excepción: " + e);
         }
     }
 
@@ -135,7 +135,7 @@ public class CoordinadorDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba una excepción: " + e.getMessage());
+            fail("No se esperaba una excepción: " + e);
         }
     }
 
@@ -151,7 +151,7 @@ public class CoordinadorDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba una excepción: " + e.getMessage());
+            fail("No se esperaba una excepción: " + e);
         }
     }
 
@@ -170,7 +170,7 @@ public class CoordinadorDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba una excepción: " + e.getMessage());
+            fail("No se esperaba una excepción: " + e);
         }
     }
 
@@ -186,7 +186,7 @@ public class CoordinadorDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba una excepción: " + e.getMessage());
+            fail("No se esperaba una excepción: " + e);
         }
     }
 
@@ -202,7 +202,7 @@ public class CoordinadorDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba una excepción: " + e.getMessage());
+            fail("No se esperaba una excepción: " + e);
         }
     }
 
@@ -219,7 +219,7 @@ public class CoordinadorDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba una excepción: " + e.getMessage());
+            fail("No se esperaba una excepción: " + e);
         }
     }
 
@@ -236,7 +236,83 @@ public class CoordinadorDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba una excepción: " + e.getMessage());
+            fail("No se esperaba una excepción: " + e);
+        }
+    }
+
+    @Test
+    void buscarCoordinadorPorNumeroDePersonalInvalido() {
+
+        try {
+
+            CoordinadorDTO coordinadorObtenido = coordinadorDAO.buscarCoordinadorPorNumeroDePersonal(-1);
+            CoordinadorDTO coordinadorEsperado = new CoordinadorDTO(-1, -1, "N/A", "N/A", 0);
+
+            assertEquals(coordinadorEsperado, coordinadorObtenido,
+                    "Debería retornar el coordinador por defecto para número inválido");
+
+        } catch (SQLException | IOException e) {
+
+            fail("No se esperaba una excepción: " + e);
+        }
+    }
+
+    @Test
+    void buscarCoordinadorPorIDInvalido() {
+
+        try {
+
+            CoordinadorDTO coordinadorObtenido = coordinadorDAO.buscarCoordinadorPorID(-1);
+            CoordinadorDTO coordinadorEsperado = new CoordinadorDTO(-1, -1, "N/A", "N/A", 0);
+
+            assertEquals(coordinadorEsperado, coordinadorObtenido,
+                    "Debería retornar el coordinador por defecto para ID inválido");
+
+        } catch (SQLException | IOException e) {
+
+            fail("No se esperaba una excepción: " + e);
+        }
+    }
+
+    @Test
+    void buscarCoordinadorPorIDValido() {
+
+        try {
+
+            int idValido = IDS_USUARIOS_INSERTADOS.get(0);
+            CoordinadorDTO coordinadorEsperado = new CoordinadorDTO(
+                    1001,
+                    idValido,
+                    "Nombre1",
+                    "Apellido1",
+                    1
+            );
+
+            CoordinadorDTO coordinadorObtenido = coordinadorDAO.buscarCoordinadorPorID(idValido);
+            assertEquals(coordinadorEsperado, coordinadorObtenido,
+                    "Debería encontrar el coordinador exacto para ID válido");
+
+        } catch (SQLException | IOException e) {
+
+            fail("No se esperaba una excepción: " + e);
+        }
+    }
+
+    @Test
+    void buscarCoordinadorPorIDInexistente() {
+
+        try {
+
+            int idInexistente = 9999;
+            CoordinadorDTO coordinadorObtenido = coordinadorDAO.buscarCoordinadorPorID(idInexistente);
+            CoordinadorDTO coordinadorEsperado = new CoordinadorDTO(-1, -1, "N/A", "N/A", 0);
+
+            assertEquals(coordinadorEsperado, coordinadorObtenido,
+                    "Debería retornar el coordinador por defecto para ID inexistente");
+
+        } catch (SQLException | IOException e) {
+
+            fail("No se esperaba una excepción: " + e);
         }
     }
 }

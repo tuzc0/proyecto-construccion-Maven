@@ -127,7 +127,7 @@ public class ControladorRegistrarEvaluacionGUI {
             EvaluacionContieneDAO evaluacionContieneDAO = new EvaluacionContieneDAO();
 
             List<CriterioEvaluacionDTO> listaCriterios = criterioEvaluacionDAO.listarCriteriosActivos();
-            List<EvaluacionContieneDTO> listaEvaluacionContiene = evaluacionContieneDAO.listarEvaluacionesPorIdEvaluacion(idEvaluacionGenerada);
+            List<EvaluacionContieneDTO> listaEvaluacionContiene = evaluacionContieneDAO.listarCriteriosEvaluacionPorIdEvaluacion(idEvaluacionGenerada);
             ObservableList<ContenedorCriteriosEvaluacion> listaContenedorCriterios = FXCollections.observableArrayList();
 
             for (CriterioEvaluacionDTO criterio : listaCriterios){
@@ -262,7 +262,7 @@ public class ControladorRegistrarEvaluacionGUI {
 
         try{
 
-            List<EvaluacionContieneDTO> listaEvaluacionContiene = evaluacionContieneDAO.listarEvaluacionesPorIdEvaluacion(idEvaluacionGenerada);
+            List<EvaluacionContieneDTO> listaEvaluacionContiene = evaluacionContieneDAO.listarCriteriosEvaluacionPorIdEvaluacion(idEvaluacionGenerada);
 
             for (EvaluacionContieneDTO evaluacionContiene : listaEvaluacionContiene){
                 calificacionFinal += evaluacionContiene.getCalificacion();

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="740.0" prefWidth="600" spacing="20" style="-fx-background-color: #f5f7fa; -fx-padding: 25;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorDetallesEvaluacionGUI">
+
+    <!-- Encabezado con gradiente -->
+    <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-background-color: linear-gradient(to right, #4a6baf, #3a5f9a); -fx-background-radius: 10; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2);">
+        <ImageView fitHeight="50" fitWidth="50">
+            <image>
+                <Image url="https://culturesync.net/wp-content/uploads/2018/12/icon-assessment@2x.png" />
+            </image>
+            <effect>
+                <DropShadow color="#00000080" radius="3" />
+            </effect>
+        </ImageView>
+        <Label fx:id="lblTitulo" style="-fx-text-fill: white; -fx-font-weight: bold;" text="Detalles de Evaluación">
+            <font>
+                <Font name="System Bold" size="20" />
+            </font>
+            <effect>
+                <DropShadow color="#00000080" radius="3" />
+            </effect>
+        </Label>
+    </HBox>
+
+    <!-- Información general con sombra -->
+    <GridPane hgap="15" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);" vgap="10">
+        <columnConstraints>
+            <ColumnConstraints hgrow="NEVER" minWidth="150" />
+            <ColumnConstraints hgrow="ALWAYS" minWidth="200" />
+        </columnConstraints>
+
+        <Label style="-fx-font-weight: bold; -fx-text-fill: #333333;" text="Evaluador:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <Label fx:id="lblEvaluador" style="-fx-text-fill: #333333;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+        <Label style="-fx-font-weight: bold; -fx-text-fill: #333333;" text="Fecha:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Label fx:id="lblFecha" style="-fx-text-fill: #333333;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label style="-fx-font-weight: bold; -fx-text-fill: #333333;" text="Calificación Final:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <Label fx:id="lblCalificacionFinal" style="-fx-text-fill: #4a6baf; -fx-font-weight: bold;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
+    </GridPane>
+
+    <!-- Sección de criterios -->
+    <Label style="-fx-font-weight: bold; -fx-text-fill: #333333;" text="Desglose por Criterios">
+        <font>
+            <Font name="System Bold" size="16" />
+        </font>
+    </Label>
+
+    <TableView fx:id="tablaCriterios" prefHeight="191.0" prefWidth="550.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+        <columns>
+            <TableColumn fx:id="colNumeroCriterio" prefWidth="68.00002747774124" style="-fx-text-fill: #333333; -fx-font-weight: bold;" text="No.criterio" />
+            <TableColumn fx:id="colDescripcion" prefWidth="382.3999786376953" style="-fx-alignment: CENTER; -fx-text-fill: #333333; -fx-font-weight: bold;" text="descripcion" />
+            <TableColumn fx:id="colCalificacion" prefWidth="100.79998779296875" style="-fx-alignment: CENTER; -fx-text-fill: #333333; -fx-font-weight: bold;" text="Calificación" />
+        </columns>
+    </TableView>
+
+    <!-- Comentarios generales -->
+    <Label style="-fx-font-weight: bold; -fx-text-fill: #333333;" text="Comentarios Adicionales">
+        <font>
+            <Font name="System Bold" size="16" />
+        </font>
+    </Label>
+    <TextArea fx:id="txtComentarios" editable="false" prefHeight="126.0" prefWidth="550.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2); -fx-font-size: 14; -fx-text-fill: #333333;" wrapText="true" />
+
+    <!-- Pie de página -->
+    <HBox alignment="CENTER_RIGHT" spacing="10">
+        <Button onAction="#cerrarVentana" style="-fx-background-color: #607d8b; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0.5, 0, 1);" text="Cerrar">
+            <padding>
+                <Insets bottom="8" left="15" right="15" top="8" />
+            </padding>
+        </Button>
+    </HBox>
+</VBox>

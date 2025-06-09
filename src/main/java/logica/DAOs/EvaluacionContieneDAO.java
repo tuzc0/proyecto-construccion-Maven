@@ -105,7 +105,7 @@ public class EvaluacionContieneDAO implements IEvaluacionContieneDAO {
         return evaluacionEncontrada;
     }
 
-    public List<EvaluacionContieneDTO> listarEvaluacionesPorIdEvaluacion(int idEvaluacion) throws SQLException, IOException {
+    public List<EvaluacionContieneDTO> listarCriteriosEvaluacionPorIdEvaluacion(int idEvaluacion) throws SQLException, IOException {
         String consultaSQL = "SELECT * FROM evaluacioncontiene WHERE idEvaluacion = ?";
         List<EvaluacionContieneDTO> listaEvaluaciones = new ArrayList<>();
 

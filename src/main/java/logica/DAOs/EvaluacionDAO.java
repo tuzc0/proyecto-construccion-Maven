@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EvaluacionDAO implements IEvaluacionDAO {
 
@@ -159,6 +161,33 @@ public class EvaluacionDAO implements IEvaluacionDAO {
         }
 
         return evaluacion;
+    }
+
+    public List<EvaluacionDTO> listarEvaluacionesPorIdEstudiante(String idEstudiante) throws SQLException, IOException {
+        String listarSQLEvaluaciones = "SELECT * FROM evaluacion WHERE idEstudiante = ?";
+        List<EvaluacionDTO> listaEvaluaciones = new ArrayList<>();
+
+        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+             PreparedStatement sentencia = conexionBaseDeDatos.prepareStatement(listarSQLEvaluaciones)) {
+
+            sentencia.setString(1, idEstudiante);
+            try (ResultSet resultadoConsulta = sentencia.executeQuery()) {
+                while (resultadoConsulta.next()) {
+                    int idEvaluacion = resultadoConsulta.getInt("idEvaluacion");
+                    String comentarios = resultadoConsulta.getString("comentarios");
+                    float calificacionFinal = resultadoConsulta.getFloat("calificacionFinal");
+                    int numeroPersonal = resultadoConsulta.getInt("numeroPersonal");
+                    int estadoActivo = resultadoConsulta.getInt("estadoActivo");
+
+                    EvaluacionDTO evaluacion = new EvaluacionDTO(
+                            idEvaluacion, comentarios, calificacionFinal, numeroPersonal, idEstudiante, estadoActivo
+                    );
+                    listaEvaluaciones.add(evaluacion);
+                }
+            }
+        }
+
+        return listaEvaluaciones;
     }
 }
 

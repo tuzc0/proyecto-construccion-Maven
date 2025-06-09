@@ -4,12 +4,14 @@ import logica.DAOs.UsuarioDAO;
 import logica.DTOs.CuentaDTO;
 import logica.DTOs.UsuarioDTO;
 import org.junit.jupiter.api.*;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -36,13 +38,14 @@ class CuentaDAOTest {
             eliminarCuentas.executeUpdate();
             eliminarCuentas.close();
 
-            PreparedStatement eliminarUsuarios = conexionBaseDeDatos.prepareStatement("DELETE FROM usuario WHERE idUsuario BETWEEN 1000 AND 2000");
+            PreparedStatement eliminarUsuarios =
+                    conexionBaseDeDatos.prepareStatement("DELETE FROM usuario WHERE idUsuario BETWEEN 1000 AND 2000");
             eliminarUsuarios.executeUpdate();
             eliminarUsuarios.close();
 
         } catch (SQLException | IOException e) {
 
-            fail("Error al preparar los datos de prueba: " + e.getMessage());
+            fail("Error al preparar los datos de prueba: " + e);
         }
     }
 
@@ -51,14 +54,16 @@ class CuentaDAOTest {
 
         try {
 
-            PreparedStatement eliminarCuentas = conexionBaseDeDatos.prepareStatement("DELETE FROM cuenta WHERE idUsuario BETWEEN 1000 AND 2000");
+            PreparedStatement eliminarCuentas =
+                    conexionBaseDeDatos.prepareStatement("DELETE FROM cuenta WHERE idUsuario BETWEEN 1000 AND 2000");
             eliminarCuentas.executeUpdate();
             eliminarCuentas.close();
 
 
             for (int idUsuario : IDS_USUARIOS_INSERTADOS) {
 
-                PreparedStatement eliminarUsuario = conexionBaseDeDatos.prepareStatement("DELETE FROM usuario WHERE idUsuario = ?");
+                PreparedStatement eliminarUsuario =
+                        conexionBaseDeDatos.prepareStatement("DELETE FROM usuario WHERE idUsuario = ?");
                 eliminarUsuario.setInt(1, idUsuario);
                 eliminarUsuario.executeUpdate();
                 eliminarUsuario.close();
@@ -68,7 +73,7 @@ class CuentaDAOTest {
 
         } catch (SQLException e) {
 
-            fail("Error al limpiar los datos de prueba: " + e.getMessage());
+            fail("Error al limpiar los datos de prueba: " + e);
         }
     }
 
@@ -86,7 +91,7 @@ class CuentaDAOTest {
             assertTrue(resultado, "La cuenta debería ser creada correctamente.");
 
         } catch (SQLException | IOException e) {
-            fail("No se esperaba excepción: " + e.getMessage());
+            fail("No se esperaba excepción: " + e);
         }
     }
 
@@ -94,7 +99,8 @@ class CuentaDAOTest {
     void testCrearNuevaCuentaConDatosInvalidos() {
 
         CuentaDTO cuentaInvalida = new CuentaDTO(null, null, -1);
-        assertThrows(SQLException.class, () -> cuentaDAO.crearNuevaCuenta(cuentaInvalida), "Se esperaba una excepción debido a datos inválidos.");
+        assertThrows(SQLException.class, () -> cuentaDAO.crearNuevaCuenta(cuentaInvalida),
+                "Se esperaba una excepción debido a datos inválidos.");
     }
 
     @Test
@@ -114,7 +120,7 @@ class CuentaDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba excepción: " + e.getMessage());
+            fail("No se esperaba excepción: " + e);
         }
     }
 
@@ -128,7 +134,21 @@ class CuentaDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba excepción: " + e.getMessage());
+            fail("No se esperaba excepción: " + e);
+        }
+    }
+
+    @Test
+    void eliminarCuentaConIDInvalido() {
+
+        try {
+
+            boolean resultadoAlEliminar = cuentaDAO.eliminarCuentaPorID(-1);
+            assertFalse(resultadoAlEliminar, "No debería eliminar una cuenta con ID inválido");
+
+        } catch (SQLException | IOException e) {
+
+            fail("No se esperaba una excepción: " + e);
         }
     }
 
@@ -150,7 +170,7 @@ class CuentaDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba excepción: " + e.getMessage());
+            fail("No se esperaba excepción: " + e);
         }
     }
 
@@ -165,7 +185,7 @@ class CuentaDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba excepción: " + e.getMessage());
+            fail("No se esperaba excepción: " + e);
         }
     }
 
@@ -180,7 +200,22 @@ class CuentaDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba excepción: " + e.getMessage());
+            fail("No se esperaba excepción: " + e);
+        }
+    }
+
+    @Test
+    void modificarCuentaConUsuarioInexistente() {
+
+        try {
+
+            CuentaDTO cuentaUsuarioInexistente = new CuentaDTO("noexiste@correo.com", "pass123", 99999);
+            boolean resultadoAlModificar = cuentaDAO.modificarCuenta(cuentaUsuarioInexistente);
+            assertFalse(resultadoAlModificar, "No debería modificar una cuenta con usuario inexistente");
+
+        } catch (SQLException | IOException e) {
+
+            fail("No se esperaba una excepción: " + e);
         }
     }
 
@@ -201,7 +236,7 @@ class CuentaDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba excepción: " + e.getMessage());
+            fail("No se esperaba excepción: " + e);
         }
     }
 
@@ -211,11 +246,29 @@ class CuentaDAOTest {
         try {
 
             CuentaDTO cuentaEncontrada = cuentaDAO.buscarCuentaPorCorreo("inexistente@correo.com");
-            assertEquals(new CuentaDTO("N/A", "N/A", -1), cuentaEncontrada, "La cuenta encontrada debería ser la cuenta por defecto.");
+            assertEquals(new CuentaDTO("N/A", "N/A", -1), cuentaEncontrada,
+                    "La cuenta encontrada debería ser la cuenta por defecto.");
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba excepción: " + e.getMessage());
+            fail("No se esperaba excepción: " + e);
+        }
+    }
+
+    @Test
+    void buscarCuentaConCorreoInvalido() {
+
+        try {
+
+            CuentaDTO cuentaEsperada = new CuentaDTO("N/A", "N/A", -1);
+            CuentaDTO cuentaObtenida = cuentaDAO.buscarCuentaPorCorreo(null);
+
+            assertEquals(cuentaEsperada, cuentaObtenida,
+                    "Debería retornar cuenta por defecto para correo inválido");
+
+        } catch (SQLException | IOException e) {
+
+            fail("No se esperaba una excepción: " + e);
         }
     }
 
@@ -236,7 +289,7 @@ class CuentaDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba excepción: " + e.getMessage());
+            fail("No se esperaba excepción: " + e);
         }
     }
 
@@ -246,11 +299,29 @@ class CuentaDAOTest {
         try {
 
             CuentaDTO cuentaEncontrada = cuentaDAO.buscarCuentaPorID(99999);
-            assertEquals(new CuentaDTO("N/A", "N/A", -1), cuentaEncontrada, "La cuenta encontrada debería ser la cuenta por defecto.");
+            assertEquals(new CuentaDTO("N/A", "N/A", -1), cuentaEncontrada,
+                    "La cuenta encontrada debería ser la cuenta por defecto.");
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba excepción: " + e.getMessage());
+            fail("No se esperaba excepción: " + e);
+        }
+    }
+
+    @Test
+    void buscarCuentaPorIDInvalido() {
+
+        try {
+
+            CuentaDTO cuentaEsperada = new CuentaDTO("N/A", "N/A", -1);
+            CuentaDTO cuentaObtenida = cuentaDAO.buscarCuentaPorID(-1);
+
+            assertEquals(cuentaEsperada, cuentaObtenida,
+                    "Debería retornar cuenta por defecto para ID inválido");
+
+        } catch (SQLException | IOException e) {
+
+            fail("No se esperaba una excepción: " + e);
         }
     }
 }

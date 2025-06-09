@@ -4,11 +4,13 @@ import logica.DTOs.UsuarioDTO;
 import org.junit.jupiter.api.*;
 import logica.DAOs.AcademicoDAO;
 import logica.DTOs.AcademicoDTO;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AcademicoDAOTest {
@@ -18,13 +20,13 @@ public class AcademicoDAOTest {
     private Connection conexionBaseDeDatos;
 
     private final List<Integer> NUMEROS_DE_PERSONAL_INSERTADOS = new ArrayList<>();
-    private final List<Integer> IDS_USUARIOS_INSERTADOS    = new ArrayList<>();
+    private final List<Integer> IDS_USUARIOS_INSERTADOS = new ArrayList<>();
 
     @BeforeEach
     void prepararDatosDePrueba() {
 
         academicoDAO = new AcademicoDAO();
-        usuarioDAO   = new UsuarioDAO();
+        usuarioDAO = new UsuarioDAO();
 
         try {
 
@@ -44,9 +46,9 @@ public class AcademicoDAOTest {
                     .prepareStatement("DELETE FROM usuario WHERE idUsuario BETWEEN 1000 AND 2000")
                     .executeUpdate();
 
-            UsuarioDTO usuarioAcademico1DTO = new UsuarioDTO(0, "Nombre",   "Prueba",   1);
-            UsuarioDTO usuarioAcadmico2DTO = new UsuarioDTO(0, "Usuario2", "Apellido2",1);
-            UsuarioDTO usuarioAcademico3DTO = new UsuarioDTO(0, "Usuario3", "Apellido3",1);
+            UsuarioDTO usuarioAcademico1DTO = new UsuarioDTO(0, "Nombre", "Prueba", 1);
+            UsuarioDTO usuarioAcadmico2DTO = new UsuarioDTO(0, "Usuario2", "Apellido2", 1);
+            UsuarioDTO usuarioAcademico3DTO = new UsuarioDTO(0, "Usuario3", "Apellido3", 1);
 
             int idUsuarioAcademico1 = usuarioDAO.insertarUsuario(usuarioAcademico1DTO);
             int idUsuarioAcademico2 = usuarioDAO.insertarUsuario(usuarioAcadmico2DTO);
@@ -67,7 +69,7 @@ public class AcademicoDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("Error en @BeforeEach al preparar datos: " + e.getMessage());
+            fail("Error en @BeforeEach al preparar datos: " + e);
         }
     }
 
@@ -94,7 +96,7 @@ public class AcademicoDAOTest {
 
         } catch (SQLException e) {
 
-            fail("Error en @AfterEach al limpiar datos: " + e.getMessage());
+            fail("Error en @AfterEach al limpiar datos: " + e);
         }
     }
 
@@ -116,7 +118,7 @@ public class AcademicoDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba una excepción: " + e.getMessage());
+            fail("No se esperaba una excepción: " + e);
         }
     }
 
@@ -132,40 +134,7 @@ public class AcademicoDAOTest {
     }
 
     @Test
-    void testBuscarAcademicoPorNumeroDePersonalConDatosValidos() {
-
-        AcademicoDTO academicoEsperado = new AcademicoDTO(1001, IDS_USUARIOS_INSERTADOS.get(0),
-                "Nombre", "Prueba", 1);
-
-        try {
-
-            AcademicoDTO academicoEncontrado = academicoDAO.buscarAcademicoPorNumeroDePersonal(academicoEsperado.getNumeroDePersonal());
-            assertEquals(academicoEsperado, academicoEncontrado, "El académico debería ser encontrado correctamente.");
-
-        } catch (SQLException | IOException e) {
-
-            fail("No se esperaba una excepción: " + e.getMessage());
-        }
-    }
-
-    @Test
-    void testBuscarAcademicoPorNumeroDePersonalConDatosInvalidos() {
-
-        int numeroDePersonalInexistente = 99999;
-
-        try {
-
-            AcademicoDTO academicoEncontrado = academicoDAO.buscarAcademicoPorNumeroDePersonal(numeroDePersonalInexistente);
-            assertEquals(-1, academicoEncontrado.getNumeroDePersonal(), "No debería encontrarse un académico con ese número.");
-
-        } catch (SQLException | IOException e) {
-
-            fail("No se esperaba una excepción: " + e.getMessage());
-        }
-    }
-
-    @Test
-    void testEliminarAcademicoPorNumeroDePersonalConDatosValidos() {
+    void testEliminarAcademicoPorNumeroDePersonalConNumeroDePersonalExistente() {
 
         int numeroDePersonalAEliminar = 1002;
 
@@ -176,12 +145,12 @@ public class AcademicoDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba una excepción: " + e.getMessage());
+            fail("No se esperaba una excepción: " + e);
         }
     }
 
     @Test
-    void testEliminarAcademicoPorNumeroDePersonalConDatosInvalidos() {
+    void testEliminarAcademicoPorNumeroDePersonalConNumeroDePersonalInexistente() {
 
         int numeroDePersonalInexistente = 88888;
 
@@ -192,7 +161,23 @@ public class AcademicoDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba una excepción: " + e.getMessage());
+            fail("No se esperaba una excepción: " + e);
+        }
+    }
+
+    @Test
+    void testEliminarAcademicoPorNumeroDePersonalInvalido() {
+
+        int numeroDePersonalInexistente = -1;
+
+        try {
+
+            boolean resultado = academicoDAO.eliminarAcademicoPorNumeroDePersonal(numeroDePersonalInexistente);
+            assertFalse(resultado, "No debería poder eliminar un académico inexistente");
+
+        } catch (SQLException | IOException e) {
+
+            fail("No se esperaba una excepción: " + e);
         }
     }
 
@@ -212,7 +197,7 @@ public class AcademicoDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba una excepción: " + e.getMessage());
+            fail("No se esperaba una excepción: " + e);
         }
     }
 
@@ -229,7 +214,7 @@ public class AcademicoDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba una excepción: " + e.getMessage());
+            fail("No se esperaba una excepción: " + e);
         }
     }
 
@@ -245,7 +230,56 @@ public class AcademicoDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba excepción: " + e.getMessage());
+            fail("No se esperaba excepción: " + e);
+        }
+    }
+
+    @Test
+    void testBuscarAcademicoPorNumeroDePersonalConDatosValidos() {
+
+        AcademicoDTO academicoEsperado = new AcademicoDTO(1001, IDS_USUARIOS_INSERTADOS.get(0),
+                "Nombre", "Prueba", 1);
+
+        try {
+
+            AcademicoDTO academicoEncontrado = academicoDAO.buscarAcademicoPorNumeroDePersonal(academicoEsperado.getNumeroDePersonal());
+            assertEquals(academicoEsperado, academicoEncontrado, "El académico debería ser encontrado correctamente.");
+
+        } catch (SQLException | IOException e) {
+
+            fail("No se esperaba una excepción: " + e);
+        }
+    }
+
+    @Test
+    void testBuscarAcademicoPorNumeroDePersonalConDatosInvalidos() {
+
+        int numeroDePersonalInexistente = -1;
+
+        try {
+
+            AcademicoDTO academicoEncontrado = academicoDAO.buscarAcademicoPorNumeroDePersonal(numeroDePersonalInexistente);
+            assertEquals(-1, academicoEncontrado.getNumeroDePersonal(), "No debería encontrarse un académico con ese número.");
+
+        } catch (SQLException | IOException e) {
+
+            fail("No se esperaba una excepción: " + e);
+        }
+    }
+
+    @Test
+    void testBuscarAcademicoPorNumeroDePersonalInexistente() {
+
+        int numeroDePersonalInexistente = 99999;
+
+        try {
+
+            AcademicoDTO resultado = academicoDAO.buscarAcademicoPorNumeroDePersonal(numeroDePersonalInexistente);
+            assertEquals(-1, resultado.getNumeroDePersonal(), "Debería retornar un DTO con valores por defecto");
+
+        } catch (SQLException | IOException e) {
+
+            fail("No se esperaba una excepción: " + e);
         }
     }
 
@@ -269,7 +303,7 @@ public class AcademicoDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba una excepción: " + e.getMessage());
+            fail("No se esperaba una excepción: " + e);
         }
     }
 
@@ -288,7 +322,62 @@ public class AcademicoDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba una excepción: " + e.getMessage());
+            fail("No se esperaba una excepción: " + e);
+        }
+    }
+
+    @Test
+    void testBuscarAcademicoPorIDValido() {
+
+        try {
+
+            UsuarioDTO usuarioDTO = new UsuarioDTO(0, "TestIDValido", "ApellidoTest", 1);
+            int idUsuario = usuarioDAO.insertarUsuario(usuarioDTO);
+            IDS_USUARIOS_INSERTADOS.add(idUsuario);
+
+            AcademicoDTO academicoEsperado = new AcademicoDTO(12345, idUsuario,
+                    usuarioDTO.getNombre(), usuarioDTO.getApellido(), usuarioDTO.getEstado());
+
+            academicoDAO.insertarAcademico(academicoEsperado);
+            NUMEROS_DE_PERSONAL_INSERTADOS.add(12345);
+
+            AcademicoDTO academicoEncontrado = academicoDAO.buscarAcademicoPorID(idUsuario);
+            assertEquals(academicoEsperado, academicoEncontrado, "Debería encontrar el académico con el ID proporcionado");
+
+        } catch (SQLException | IOException e) {
+
+            fail("No se esperaba una excepción: " + e);
+        }
+    }
+
+    @Test
+    void testBuscarAcademicoPorIDInvalido() {
+
+        int idUsuarioInvalido = -1;
+
+        try {
+
+            AcademicoDTO resultado = academicoDAO.buscarAcademicoPorID(idUsuarioInvalido);
+            assertEquals(-1, resultado.getIdUsuario(), "Debería retornar un DTO con valores por defecto");
+
+        } catch (SQLException | IOException e) {
+            fail("No se esperaba una excepción: " + e);
+        }
+    }
+
+    @Test
+    void testBuscarAcademicoPorIDInexistente() {
+
+        int idUsuarioInexistente = 9999;
+
+        try {
+
+            AcademicoDTO resultado = academicoDAO.buscarAcademicoPorID(idUsuarioInexistente);
+            assertEquals(-1, resultado.getIdUsuario(), "Debería retornar un DTO con valores por defecto");
+
+        } catch (SQLException | IOException e) {
+
+            fail("No se esperaba una excepción: " + e);
         }
     }
 }

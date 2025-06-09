@@ -92,7 +92,7 @@ public class Utilidades {
         alerta.showAndWait();
     }
 
-    public void mostrarMensajeConfirmacion(String titulo, String cabecera, String contenido) {
+    public void mostrarAlertaConfirmacion(String titulo, String cabecera, String contenido) {
 
         Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
         alerta.setTitle(titulo);

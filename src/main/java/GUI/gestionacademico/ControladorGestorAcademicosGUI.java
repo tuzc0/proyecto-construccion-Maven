@@ -603,7 +603,7 @@ public class ControladorGestorAcademicosGUI {
             if (usuarioModificado && academicoModificado && cuentaModificada) {
 
                 LOGGER.info("El académico ha sido modificado correctamente.");
-                UTILIDADES.mostrarMensajeConfirmacion(
+                UTILIDADES.mostrarAlertaConfirmacion(
                         "Éxito",
                         "Los cambios se han guardado correctamente.",
                         "");

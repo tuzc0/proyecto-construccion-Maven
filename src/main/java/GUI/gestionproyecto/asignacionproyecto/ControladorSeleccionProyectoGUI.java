@@ -1,4 +1,4 @@
-package GUI.gestionproyecto.asignacionProyecto;
+package GUI.gestionproyecto.asignacionproyecto;
 
 import GUI.utilidades.Utilidades;
 import javafx.fxml.FXML;
@@ -21,23 +21,41 @@ public class ControladorSeleccionProyectoGUI {
     @FXML private Button botonAsignar;
     @FXML private Button botonRegresar;
 
-    private EstudianteDTO estudiante;
-    private ControladorAsignacionEstudianteAProyectoGUI controladorPrincipal;
-    private final Utilidades utilidadesGUI = new Utilidades();
+    private EstudianteDTO estudianteSeleccionado;
+    private ControladorAsignacionEstudianteAProyectoGUI controladorAsignacionPrincipal;
+    private final Utilidades UTILIDADES = new Utilidades();
 
-    public void inicializarDatos(EstudianteDTO estudiante, ControladorAsignacionEstudianteAProyectoGUI controladorPrincipal) {
+    public void inicializarDatos(EstudianteDTO estudiante,
+                                 ControladorAsignacionEstudianteAProyectoGUI controladorPrincipal,
+                                 List<ProyectoDTO> proyectos) {
 
-        this.estudiante = estudiante;
-        this.controladorPrincipal = controladorPrincipal;
+        if (campoNombreEstudiante == null || comboProyectos == null) {
+            System.err.println("Error: Componentes FXML no inicializados");
+            return;
+        }
+
+        this.estudianteSeleccionado = estudiante;
+        this.controladorAsignacionPrincipal = controladorPrincipal;
 
         campoNombreEstudiante.setText(estudiante.getNombre() + " " + estudiante.getApellido());
         campoMatricula.setText(estudiante.getMatricula());
+
+        cargarProyectos(proyectos);
+
+        if (estudiante.getIdProyecto() == 0) {
+
+            botonAsignar.setText("Asignar");
+
+        } else {
+
+            botonAsignar.setText("Reasignar");
+        }
     }
 
-    public void cargarProyectos(List<ProyectoDTO> proyectos) {
+    public void cargarProyectos(List<ProyectoDTO> listaProyectos) {
 
         comboProyectos.getItems().clear();
-        comboProyectos.getItems().addAll(proyectos);
+        comboProyectos.getItems().addAll(listaProyectos);
         comboProyectos.getSelectionModel().selectFirst();
     }
 
@@ -57,7 +75,7 @@ public class ControladorSeleccionProyectoGUI {
                 if (empty || proyecto == null) {
                     setText(null);
                 } else {
-                    setText(proyecto.getIdProyecto() + " - " + proyecto.getNombre());
+                    setText(proyecto.getNombre());
                 }
             }
         });
@@ -70,12 +88,9 @@ public class ControladorSeleccionProyectoGUI {
                 super.updateItem(proyecto, empty);
 
                 if (empty || proyecto == null) {
-
                     setText(null);
-
                 } else {
-
-                    setText(proyecto.getIdProyecto() + " - " + proyecto.getNombre());
+                    setText(proyecto.getNombre());
                 }
             }
         });
@@ -88,11 +103,27 @@ public class ControladorSeleccionProyectoGUI {
 
         if (proyectoSeleccionado != null) {
 
-            controladorPrincipal.actualizarAsignacionEstudiante(estudiante, proyectoSeleccionado.getIdProyecto());
-            cerrarVentana();
+            UTILIDADES.mostrarAlertaConfirmacion(
+
+                    "Confirmar asignacion",
+                    "¿Está seguro que desea asignar este proyecto al estudiante?",
+                    "",
+                    () -> {
+
+                        controladorAsignacionPrincipal.actualizarAsignacion(estudianteSeleccionado,
+                                proyectoSeleccionado.getIdProyecto());
+                        cerrarVentana();
+                    },
+                    () -> {
+
+                        Stage ventanaActual = (Stage) botonRegresar.getScene().getWindow();
+                        ventanaActual.close();
+                    }
+            );
 
         } else {
-            utilidadesGUI.mostrarAlerta("Advertencia",
+
+            UTILIDADES.mostrarAlerta("Advertencia",
                     "No se ha seleccionado un proyecto",
                     "Por favor, seleccione un proyecto para asignar.");
         }
@@ -104,7 +135,8 @@ public class ControladorSeleccionProyectoGUI {
     }
 
     private void cerrarVentana() {
-        Stage stage = (Stage) botonRegresar.getScene().getWindow();
-        stage.close();
+
+        Stage ventanaActual = (Stage) botonRegresar.getScene().getWindow();
+        ventanaActual.close();
     }
 }

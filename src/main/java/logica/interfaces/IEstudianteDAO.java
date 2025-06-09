@@ -12,7 +12,7 @@ public interface IEstudianteDAO {
 
     boolean eliminarEstudiantePorMatricula(int estadoActivo,String matricula) throws SQLException, IOException;
 
-    boolean modificarEstudiante(EstudianteDTO estudiante) throws SQLException, IOException;
+    boolean reasignarProyecto(EstudianteDTO estudiante) throws SQLException, IOException;
 
     EstudianteDTO buscarEstudiantePorMatricula(String matricula) throws SQLException, IOException;
 

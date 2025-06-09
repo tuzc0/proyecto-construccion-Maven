@@ -86,6 +86,35 @@ public class EstudianteDAO implements IEstudianteDAO {
         return estudianteModificado;
     }
 
+    public boolean reasignarProyecto(EstudianteDTO estudiante) throws SQLException, IOException {
+
+        boolean estudianteReasignado = false;
+
+        String modificarSQLEstudiante = "UPDATE estudiante SET idProyecto = ? WHERE matricula = ?";
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(modificarSQLEstudiante);
+            sentenciaEstudiante.setInt(1, estudiante.getIdProyecto());
+            sentenciaEstudiante.setString(2, estudiante.getMatricula());
+
+            if (sentenciaEstudiante.executeUpdate() > 0) {
+
+                estudianteReasignado = true;
+            }
+
+        } finally {
+
+            if (sentenciaEstudiante != null) {
+
+                sentenciaEstudiante.close();
+            }
+        }
+
+        return estudianteReasignado;
+    }
+
     public boolean modificarEstudiante(EstudianteDTO estudiante) throws SQLException, IOException {
 
         boolean estudianteModificado = false;
@@ -96,8 +125,8 @@ public class EstudianteDAO implements IEstudianteDAO {
 
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(modificarSQLEstudiante);
-            sentenciaEstudiante.setString(2, estudiante.getMatricula());
             sentenciaEstudiante.setInt(1, estudiante.getIdUsuario());
+            sentenciaEstudiante.setString(2, estudiante.getMatricula());
 
             if (sentenciaEstudiante.executeUpdate() > 0) {
 

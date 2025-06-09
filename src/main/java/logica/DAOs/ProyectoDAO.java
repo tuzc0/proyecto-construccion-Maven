@@ -1,9 +1,11 @@
 package logica.DAOs;
 
 import accesoadatos.ConexionBaseDeDatos;
-import logica.DTOs.AcademicoDTO;
 import logica.DTOs.ProyectoDTO;
 import logica.interfaces.IProyectoDAO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.List;
 
 public class ProyectoDAO implements IProyectoDAO {
 
+    private static final Logger log = LogManager.getLogger(ProyectoDAO.class);
     Connection conexionBaseDeDatos;
     PreparedStatement sentenciaProyecto = null;
     ResultSet resultadoProyecto;
@@ -23,8 +26,8 @@ public class ProyectoDAO implements IProyectoDAO {
             objetivosmediatos, metodologia, recursos,
             actividades, responsabilidades, duracion,
             idCronograma, estadoActivo, idRepresentante,
-            descripciongeneral, usuariosDirectos, usuariosIndirectos
-        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""";
+            descripciongeneral, usuariosDirectos, usuariosIndirectos, estudiantesrequeridos
+        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""";
 
         int idProyectoGenerado = -1;
 
@@ -54,6 +57,7 @@ public class ProyectoDAO implements IProyectoDAO {
             sentenciaProyecto.setString(13, proyectoDTO.getDescripcion());
             sentenciaProyecto.setInt(14, proyectoDTO.getUsuariosDirectos());
             sentenciaProyecto.setInt(15, proyectoDTO.getUsuariosIndirectos());
+            sentenciaProyecto.setInt(16, proyectoDTO.getEstudiantesRequeridos());
             sentenciaProyecto.executeUpdate();
 
             ResultSet idNuevoProyecto = sentenciaProyecto.getGeneratedKeys();
@@ -105,7 +109,7 @@ public class ProyectoDAO implements IProyectoDAO {
         String modificarSQLProyecto = "UPDATE proyecto SET nombre = ?, objetivogeneral = ?, " +
                 "objetivosinmediatos = ?, objetivosmediatos = ?, metodologia = ?, recursos = ?, actividades = ?, " +
                 "responsabilidades = ?, idRepresentante = ?, descripciongeneral = ?, " +
-                "usuariosDirectos = ?, usuariosIndirectos = ? WHERE idProyecto = ?";
+                "usuariosDirectos = ?, usuariosIndirectos = ?, estudiantesrequeridos = ? WHERE idProyecto = ?";
 
         boolean proyectoModificado = false;
 
@@ -126,7 +130,8 @@ public class ProyectoDAO implements IProyectoDAO {
             sentenciaProyecto.setString(10, proyecto.getDescripcion());
             sentenciaProyecto.setInt(11, proyecto.getUsuariosDirectos());
             sentenciaProyecto.setInt(12, proyecto.getUsuariosIndirectos());
-            sentenciaProyecto.setInt(13, proyecto.getIdProyecto());
+            sentenciaProyecto.setInt(13, proyecto.getEstudiantesRequeridos());
+            sentenciaProyecto.setInt(14, proyecto.getIdProyecto());
 
             int filasAfectadas = sentenciaProyecto.executeUpdate();
 
@@ -173,11 +178,11 @@ public class ProyectoDAO implements IProyectoDAO {
 
     public ProyectoDTO buscarProyectoPorNombre(String nombreProyecto) throws SQLException, IOException {
 
-        String consultaSQLProyecto = "SELECT * FROM proyecto WHERE LOWER(UNACCENT(nombre)) = LOWER(UNACCENT(?))";
+        String consultaSQLProyecto = "SELECT * FROM proyecto WHERE LOWER(nombre) = LOWER(?)";
         ProyectoDTO proyecto = new ProyectoDTO(-1, null, null,
                 null, null, null, null,
                 null, null, null, -1, -1,
-                -1, null, -1, -1);
+                -1, null, -1, -1,-1);
 
         try {
 
@@ -204,6 +209,7 @@ public class ProyectoDAO implements IProyectoDAO {
                 proyecto.setDescripcion(resultadoProyecto.getString("descripciongeneral"));
                 proyecto.setUsuariosDirectos(resultadoProyecto.getInt("usuariosDirectos"));
                 proyecto.setUsuariosIndirectos(resultadoProyecto.getInt("usuariosIndirectos"));
+                proyecto.setestudiantesRequeridos(resultadoProyecto.getInt("estudiantesrequeridos"));
             }
 
         } finally {
@@ -223,7 +229,7 @@ public class ProyectoDAO implements IProyectoDAO {
         ProyectoDTO proyecto = new ProyectoDTO(-1, null, null,
                 null, null, null, null,
                 null, null, null, -1, -1,
-                -1, null, -1, -1);
+                -1, null, -1, -1,-1);
 
         try {
 
@@ -250,6 +256,7 @@ public class ProyectoDAO implements IProyectoDAO {
                 proyecto.setDescripcion(resultadoProyecto.getString("descripciongeneral"));
                 proyecto.setUsuariosDirectos(resultadoProyecto.getInt("usuariosDirectos"));
                 proyecto.setUsuariosIndirectos(resultadoProyecto.getInt("usuariosIndirectos"));
+                proyecto.setestudiantesRequeridos(resultadoProyecto.getInt("estudiantesrequeridos"));
             }
 
         } finally {
@@ -292,10 +299,12 @@ public class ProyectoDAO implements IProyectoDAO {
                 String descripcion = resultadoProyecto.getString("descripciongeneral");
                 int usuariosDirectos = resultadoProyecto.getInt("usuariosDirectos");
                 int usuariosIndirectos = resultadoProyecto.getInt("usuariosIndirectos");
+                int estudiantesRequeridos = resultadoProyecto.getInt("estudiantesrequeridos");
 
                 ProyectoDTO proyecto = new ProyectoDTO(idProyecto, nombreProyecto, objetivoGeneral,
                         objetivosInmediatos, objetivosMediatos, metodologia, recursos, actividades, responsabilidades,
-                        duracion, idCronograma, estadoActivo, idRepresentante, descripcion, usuariosDirectos, usuariosIndirectos);
+                        duracion, idCronograma, estadoActivo, idRepresentante, descripcion, usuariosDirectos, usuariosIndirectos,
+                        estudiantesRequeridos);
                 proyectos.add(proyecto);
             }
 
@@ -304,6 +313,74 @@ public class ProyectoDAO implements IProyectoDAO {
 
                  sentenciaProyecto.close();
              }
+        }
+
+        return proyectos;
+    }
+
+    public List<ProyectoDTO> listarProyectosConCupo() throws SQLException, IOException {
+
+        List<ProyectoDTO> proyectos = new ArrayList<>();
+
+        String consultaSQL = """
+        SELECT 
+            idProyecto,
+            nombreProyecto,
+            objetivoGeneralProyecto,
+            objetivosInmediatosProyecto,
+            objetivosMediatosProyecto,
+            metodologiaProyecto,
+            recursosProyecto,
+            actividadesProyecto,
+            responsabilidadesProyecto,
+            duracionProyecto,
+            idCronograma,
+            estadoActivoProyecto,
+            idRepresentanteProyecto,
+            descripcionProyecto,
+            cantidadUsuariosDirectosProyecto,
+            cantidadUsuariosIndirectosProyecto,
+            estudiantesRequeridosProyecto,
+            estudiantesAsignadosProyecto
+        FROM vistaProyectosConCupo;
+        """;
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaProyecto = conexionBaseDeDatos.prepareStatement(consultaSQL);
+            resultadoProyecto = sentenciaProyecto.executeQuery();
+
+            while (resultadoProyecto.next()) {
+
+                ProyectoDTO proyecto = new ProyectoDTO();
+
+                proyecto.setIdProyecto(resultadoProyecto.getInt("idProyecto"));
+                proyecto.setNombre(resultadoProyecto.getString("nombreProyecto"));
+                proyecto.setObjetivoGeneral(resultadoProyecto.getString("objetivoGeneralProyecto"));
+                proyecto.setObjetivosInmediatos(resultadoProyecto.getString("objetivosinmediatosProyecto"));
+                proyecto.setObjetivosMediatos(resultadoProyecto.getString("objetivosmediatosProyecto"));
+                proyecto.setMetodologia(resultadoProyecto.getString("metodologiaProyecto"));
+                proyecto.setRecursos(resultadoProyecto.getString("recursosProyecto"));
+                proyecto.setActividades(resultadoProyecto.getString("actividadesProyecto"));
+                proyecto.setResponsabilidades(resultadoProyecto.getString("responsabilidadesProyecto"));
+                proyecto.setDuracion(resultadoProyecto.getString("duracionProyecto"));
+                proyecto.setIdCronograma(resultadoProyecto.getInt("idCronograma"));
+                proyecto.setEstadoActivo(resultadoProyecto.getInt("estadoActivoProyecto"));
+                proyecto.setIdRepresentante(resultadoProyecto.getInt("idRepresentanteProyecto"));
+                proyecto.setDescripcion(resultadoProyecto.getString("descripcionProyecto"));
+                proyecto.setUsuariosDirectos(resultadoProyecto.getInt("cantidadUsuariosDirectosProyecto"));
+                proyecto.setUsuariosIndirectos(resultadoProyecto.getInt("cantidadUsuariosIndirectosProyecto"));
+                proyecto.setestudiantesRequeridos(resultadoProyecto.getInt("estudiantesrequeridosProyecto"));
+                proyecto.setEstudiantesAsignados(resultadoProyecto.getInt("estudiantesAsignadosProyecto"));
+                proyectos.add(proyecto);
+            }
+
+        } finally {
+
+            if (sentenciaProyecto != null) {
+                sentenciaProyecto.close();
+            }
         }
 
         return proyectos;

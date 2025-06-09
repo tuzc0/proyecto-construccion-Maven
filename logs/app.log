@@ -1770,3 +1770,980 @@ java.sql.SQLException: Column 'metododologia' not found.
 2025-06-08 14:29:12 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
 2025-06-08 14:30:24 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - Criterios de autoevaluación actualizados correctamente.
 2025-06-08 14:30:43 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error inesperado al guardar la autoevaluación: java.lang.NullPointerException: Location is required.
+2025-06-08 17:45:58 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error al subir archivos: 
+java.io.IOException: Error reading credentials from stream, 'type' field not specified.
+	at com.google.api.client.googleapis.auth.oauth2.GoogleCredential.fromStream(GoogleCredential.java:234) ~[google-api-client-2.2.0.jar:2.2.0]
+	at com.google.api.client.googleapis.auth.oauth2.GoogleCredential.fromStream(GoogleCredential.java:208) ~[google-api-client-2.2.0.jar:2.2.0]
+	at accesoadatos.AutenticadorDrive.obtenerServicioDrive(AutenticadorDrive.java:22) ~[classes/:?]
+	at GUI.ControladorRegistrarAutoevaluacionGUI.subirArchivosADrive(ControladorRegistrarAutoevaluacionGUI.java:417) ~[classes/:?]
+	at GUI.ControladorRegistrarAutoevaluacionGUI.guardarEvidenciaAutoevaluacion(ControladorRegistrarAutoevaluacionGUI.java:404) ~[classes/:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:270) ~[javafx.base.jar:?]
+	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1855) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1726) ~[javafx.fxml.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49) ~[javafx.base.jar:?]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx.base.jar:?]
+	at javafx.scene.Node.fireEvent(Node.java:8875) ~[javafx.graphics.jar:?]
+	at javafx.scene.control.Button.fire(Button.java:203) ~[javafx.controls.jar:?]
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:207) ~[javafx.controls.jar:?]
+	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274) ~[javafx.controls.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54) ~[javafx.base.jar:?]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx.base.jar:?]
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3984) ~[javafx.graphics.jar:?]
+	at javafx.scene.Scene.processMouseEvent(Scene.java:1890) ~[javafx.graphics.jar:?]
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2708) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301) ~[javafx.graphics.jar:?]
+	at java.security.AccessController.doPrivileged(AccessController.java:400) ~[?:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:551) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.View.notifyMouse(View.java:937) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
+	at java.lang.Thread.run(Thread.java:1570) [?:?]
+2025-06-08 18:02:08 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error al subir archivos: 
+java.io.IOException: Error reading credentials from stream, 'type' field not specified.
+	at com.google.api.client.googleapis.auth.oauth2.GoogleCredential.fromStream(GoogleCredential.java:234) ~[google-api-client-2.2.0.jar:2.2.0]
+	at com.google.api.client.googleapis.auth.oauth2.GoogleCredential.fromStream(GoogleCredential.java:208) ~[google-api-client-2.2.0.jar:2.2.0]
+	at accesoadatos.AutenticadorDrive.obtenerServicioDrive(AutenticadorDrive.java:22) ~[classes/:?]
+	at GUI.ControladorRegistrarAutoevaluacionGUI.subirArchivosADrive(ControladorRegistrarAutoevaluacionGUI.java:417) ~[classes/:?]
+	at GUI.ControladorRegistrarAutoevaluacionGUI.guardarEvidenciaAutoevaluacion(ControladorRegistrarAutoevaluacionGUI.java:404) ~[classes/:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:270) ~[javafx.base.jar:?]
+	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1855) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1726) ~[javafx.fxml.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49) ~[javafx.base.jar:?]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx.base.jar:?]
+	at javafx.scene.Node.fireEvent(Node.java:8875) ~[javafx.graphics.jar:?]
+	at javafx.scene.control.Button.fire(Button.java:203) ~[javafx.controls.jar:?]
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:207) ~[javafx.controls.jar:?]
+	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274) ~[javafx.controls.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54) ~[javafx.base.jar:?]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx.base.jar:?]
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3984) ~[javafx.graphics.jar:?]
+	at javafx.scene.Scene.processMouseEvent(Scene.java:1890) ~[javafx.graphics.jar:?]
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2708) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301) ~[javafx.graphics.jar:?]
+	at java.security.AccessController.doPrivileged(AccessController.java:400) ~[?:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:551) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.View.notifyMouse(View.java:937) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
+	at java.lang.Thread.run(Thread.java:1570) [?:?]
+2025-06-08 18:11:20 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error al subir archivos: 
+com.google.api.client.googleapis.json.GoogleJsonResponseException: 403 Forbidden
+POST https://www.googleapis.com/upload/drive/v3/files?fields=id,%20webViewLink&uploadType=resumable
+{
+  "code": 403,
+  "details": [
+    {
+      "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+      "reason": "SERVICE_DISABLED",
+      "domain": "googleapis.com",
+      "metadata": {
+        "activationUrl": "https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=197688558780",
+        "service": "drive.googleapis.com",
+        "serviceTitle": "Google Drive API",
+        "consumer": "projects/197688558780",
+        "containerInfo": "197688558780"
+      }
+    },
+    {
+      "@type": "type.googleapis.com/google.rpc.LocalizedMessage",
+      "locale": "en-US",
+      "message": "Google Drive API has not been used in project 197688558780 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=197688558780 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry."
+    },
+    {
+      "@type": "type.googleapis.com/google.rpc.Help",
+      "links": [
+        {
+          "description": "Google developers console API activation",
+          "url": "https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=197688558780"
+        }
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "domain": "usageLimits",
+      "message": "Google Drive API has not been used in project 197688558780 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=197688558780 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+      "reason": "accessNotConfigured",
+      "extendedHelp": "https://console.developers.google.com"
+    }
+  ],
+  "message": "Google Drive API has not been used in project 197688558780 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=197688558780 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+  "status": "PERMISSION_DENIED"
+}
+	at com.google.api.client.googleapis.json.GoogleJsonResponseException.from(GoogleJsonResponseException.java:146) ~[google-api-client-2.2.0.jar:2.2.0]
+	at com.google.api.client.googleapis.services.json.AbstractGoogleJsonClientRequest.newExceptionOnError(AbstractGoogleJsonClientRequest.java:118) ~[google-api-client-2.2.0.jar:2.2.0]
+	at com.google.api.client.googleapis.services.json.AbstractGoogleJsonClientRequest.newExceptionOnError(AbstractGoogleJsonClientRequest.java:37) ~[google-api-client-2.2.0.jar:2.2.0]
+	at com.google.api.client.googleapis.services.AbstractGoogleClientRequest.executeUnparsed(AbstractGoogleClientRequest.java:570) ~[google-api-client-2.2.0.jar:2.2.0]
+	at com.google.api.client.googleapis.services.AbstractGoogleClientRequest.executeUnparsed(AbstractGoogleClientRequest.java:493) ~[google-api-client-2.2.0.jar:2.2.0]
+	at com.google.api.client.googleapis.services.AbstractGoogleClientRequest.execute(AbstractGoogleClientRequest.java:603) ~[google-api-client-2.2.0.jar:2.2.0]
+	at GUI.ControladorRegistrarAutoevaluacionGUI.subirArchivosADrive(ControladorRegistrarAutoevaluacionGUI.java:436) ~[classes/:?]
+	at GUI.ControladorRegistrarAutoevaluacionGUI.guardarEvidenciaAutoevaluacion(ControladorRegistrarAutoevaluacionGUI.java:404) ~[classes/:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:270) ~[javafx.base.jar:?]
+	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1855) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1726) ~[javafx.fxml.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49) ~[javafx.base.jar:?]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx.base.jar:?]
+	at javafx.scene.Node.fireEvent(Node.java:8875) ~[javafx.graphics.jar:?]
+	at javafx.scene.control.Button.fire(Button.java:203) ~[javafx.controls.jar:?]
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:207) ~[javafx.controls.jar:?]
+	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274) ~[javafx.controls.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54) ~[javafx.base.jar:?]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx.base.jar:?]
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3984) ~[javafx.graphics.jar:?]
+	at javafx.scene.Scene.processMouseEvent(Scene.java:1890) ~[javafx.graphics.jar:?]
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2708) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301) ~[javafx.graphics.jar:?]
+	at java.security.AccessController.doPrivileged(AccessController.java:400) ~[?:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:551) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.View.notifyMouse(View.java:937) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
+	at java.lang.Thread.run(Thread.java:1570) [?:?]
+2025-06-08 18:13:28 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error al subir archivos: 
+com.google.api.client.googleapis.json.GoogleJsonResponseException: 403 Forbidden
+POST https://www.googleapis.com/upload/drive/v3/files?fields=id,%20webViewLink&uploadType=resumable
+{
+  "code": 403,
+  "details": [
+    {
+      "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+      "reason": "SERVICE_DISABLED",
+      "domain": "googleapis.com",
+      "metadata": {
+        "serviceTitle": "Google Drive API",
+        "service": "drive.googleapis.com",
+        "activationUrl": "https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=197688558780",
+        "containerInfo": "197688558780",
+        "consumer": "projects/197688558780"
+      }
+    },
+    {
+      "@type": "type.googleapis.com/google.rpc.LocalizedMessage",
+      "locale": "en-US",
+      "message": "Google Drive API has not been used in project 197688558780 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=197688558780 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry."
+    },
+    {
+      "@type": "type.googleapis.com/google.rpc.Help",
+      "links": [
+        {
+          "description": "Google developers console API activation",
+          "url": "https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=197688558780"
+        }
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "domain": "usageLimits",
+      "message": "Google Drive API has not been used in project 197688558780 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=197688558780 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+      "reason": "accessNotConfigured",
+      "extendedHelp": "https://console.developers.google.com"
+    }
+  ],
+  "message": "Google Drive API has not been used in project 197688558780 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=197688558780 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+  "status": "PERMISSION_DENIED"
+}
+	at com.google.api.client.googleapis.json.GoogleJsonResponseException.from(GoogleJsonResponseException.java:146) ~[google-api-client-2.2.0.jar:2.2.0]
+	at com.google.api.client.googleapis.services.json.AbstractGoogleJsonClientRequest.newExceptionOnError(AbstractGoogleJsonClientRequest.java:118) ~[google-api-client-2.2.0.jar:2.2.0]
+	at com.google.api.client.googleapis.services.json.AbstractGoogleJsonClientRequest.newExceptionOnError(AbstractGoogleJsonClientRequest.java:37) ~[google-api-client-2.2.0.jar:2.2.0]
+	at com.google.api.client.googleapis.services.AbstractGoogleClientRequest.executeUnparsed(AbstractGoogleClientRequest.java:570) ~[google-api-client-2.2.0.jar:2.2.0]
+	at com.google.api.client.googleapis.services.AbstractGoogleClientRequest.executeUnparsed(AbstractGoogleClientRequest.java:493) ~[google-api-client-2.2.0.jar:2.2.0]
+	at com.google.api.client.googleapis.services.AbstractGoogleClientRequest.execute(AbstractGoogleClientRequest.java:603) ~[google-api-client-2.2.0.jar:2.2.0]
+	at GUI.ControladorRegistrarAutoevaluacionGUI.subirArchivosADrive(ControladorRegistrarAutoevaluacionGUI.java:436) ~[classes/:?]
+	at GUI.ControladorRegistrarAutoevaluacionGUI.guardarEvidenciaAutoevaluacion(ControladorRegistrarAutoevaluacionGUI.java:404) ~[classes/:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:270) ~[javafx.base.jar:?]
+	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1855) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1726) ~[javafx.fxml.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49) ~[javafx.base.jar:?]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx.base.jar:?]
+	at javafx.scene.Node.fireEvent(Node.java:8875) ~[javafx.graphics.jar:?]
+	at javafx.scene.control.Button.fire(Button.java:203) ~[javafx.controls.jar:?]
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:207) ~[javafx.controls.jar:?]
+	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274) ~[javafx.controls.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54) ~[javafx.base.jar:?]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx.base.jar:?]
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3984) ~[javafx.graphics.jar:?]
+	at javafx.scene.Scene.processMouseEvent(Scene.java:1890) ~[javafx.graphics.jar:?]
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2708) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301) ~[javafx.graphics.jar:?]
+	at java.security.AccessController.doPrivileged(AccessController.java:400) ~[?:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:551) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.View.notifyMouse(View.java:937) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
+	at java.lang.Thread.run(Thread.java:1570) [?:?]
+2025-06-08 18:17:10 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error al subir archivos: 
+com.google.api.client.googleapis.json.GoogleJsonResponseException: 403 Forbidden
+POST https://www.googleapis.com/upload/drive/v3/files?fields=1uMdlWdgYYrcJuzCai2XPjqlVN76rtQhT,%20https://drive.google.com/drive/folders/1uMdlWdgYYrcJuzCai2XPjqlVN76rtQhT?dmr%3D1%26ec%3Dwgc-drive-globalnav-goto&uploadType=resumable
+{
+  "code": 403,
+  "details": [
+    {
+      "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+      "reason": "SERVICE_DISABLED",
+      "domain": "googleapis.com",
+      "metadata": {
+        "activationUrl": "https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=197688558780",
+        "consumer": "projects/197688558780",
+        "containerInfo": "197688558780",
+        "service": "drive.googleapis.com",
+        "serviceTitle": "Google Drive API"
+      }
+    },
+    {
+      "@type": "type.googleapis.com/google.rpc.LocalizedMessage",
+      "locale": "en-US",
+      "message": "Google Drive API has not been used in project 197688558780 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=197688558780 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry."
+    },
+    {
+      "@type": "type.googleapis.com/google.rpc.Help",
+      "links": [
+        {
+          "description": "Google developers console API activation",
+          "url": "https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=197688558780"
+        }
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "domain": "usageLimits",
+      "message": "Google Drive API has not been used in project 197688558780 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=197688558780 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+      "reason": "accessNotConfigured",
+      "extendedHelp": "https://console.developers.google.com"
+    }
+  ],
+  "message": "Google Drive API has not been used in project 197688558780 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=197688558780 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+  "status": "PERMISSION_DENIED"
+}
+	at com.google.api.client.googleapis.json.GoogleJsonResponseException.from(GoogleJsonResponseException.java:146) ~[google-api-client-2.2.0.jar:2.2.0]
+	at com.google.api.client.googleapis.services.json.AbstractGoogleJsonClientRequest.newExceptionOnError(AbstractGoogleJsonClientRequest.java:118) ~[google-api-client-2.2.0.jar:2.2.0]
+	at com.google.api.client.googleapis.services.json.AbstractGoogleJsonClientRequest.newExceptionOnError(AbstractGoogleJsonClientRequest.java:37) ~[google-api-client-2.2.0.jar:2.2.0]
+	at com.google.api.client.googleapis.services.AbstractGoogleClientRequest.executeUnparsed(AbstractGoogleClientRequest.java:570) ~[google-api-client-2.2.0.jar:2.2.0]
+	at com.google.api.client.googleapis.services.AbstractGoogleClientRequest.executeUnparsed(AbstractGoogleClientRequest.java:493) ~[google-api-client-2.2.0.jar:2.2.0]
+	at com.google.api.client.googleapis.services.AbstractGoogleClientRequest.execute(AbstractGoogleClientRequest.java:603) ~[google-api-client-2.2.0.jar:2.2.0]
+	at GUI.ControladorRegistrarAutoevaluacionGUI.subirArchivosADrive(ControladorRegistrarAutoevaluacionGUI.java:436) ~[classes/:?]
+	at GUI.ControladorRegistrarAutoevaluacionGUI.guardarEvidenciaAutoevaluacion(ControladorRegistrarAutoevaluacionGUI.java:404) ~[classes/:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:270) ~[javafx.base.jar:?]
+	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1855) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1726) ~[javafx.fxml.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49) ~[javafx.base.jar:?]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx.base.jar:?]
+	at javafx.scene.Node.fireEvent(Node.java:8875) ~[javafx.graphics.jar:?]
+	at javafx.scene.control.Button.fire(Button.java:203) ~[javafx.controls.jar:?]
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:207) ~[javafx.controls.jar:?]
+	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274) ~[javafx.controls.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54) ~[javafx.base.jar:?]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx.base.jar:?]
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3984) ~[javafx.graphics.jar:?]
+	at javafx.scene.Scene.processMouseEvent(Scene.java:1890) ~[javafx.graphics.jar:?]
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2708) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301) ~[javafx.graphics.jar:?]
+	at java.security.AccessController.doPrivileged(AccessController.java:400) ~[?:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:551) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.View.notifyMouse(View.java:937) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
+	at java.lang.Thread.run(Thread.java:1570) [?:?]
+2025-06-08 18:20:49 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error al subir archivos: 
+com.google.api.client.googleapis.json.GoogleJsonResponseException: 403 Forbidden
+POST https://www.googleapis.com/upload/drive/v3/files?fields=id,%20webViewLink&uploadType=resumable
+{
+  "code": 403,
+  "details": [
+    {
+      "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+      "reason": "SERVICE_DISABLED",
+      "domain": "googleapis.com",
+      "metadata": {
+        "service": "drive.googleapis.com",
+        "consumer": "projects/197688558780",
+        "containerInfo": "197688558780",
+        "activationUrl": "https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=197688558780",
+        "serviceTitle": "Google Drive API"
+      }
+    },
+    {
+      "@type": "type.googleapis.com/google.rpc.LocalizedMessage",
+      "locale": "en-US",
+      "message": "Google Drive API has not been used in project 197688558780 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=197688558780 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry."
+    },
+    {
+      "@type": "type.googleapis.com/google.rpc.Help",
+      "links": [
+        {
+          "description": "Google developers console API activation",
+          "url": "https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=197688558780"
+        }
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "domain": "usageLimits",
+      "message": "Google Drive API has not been used in project 197688558780 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=197688558780 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+      "reason": "accessNotConfigured",
+      "extendedHelp": "https://console.developers.google.com"
+    }
+  ],
+  "message": "Google Drive API has not been used in project 197688558780 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=197688558780 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+  "status": "PERMISSION_DENIED"
+}
+	at com.google.api.client.googleapis.json.GoogleJsonResponseException.from(GoogleJsonResponseException.java:146) ~[google-api-client-2.2.0.jar:2.2.0]
+	at com.google.api.client.googleapis.services.json.AbstractGoogleJsonClientRequest.newExceptionOnError(AbstractGoogleJsonClientRequest.java:118) ~[google-api-client-2.2.0.jar:2.2.0]
+	at com.google.api.client.googleapis.services.json.AbstractGoogleJsonClientRequest.newExceptionOnError(AbstractGoogleJsonClientRequest.java:37) ~[google-api-client-2.2.0.jar:2.2.0]
+	at com.google.api.client.googleapis.services.AbstractGoogleClientRequest.executeUnparsed(AbstractGoogleClientRequest.java:570) ~[google-api-client-2.2.0.jar:2.2.0]
+	at com.google.api.client.googleapis.services.AbstractGoogleClientRequest.executeUnparsed(AbstractGoogleClientRequest.java:493) ~[google-api-client-2.2.0.jar:2.2.0]
+	at com.google.api.client.googleapis.services.AbstractGoogleClientRequest.execute(AbstractGoogleClientRequest.java:603) ~[google-api-client-2.2.0.jar:2.2.0]
+	at GUI.ControladorRegistrarAutoevaluacionGUI.subirArchivosADrive(ControladorRegistrarAutoevaluacionGUI.java:432) ~[classes/:?]
+	at GUI.ControladorRegistrarAutoevaluacionGUI.guardarEvidenciaAutoevaluacion(ControladorRegistrarAutoevaluacionGUI.java:401) ~[classes/:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:270) ~[javafx.base.jar:?]
+	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1855) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1726) ~[javafx.fxml.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49) ~[javafx.base.jar:?]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx.base.jar:?]
+	at javafx.scene.Node.fireEvent(Node.java:8875) ~[javafx.graphics.jar:?]
+	at javafx.scene.control.Button.fire(Button.java:203) ~[javafx.controls.jar:?]
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:207) ~[javafx.controls.jar:?]
+	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274) ~[javafx.controls.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54) ~[javafx.base.jar:?]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx.base.jar:?]
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3984) ~[javafx.graphics.jar:?]
+	at javafx.scene.Scene.processMouseEvent(Scene.java:1890) ~[javafx.graphics.jar:?]
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2708) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301) ~[javafx.graphics.jar:?]
+	at java.security.AccessController.doPrivileged(AccessController.java:400) ~[?:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:551) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.View.notifyMouse(View.java:937) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
+	at java.lang.Thread.run(Thread.java:1570) [?:?]
+2025-06-08 19:10:50 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - Criterios de autoevaluación actualizados correctamente.
+2025-06-08 19:10:52 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error inesperado al guardar la autoevaluación: java.lang.NullPointerException: Location is required.
+2025-06-08 19:18:56 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:18:58 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:19:05 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:19:05 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:19:06 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:19:06 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:19:06 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:19:06 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:19:06 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:19:06 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:21:15 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - Criterios de autoevaluación actualizados correctamente.
+2025-06-08 19:21:17 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error inesperado al guardar la autoevaluación: java.lang.NullPointerException: Location is required.
+2025-06-08 19:21:22 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:21:23 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:21:23 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:21:23 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:21:23 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:21:23 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:21:24 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:21:24 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:21:36 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:21:36 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:21:36 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:23:05 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:23:05 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:23:07 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:23:07 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:23:07 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:23:07 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:23:07 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:23:08 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:23:08 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:23:08 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:23:08 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:24:52 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error de SQL al cancelar el registro: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`autoevaluacioncontiene`, CONSTRAINT `autoevaluacioncontiene_ibfk_1` FOREIGN KEY (`idAutoevaluacion`) REFERENCES `autoevaluacion` (`idAutoevaluacion`))
+2025-06-08 19:25:28 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error inesperado al cancelar el registro: java.lang.NullPointerException: Location is required.
+2025-06-08 19:28:10 [JavaFX Application Thread] ERROR GUI.utilidades.Utilidades - Error al cargar la ventana: /RegistrarAutoevaluacionGUI.fxml
+javafx.fxml.LoadException: 
+/C:/Users/irene/IdeaProjects/BancoApp/oo/tareas/poo/proyecto-construccion-Maven/target/classes/RegistrarAutoevaluacionGUI.fxml
+
+	at javafx.fxml.FXMLLoader.constructLoadException(FXMLLoader.java:2722) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2692) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2563) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3376) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3332) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3300) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3272) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3248) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.load(FXMLLoader.java:3241) ~[javafx.fxml.jar:?]
+	at GUI.utilidades.Utilidades.mostrarVentana(Utilidades.java:26) ~[classes/:?]
+	at GUI.ControladorMenuEstudianteGUI.abrirRegistrarAutoevaluacion(ControladorMenuEstudianteGUI.java:19) ~[classes/:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:270) ~[javafx.base.jar:?]
+	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1855) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1726) ~[javafx.fxml.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49) ~[javafx.base.jar:?]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx.base.jar:?]
+	at javafx.scene.Node.fireEvent(Node.java:8875) ~[javafx.graphics.jar:?]
+	at javafx.scene.control.Button.fire(Button.java:203) ~[javafx.controls.jar:?]
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:207) ~[javafx.controls.jar:?]
+	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274) ~[javafx.controls.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54) ~[javafx.base.jar:?]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx.base.jar:?]
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3984) ~[javafx.graphics.jar:?]
+	at javafx.scene.Scene.processMouseEvent(Scene.java:1890) ~[javafx.graphics.jar:?]
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2708) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301) ~[javafx.graphics.jar:?]
+	at java.security.AccessController.doPrivileged(AccessController.java:400) ~[?:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:551) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.View.notifyMouse(View.java:937) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
+	at java.lang.Thread.run(Thread.java:1570) [?:?]
+Caused by: java.lang.reflect.InvocationTargetException
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:115) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:270) ~[javafx.base.jar:?]
+	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2688) ~[javafx.fxml.jar:?]
+	... 63 more
+Caused by: java.lang.NullPointerException: Cannot invoke "javafx.scene.Scene.getWindow()" because the return value of "javafx.scene.control.Label.getScene()" is null
+	at GUI.ControladorRegistrarAutoevaluacionGUI.initialize(ControladorRegistrarAutoevaluacionGUI.java:111) ~[classes/:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:270) ~[javafx.base.jar:?]
+	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2688) ~[javafx.fxml.jar:?]
+	... 63 more
+2025-06-08 19:28:15 [JavaFX Application Thread] ERROR GUI.utilidades.Utilidades - Error al cargar la ventana: /RegistrarAutoevaluacionGUI.fxml
+javafx.fxml.LoadException: 
+/C:/Users/irene/IdeaProjects/BancoApp/oo/tareas/poo/proyecto-construccion-Maven/target/classes/RegistrarAutoevaluacionGUI.fxml
+
+	at javafx.fxml.FXMLLoader.constructLoadException(FXMLLoader.java:2722) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2692) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2563) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3376) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3332) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3300) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3272) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3248) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.load(FXMLLoader.java:3241) ~[javafx.fxml.jar:?]
+	at GUI.utilidades.Utilidades.mostrarVentana(Utilidades.java:26) ~[classes/:?]
+	at GUI.ControladorMenuEstudianteGUI.abrirRegistrarAutoevaluacion(ControladorMenuEstudianteGUI.java:19) ~[classes/:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:270) ~[javafx.base.jar:?]
+	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1855) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1726) ~[javafx.fxml.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49) ~[javafx.base.jar:?]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx.base.jar:?]
+	at javafx.scene.Node.fireEvent(Node.java:8875) ~[javafx.graphics.jar:?]
+	at javafx.scene.control.Button.fire(Button.java:203) ~[javafx.controls.jar:?]
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:207) ~[javafx.controls.jar:?]
+	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274) ~[javafx.controls.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54) ~[javafx.base.jar:?]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx.base.jar:?]
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3984) ~[javafx.graphics.jar:?]
+	at javafx.scene.Scene.processMouseEvent(Scene.java:1890) ~[javafx.graphics.jar:?]
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2708) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301) ~[javafx.graphics.jar:?]
+	at java.security.AccessController.doPrivileged(AccessController.java:400) ~[?:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:551) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.View.notifyMouse(View.java:937) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
+	at java.lang.Thread.run(Thread.java:1570) [?:?]
+Caused by: java.lang.reflect.InvocationTargetException
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:115) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:270) ~[javafx.base.jar:?]
+	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2688) ~[javafx.fxml.jar:?]
+	... 63 more
+Caused by: java.lang.NullPointerException: Cannot invoke "javafx.scene.Scene.getWindow()" because the return value of "javafx.scene.control.Label.getScene()" is null
+	at GUI.ControladorRegistrarAutoevaluacionGUI.initialize(ControladorRegistrarAutoevaluacionGUI.java:111) ~[classes/:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:270) ~[javafx.base.jar:?]
+	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2688) ~[javafx.fxml.jar:?]
+	... 63 more
+2025-06-08 19:31:37 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error inesperado al cancelar el registro: java.lang.NullPointerException: Location is required.
+2025-06-08 19:40:06 [JavaFX Application Thread] ERROR GUI.utilidades.Utilidades - Error al cargar la ventana: /RegistrarAutoevaluacionGUI.fxml
+javafx.fxml.LoadException: 
+/C:/Users/irene/IdeaProjects/BancoApp/oo/tareas/poo/proyecto-construccion-Maven/target/classes/RegistrarAutoevaluacionGUI.fxml
+
+	at javafx.fxml.FXMLLoader.constructLoadException(FXMLLoader.java:2722) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2692) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2563) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3376) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3332) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3300) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3272) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3248) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.load(FXMLLoader.java:3241) ~[javafx.fxml.jar:?]
+	at GUI.utilidades.Utilidades.mostrarVentana(Utilidades.java:26) ~[classes/:?]
+	at GUI.ControladorMenuEstudianteGUI.abrirRegistrarAutoevaluacion(ControladorMenuEstudianteGUI.java:19) ~[classes/:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:270) ~[javafx.base.jar:?]
+	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1855) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1726) ~[javafx.fxml.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49) ~[javafx.base.jar:?]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx.base.jar:?]
+	at javafx.scene.Node.fireEvent(Node.java:8875) ~[javafx.graphics.jar:?]
+	at javafx.scene.control.Button.fire(Button.java:203) ~[javafx.controls.jar:?]
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:207) ~[javafx.controls.jar:?]
+	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274) ~[javafx.controls.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54) ~[javafx.base.jar:?]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx.base.jar:?]
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3984) ~[javafx.graphics.jar:?]
+	at javafx.scene.Scene.processMouseEvent(Scene.java:1890) ~[javafx.graphics.jar:?]
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2708) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301) ~[javafx.graphics.jar:?]
+	at java.security.AccessController.doPrivileged(AccessController.java:400) ~[?:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:551) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.View.notifyMouse(View.java:937) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
+	at java.lang.Thread.run(Thread.java:1570) [?:?]
+Caused by: java.lang.reflect.InvocationTargetException
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:115) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:270) ~[javafx.base.jar:?]
+	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2688) ~[javafx.fxml.jar:?]
+	... 63 more
+Caused by: java.lang.NullPointerException: Cannot invoke "javafx.scene.Scene.getWindow()" because the return value of "javafx.scene.control.Label.getScene()" is null
+	at GUI.ControladorRegistrarAutoevaluacionGUI.configurarCierreVentana(ControladorRegistrarAutoevaluacionGUI.java:117) ~[classes/:?]
+	at GUI.ControladorRegistrarAutoevaluacionGUI.initialize(ControladorRegistrarAutoevaluacionGUI.java:111) ~[classes/:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:270) ~[javafx.base.jar:?]
+	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2688) ~[javafx.fxml.jar:?]
+	... 63 more
+2025-06-08 19:40:08 [JavaFX Application Thread] ERROR GUI.utilidades.Utilidades - Error al cargar la ventana: /RegistrarAutoevaluacionGUI.fxml
+javafx.fxml.LoadException: 
+/C:/Users/irene/IdeaProjects/BancoApp/oo/tareas/poo/proyecto-construccion-Maven/target/classes/RegistrarAutoevaluacionGUI.fxml
+
+	at javafx.fxml.FXMLLoader.constructLoadException(FXMLLoader.java:2722) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2692) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2563) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3376) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3332) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3300) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3272) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3248) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.load(FXMLLoader.java:3241) ~[javafx.fxml.jar:?]
+	at GUI.utilidades.Utilidades.mostrarVentana(Utilidades.java:26) ~[classes/:?]
+	at GUI.ControladorMenuEstudianteGUI.abrirRegistrarAutoevaluacion(ControladorMenuEstudianteGUI.java:19) ~[classes/:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:270) ~[javafx.base.jar:?]
+	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1855) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1726) ~[javafx.fxml.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49) ~[javafx.base.jar:?]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx.base.jar:?]
+	at javafx.scene.Node.fireEvent(Node.java:8875) ~[javafx.graphics.jar:?]
+	at javafx.scene.control.Button.fire(Button.java:203) ~[javafx.controls.jar:?]
+	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:207) ~[javafx.controls.jar:?]
+	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274) ~[javafx.controls.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx.base.jar:?]
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54) ~[javafx.base.jar:?]
+	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx.base.jar:?]
+	at javafx.scene.Scene$MouseHandler.process(Scene.java:3984) ~[javafx.graphics.jar:?]
+	at javafx.scene.Scene.processMouseEvent(Scene.java:1890) ~[javafx.graphics.jar:?]
+	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2708) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301) ~[javafx.graphics.jar:?]
+	at java.security.AccessController.doPrivileged(AccessController.java:400) ~[?:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424) ~[javafx.graphics.jar:?]
+	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.View.handleMouseEvent(View.java:551) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.View.notifyMouse(View.java:937) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
+	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
+	at java.lang.Thread.run(Thread.java:1570) [?:?]
+Caused by: java.lang.reflect.InvocationTargetException
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:115) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:270) ~[javafx.base.jar:?]
+	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2688) ~[javafx.fxml.jar:?]
+	... 63 more
+Caused by: java.lang.NullPointerException: Cannot invoke "javafx.scene.Scene.getWindow()" because the return value of "javafx.scene.control.Label.getScene()" is null
+	at GUI.ControladorRegistrarAutoevaluacionGUI.configurarCierreVentana(ControladorRegistrarAutoevaluacionGUI.java:117) ~[classes/:?]
+	at GUI.ControladorRegistrarAutoevaluacionGUI.initialize(ControladorRegistrarAutoevaluacionGUI.java:111) ~[classes/:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:270) ~[javafx.base.jar:?]
+	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx.fxml.jar:?]
+	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2688) ~[javafx.fxml.jar:?]
+	... 63 more
+2025-06-08 19:52:11 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error al abrir la ventana RegistrarAutoevaluacionGUI: 
+/C:/Users/irene/IdeaProjects/BancoApp/oo/tareas/poo/proyecto-construccion-Maven/target/classes/RegistrarAutoevaluacionGUI.fxml
+
+2025-06-08 19:52:13 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error al abrir la ventana RegistrarAutoevaluacionGUI: 
+/C:/Users/irene/IdeaProjects/BancoApp/oo/tareas/poo/proyecto-construccion-Maven/target/classes/RegistrarAutoevaluacionGUI.fxml
+
+2025-06-08 20:03:35 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - Criterios de autoevaluación actualizados correctamente.
+2025-06-08 20:03:36 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error inesperado al guardar la autoevaluación: java.lang.NullPointerException: Location is required.
+2025-06-08 21:02:21 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID: S23014091
+2025-06-08 21:05:42 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-08 21:05:44 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-08 21:05:46 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-08 21:05:56 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-08 21:05:58 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-08 21:06:01 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-08 21:17:11 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-08 21:17:13 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-08 21:17:15 [JavaFX Application Thread] WARN  GUI.ControladorRegistrarEvaluacionGUI - El valor ingresado no es un número válido.
+2025-06-08 21:17:20 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-08 21:17:29 [JavaFX Application Thread] WARN  GUI.ControladorRegistrarEvaluacionGUI - La calificación debe estar entre 0 y 100.
+2025-06-08 21:17:36 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-08 21:17:38 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-08 21:17:41 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-08 22:14:59 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-08 22:15:01 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-08 22:15:02 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-08 23:24:17 [JavaFX Application Thread] INFO  GUI.ControladorDetallesEvaluacionGUI - No se encontró la evaluación con ID: 0
+2025-06-08 23:24:17 [JavaFX Application Thread] ERROR GUI.ControladorDetallesEvaluacionGUI - No se pudo cargar la evaluación con ID: 0
+2025-06-08 23:24:25 [JavaFX Application Thread] INFO  GUI.ControladorDetallesEvaluacionGUI - No se encontró la evaluación con ID: 0
+2025-06-08 23:24:25 [JavaFX Application Thread] ERROR GUI.ControladorDetallesEvaluacionGUI - No se pudo cargar la evaluación con ID: 0

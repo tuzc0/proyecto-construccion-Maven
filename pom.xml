@@ -21,6 +21,16 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.33</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-drive</artifactId>
+            <version>v3-rev20230815-2.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.auth</groupId>
+            <artifactId>google-auth-library-oauth2-http</artifactId>
+            <version>1.23.0</version>
+        </dependency>
         <!-- Log4Java -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -51,6 +61,13 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>google-api-services</id>
+            <url>https://maven-central.storage.googleapis.com</url>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>

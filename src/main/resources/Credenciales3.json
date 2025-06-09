@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "proyecto-construccion-462321",
+  "private_key_id": "c1dfc19ecaa70377be7ec0c1aaaa6a277efacc3c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCHpmDEKADbP64h\nxOcXrK1ruPShyrrc6+3QKnjxMgsfUy27RT5fpTjcjDHrfj7IvbZxhg1mWCRmG1zv\nywurVeqli076ix0ATfeY5Bkif3DW+EXNB0A6+7m9tVRM0kAWWRsidNvvg9a9nvyH\nSA+9KLPYdQYc2S6v7E5bNnYywYVfeEaqAy0Sbz+6rC8J4GkpX84C/bgOkKYCmyN8\nUXLFrRFve3NAMKErghqkIV28xzCImGaQ7DSjFOdmayRudGH5/2MuzA46e8gh2ski\n7TRVZI3mKTsFwkazFh7oJV1XDkKrn4Nzy95hOF6m5HWSTJY8vp/wJ9nFWX1ULzni\nkV31ULRBAgMBAAECggEAAL+MshhMZOk1gy8sXSeRL1JuWwQcwsI0Zh0N3Lq7b/lL\n+8f2f52QMjs9vUBNhVryii7EnSdoT/3fpdz3XAMVz8L0dRJWXx2O+5NqhhOw4iat\nb+OV2Z1w2ViKNgBE5TqpmSeO3QPbp+EcIHznxVHXqB6BIaCbDtJdXkhvH3mMzEmB\n//tyhMw052hYnTwteoPbQDg7rw6vYbAFHP6hhL1jWCyhcHlViNmw27g19lUFxV64\n805BGT6XfGoorWJQAmOU4MITF4PEGe/FDFKqpKyENRZkEWkVYmDmHss19y7G5S55\ncSdO8pevyqXy/zHiFJOWZXdB9WWLXnk9aLQRpQfr3wKBgQC61/kp4Z7VHwj98X6/\nNYy6+1UW/pl0ZmXh5ZRu8FFCYVjHzoxdnp+IDamBUbs02auLYCNXQM03kK5GguJ4\n3KKelfoPp694RrY5EBesYDTKV3U6Q6IZt3OTZnZfw5j27DbX0cq3A/vnKIs0WSR0\nLxx3U5QWEc3w103rFpBh7kLHCwKBgQC526L5dP3zM7cBPKUkU+Wm+0b4qyVEd3QR\nxxMMEZ5Q9V4THYfucMDJiJwz2Hfnk6pqkrhKcQQ/lkE6TgLwDbfuffGdI10Mb/Kl\n9gBmFDuIWjrMJBk9TCoolOxqtUc10vnBfsXzYnPJDIS0MoOlF23GI7oPAtth/EWY\nfFn3WpIRYwKBgAKsmKpaylUujohj7nZ6I7uBYWRk3HloBclH6en0kpUqo4SoliW4\n4XunBmgNbWqCOwxRoe/bw5QqA/SKZwdn0QQIDX4v3jkQegczDcOv1NGYktr0oNtR\nXtwbOVKBkCzokJhiLk6URgS29dcX94eaLQQgNBxkwNfTnQ/iUMq2CEqlAoGAXpyy\ngC7QQAfpd1W5855J4BE2dcwZ8pqkmZAv4Arv/uKJe02jLvxzB6Tlb3cYwuhm7k22\nRx71PLFujxG7aRxyr5OpdYbVDUnHyjhKx6wxCh50pAsUViH5rCLznvadQ4cc4SV5\n+4X4zzXyMBEu9tHQbfct9gpMR7s2aoOTANo4VWUCgYB2zffOIXrAfYKJTi9Tzj4+\naFn4QJshcP6wedRZUTgucGKunewDaroEkuHQ1JRzkj92MEuMxCw12hunle6SHnH1\nHGvqtXztVQEwJO7Msy7xrKHVYCXG2bSrLVYxe3cEUrE2BJPtCblsJYAFdOGrkTJU\nZltu0vatgs1Tdm2PTour3A==\n-----END PRIVATE KEY-----\n",
+  "client_email": "cuentaservicio@proyecto-construccion-462321.iam.gserviceaccount.com",
+  "client_id": "112137929069077985440",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/cuentaservicio%40proyecto-construccion-462321.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+
+<HBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="GUI.ControladorObjetoEvaluacion"
+      style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2); -fx-cursor: hand; -fx-padding: 15;"
+      onMouseClicked="#mostrarDetallesEvaluacion"
+      spacing="20" alignment="CENTER_LEFT">
+
+    <ImageView fitHeight="40" fitWidth="40">
+        <image>
+            <Image url="https://culturesync.net/wp-content/uploads/2018/12/icon-assessment@2x.png" />
+        </image>
+        <effect>
+            <DropShadow color="#00000020" radius="3" />
+        </effect>
+    </ImageView>
+
+    <VBox spacing="5" style="-fx-padding: 0 10 0 0;">
+        <Label text="Académico Evaluador:" style="-fx-text-fill: #666666; -fx-font-weight: bold;">
+            <font>
+                <Font name="System Bold" size="12" />
+            </font>
+        </Label>
+        <Label fx:id="etiquetaNombreEvaluador" style="-fx-text-fill: #333333;">
+            <font>
+                <Font size="14" />
+            </font>
+        </Label>
+    </VBox>
+
+    <VBox spacing="5">
+        <Label text="Calificación Final:" style="-fx-text-fill: #666666; -fx-font-weight: bold;">
+            <font>
+                <Font name="System Bold" size="12" />
+            </font>
+        </Label>
+        <Label fx:id="etiquetaCalificacion" style="-fx-text-fill: #4a6baf; -fx-font-weight: bold;">
+            <font>
+                <Font size="16" />
+            </font>
+            <effect>
+                <DropShadow color="#4a6baf40" radius="1" />
+            </effect>
+        </Label>
+    </VBox>
+
+    <Pane HBox.hgrow="ALWAYS" />
+
+
+</HBox>

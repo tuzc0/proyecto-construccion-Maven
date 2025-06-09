@@ -30,5 +30,20 @@ public class ContenedorCriteriosEvaluacion {
         this.evaluacionContiene = evaluacionContiene;
     }
 
+    public String getNumeroCriterio() {
+        return String.valueOf(criterioEvaluacion.getNumeroCriterio());
+    }
+
+    public String getDescripcion() {
+        return criterioEvaluacion.getDescripcion();
+    }
+
+    public String getCalificacion() {
+        return String.valueOf(evaluacionContiene.getCalificacion());
+    }
+
+
+
+
 
 }

@@ -9,7 +9,7 @@
       <Button layoutX="132.0" layoutY="146.0" mnemonicParsing="false" text="consultar proyecto" />
       <Button layoutX="132.0" layoutY="209.0" mnemonicParsing="false" text="consultar cronograma de actividades" />
       <Button layoutX="132.0" layoutY="261.0" mnemonicParsing="false" text="registrar reporte mensual" />
-      <Button layoutX="127.0" layoutY="320.0" mnemonicParsing="false" text="consultar evaluaciones" />
+      <Button layoutX="127.0" layoutY="320.0" mnemonicParsing="false" onAction="#abrirConsultarEvaluacionesEstudiante" text="consultar evaluaciones" />
       <Button layoutX="132.0" layoutY="376.0" mnemonicParsing="false" onAction="#abrirRegistrarAutoevaluacion" text="registrar autoevaluacion" />
    </children>
 </Pane>

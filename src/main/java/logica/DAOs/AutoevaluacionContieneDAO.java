@@ -136,7 +136,7 @@ public class AutoevaluacionContieneDAO implements IAutoevaluacionContieneDAO {
         return listaAutoevaluaciones;
     }
 
-    public void eliminarCriteriosPorIdAutoevaluacion(int idAutoevaluacion) throws SQLException, IOException {
+    public void eliminarCriteriosDefinitivamentePorIdAutoevaluacion(int idAutoevaluacion) throws SQLException, IOException {
         String consultaSQL = "DELETE FROM autoevaluacioncontiene WHERE idAutoevaluacion = ?";
 
         try {

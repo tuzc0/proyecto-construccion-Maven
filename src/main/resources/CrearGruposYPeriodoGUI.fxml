@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="499.0" prefWidth="891.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="GUI.ControladorCrearGruposYPeriodoGUI">
+
+    <top>
+        <VBox prefHeight="99.0" prefWidth="833.0" spacing="10">
+
+
+            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Gestión de Grupos" />
+
+            <HBox spacing="10">
+                <Label text="Experiencia Educativa:" />
+            <Label fx:id="etiquetaExperienciaEducativa" text="Experencia educativa" />
+                <Button onAction="#crearNuevoPeriodo" text="Crear nuevo período" />
+            <ComboBox fx:id="comboPeriodo" prefWidth="150.0" />
+            <Label text="inicio" />
+            <DatePicker fx:id="fechaInicio" prefHeight="26.0" prefWidth="114.0" />
+            <Label text="final" />
+            <DatePicker fx:id="fechaFinal" prefHeight="26.0" prefWidth="114.0" />
+            </HBox>
+
+            <HBox spacing="10">
+                <Button onAction="#crearGrupo" text="Crear grupo" />
+            <Button mnemonicParsing="false" onAction="#eliminarGrupo" text="Eliminar grupo" />
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <TableView fx:id="tablaGrupos" prefHeight="332.0" prefWidth="584.0">
+            <columns>
+                <TableColumn fx:id="columnaGrupo" text="Grupo" />
+                <TableColumn fx:id="columnaAcademico" text="Académico" />
+                <TableColumn fx:id="columnaNRC" text="NRC" />
+            </columns>
+        </TableView>
+    </center>
+
+</BorderPane>

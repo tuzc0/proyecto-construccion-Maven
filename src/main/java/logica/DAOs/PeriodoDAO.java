@@ -18,7 +18,7 @@ public class PeriodoDAO implements IPeriodoDAO {
     public boolean crearNuevoPeriodo(PeriodoDTO periodo) throws SQLException, IOException {
 
         boolean periodoInsertado = false;
-        String insertarSQLPeriodo = "INSERT INTO periodo VALUES(?, ?, ?)";
+        String insertarSQLPeriodo = "INSERT INTO periodo VALUES(?, ?, ?, ?, ?)";
 
         try {
 
@@ -27,6 +27,8 @@ public class PeriodoDAO implements IPeriodoDAO {
             sentenciaPeriodo.setInt(1, periodo.getIDPeriodo());
             sentenciaPeriodo.setString(2, periodo.getDescripcion());
             sentenciaPeriodo.setInt(3, periodo.getEstadoActivo());
+            sentenciaPeriodo.setDate(4, periodo.getFechaInicio());
+            sentenciaPeriodo.setDate(5, periodo.getFechaFinal());
 
             if (sentenciaPeriodo.executeUpdate() > 0) {
                 periodoInsertado = true;
@@ -124,6 +126,32 @@ public class PeriodoDAO implements IPeriodoDAO {
         }
 
         return periodo;
+    }
+
+    public boolean existePeriodoActivo() throws SQLException, IOException {
+
+        boolean existeActivo = false;
+
+        String consultaSQLPeriodo = "SELECT EXISTS (\n" +
+                "  SELECT 1 FROM periodo WHERE estadoActivo = 1\n" +
+                ") AS hayPeriodoActivo;\n";
+
+        try {
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaPeriodo = conexionBaseDeDatos.prepareStatement(consultaSQLPeriodo);
+            resultadoConsultaPeriodo = sentenciaPeriodo.executeQuery();
+
+            if (resultadoConsultaPeriodo.next()) {
+                existeActivo = resultadoConsultaPeriodo.getBoolean("hayPeriodoActivo");
+            }
+
+        } finally {
+
+            if (sentenciaPeriodo != null) {
+                sentenciaPeriodo.close();
+            }
+        }
+        return existeActivo;
     }
 }
 

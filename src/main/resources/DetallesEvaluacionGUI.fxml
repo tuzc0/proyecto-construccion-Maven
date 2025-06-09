@@ -48,9 +48,6 @@
         <Label style="-fx-font-weight: bold; -fx-text-fill: #333333;" text="Evaluador:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
         <Label fx:id="lblEvaluador" style="-fx-text-fill: #333333;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-        <Label style="-fx-font-weight: bold; -fx-text-fill: #333333;" text="Fecha:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <Label fx:id="lblFecha" style="-fx-text-fill: #333333;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
         <Label style="-fx-font-weight: bold; -fx-text-fill: #333333;" text="Calificación Final:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
         <Label fx:id="lblCalificacionFinal" style="-fx-text-fill: #4a6baf; -fx-font-weight: bold;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <rowConstraints>

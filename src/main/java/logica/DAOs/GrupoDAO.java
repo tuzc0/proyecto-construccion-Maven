@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GrupoDAO implements IGrupoDAO {
 
@@ -18,7 +20,7 @@ public class GrupoDAO implements IGrupoDAO {
     public boolean crearNuevoGrupo(GrupoDTO grupo) throws SQLException, IOException {
 
         boolean grupoCreadoConExito = false;
-        String sql = "INSERT INTO Grupo (NRC, nombre, numeroPersonal, idEE, idPeriodo, estadoActivo) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Grupo (NRC, nombre, numeroPersonal, idPeriodo, estadoActivo) VALUES (?, ?, ?, ?, ?)";
 
         try {
 
@@ -27,9 +29,8 @@ public class GrupoDAO implements IGrupoDAO {
             sentenciaGrupo.setInt(1, grupo.getNRC());
             sentenciaGrupo.setString(2, grupo.getNombre());
             sentenciaGrupo.setInt(3, grupo.getNumeroPersonal());
-            sentenciaGrupo.setInt(4, grupo.getIdEE());
-            sentenciaGrupo.setInt(5, grupo.getIdPeriodo());
-            sentenciaGrupo.setInt(6, 1);
+            sentenciaGrupo.setInt(4, grupo.getIdPeriodo());
+            sentenciaGrupo.setInt(5, 1);
 
             if (sentenciaGrupo.executeUpdate() > 0) {
                 grupoCreadoConExito = true;
@@ -75,7 +76,7 @@ public class GrupoDAO implements IGrupoDAO {
     public boolean modificarGrupo(GrupoDTO grupo) throws SQLException, IOException {
 
         boolean grupoModificado = false;
-        String sql = "UPDATE Grupo SET nombre = ?, numeroPersonal = ?, idEE = ?, idPeriodo = ?, estadoActivo = ? WHERE NRC = ?";
+        String sql = "UPDATE Grupo SET nombre = ?, numeroPersonal = ?, idPeriodo = ?, estadoActivo = ? WHERE NRC = ?";
 
         try {
 
@@ -83,10 +84,9 @@ public class GrupoDAO implements IGrupoDAO {
             sentenciaGrupo = conexionBaseDeDatos.prepareStatement(sql);
             sentenciaGrupo.setString(1, grupo.getNombre());
             sentenciaGrupo.setInt(2, grupo.getNumeroPersonal());
-            sentenciaGrupo.setInt(3, grupo.getIdEE());
-            sentenciaGrupo.setInt(4, grupo.getIdPeriodo());
-            sentenciaGrupo.setInt(5, grupo.getEstadoActivo());
-            sentenciaGrupo.setInt(6, grupo.getNRC());
+            sentenciaGrupo.setInt(3, grupo.getIdPeriodo());
+            sentenciaGrupo.setInt(4, grupo.getEstadoActivo());
+            sentenciaGrupo.setInt(5, grupo.getNRC());
 
             if (sentenciaGrupo.executeUpdate() > 0) {
                 grupoModificado = true;
@@ -105,7 +105,7 @@ public class GrupoDAO implements IGrupoDAO {
 
     public GrupoDTO buscarGrupoPorNRC(int NRC) throws SQLException, IOException {
 
-        GrupoDTO grupo = new GrupoDTO(-1, "N/A", -1, -1, -1, -1);
+        GrupoDTO grupo = new GrupoDTO(-1, "N/A", -1, -1, -1);
         String sql = "SELECT * FROM Grupo WHERE NRC = ?";
 
         try {
@@ -120,7 +120,6 @@ public class GrupoDAO implements IGrupoDAO {
                 grupo.setNRC(resultadoGrupo.getInt("NRC"));
                 grupo.setNombre(resultadoGrupo.getString("nombre"));
                 grupo.setNumeroPersonal(resultadoGrupo.getInt("numeroPersonal"));
-                grupo.setIdEE(resultadoGrupo.getInt("idEE"));
                 grupo.setIdPeriodo(resultadoGrupo.getInt("idPeriodo"));
                 grupo.setEstadoActivo(resultadoGrupo.getInt("estadoActivo"));
             }
@@ -136,9 +135,9 @@ public class GrupoDAO implements IGrupoDAO {
         return grupo;
     }
 
-    public GrupoDTO mostrarGruposActivos() throws SQLException, IOException {
+    public List<GrupoDTO> mostrarGruposActivos() throws SQLException, IOException {
 
-        GrupoDTO grupo = new GrupoDTO(-1, "N/A", -1, -1, -1, -1);
+        List<GrupoDTO> grupos = new ArrayList<>();
         String sql = "SELECT * FROM Grupo WHERE estadoActivo = 1";
 
         try {
@@ -147,25 +146,79 @@ public class GrupoDAO implements IGrupoDAO {
             sentenciaGrupo = conexionBaseDeDatos.prepareStatement(sql);
             resultadoGrupo = sentenciaGrupo.executeQuery();
 
-            if (resultadoGrupo.next()) {
-
-                grupo.setNRC(resultadoGrupo.getInt("NRC"));
-                grupo.setNombre(resultadoGrupo.getString("nombre"));
-                grupo.setNumeroPersonal(resultadoGrupo.getInt("numeroPersonal"));
-                grupo.setIdEE(resultadoGrupo.getInt("idEE"));
-                grupo.setIdPeriodo(resultadoGrupo.getInt("idPeriodo"));
-                grupo.setEstadoActivo(resultadoGrupo.getInt("estadoActivo"));
+            while (resultadoGrupo.next()) {
+                GrupoDTO grupo = new GrupoDTO(
+                        resultadoGrupo.getInt("NRC"),
+                        resultadoGrupo.getString("nombre"),
+                        resultadoGrupo.getInt("numeroPersonal"),
+                        resultadoGrupo.getInt("idPeriodo"),
+                        resultadoGrupo.getInt("estadoActivo")
+                );
+                grupos.add(grupo);
             }
 
         } finally {
 
             if (sentenciaGrupo != null) {
-
                 sentenciaGrupo.close();
             }
         }
 
-        return grupo;
+        return grupos;
     }
+
+    public boolean existeGrupoPorNumeroAcademico (int numeroAcademico) throws SQLException, IOException {
+
+        boolean existeGrupo = false;
+        String sql = "SELECT EXISTS (\n" +
+                "  SELECT 1 FROM grupo WHERE numeroPersonal = ? AND estadoActivo = 1\n" +
+                ") AS existeGrupo;\n";
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaGrupo = conexionBaseDeDatos.prepareStatement(sql);
+            sentenciaGrupo.setInt(1, numeroAcademico);
+            resultadoGrupo = sentenciaGrupo.executeQuery();
+
+            if (resultadoGrupo.next()) {
+                existeGrupo = resultadoGrupo.getBoolean("existeGrupo");
+            }
+
+        } finally {
+
+            if (sentenciaGrupo != null) {
+                sentenciaGrupo.close();
+            }
+        }
+
+        return existeGrupo;
+    }
+
+    public int generarNRC() throws SQLException, IOException {
+
+        int nuevoNRC = 101;
+        String sql = "SELECT COALESCE(MAX(NRC), 0) + 1 AS nuevoNRC FROM Grupo";
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaGrupo = conexionBaseDeDatos.prepareStatement(sql);
+            resultadoGrupo = sentenciaGrupo.executeQuery();
+
+            if (resultadoGrupo.next()) {
+                nuevoNRC = resultadoGrupo.getInt("nuevoNRC");
+            }
+
+        } finally {
+
+            if (sentenciaGrupo != null) {
+                sentenciaGrupo.close();
+            }
+        }
+
+        return nuevoNRC;
+    }
+
 }
 

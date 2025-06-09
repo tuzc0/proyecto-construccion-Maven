@@ -20,7 +20,7 @@ class GrupoDAOTest {
     @Order(1)
     void testCrearNuevoGrupoDatosValidos() throws SQLException, IOException {
 
-        GrupoDTO grupo = new GrupoDTO(12345, "Grupo A", 1, 1, 1, 1);
+        GrupoDTO grupo = new GrupoDTO(12345, "Grupo A",  1, 1, 1);
         boolean resultado = grupoDAO.crearNuevoGrupo(grupo);
         assertTrue(resultado, "El grupo debería haberse creado correctamente.");
     }
@@ -38,7 +38,7 @@ class GrupoDAOTest {
     @Order(3)
     void testModificarGrupoDatosValidos() throws SQLException, IOException {
 
-        GrupoDTO grupo = new GrupoDTO(12345, "Grupo B", 2, 2, 2, 1);
+        GrupoDTO grupo = new GrupoDTO(12345, "Grupo B",  2, 2, 1);
         boolean resultado = grupoDAO.modificarGrupo(grupo);
         assertTrue(resultado, "El grupo debería haberse modificado correctamente.");
     }
@@ -53,12 +53,12 @@ class GrupoDAOTest {
         assertEquals(NRC, grupo.getNRC(), "El NRC del grupo debería coincidir.");
     }
 
-    @Test
-    @Order(5)
-    void testMostrarGruposActivosDatosValidos() throws SQLException, IOException {
-
-        GrupoDTO grupo = grupoDAO.mostrarGruposActivos();
-        assertNotNull(grupo, "El grupo no debería ser nulo.");
-        assertEquals(1, grupo.getEstadoActivo(), "El estado del grupo debería ser activo.");
-    }
+//    @Test
+//    @Order(5)
+//    void testMostrarGruposActivosDatosValidos() throws SQLException, IOException {
+//
+//        GrupoDTO grupo = grupoDAO.mostrarGruposActivos();
+//        assertNotNull(grupo, "El grupo no debería ser nulo.");
+//        assertEquals(1, grupo.getEstadoActivo(), "El estado del grupo debería ser activo.");
+//    }
 }

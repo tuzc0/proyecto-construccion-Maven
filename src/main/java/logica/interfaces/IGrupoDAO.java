@@ -4,6 +4,7 @@ import logica.DTOs.GrupoDTO;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 public interface IGrupoDAO {
 
@@ -15,5 +16,6 @@ public interface IGrupoDAO {
 
     GrupoDTO buscarGrupoPorNRC(int NRC) throws SQLException, IOException;
 
-    GrupoDTO mostrarGruposActivos() throws SQLException, IOException;
+    List<GrupoDTO> mostrarGruposActivos() throws SQLException, IOException;
+
 }

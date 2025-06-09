@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" prefHeight="239.0" prefWidth="389.0" spacing="15" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="GUI.ControladorCrearGrupoGUI">
+
+
+    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Crear Nuevo Grupo" />
+
+    <HBox alignment="CENTER" spacing="10">
+        <Label text="Nombre del grupo:" />
+        <TextField fx:id="textoNombreGrupo" promptText="Ej. Grupo A" />
+    </HBox>
+   <HBox alignment="CENTER" spacing="10">
+      <children>
+         <Label text="NRC: " />
+         <Label fx:id="etiquetaNRC" text="NRC" />
+      </children>
+   </HBox>
+
+    <HBox alignment="CENTER" spacing="10">
+        <Label text="Académico:" />
+        <ComboBox fx:id="comboAcademico" prefWidth="250" />
+    </HBox>
+
+    <HBox alignment="CENTER" spacing="10">
+        <Label text="Período:" />
+      <Label fx:id="etiquetaPeriodo" text="Periodo" />
+    </HBox>
+
+    <Button onAction="#guardarGrupo" text="Guardar Grupo" />
+</VBox>

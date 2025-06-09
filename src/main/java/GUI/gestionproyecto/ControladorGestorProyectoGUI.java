@@ -46,7 +46,11 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
     @FXML
     private Label etiquetaUsuariosIndirectos;
     @FXML
+    private Label etiquetaEstudiantesSolicitados;
+    @FXML
     private TextField campoUsuariosIndirectos;
+    @FXML
+    private TextField campoEstudiantesSolicitados;
     @FXML
     private Label etiquetaDuracion;
     @FXML
@@ -164,6 +168,7 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
         textoObjetivoGeneral.setText(proyectoSeleccionado.getObjetivoGeneral());
         etiquetaUsuariosDirectos.setText(String.valueOf(proyectoSeleccionado.getUsuariosDirectos()));
         etiquetaUsuariosIndirectos.setText(String.valueOf(proyectoSeleccionado.getUsuariosIndirectos()));
+        etiquetaEstudiantesSolicitados.setText(String.valueOf(proyectoSeleccionado.getEstudiantesRequeridos()));
         etiquetaDuracion.setText(proyectoSeleccionado.getDuracion());
         textoObjetivosInmediatos.setText(proyectoSeleccionado.getObjetivosInmediatos());
         textoObjetivosMediatos.setText(proyectoSeleccionado.getObjetivosMediatos());
@@ -304,9 +309,11 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
 
         campoUsuariosDirectos.setText(etiquetaUsuariosDirectos.getText());
         campoUsuariosIndirectos.setText(etiquetaUsuariosIndirectos.getText());
+        campoEstudiantesSolicitados.setText(etiquetaEstudiantesSolicitados.getText());
 
         etiquetaUsuariosDirectos.setVisible(false);
         etiquetaUsuariosIndirectos.setVisible(false);
+        etiquetaEstudiantesSolicitados.setVisible(false);
         botonEditar.setVisible(false);
         botonEstudiantesAsignados.setVisible(false);
         botonRegresar.setVisible(false);
@@ -316,6 +323,7 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
         botonCancelar.setVisible(true);
         campoUsuariosDirectos.setVisible(true);
         campoUsuariosIndirectos.setVisible(true);
+        campoEstudiantesSolicitados.setVisible(true);
     }
 
     private void deshabilitarCamposParaEdicion() {
@@ -331,8 +339,10 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
         textoResponsabilidades.setEditable(false);
         etiquetaUsuariosDirectos.setVisible(true);
         etiquetaUsuariosIndirectos.setVisible(true);
+        etiquetaEstudiantesSolicitados.setVisible(true);
         campoUsuariosDirectos.setVisible(false);
         campoUsuariosIndirectos.setVisible(false);
+        campoEstudiantesSolicitados.setVisible(false);
 
         contadorNombre.setVisible(false);
         contadorDescripcion.setVisible(false);
@@ -368,10 +378,11 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
         String responsabilidades = textoResponsabilidades.getText();
         String usuariosDirectos = campoUsuariosDirectos.getText();
         String usuariosIndirectos = campoUsuariosIndirectos.getText();
+        String estudiantesSolicitados = campoEstudiantesSolicitados.getText();
 
         List<String> camposVacios = proyectoSeleccionado.camposVaciosProyecto(nombre, descripcionGeneral,
                 objetivoGeneral, objetivosInmediatos, objetivosMediatos, metodologia, recursos,
-                actividades, responsabilidades, usuariosDirectos, usuariosIndirectos);
+                actividades, responsabilidades, usuariosDirectos, usuariosIndirectos, estudiantesSolicitados);
 
         if (!camposVacios.isEmpty()) {
             String mensajeError = String.join("\n", camposVacios);
@@ -385,7 +396,7 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
 
         List<String> camposInvalidos = proyectoSeleccionado.validarCamposProyecto(nombre, descripcionGeneral,
                 objetivoGeneral, objetivosInmediatos, objetivosMediatos, metodologia, recursos,
-                actividades, responsabilidades, usuariosDirectos, usuariosIndirectos);
+                actividades, responsabilidades, usuariosDirectos, usuariosIndirectos, estudiantesSolicitados);
 
         if (!camposInvalidos.isEmpty()) {
             String mensajeError = String.join("\n", camposInvalidos);
@@ -404,6 +415,7 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
 
         int numeroUsuariosDirectos = Integer.parseInt(usuariosDirectos);
         int numeroUsuariosIndirectos = Integer.parseInt(usuariosIndirectos);
+        int numeroEstudiantesSolicitados = Integer.parseInt(estudiantesSolicitados);
 
         proyectoSeleccionado.setNombre(nombre);
         proyectoSeleccionado.setDescripcion(descripcionGeneral);
@@ -418,6 +430,7 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
         proyectoSeleccionado.setIdRepresentante(idRepresentante);
         proyectoSeleccionado.setUsuariosDirectos(numeroUsuariosDirectos);
         proyectoSeleccionado.setUsuariosIndirectos(numeroUsuariosIndirectos);
+        proyectoSeleccionado.setestudiantesRequeridos(numeroEstudiantesSolicitados);
 
         ProyectoDAO proyectoDAO = new ProyectoDAO();
 
@@ -472,6 +485,7 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
         String duracionProyecto = etiquetaDuracion.getText();
         String textoUsuariosDirectos = campoUsuariosDirectos.getText();
         String textoUsuariosIndirectos = campoUsuariosIndirectos.getText();
+        String textoEstudiantesSolicitados = campoEstudiantesSolicitados.getText();
         representanteSeleccionadoTemporal = null;
         organizacionVinculadaSeleccionadaTemporal = null;
 
@@ -499,6 +513,7 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
                     etiquetaDuracion.setText(duracionProyecto);
                     campoUsuariosDirectos.setText(textoUsuariosDirectos);
                     campoUsuariosIndirectos.setText(textoUsuariosIndirectos);
+                    campoEstudiantesSolicitados.setText(textoEstudiantesSolicitados);
 
                     UTILIDADES.mostrarAlerta(
                             "Operación cancelada.",
@@ -576,6 +591,7 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
 
     @FXML
     private void regresarAConsultarProyecto() {
+
         UTILIDADES.mostrarAlertaConfirmacion(
                 "Confirmar regreso",
                 "¿Está seguro que desea regresar a la ventana anterior?",

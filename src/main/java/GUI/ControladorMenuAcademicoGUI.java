@@ -1,5 +1,6 @@
 package GUI;
 
+import GUI.gestionestudiante.AuxiliarGestionEstudiante;
 import GUI.utilidades.Utilidades;
 import javafx.fxml.FXML;
 
@@ -9,15 +10,46 @@ public class ControladorMenuAcademicoGUI {
 
     int numeroDePersonal = ControladorInicioDeSesionGUI.numeroDePersonal;
 
+    AuxiliarGestionEstudiante auxiliarGestionEstudiante = new AuxiliarGestionEstudiante();
+
+    int NRC = auxiliarGestionEstudiante.obtenerNRC();
+
 
     @FXML
     public void abrirRegistroEstudiante() {
-        utilidades.mostrarVentana("/RegistroEstudianteGUI.fxml");
+
+        String ventana = "/RegistroEstudianteGUI.fxml";
+
+        mostrarVentana(ventana);
+
     }
 
     @FXML
     public void abrirConsultarEstudiante() {
-        utilidades.mostrarVentana("/GestorEstudiantesGUI.fxml");
+
+        String ventana = "/GestorEstudiantesGUI.fxml";
+        mostrarVentana(ventana);
+    }
+
+    @FXML
+    public void abrirConsultarEvaluaciones() {
+
+        String ventana = "/ConsultarEstudiantesEvaluadosGUI.fxml";
+        mostrarVentana(ventana);
+    }
+
+    public void mostrarVentana(String ventana) {
+
+        if (NRC == -1) {
+            utilidades.mostrarAlerta(
+                    "Grupo no encontrado",
+                    "No se encontró un grupo activo",
+                    "Por favor, asegúrese de que el número de personal sea correcto y que exista un grupo activo."
+            );
+
+        } else {
+            utilidades.mostrarVentana(ventana);
+        }
     }
 
 

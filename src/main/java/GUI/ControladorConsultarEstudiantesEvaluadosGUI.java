@@ -1,5 +1,6 @@
 package GUI;
 
+import GUI.gestionestudiante.AuxiliarGestionEstudiante;
 import GUI.utilidades.Utilidades;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,9 +12,11 @@ import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import logica.DAOs.CuentaDAO;
 import logica.DAOs.EstudianteDAO;
 import logica.DAOs.EvaluacionContieneDAO;
 import logica.DAOs.EvaluacionDAO;
+import logica.DTOs.CuentaDTO;
 import logica.DTOs.EstudianteDTO;
 
 import java.io.IOException;
@@ -22,7 +25,7 @@ import java.util.logging.Logger;
 
 import static GUI.ControladorRegistrarEvaluacionGUI.idEvaluacionGenerada;
 
-public class ControladorConsultarEstudiantesAEvaluarGUI {
+public class ControladorConsultarEstudiantesEvaluadosGUI {
 
     Logger logger = Logger.getLogger(ControladorConsultarEstudiantesAEvaluarGUI.class.getName());
 
@@ -50,6 +53,9 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
 
     private static int numeroPersonal = ControladorInicioDeSesionGUI.numeroDePersonal;
 
+    AuxiliarGestionEstudiante auxiliarGestionEstudiante = new AuxiliarGestionEstudiante();
+    int NRC = auxiliarGestionEstudiante.obtenerNRC();
+
 
     @FXML
     public void initialize() {
@@ -59,7 +65,7 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
         columnaApellidos.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getApellido()));
 
         cargarEstudiantes();
-        añadirBotonEvaluarATable();
+        añadirBotonVerEvaluacionesATabla();
 
         tablaEstudiantes.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             estudianteSeleccionado = newValue;
@@ -73,30 +79,30 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
         try {
             EstudianteDAO estudianteDAO = new EstudianteDAO();
             ObservableList<EstudianteDTO> estudiantes = FXCollections.observableArrayList(
-                    estudianteDAO.listarEstudiantesNoEvaluados(numeroPersonal)
+                    estudianteDAO.listarEstudiantesConEvaluacionesPorGrupo(NRC)
             );
             tablaEstudiantes.setItems(estudiantes);
 
         } catch (Exception e) {
-            logger.severe("Error al cargar la lista de estudiantes: " + e.getMessage());
+            logger.severe("Error al cargar la lista de estudiantes: " + e);
             utilidades.mostrarAlerta("Error", "Error de entrada/salida", "No se pudo cargar la lista de estudiantes.");
         }
     }
 
-    private void añadirBotonEvaluarATable() {
+    private void añadirBotonVerEvaluacionesATabla() {
 
 
 
         Callback<TableColumn<EstudianteDTO, Void>, TableCell<EstudianteDTO, Void>> cellFactory = param -> new TableCell<>() {
 
-            private final Button botonEvaluar = new Button("Evaluar");
+            private final Button botonEvaluar = new Button("Ver Evaluaciones");
 
             {
                 botonEvaluar.setOnAction(event -> {
 
                     EstudianteDTO estudianteSeleccionado = getTableView().getItems().get(getIndex());
                     matriculaEstudianteSeleccionado = estudianteSeleccionado.getMatricula();
-                    abrirVentanaRegistrarEvaluacion();
+                    abrirVentanaConsultarEvaluacionesEstudiante();
 
                 });
             }
@@ -118,20 +124,23 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
         columnaEvaluar.setCellFactory(cellFactory);
     }
 
-    public void abrirVentanaRegistrarEvaluacion() {
+    public void abrirVentanaConsultarEvaluacionesEstudiante() {
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistrarEvaluacionGUI.fxml"));
+
+
+            System.out.println("Matricula del estudiante seleccionado: " + matriculaEstudianteSeleccionado);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ConsultarEvaluacionesEstudianteGUI.fxml"));
             Parent root = loader.load();
 
+            ConsultarEvaluacionesEstudiante controlador = loader.getController();
+            controlador.setMatricula(matriculaEstudianteSeleccionado);
+
             Stage stage = new Stage();
-            stage.setTitle("Registrar Evaluación");
+            stage.setTitle("Evaluaciones del Estudiante");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
 
-            stage.setOnCloseRequest(event -> {
-                eliminarEvaluacion();
-            });
 
             stage.showAndWait();
 
@@ -143,32 +152,9 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
 
     }
 
-    public void eliminarEvaluacion() {
-
-        EvaluacionDAO evaluacionDAO = new EvaluacionDAO();
-        EvaluacionContieneDAO evaluacionContieneDAO = new EvaluacionContieneDAO();
-
-        try {
-
-            evaluacionContieneDAO.eliminarCriteriosPorIdEvaluacion(idEvaluacionGenerada);
-            evaluacionDAO.eliminarEvaluacionDefinitivamente(idEvaluacionGenerada);
-
-        } catch (SQLException e) {
-
-            logger.severe("Error de SQL: " + e.getMessage());
-        } catch (IOException e) {
-
-            logger.severe("Error de IO: " + e.getMessage());
-        } catch (Exception e) {
-
-            logger.severe("Error inesperado: " + e.getMessage());
-        }
-    }
-
 
     @FXML
     public void buscarEstudiante() {
-
         String matriculaBuscada = campoMatricula.getText().trim();
 
         if (matriculaBuscada.isEmpty()) {
@@ -179,7 +165,7 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
         try {
             EstudianteDAO estudianteDAO = new EstudianteDAO();
             ObservableList<EstudianteDTO> estudiantes = FXCollections.observableArrayList(
-                    estudianteDAO.listarEstudiantesNoEvaluados(numeroPersonal)
+                    estudianteDAO.listarEstudiantesConEvaluacionesPorGrupo(NRC)
             );
 
             ObservableList<EstudianteDTO> estudiantesFiltrados = estudiantes.filtered(
@@ -195,7 +181,5 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
         } catch (Exception e) {
             logger.severe("Error al buscar el estudiante: " + e.getMessage());
         }
-
     }
-
 }

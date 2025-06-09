@@ -33,6 +33,6 @@ build/
 
 ### VS Code ###
 .vscode/
-
+/resources/Credenciales2.json
 ### Mac OS ###
 .DS_Store

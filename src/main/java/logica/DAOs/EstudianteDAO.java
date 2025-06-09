@@ -20,7 +20,7 @@ public class EstudianteDAO implements IEstudianteDAO {
 
         boolean estudianteInsertado = false;
 
-        String insertarSQLEstudiante = "INSERT INTO estudiante VALUES(?, ?, ?)";
+        String insertarSQLEstudiante = "INSERT INTO estudiante VALUES(?, ?, ?, ?, ?)";
 
         try {
 
@@ -34,6 +34,9 @@ public class EstudianteDAO implements IEstudianteDAO {
             } else {
                 sentenciaEstudiante.setNull(3, Types.INTEGER);
             }
+
+            sentenciaEstudiante.setInt(4, 0);
+            sentenciaEstudiante.setInt(5,estudiante.getNRC());
 
             if (sentenciaEstudiante.executeUpdate() > 0) {
 
@@ -51,6 +54,7 @@ public class EstudianteDAO implements IEstudianteDAO {
 
         return estudianteInsertado;
     }
+
 
 
     public boolean eliminarEstudiantePorMatricula (int estadoActivo, String matricula) throws SQLException, IOException {
@@ -109,6 +113,35 @@ public class EstudianteDAO implements IEstudianteDAO {
         }
 
         return estudianteModificado;
+    }
+
+    public boolean agregarEstudianteAGrupo(int nrc, String matricula) throws SQLException, IOException {
+
+        boolean estudianteAgregado = false;
+
+        String agregarEstudianteSQL = "UPDATE estudiante SET NRC = ? WHERE matricula = ?";
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(agregarEstudianteSQL);
+            sentenciaEstudiante.setInt(1, nrc);
+            sentenciaEstudiante.setString(2, matricula);
+
+            if (sentenciaEstudiante.executeUpdate() > 0) {
+
+                estudianteAgregado = true;
+            }
+
+        } finally {
+
+            if (sentenciaEstudiante != null) {
+
+                sentenciaEstudiante.close();
+            }
+        }
+
+        return estudianteAgregado;
     }
 
     public boolean asignarProyecto(int idProyecto, String matricula) throws SQLException, IOException {
@@ -249,6 +282,112 @@ public class EstudianteDAO implements IEstudianteDAO {
         }
 
         return estudiante;
+    }
+
+    public List<EstudianteDTO> obtenerEstudiantesActivosPorNRC(int nrc) throws SQLException, IOException {
+
+        List<EstudianteDTO> estudiantes = new ArrayList<>();
+
+        String sql = """
+        SELECT ve.matricula, ve.nombre, ve.apellidos
+        FROM vista_estudiante ve
+        JOIN estudiante e ON ve.matricula = e.matricula
+        WHERE ve.estadoActivo = 1 AND e.NRC = ?
+    """;
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(sql);
+            sentenciaEstudiante.setInt(1, nrc);
+            resultadoConsultaEstudiante = sentenciaEstudiante.executeQuery();
+
+            while (resultadoConsultaEstudiante.next()) {
+                String matricula = resultadoConsultaEstudiante.getString("matricula");
+                String nombre = resultadoConsultaEstudiante.getString("nombre");
+                String apellidos = resultadoConsultaEstudiante.getString("apellidos");
+
+
+                EstudianteDTO estudiante = new EstudianteDTO(1, nombre, apellidos, matricula,
+                        1, 1);
+                estudiantes.add(estudiante);
+            }
+
+        } finally {
+
+            if (sentenciaEstudiante != null) {
+                sentenciaEstudiante.close();
+            }
+        }
+
+        return estudiantes;
+    }
+
+    public List<EstudianteDTO> listarEstudiantesNoEvaluados(int numeroPersonal) throws SQLException, IOException {
+        String sql = "SELECT ve.matricula, ve.nombre, ve.apellidos " +
+                "FROM vista_estudiante ve " +
+                "LEFT JOIN evaluacion e ON ve.matricula = e.idEstudiante AND e.numeroPersonal = ? " +
+                "WHERE e.idEvaluacion IS NULL AND ve.estadoActivo = 1";
+
+        List<EstudianteDTO> estudiantesNoEvaluados = new ArrayList<>();
+
+        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+             PreparedStatement sentencia = conexionBaseDeDatos.prepareStatement(sql)) {
+
+            sentencia.setInt(1, numeroPersonal);
+
+            try (ResultSet resultado = sentencia.executeQuery()) {
+                while (resultado.next()) {
+                    EstudianteDTO estudiante = new EstudianteDTO(
+                            -1,
+                            resultado.getString("nombre"),
+                            resultado.getString("apellidos"),
+                            resultado.getString("matricula"),
+                            1,
+                            0
+                    );
+                    estudiantesNoEvaluados.add(estudiante);
+                }
+            }
+        }
+
+        return estudiantesNoEvaluados;
+    }
+
+    public List<EstudianteDTO> listarEstudiantesConEvaluacionesPorGrupo(int nrc) throws SQLException, IOException {
+        String sql = """
+        SELECT ve.matricula, ve.nombre, ve.apellidos, COUNT(e.idEvaluacion) AS totalEvaluaciones
+        FROM vista_estudiante ve
+        JOIN estudiante es ON ve.matricula = es.matricula
+        JOIN evaluacion e ON ve.matricula = e.idEstudiante
+        WHERE ve.estadoActivo = 1 AND es.NRC = ?
+        GROUP BY ve.matricula, ve.nombre, ve.apellidos
+        HAVING COUNT(e.idEvaluacion) > 0
+    """;
+
+        List<EstudianteDTO> estudiantesConEvaluaciones = new ArrayList<>();
+
+        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+             PreparedStatement sentencia = conexionBaseDeDatos.prepareStatement(sql)) {
+
+            sentencia.setInt(1, nrc);
+
+            try (ResultSet resultado = sentencia.executeQuery()) {
+                while (resultado.next()) {
+                    EstudianteDTO estudiante = new EstudianteDTO(
+                            -1,
+                            resultado.getString("nombre"),
+                            resultado.getString("apellidos"),
+                            resultado.getString("matricula"),
+                            1,
+                            0
+                    );
+                    estudiantesConEvaluaciones.add(estudiante);
+                }
+            }
+        }
+
+        return estudiantesConEvaluaciones;
     }
 
 }

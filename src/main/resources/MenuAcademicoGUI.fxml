@@ -8,6 +8,6 @@
       <Button layoutX="181.0" layoutY="129.0" mnemonicParsing="false" onAction="#abrirRegistroEstudiante" text="Registrar Estudiante" />
       <Button layoutX="181.0" layoutY="185.0" mnemonicParsing="false" onAction="#abrirConsultarEstudiante" text="consultar estudiante" />
       <Button layoutX="181.0" layoutY="249.0" mnemonicParsing="false" text="Registrar calificacion final" />
-      <Button layoutX="181.0" layoutY="308.0" mnemonicParsing="false" text="consultar evaluaciones" />
+      <Button layoutX="181.0" layoutY="308.0" mnemonicParsing="false" onAction="#abrirConsultarEvaluaciones" text="consultar evaluaciones" />
    </children>
 </Pane>

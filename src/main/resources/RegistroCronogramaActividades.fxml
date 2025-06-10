@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="934.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividadesGUI">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="638.0" prefWidth="942.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividadesGUI">
     <top>
         <AnchorPane prefHeight="60.0" prefWidth="934.0" BorderPane.alignment="CENTER">
             <children>
@@ -110,12 +110,12 @@
 
                     <Separator />
 
-                    <VBox fx:id="vboxActividades" spacing="15">
+                    <VBox spacing="15">
                         <Label style="-fx-font-weight: bold; -fx-font-size: 18;" text="Actividades:" />
 
                         <VBox fx:id="contenedorActividades" spacing="20" style="-fx-padding: 0 0 0 15;">
-                            <VBox spacing="5" style="-fx-border-color: lightgray; -fx-border-radius: 5; -fx-padding: 10;">
-                                <Label style="-fx-font-weight: bold; -fx-font-size: 14;" text="Actividad #1" />
+                            <VBox fx:id="contenedorActividad" spacing="5" style="-fx-border-color: lightgray; -fx-border-radius: 5; -fx-padding: 10;">
+                                <Label style="-fx-font-weight: bold; -fx-font-size: 14;" text="Actividad " />
                                 <GridPane alignment="CENTER" hgap="10" prefWidth="865.0" style="-fx-padding: 20;" vgap="10">
                                     <columnConstraints>
                                         <ColumnConstraints prefWidth="200" />
@@ -157,7 +157,7 @@
                         </VBox>
 
                         <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10 0 0 15;">
-                            <Button fx:id="botonAgregarActividad" style="-fx-font-size: 14;" text="+ Agregar Actividad" />
+                            <Button fx:id="botonAgregarActividad" onAction="#agregarActividad" style="-fx-font-size: 14;" text="+ Agregar Actividad" />
                         </HBox>
                     </VBox>
                 </VBox>

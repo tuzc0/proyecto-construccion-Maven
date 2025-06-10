@@ -5119,22 +5119,3 @@ java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child 
 	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
 	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
 	at java.lang.Thread.run(Thread.java:1570) [?:?]
-2025-06-10 07:42:11 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
-2025-06-10 07:42:16 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - Se encontró una autoevaluación vinculada a la matrícula: S23014091
-2025-06-10 07:43:09 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error inesperado: Input length must be multiple of 16 when decrypting with padded cipher
-2025-06-10 07:43:14 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error inesperado: Input length must be multiple of 16 when decrypting with padded cipher
-2025-06-10 07:55:31 [JavaFX Application Thread] INFO  GUI.gestionacademico.ControladorRegistroAcademicoGUI - Registro de académico exitoso.
-2025-06-10 07:56:31 [JavaFX Application Thread] ERROR GUI.gestionestudiante.AuxiliarGestionEstudiante - No se encontró un grupo activo para el número de personal: 0
-2025-06-10 08:02:26 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
-2025-06-10 08:02:47 [JavaFX Application Thread] ERROR GUI.gestionestudiante.AuxiliarGestionEstudiante - No se encontró un grupo activo para el número de personal: 0
-2025-06-10 08:04:02 [JavaFX Application Thread] ERROR GUI.gestionestudiante.AuxiliarGestionEstudiante - No se encontró un grupo activo para el número de personal: 4566
-2025-06-10 08:06:47 [JavaFX Application Thread] ERROR GUI.gestionestudiante.AuxiliarGestionEstudiante - No se encontró un grupo activo para el número de personal: 0
-2025-06-10 08:08:12 [JavaFX Application Thread] ERROR GUI.gestionestudiante.AuxiliarGestionEstudiante - No se encontró un grupo activo para el número de personal: 0
-2025-06-10 08:12:32 [JavaFX Application Thread] ERROR GUI.gestionestudiante.AuxiliarGestionEstudiante - No se encontró un grupo activo para el número de personal: 0
-2025-06-10 08:13:32 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error inesperado: Input length must be multiple of 16 when decrypting with padded cipher
-2025-06-10 08:13:44 [JavaFX Application Thread] ERROR GUI.gestionestudiante.AuxiliarGestionEstudiante - No se encontró un grupo activo para el número de personal: 0
-2025-06-10 08:14:37 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
-2025-06-10 08:18:35 [JavaFX Application Thread] ERROR GUI.gestionestudiante.AuxiliarGestionEstudiante - No se encontró un grupo activo para el número de personal: 0
-2025-06-10 08:24:10 [JavaFX Application Thread] ERROR GUI.gestionestudiante.AuxiliarGestionEstudiante - No se encontró un grupo activo para el número de personal: 0
-2025-06-10 08:26:21 [JavaFX Application Thread] ERROR GUI.gestionestudiante.AuxiliarGestionEstudiante - No se encontró un grupo activo para el número de personal: 0
-2025-06-10 08:27:36 [JavaFX Application Thread] ERROR GUI.gestionestudiante.AuxiliarGestionEstudiante - No se encontró un grupo activo para el número de personal: 0

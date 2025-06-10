@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="826.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorRegistrarCalificacionFinalGUI">
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <TableView fx:id="tablaAsignacion" layoutX="14.0" layoutY="8.0" prefHeight="430.0" prefWidth="795.0">
+              <columns>
+                <TableColumn fx:id="columnaMatricula" prefWidth="192.79999351501465" text="Matricula" />
+                <TableColumn fx:id="columnaNombre" prefWidth="393.6000061035156" text="Nombre" />
+                  <TableColumn fx:id="columnaCalificacion" prefWidth="208.79998779296875" text="Calificación" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+   </center>
+   <top>
+      <AnchorPane prefHeight="59.0" prefWidth="826.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="268.0" layoutY="8.0" prefHeight="44.0" prefWidth="290.0" text="Asignar Calificacion Final">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </top>
+   <bottom>
+      <AnchorPane prefHeight="16.0" prefWidth="826.0" BorderPane.alignment="CENTER" />
+   </bottom>
+</BorderPane>

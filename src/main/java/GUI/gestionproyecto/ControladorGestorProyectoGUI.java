@@ -80,8 +80,6 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
     @FXML
     private Button botonEditar;
     @FXML
-    private Button botonEstudiantesAsignados;
-    @FXML
     private Button botonRegresar;
     @FXML
     private Button botonActualizar;
@@ -150,7 +148,6 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
         columnaViernes.setCellValueFactory(new PropertyValueFactory<>("viernes"));
 
         botonEditar.setCursor(Cursor.HAND);
-        botonEstudiantesAsignados.setCursor(Cursor.HAND);
         botonRegresar.setCursor(Cursor.HAND);
     }
 
@@ -315,7 +312,6 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
         etiquetaUsuariosIndirectos.setVisible(false);
         etiquetaEstudiantesSolicitados.setVisible(false);
         botonEditar.setVisible(false);
-        botonEstudiantesAsignados.setVisible(false);
         botonRegresar.setVisible(false);
 
         botonCambiarOrganizacion.setVisible(true);
@@ -355,7 +351,6 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
         contadorResponsabilidades.setVisible(false);
 
         botonEditar.setVisible(true);
-        botonEstudiantesAsignados.setVisible(true);
         botonRegresar.setVisible(true);
 
         botonCambiarOrganizacion.setVisible(false);
@@ -522,11 +517,6 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
                     );
                 }
         );
-    }
-
-    @FXML
-    private void estudiantesAsignados() {
-
     }
 
     private RepresentanteDTO representanteSeleccionadoTemporal;

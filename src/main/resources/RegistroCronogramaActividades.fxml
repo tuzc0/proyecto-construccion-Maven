@@ -157,7 +157,7 @@
                         </VBox>
 
                         <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10 0 0 15;">
-                            <Button fx:id="botonAgregarActividad" style="-fx-font-size: 14;" text="+ Agregar Actividad" />
+                            <Button fx:id="botonAgregarActividad" onAction="#agregarActividad" style="-fx-font-size: 14;" text="+ Agregar Actividad" />
                         </HBox>
                     </VBox>
                 </VBox>

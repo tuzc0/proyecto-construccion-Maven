@@ -2,8 +2,12 @@ package GUI.gestioncronogramaactividades;
 
 import GUI.GestorHorarios;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logica.DAOs.*;
 import logica.DTOs.*;
@@ -12,10 +16,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import GUI.utilidades.Utilidades;
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,44 +27,80 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
     private static final Logger LOGGER = LogManager.getLogger(ControladorRegistroCronogramaActividadesGUI.class);
 
-    @FXML private ComboBox<String> comboHoraInicioLunesHorario;
-    @FXML private ComboBox<String> comboMinutosInicioLunesHorario;
-    @FXML private ComboBox<String> comboHoraFinLunesHorario;
-    @FXML private ComboBox<String> comboMinutosFinLunesHorario;
-    @FXML private ComboBox<String> comboHoraInicioMartesHorario;
-    @FXML private ComboBox<String> comboMinutosInicioMartesHorario;
-    @FXML private ComboBox<String> comboHoraFinMartesHorario;
-    @FXML private ComboBox<String> comboMinutosFinMartesHorario;
-    @FXML private ComboBox<String> comboHoraInicioMiercolesHorario;
-    @FXML private ComboBox<String> comboMinutosInicioMiercolesHorario;
-    @FXML private ComboBox<String> comboHoraFinMiercolesHorario;
-    @FXML private ComboBox<String> comboMinutosFinMiercolesHorario;
-    @FXML private ComboBox<String> comboHoraInicioJuevesHorario;
-    @FXML private ComboBox<String> comboMinutosInicioJuevesHorario;
-    @FXML private ComboBox<String> comboHoraFinJuevesHorario;
-    @FXML private ComboBox<String> comboMinutosFinJuevesHorario;
-    @FXML private ComboBox<String> comboHoraInicioViernesHorario;
-    @FXML private ComboBox<String> comboMinutosInicioViernesHorario;
-    @FXML private ComboBox<String> comboHoraFinViernesHorario;
-    @FXML private ComboBox<String> comboMinutosFinViernesHorario;
-    @FXML private DatePicker fechaInicioActividad;
-    @FXML private DatePicker fechaFinActividad;
-    @FXML private CheckBox checkLunes;
-    @FXML private CheckBox checkMartes;
-    @FXML private CheckBox checkMiercoles;
-    @FXML private CheckBox checkJueves;
-    @FXML private CheckBox checkViernes;
-    @FXML private TextField campoNombreActividad;
-    @FXML private TextField campoDuracionActividad;
-    @FXML private TextField campoHitosActividad;
-    @FXML private Button botonAgregarActividad;
-    @FXML private Button botonCancelar;
-    @FXML private Button botonGuardar;
-    @FXML private Label contadorNombreActividad;
-    @FXML private Label contadorDuracionActividad;
-    @FXML private Label contadorHitosActividad;
+    @FXML
+    private ComboBox<String> comboHoraInicioLunesHorario;
+    @FXML
+    private ComboBox<String> comboMinutosInicioLunesHorario;
+    @FXML
+    private ComboBox<String> comboHoraFinLunesHorario;
+    @FXML
+    private ComboBox<String> comboMinutosFinLunesHorario;
+    @FXML
+    private ComboBox<String> comboHoraInicioMartesHorario;
+    @FXML
+    private ComboBox<String> comboMinutosInicioMartesHorario;
+    @FXML
+    private ComboBox<String> comboHoraFinMartesHorario;
+    @FXML
+    private ComboBox<String> comboMinutosFinMartesHorario;
+    @FXML
+    private ComboBox<String> comboHoraInicioMiercolesHorario;
+    @FXML
+    private ComboBox<String> comboMinutosInicioMiercolesHorario;
+    @FXML
+    private ComboBox<String> comboHoraFinMiercolesHorario;
+    @FXML
+    private ComboBox<String> comboMinutosFinMiercolesHorario;
+    @FXML
+    private ComboBox<String> comboHoraInicioJuevesHorario;
+    @FXML
+    private ComboBox<String> comboMinutosInicioJuevesHorario;
+    @FXML
+    private ComboBox<String> comboHoraFinJuevesHorario;
+    @FXML
+    private ComboBox<String> comboMinutosFinJuevesHorario;
+    @FXML
+    private ComboBox<String> comboHoraInicioViernesHorario;
+    @FXML
+    private ComboBox<String> comboMinutosInicioViernesHorario;
+    @FXML
+    private ComboBox<String> comboHoraFinViernesHorario;
+    @FXML
+    private ComboBox<String> comboMinutosFinViernesHorario;
+    @FXML
+    private DatePicker fechaInicioActividad;
+    @FXML
+    private DatePicker fechaFinActividad;
+    @FXML
+    private CheckBox checkLunes;
+    @FXML
+    private CheckBox checkMartes;
+    @FXML
+    private CheckBox checkMiercoles;
+    @FXML
+    private CheckBox checkJueves;
+    @FXML
+    private CheckBox checkViernes;
+    @FXML
+    private TextField campoNombreActividad;
+    @FXML
+    private TextField campoDuracionActividad;
+    @FXML
+    private TextField campoHitosActividad;
+    @FXML
+    private Button botonAgregarActividad;
+    @FXML
+    private Button botonCancelar;
+    @FXML
+    private Button botonGuardar;
+    @FXML
+    private Label contadorNombreActividad;
+    @FXML
+    private Label contadorDuracionActividad;
+    @FXML
+    private Label contadorHitosActividad;
 
-    private String matriculaEstudiante = "S20012345";
+    private String matriculaEstudiante;
     private final Utilidades UTILIDADES = new Utilidades();
     private GestorHorarios gestorHorarios;
 
@@ -140,16 +180,6 @@ public class ControladorRegistroCronogramaActividadesGUI {
                 return;
             }
 
-            PeriodoDAO periodoDAO = new PeriodoDAO();
-            PeriodoDTO periodoDTO = periodoDAO.mostrarPeriodoActual();
-
-            CronogramaActividadesDTO cronogramaDTO = new CronogramaActividadesDTO(
-                    0, matriculaEstudiante, 0, periodoDTO.getIDPeriodo(), 1);
-
-            if (!validarCronograma(cronogramaDTO)) {
-                return;
-            }
-
             if (!gestorHorarios.validarDiasSeleccionados()) {
 
                 UTILIDADES.mostrarAlerta(
@@ -170,16 +200,35 @@ public class ControladorRegistroCronogramaActividadesGUI {
                 return;
             }
 
+            PeriodoDAO periodoDAO = new PeriodoDAO();
             EstudianteDAO estudianteDAO = new EstudianteDAO();
+
             EstudianteDTO estudianteDTO = estudianteDAO.buscarEstudiantePorMatricula(matriculaEstudiante);
+            PeriodoDTO periodoDTO = periodoDAO.mostrarPeriodoActual();
+            int idCronograma = 0;
+            int idProyecto = estudianteDTO.getIdProyecto();
+            int estadoActivo = 1;
             int noAsignado = -1;
 
-            if (estudianteDTO.getIdProyecto() == noAsignado) {
+            if (idProyecto == noAsignado) {
 
                 UTILIDADES.mostrarAlerta(
                         "Error",
                         "No se le ha asignado a proyecto",
                         "Por favor, espere a ser asignado");
+                return;
+            }
+
+            CronogramaActividadesDTO cronogramaDTO = new CronogramaActividadesDTO(
+                    idCronograma,
+                    matriculaEstudiante,
+                    idProyecto,
+                    periodoDTO.getIDPeriodo(),
+                    estadoActivo
+            );
+
+            if (!validarCronograma(cronogramaDTO)) {
+
                 return;
             }
 
@@ -194,67 +243,48 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
             CronogramaActividadesDAO cronogramaDAO = new CronogramaActividadesDAO();
             ActividadDAO actividadDAO = new ActividadDAO();
-
-            int idCronograma = 0;
-            int estadoActivoCronograma = 1;
-
-            CronogramaActividadesDTO cronogramaActividadesDTO = new CronogramaActividadesDTO(
-                    idCronograma,
-                    matriculaEstudiante,
-                    estudianteDTO.getIdProyecto(),
-                    periodoDTO.getIDPeriodo(),
-                    estadoActivoCronograma
-            );
-
-            int idCronogramaCreado = cronogramaDAO.crearNuevoCronogramaDeActividades(cronogramaActividadesDTO);
-            int estadoActivoActividad = 1;
-
-            ActividadDTO actividadPrincipal = new ActividadDTO(
-                    0,
-                    nombreActividad,
-                    duracion,
-                    hitos,
-                    Date.valueOf(fechaInicio),
-                    Date.valueOf(fechaFin),
-                    estadoActivoActividad
-            );
-
-            int idActividadPrincipal = actividadDAO.crearNuevaActividad(actividadPrincipal);
-            int errorAlCrearActividad = -1;
-
-            if (idActividadPrincipal == errorAlCrearActividad) {
-
-                UTILIDADES.mostrarAlerta(
-                        "Error",
-                        "No se pudo crear La actividad.",
-                        "Por favor, intentelo de nuevo más tarde o contacte al administador."
-                );
-                return;
-            }
-
             CronogramaContieneDAO cronogramaContieneDAO = new CronogramaContieneDAO();
-            String mesActividad = obtenerMes(fechaInicio);
 
-            CronogramaContieneDTO contienePrincipal = new CronogramaContieneDTO(
-                    idCronogramaCreado,
-                    idActividadPrincipal,
-                    mesActividad,
-                    1
-            );
+            int idCronogramaCreado = cronogramaDAO.crearNuevoCronogramaDeActividades(cronogramaDTO);
 
-            if (!cronogramaContieneDAO.insertarCronogramaContiene(contienePrincipal)) {
+            for (ActividadDTO actividadSecundaria : actividadesSecundarias) {
 
-                UTILIDADES.mostrarAlerta(
-                        "Error",
-                        "La actividad no se pudo añadir al cronograma.",
-                        "Por favor intentelo de nuevo más tarde o contacte al administrador.");
-                return;
+                int idActividadSecundaria = actividadDAO.crearNuevaActividad(actividadSecundaria);
+                int noCreada = -1;
+
+                if (idActividadSecundaria == noCreada) {
+
+                    UTILIDADES.mostrarAlerta(
+                            "Error",
+                            "No se pudo crear una actividad secundaria.",
+                            "Por favor, intentelo de nuevo más tarde o contacte al administrador.");
+                    return;
+                }
+
+                String mesActividad = obtenerMes(actividadSecundaria.getFechaInicio().toLocalDate());
+
+                CronogramaContieneDTO contieneSecundaria = new CronogramaContieneDTO(
+                        idCronogramaCreado,
+                        idActividadSecundaria,
+                        mesActividad,
+                        1
+                );
+
+                if (!cronogramaContieneDAO.insertarCronogramaContiene(contieneSecundaria)) {
+
+                    UTILIDADES.mostrarAlerta(
+                            "Error",
+                            "Una actividad secundaria no se pudo añadir al cronograma.",
+                            "Por favor intentelo de nuevo más tarde o contacte al administrador.");
+                    return;
+                }
             }
 
             UTILIDADES.mostrarAlerta(
                     "Éxito",
-                    "El cronograma fue registrado con exito.",
-                    "");
+                    "El cronograma fue registrado con éxito.",
+                    ""
+            );
 
         } catch (SQLException e) {
 
@@ -374,6 +404,42 @@ public class ControladorRegistroCronogramaActividadesGUI {
         }
 
         return true;
+    }
+
+    private List<ActividadDTO> actividadesSecundarias = new ArrayList<>();
+
+    @FXML
+    private void agregarActividad() {
+
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistrarActividadGUI.fxml"));
+            Parent root = loader.load();
+
+            ControladorRegistroActividadGUI controlador = loader.getController();
+            controlador.setDatosIniciales(matriculaEstudiante);
+
+            controlador.setControladorPrincipal(this);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Registrar Actividad");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+        } catch (IOException e) {
+
+            LOGGER.error("No se pudo cargar la ventana de registro actividad:" + e);
+            UTILIDADES.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error al intentar abrir la ventana",
+                    "Por favor, inténtelo de nuevo más tarde."
+            );
+        }
+    }
+
+    public void agregarActividadSecundaria(ActividadDTO actividad) {
+        this.actividadesSecundarias.add(actividad);
     }
 
     private String obtenerMes(LocalDate fecha) {

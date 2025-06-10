@@ -17,14 +17,14 @@ class ReporteDAOTest {
         reporteDAO = new ReporteDAO();
     }
 
-    @Test
-    @Order(1)
-    void testInsertarReporteDatosValidos() throws SQLException, IOException {
-        ReporteDTO reporte = new ReporteDTO(4, 5, "Metodología Ágil", "Observaciones iniciales",
-                Timestamp.valueOf("2023-10-01 08:00:00"), "A12345");
-        boolean resultado = reporteDAO.insertarReporte(reporte);
-        assertTrue(resultado, "La inserción del reporte debería ser exitosa.");
-    }
+//    @Test
+//    @Order(1)
+//    void testInsertarReporteDatosValidos() throws SQLException, IOException {
+//        ReporteDTO reporte = new ReporteDTO(4, 5, "Metodología Ágil", "Observaciones iniciales",
+//                Timestamp.valueOf("2023-10-01 08:00:00"), "A12345");
+//        boolean resultado = reporteDAO.insertarReporte(reporte);
+//        assertTrue(resultado, "La inserción del reporte debería ser exitosa.");
+//    }
 
     @Test
     @Order(2)

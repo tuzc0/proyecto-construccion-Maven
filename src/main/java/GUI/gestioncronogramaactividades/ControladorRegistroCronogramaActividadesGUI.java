@@ -66,7 +66,7 @@ public class ControladorRegistroCronogramaActividadesGUI {
     @FXML private Label contadorDuracionActividad;
     @FXML private Label contadorHitosActividad;
 
-    private String matriculaEstudiante = "S20012345";
+    private String matriculaEstudiante = "S23014091";
     private final Utilidades UTILIDADES = new Utilidades();
 
     @FXML

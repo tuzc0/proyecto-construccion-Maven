@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public interface IReporteDAO {
 
-    boolean insertarReporte(ReporteDTO reporte) throws SQLException, IOException;
+    int insertarReporte(ReporteDTO reporte) throws SQLException, IOException;
 
     boolean modificarReporte(ReporteDTO reporte) throws SQLException, IOException;
 

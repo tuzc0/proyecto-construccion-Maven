@@ -136,5 +136,12 @@ public class ControladorMenuEstudianteGUI {
 
     }
 
+    @FXML
+    public void abrirRegistrarReporteMensual() {
+
+        utilidades.mostrarVentana("/RegistrarReporteMensualGUI.fxml");
+
+    }
+
 
 }

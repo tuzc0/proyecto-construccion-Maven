@@ -1,5 +1,7 @@
 package GUI.gestionestudiante;
 
+import GUI.ControladorInicioDeSesionGUI;
+import GUI.ControladorObjetoEvaluacion;
 import GUI.utilidades.Utilidades;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -13,19 +15,22 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import logica.DAOs.CuentaDAO;
 import logica.DAOs.EstudianteDAO;
+import logica.DAOs.GrupoDAO;
 import logica.DAOs.UsuarioDAO;
 import logica.DTOs.CuentaDTO;
 import logica.DTOs.EstudianteDTO;
+import logica.DTOs.GrupoDTO;
 import logica.DTOs.UsuarioDTO;
 import logica.VerificacionUsuario;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class ControladorGestorEstudiantesGUI {
 
-    Logger logger = Logger.getLogger(ControladorGestorEstudiantesGUI.class.getName());
+    Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorObjetoEvaluacion.class);
 
     @FXML
     private TextField campoMatricula;
@@ -98,6 +103,11 @@ public class ControladorGestorEstudiantesGUI {
 
     private int idEstudiante = 0;
 
+    private int numeroDePersonal = ControladorInicioDeSesionGUI.numeroDePersonal;
+
+    private int NRC;
+
+
 
 
     @FXML
@@ -123,19 +133,29 @@ public class ControladorGestorEstudiantesGUI {
     private void cargarEstudiantes() {
 
         Utilidades utilidades = new Utilidades();
+        AuxiliarGestionEstudiante auxiliarGestionEstudiantes = new AuxiliarGestionEstudiante();
+        NRC = auxiliarGestionEstudiantes.obtenerNRC();
+
 
         try {
 
             EstudianteDAO estudianteDAO = new EstudianteDAO();
-            ObservableList<EstudianteDTO> estudiantes = FXCollections.observableArrayList(estudianteDAO.listarEstudiantes());
+            ObservableList<EstudianteDTO> estudiantes = FXCollections.observableArrayList(estudianteDAO.obtenerEstudiantesActivosPorNRC(NRC));
             tablaEstudiantes.setItems(estudiantes);
 
         } catch (Exception e) {
 
-            logger.severe("Error al cargar la lista de estudiantes: " + e.getMessage());
-            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al cargar la lista de estudiantes.");
+            logger.error("Error al cargar la lista de estudiantes: " + e);
+            utilidades.mostrarAlerta(
+                    "Error al cargar estudiantes",
+                    "No se pudieron cargar los estudiantes",
+                    "Por favor, intente nuevamente más tarde."
+            );
+
+
         }
     }
+
 
     @FXML
     private void buscarEstudiante() {
@@ -174,7 +194,7 @@ public class ControladorGestorEstudiantesGUI {
         } catch (SQLException | IOException e) {
 
             utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al buscar el estudiante.");
-            logger.severe("Error al buscar el estudiante: " + e.getMessage());
+            logger.error("Error al buscar el estudiante: " + e.getMessage());
         }
     }
 
@@ -202,7 +222,7 @@ public class ControladorGestorEstudiantesGUI {
 
         } catch (SQLException | IOException e) {
 
-            logger.severe("Error al mostrar detalles del estudiante: " + e.getMessage());
+            logger.error("Error al mostrar detalles del estudiante: " + e.getMessage());
             utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al mostrar detalles del estudiante.");
         }
     }
@@ -212,6 +232,18 @@ public class ControladorGestorEstudiantesGUI {
 
         Utilidades utilidades = new Utilidades();
         try {
+
+            System.out.println("NRC: " + NRC);
+
+            if (NRC == -1){
+
+                utilidades.mostrarAlerta(
+                        "NRC no encontrado",
+                        "No se ha encontrado un NRC asociado a este usuario.",
+                        "Por favor, asegúrese de que el NRC esté configurado correctamente en la base de datos."
+                );
+                return;
+            }
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistroEstudianteGUI.fxml"));
             Parent root = loader.load();
@@ -224,7 +256,7 @@ public class ControladorGestorEstudiantesGUI {
 
         } catch (IOException e) {
 
-            logger.severe("Error al abrir la ventana de registro: " + e.getMessage());
+            logger.error("Error al abrir la ventana de registro: " + e.getMessage());
             utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al abrir la ventana de registro.");
         }
     }
@@ -258,7 +290,7 @@ public class ControladorGestorEstudiantesGUI {
 
         } catch (SQLException | IOException e) {
 
-            logger.severe("Error al eliminar el estudiante: " + e.getMessage());
+            logger.error("Error al eliminar el estudiante: " + e.getMessage());
             utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al eliminar el estudiante.");
         }
     }
@@ -297,7 +329,11 @@ public class ControladorGestorEstudiantesGUI {
 
         if (seleccionados == null || seleccionados.isEmpty()) {
 
-            utilidades.mostrarVentana("/CamposVaciosGUI.fxml");
+            utilidades.mostrarAlerta(
+                    "No hay estudiantes seleccionados",
+                    "Por favor, seleccione al menos un estudiante para eliminar.",
+                    "Seleccione uno o más estudiantes de la tabla."
+            );
             return;
         }
         boolean error = false;
@@ -316,16 +352,24 @@ public class ControladorGestorEstudiantesGUI {
             }
         } catch (SQLException | IOException e) {
 
-            logger.severe("Error al eliminar el estudiante: " + e.getMessage());
+            logger.error("Error al eliminar el estudiante: " + e.getMessage());
             error = true;
         }
 
         if (error) {
 
-            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al eliminar algunos estudiantes.");
+            utilidades.mostrarAlerta(
+                    "Error al eliminar estudiantes",
+                    "No se pudieron eliminar todos los estudiantes seleccionados.",
+                    "Por favor, intente nuevamente."
+            );
         } else {
 
-            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Estudiantes eliminados exitosamente.");
+            utilidades.mostrarAlerta(
+                    "Estudiantes eliminados",
+                    "Los estudiantes seleccionados han sido eliminados correctamente.",
+                    "Puede continuar con otras acciones."
+            );
         }
 
         cargarEstudiantes();
@@ -504,7 +548,7 @@ public class ControladorGestorEstudiantesGUI {
         } catch (SQLException | IOException e) {
 
             utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al guardar los cambios.");
-            logger.severe("Error al guardar los cambios: " + e.getMessage());
+            logger.error("Error al guardar los cambios: " + e.getMessage());
         }
 
         botonSeleccionarEstudiantes.setDisable(false);

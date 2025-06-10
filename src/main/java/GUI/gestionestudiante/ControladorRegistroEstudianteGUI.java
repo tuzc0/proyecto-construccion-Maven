@@ -1,5 +1,6 @@
 package GUI.gestionestudiante;
 
+import GUI.ControladorObjetoEvaluacion;
 import GUI.utilidades.Utilidades;
 import GUI.utilidades.UtilidadesContraseña;
 import javafx.event.ActionEvent;
@@ -9,18 +10,23 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 import logica.DAOs.CuentaDAO;
 import logica.DAOs.EstudianteDAO;
+import logica.DAOs.GrupoDAO;
 import logica.DAOs.UsuarioDAO;
 import logica.DTOs.CuentaDTO;
 import logica.DTOs.EstudianteDTO;
+import logica.DTOs.GrupoDTO;
 import logica.DTOs.UsuarioDTO;
 import javafx.scene.image.ImageView;
 import logica.VerificacionUsuario;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 public class ControladorRegistroEstudianteGUI {
+
+    Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorObjetoEvaluacion.class);
 
     @FXML
     private TextField campoNombre;
@@ -55,6 +61,9 @@ public class ControladorRegistroEstudianteGUI {
     private boolean contraseñaVisible = false;
 
     private final UtilidadesContraseña utilidadesContraseña = new UtilidadesContraseña();
+
+    AuxiliarGestionEstudiante auxiliarGestionEstudiante = new AuxiliarGestionEstudiante();
+    int NRC = auxiliarGestionEstudiante.obtenerNRC();
 
     @FXML
     private void initialize() {
@@ -168,7 +177,9 @@ public class ControladorRegistroEstudianteGUI {
 
             if (cuentaEncontrada.getCorreoElectronico() != "N/A") {
 
-                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "El correo ya está registrado.");
+                utilidades.mostrarAlerta("Correo electrónico ya registrado",
+                        "El correo electrónico ingresado ya está asociado a una cuenta.",
+                        "Por favor, utilice otro correo electrónico o inicie sesión si ya tiene una cuenta.");
                 return;
 
             }
@@ -179,27 +190,43 @@ public class ControladorRegistroEstudianteGUI {
             CuentaDTO cuentaDTO = new CuentaDTO(correo, contraseña, idUsuario);
             cuentaDAO.crearNuevaCuenta(cuentaDTO);
 
-            EstudianteDTO estudianteDTO = new EstudianteDTO(idUsuario, nombre, apellidos, matricula, estadoActivo, 0);
+            EstudianteDTO estudianteDTO = new EstudianteDTO(idUsuario, nombre, apellidos, matricula, estadoActivo, 0, NRC, 0);
             estudianteDAO.insertarEstudiante(estudianteDTO);
 
-            utilidades.mostrarVentana("/RegistroEstudianteExitosoGUI.fxml");
+            utilidades.mostrarAlerta("Registro exitoso",
+                    "Estudiante registrado correctamente",
+                    "El estudiante ha sido registrado exitosamente.");
 
 
         } catch (SQLException e) {
 
-            utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
+            utilidades.mostrarAlerta("Error de base de datos",
+                    "No se pudo registrar el estudiante",
+                    "Por favor, intente nuevamente más tarde.");
+
+            logger.error("Error al registrar el estudiante: " + e);
+
+
 
         } catch (IOException i) {
 
-            utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
+            utilidades.mostrarAlerta("Error de entrada/salida",
+                    "No se pudo registrar el estudiante",
+                    "Por favor, intente nuevamente más tarde.");
+            logger.error("Error de entrada/salida al registrar el estudiante: " + i);
 
         } catch (Exception e) {
 
-            utilidades.mostrarVentana("/ErrorRegistroEstudiante.fxml");
+            utilidades.mostrarAlerta("Error inesperado",
+                    "No se pudo registrar el estudiante",
+                    "Por favor, intente nuevamente más tarde.");
+            logger.error("Error inesperado al registrar el estudiante: " + e);
 
         }
 
     }
+
+
 
 
     @FXML
@@ -214,5 +241,7 @@ public class ControladorRegistroEstudianteGUI {
         campoConfirmarContraseña.clear();
 
     }
+
+
 
 }

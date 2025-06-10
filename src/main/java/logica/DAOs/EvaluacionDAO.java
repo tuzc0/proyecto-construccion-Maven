@@ -189,5 +189,32 @@ public class EvaluacionDAO implements IEvaluacionDAO {
 
         return listaEvaluaciones;
     }
+
+    public List<EvaluacionDTO> listarEvaluacionesNumeroPersonal(int numeroPersonal) throws SQLException, IOException {
+        String listarSQLEvaluaciones = "SELECT * FROM evaluacion WHERE numeroPersonal = ?";
+        List<EvaluacionDTO> listaEvaluaciones = new ArrayList<>();
+
+        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+             PreparedStatement sentencia = conexionBaseDeDatos.prepareStatement(listarSQLEvaluaciones)) {
+
+            sentencia.setInt(1, numeroPersonal);
+            try (ResultSet resultadoConsulta = sentencia.executeQuery()) {
+                while (resultadoConsulta.next()) {
+                    int idEvaluacion = resultadoConsulta.getInt("idEvaluacion");
+                    String comentarios = resultadoConsulta.getString("comentarios");
+                    float calificacionFinal = resultadoConsulta.getFloat("calificacionFinal");
+                    String matriculaEstudiante = resultadoConsulta.getString("idEstudiante");
+                    int estadoActivo = resultadoConsulta.getInt("estadoActivo");
+
+                    EvaluacionDTO evaluacion = new EvaluacionDTO(
+                            idEvaluacion, comentarios, calificacionFinal, numeroPersonal, matriculaEstudiante, estadoActivo
+                    );
+                    listaEvaluaciones.add(evaluacion);
+                }
+            }
+        }
+
+        return listaEvaluaciones;
+    }
 }
 

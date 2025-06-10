@@ -6,6 +6,8 @@ public class EstudianteDTO extends UsuarioDTO {
 
     private String matricula;
     private int idProyecto;
+    private int NRC;
+    private float calificacion;
 
     public EstudianteDTO() {
 
@@ -19,10 +21,21 @@ public class EstudianteDTO extends UsuarioDTO {
         this.idProyecto = idProyecto;
     }
 
+    public EstudianteDTO(int idUsuario, String nombre, String apellido,
+                         String matricula, int estadoActivo, int idProyecto, int NRC, float calificacion) {
+
+        super(idUsuario, nombre, apellido, estadoActivo);
+        this.matricula = matricula;
+        this.idProyecto = idProyecto;
+        this.NRC = NRC;
+        this.calificacion = calificacion;
+    }
+
     public String getMatricula() {
 
         return matricula;
     }
+
 
     public void setMatricula(String matriculaEstudiante) {
 
@@ -38,6 +51,27 @@ public class EstudianteDTO extends UsuarioDTO {
 
         this.idProyecto = idProyecto;
     }
+
+    public int getNRC() {
+
+        return NRC;
+    }
+
+    public void setNRC(int NRC) {
+
+        this.NRC = NRC;
+    }
+
+    public float getCalificacion() {
+
+        return calificacion;
+    }
+
+    public void setCalificacion(float calificacion) {
+
+        this.calificacion = calificacion;
+    }
+
 
     @Override
     public boolean equals(Object objetoAComparar) {

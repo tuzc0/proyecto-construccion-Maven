@@ -88,10 +88,10 @@ public class ControladorRegistrarEvaluacionGUI {
 
                 float nuevaCalificacion = Float.parseFloat(event.getNewValue());
 
-                if (nuevaCalificacion < 0 || nuevaCalificacion > 10) {
+                if (nuevaCalificacion < 0 || nuevaCalificacion > 10 ) {
 
                     logger.warn("La calificación debe estar entre 0 y 100.");
-                    utilidades.mostrarAlerta("Error", "La calificación debe estar entre 0 y 100.", "porfavor llene todos los campos");
+                    utilidades.mostrarAlerta("Error", "La calificación debe estar entre 0 y 10.", "porfavor llene todos los campos");
                     return;
                 }
                 evaluacionContiene.setCalificacion(nuevaCalificacion);
@@ -266,7 +266,14 @@ public class ControladorRegistrarEvaluacionGUI {
 
             for (EvaluacionContieneDTO evaluacionContiene : listaEvaluacionContiene){
                 calificacionFinal += evaluacionContiene.getCalificacion();
+
+                if (evaluacionContiene.getCalificacion() < 1 || evaluacionContiene.getCalificacion() > 10) {
+                    utilidades.mostrarAlerta("Error", "La calificación debe estar entre 0 y 10.", "porfavor llene todos los campos");
+                    return;
+                }
             }
+
+
 
             calificacionFinal = calificacionFinal / listaEvaluacionContiene.size();
             String promedioFormateado = String.format("%.2f", calificacionFinal);
@@ -304,7 +311,7 @@ public class ControladorRegistrarEvaluacionGUI {
 
             boolean actualizado = evaluacionDAO.modificarEvaluacion(evaluacionDTO);
 
-            if (calificacionFinal < 0 || calificacionFinal > 10) {
+            if (calificacionFinal < 1 || calificacionFinal > 10) {
 
                 utilidades.mostrarAlerta("Error", "Debe de calcular la calificacio primero", "porfavor calcule la calificacion final");
                 return;

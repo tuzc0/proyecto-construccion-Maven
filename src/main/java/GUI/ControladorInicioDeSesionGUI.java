@@ -38,7 +38,7 @@ public class ControladorInicioDeSesionGUI {
 
     static String matricula = " ";
 
-    static int numeroDePersonal = 0;
+    public static int numeroDePersonal = 0;
 
     UtilidadesContraseña utilidadesContraseña = new UtilidadesContraseña();
 

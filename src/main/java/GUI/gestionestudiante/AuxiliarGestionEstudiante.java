@@ -16,6 +16,8 @@ public class AuxiliarGestionEstudiante {
 
     public int obtenerNRC () {
 
+        System.out.println("Número de personal: " + numeroDePersonal);
+
         int NRC = -1;
 
         Utilidades utilidades = new Utilidades();
@@ -25,6 +27,7 @@ public class AuxiliarGestionEstudiante {
         try{
 
             GrupoDTO grupo = grupoDAO.buscarGrupoActivoPorNumeroDePersonal(numeroDePersonal);
+            System.out.println("Grupo encontrado: " + numeroDePersonal);
             if (grupo.getNRC() != -1) {
 
                 NRC = grupo.getNRC();
@@ -59,7 +62,10 @@ public class AuxiliarGestionEstudiante {
             );
         }
 
+        System.out.println("NRC obtenido: " + NRC);
         return NRC;
+
+
 
     }
 }

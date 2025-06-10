@@ -22,7 +22,7 @@
             <TableColumn fx:id="columnaCalificacion" minWidth="0.0" prefWidth="95.199951171875" text="calificacion" />
         </columns>
       </TableView>
-      <TextArea fx:id="campoComentarios" layoutX="38.0" layoutY="413.0" prefHeight="130.0" prefWidth="618.0" />
+      <TextArea fx:id="textoComentarios" layoutX="38.0" layoutY="413.0" prefHeight="130.0" prefWidth="618.0" />
       <Label layoutX="38.0" layoutY="392.0" text="Comentarios: ">
          <font>
             <Font name="System Bold" size="14.0" />
@@ -35,7 +35,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Label fx:id="promedioEvaluacionGenerado" layoutX="785.0" layoutY="392.0" prefHeight="20.0" prefWidth="42.0">
+      <Label fx:id="etiquetaPromedioEvaluacionGenerado" layoutX="785.0" layoutY="392.0" prefHeight="20.0" prefWidth="42.0">
          <font>
             <Font size="14.0" />
          </font>
@@ -47,7 +47,7 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="campoEstudianteEvaluado" layoutX="178.0" layoutY="80.0" prefHeight="25.0" prefWidth="140.0">
+      <Label fx:id="etiquetaEstudianteEvaluado" layoutX="178.0" layoutY="80.0" prefHeight="25.0" prefWidth="140.0">
          <font>
             <Font size="14.0" />
          </font>

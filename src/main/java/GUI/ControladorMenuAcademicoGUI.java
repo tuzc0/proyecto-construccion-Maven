@@ -15,6 +15,8 @@ public class ControladorMenuAcademicoGUI {
     int NRC = auxiliarGestionEstudiante.obtenerNRC();
 
 
+
+
     @FXML
     public void abrirRegistroEstudiante() {
 
@@ -22,12 +24,14 @@ public class ControladorMenuAcademicoGUI {
 
         mostrarVentana(ventana);
 
+
     }
 
     @FXML
     public void abrirConsultarEstudiante() {
 
         String ventana = "/GestorEstudiantesGUI.fxml";
+        System.out.println("NRC: " + NRC);
         mostrarVentana(ventana);
     }
 

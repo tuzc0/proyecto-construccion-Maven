@@ -56,7 +56,7 @@
                         <StackPane prefHeight="150.0" prefWidth="200.0">
                            <children>
                               <TextField fx:id="campoContraseñaVisible" visible="false" />
-                              <PasswordField fx:id="campoContraseña" />
+                              <PasswordField fx:id="contraseñaIngresada" />
                            </children>
                         </StackPane>
                      </children>
@@ -72,7 +72,7 @@
                         <StackPane prefHeight="150.0" prefWidth="200.0">
                            <children>
                               <TextField fx:id="campoConfirmarContraseñaVisible" visible="false" />
-                              <PasswordField fx:id="campoConfirmarContraseña" />
+                              <PasswordField fx:id="contraseñaConfirmada" />
                            </children>
                         </StackPane>
                      </children>
@@ -93,7 +93,7 @@
       </Button>
       <Button contentDisplay="GRAPHIC_ONLY" layoutX="52.0" layoutY="385.0" mnemonicParsing="false" onAction="#alternarVisibilidadContrasena" text="Button">
          <graphic>
-            <ImageView fx:id="iconoOjo" fitHeight="25.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imagenOjo" fitHeight="25.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
             </ImageView>
          </graphic>
       </Button>

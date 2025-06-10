@@ -29,7 +29,7 @@
       <TextField fx:id="campoCorreo" layoutX="58.0" layoutY="147.0" prefHeight="25.0" prefWidth="495.0" />
       <Button layoutX="58.0" layoutY="284.0" mnemonicParsing="false" onAction="#alternarVisibilidadContrasena" prefHeight="25.0" prefWidth="35.0">
          <graphic>
-            <ImageView fx:id="iconoOjo" fitHeight="25.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="imagenOjo" fitHeight="25.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" />
          </graphic>
       </Button>
       <Button layoutX="238.0" layoutY="323.0" mnemonicParsing="false" onAction="#iniciarSesion" prefHeight="34.0" prefWidth="136.0" text="iniciar sesion">

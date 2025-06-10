@@ -17,6 +17,7 @@ import logica.DAOs.AcademicoEvaluadorDAO;
 import logica.DTOs.CuentaDTO;
 import logica.DTOs.UsuarioDTO;
 import logica.DTOs.AcademicoEvaluadorDTO;
+import logica.utilidadesproyecto.EncriptadorContraseñas;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,13 +35,15 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
             new UtilidadesContraseña();
     private final Utilidades UTILIDADES = new Utilidades();
 
+    EncriptadorContraseñas encriptadorContraseñas = new EncriptadorContraseñas();
+
     @FXML private TextField campoNombre;
     @FXML private TextField campoApellidos;
     @FXML private TextField campoNumeroPersonal;
     @FXML private TextField campoCorreo;
-    @FXML private ImageView iconoOjo;
-    @FXML private PasswordField campoContraseña;
-    @FXML private PasswordField campoConfirmarContraseña;
+    @FXML private ImageView imagenOjo;
+    @FXML private PasswordField contraseñaIngresada;
+    @FXML private PasswordField contraseñaConfirmada;
     @FXML private TextField campoContraseñaVisible;
     @FXML private TextField campoConfirmarContraseñaVisible;
     @FXML private Label contadorNombre;
@@ -71,9 +74,9 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
         verifGen.contadorCaracteresTextField(
                 campoCorreo, contadorCorreo, MAX_CARACTERES_CORREO);
         verifGen.contadorCaracteresTextField(
-                campoContraseña, contadorContraseña, MAX_CARACTERES_CONTRASEÑA);
+                contraseñaIngresada, contadorContraseña, MAX_CARACTERES_CONTRASEÑA);
         verifGen.contadorCaracteresTextField(
-                campoConfirmarContraseña,
+                contraseñaConfirmada,
                 contadorConfirmarContraseña, MAX_CARACTERES_CONTRASEÑA);
 
         botonRegistrar.setCursor(Cursor.HAND);
@@ -83,15 +86,15 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
         campoContraseñaVisible
                 .textProperty()
                 .bindBidirectional(
-                        campoContraseña.textProperty()
+                        contraseñaIngresada.textProperty()
                 );
         campoConfirmarContraseñaVisible
                 .textProperty()
                 .bindBidirectional(
-                        campoConfirmarContraseña.textProperty()
+                        contraseñaConfirmada.textProperty()
                 );
 
-        utilContraseña.inicializarIcono(iconoOjo);
+        utilContraseña.inicializarIcono(imagenOjo);
 
         campoContraseñaVisible.setVisible(false);
         campoContraseñaVisible.setManaged(false);
@@ -103,11 +106,11 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
     private void alternarVisibilidadContrasena() {
 
         utilContraseña.alternarVisibilidadContrasena(
-                campoContraseña,
+                contraseñaIngresada,
                 campoContraseñaVisible,
-                campoConfirmarContraseña,
+                contraseñaConfirmada,
                 campoConfirmarContraseñaVisible,
-                iconoOjo
+                imagenOjo
         );
     }
 
@@ -118,7 +121,7 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
         String apellidos = campoApellidos.getText().trim();
         String numPersTxt = campoNumeroPersonal.getText().trim();
         String correo = campoCorreo.getText().trim();
-        String contrasena = campoContraseña.getText().trim();
+        String contrasena = contraseñaIngresada.getText().trim();
 
         List<String> vacios =
                 VerificacionUsuario.camposVacios(
@@ -152,8 +155,8 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
         }
 
         if (!UtilidadesContraseña.esContraseñaIgual(
-                campoContraseña,
-                campoConfirmarContraseña
+                contraseñaIngresada,
+                contraseñaConfirmada
         )) {
 
             UTILIDADES.mostrarAlerta(
@@ -206,6 +209,8 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
                     idUsuario, nombre, apellidos, estadoActivo
             );
             idUsuario = new UsuarioDAO().insertarUsuario(usuarioDTO);
+
+            contrasena = encriptadorContraseñas.encriptar(contrasena);
 
             CuentaDTO cuentaDTO = new CuentaDTO(
                     correo, contrasena, idUsuario

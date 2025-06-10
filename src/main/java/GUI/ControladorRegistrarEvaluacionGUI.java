@@ -29,10 +29,10 @@ public class ControladorRegistrarEvaluacionGUI {
     Utilidades utilidades = new Utilidades();
 
     @FXML
-    Label promedioEvaluacionGenerado;
+    Label etiquetaPromedioEvaluacionGenerado;
 
     @FXML
-    TextArea campoComentarios;
+    TextArea textoComentarios;
 
     @FXML
     TableView<ContenedorCriteriosEvaluacion> tablaCriteriosEvaluacion;
@@ -47,7 +47,7 @@ public class ControladorRegistrarEvaluacionGUI {
     TableColumn<ContenedorCriteriosEvaluacion, String> columnaCalificacion;
 
     @FXML
-    Label campoEstudianteEvaluado;
+    Label etiquetaEstudianteEvaluado;
 
     static int idEvaluacionGenerada = 0;
 
@@ -67,7 +67,7 @@ public class ControladorRegistrarEvaluacionGUI {
 
         tablaCriteriosEvaluacion.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        campoEstudianteEvaluado.setText(matriculaEstudianteEvaluado);
+        etiquetaEstudianteEvaluado.setText(matriculaEstudianteEvaluado);
 
         actualizarCalificacion();
 
@@ -165,7 +165,7 @@ public class ControladorRegistrarEvaluacionGUI {
         EvaluacionDTO evaluacionDTO = new EvaluacionDTO();
 
 
-        evaluacionDTO.setComentarios(campoComentarios.getText());
+        evaluacionDTO.setComentarios(textoComentarios.getText());
         evaluacionDTO.setMatriculaEstudiante(matriculaEstudianteEvaluado);
         evaluacionDTO.setCalificacionFinal(0.0f);
         evaluacionDTO.setEstadoActivo(1);
@@ -235,7 +235,7 @@ public class ControladorRegistrarEvaluacionGUI {
 
             evaluacionContieneDAO.eliminarCriteriosPorIdEvaluacion(idEvaluacionGenerada);
             evaluacionDAO.eliminarEvaluacionDefinitivamente(idEvaluacionGenerada);
-            javafx.stage.Stage stage = (javafx.stage.Stage) campoComentarios.getScene().getWindow();
+            javafx.stage.Stage stage = (javafx.stage.Stage) textoComentarios.getScene().getWindow();
             stage.close();
 
         } catch (SQLException e) {
@@ -277,7 +277,7 @@ public class ControladorRegistrarEvaluacionGUI {
 
             calificacionFinal = calificacionFinal / listaEvaluacionContiene.size();
             String promedioFormateado = String.format("%.2f", calificacionFinal);
-            promedioEvaluacionGenerado.setText(promedioFormateado);
+            etiquetaPromedioEvaluacionGenerado.setText(promedioFormateado);
 
         } catch (SQLException e) {
 
@@ -302,7 +302,7 @@ public class ControladorRegistrarEvaluacionGUI {
         try {
 
             EvaluacionDTO evaluacionDTO = new EvaluacionDTO();
-            evaluacionDTO.setComentarios(campoComentarios.getText());
+            evaluacionDTO.setComentarios(textoComentarios.getText());
             evaluacionDTO.setMatriculaEstudiante(matriculaEstudianteEvaluado);
             evaluacionDTO.setCalificacionFinal(calificacionFinal);
             evaluacionDTO.setEstadoActivo(1);
@@ -320,7 +320,7 @@ public class ControladorRegistrarEvaluacionGUI {
             if (actualizado) {
 
                 utilidades.mostrarAlerta("Éxito", "Evaluación guardada correctamente.", "La evaluación ha sido guardada.");
-                javafx.stage.Stage stage = (javafx.stage.Stage) campoComentarios.getScene().getWindow();
+                javafx.stage.Stage stage = (javafx.stage.Stage) textoComentarios.getScene().getWindow();
                 stage.close();
 
             } else {

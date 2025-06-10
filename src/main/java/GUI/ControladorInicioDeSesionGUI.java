@@ -31,7 +31,7 @@ public class ControladorInicioDeSesionGUI {
     PasswordField contraseñaCifrada;
 
     @FXML
-    ImageView iconoOjo;
+    ImageView imagenOjo;
 
     Utilidades utilidades = new Utilidades();
 
@@ -50,7 +50,7 @@ public class ControladorInicioDeSesionGUI {
     public void initialize() {
 
         UtilidadesContraseña utilidadesContraseña = new UtilidadesContraseña();
-        utilidadesContraseña.inicializarIcono(iconoOjo);
+        utilidadesContraseña.inicializarIcono(imagenOjo);
 
         campoContraseña.setVisible(false);
     }
@@ -60,7 +60,7 @@ public class ControladorInicioDeSesionGUI {
     public void alternarVisibilidadContrasena() {
 
 
-        utilidadesContraseña.visibilidadUnicaContraseña(contraseñaCifrada,campoContraseña, iconoOjo);
+        utilidadesContraseña.visibilidadUnicaContraseña(contraseñaCifrada,campoContraseña, imagenOjo);
     }
 
 
@@ -87,6 +87,9 @@ public class ControladorInicioDeSesionGUI {
 
             idUsuario = cuenta.getIdUsuario();
 
+            contraseñaEncontrada = encriptadorContraseñas.desencriptar(contraseñaEncontrada);
+
+
             if (correoEncontrado.equals("N/A")) {
                 utilidades.mostrarAlerta("Correo no encontrado", "El correo electrónico ingresado no está registrado.", "Por favor, verifique su correo o regístrese.");
                 return;
@@ -96,6 +99,8 @@ public class ControladorInicioDeSesionGUI {
                 utilidades.mostrarAlerta("Contraseña incorrecta", "La contraseña ingresada es incorrecta.", "Por favor, intente nuevamente.");
                 return;
             }
+
+
 
             utilidades.mostrarAlerta("Inicio de sesión exitoso", "Bienvenido", "Has iniciado sesión correctamente.");
             validarTipoUsuario(idUsuario);
@@ -138,8 +143,9 @@ public class ControladorInicioDeSesionGUI {
             AcademicoDTO academico = academicoDAO.buscarAcademicoPorID(idUsuario);
             if (academico.getIdUsuario() != -1) {
 
-                utilidades.mostrarVentana("/MenuAcademicoGUI.fxml");
                 numeroDePersonal = academico.getNumeroDePersonal();
+                utilidades.mostrarVentana("/MenuAcademicoGUI.fxml");
+                System.out.println("Número de personal del académico: " + numeroDePersonal);
                 return;
             }
 
@@ -168,4 +174,7 @@ public class ControladorInicioDeSesionGUI {
 
     }
 
+    public static void setNumeroDePersonal(int numeroDePersonal) {
+        ControladorInicioDeSesionGUI.numeroDePersonal = numeroDePersonal;
+    }
 }

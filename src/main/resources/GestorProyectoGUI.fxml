@@ -253,10 +253,9 @@
     <bottom>
         <AnchorPane prefHeight="59.0" prefWidth="998.0" BorderPane.alignment="CENTER">
             <children>
-                <HBox alignment="CENTER_RIGHT" layoutY="-2.0" prefHeight="55.0" prefWidth="446.0" spacing="15" style="-fx-padding: 20 0 0 0;">
+                <HBox alignment="CENTER_RIGHT" layoutY="-2.0" prefHeight="55.0" prefWidth="280.0" spacing="15" style="-fx-padding: 20 0 0 0;">
                     <children>
                         <Button fx:id="botonEditar" onAction="#habilitarCamposParaEdicion" prefHeight="41.0" prefWidth="136.0" text="Editar" />
-                        <Button fx:id="botonEstudiantesAsignados" prefHeight="37.0" prefWidth="146.0" text="Estudiantes Asignados" />
                         <Button fx:id="botonRegresar" onAction="#regresarAConsultarProyecto" prefHeight="53.0" prefWidth="134.0" text="Regresar" />
                     </children>
                 </HBox>

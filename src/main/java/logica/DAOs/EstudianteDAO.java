@@ -202,6 +202,34 @@ public class EstudianteDAO implements IEstudianteDAO {
         return proyectoAsignado;
     }
 
+    public boolean asignarCalificacion(double calificacion, String matricula) throws SQLException, IOException {
+
+        boolean proyectoAsignado = false;
+
+        String modificarEstudiante = "UPDATE estudiante SET  calificacionFinal = ? WHERE matricula = ?";
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(modificarEstudiante);
+            sentenciaEstudiante.setDouble(1, calificacion);
+            sentenciaEstudiante.setString(2, matricula);
+
+            if (sentenciaEstudiante.executeUpdate() > 0) {
+
+                proyectoAsignado = true;
+            }
+
+        } finally {
+
+            if (sentenciaEstudiante != null) {
+
+                sentenciaEstudiante.close();
+            }
+        }
+
+        return proyectoAsignado;
+    }
 
     public EstudianteDTO buscarEstudiantePorMatricula(String matricula) throws SQLException, IOException {
 

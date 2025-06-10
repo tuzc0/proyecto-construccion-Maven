@@ -41,5 +41,6 @@ public class ControladorMenuCoordinador {
     @FXML
     public void abrirConsultarOrganizacionVinculada() {utilidades.mostrarVentana(("/ConsultarOrganizacionesGUI.fxml"));}
 
-
+    @FXML
+    public void abrirHabilitarEvaluaciones() {utilidades.mostrarVentana(("/HabilitarEvaluacionesGUI.fxml"));}
 }

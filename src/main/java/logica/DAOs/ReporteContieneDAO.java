@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReporteContieneDAO implements IReporteContieneDAO {
 
@@ -17,7 +19,7 @@ public class ReporteContieneDAO implements IReporteContieneDAO {
 
     public boolean insertarReporteContiene(ReporteContieneDTO reporte) throws SQLException, IOException {
 
-        String consultaSQL = "INSERT INTO reportecontiene (idReporte, idActividad, fechaInicioReal, fechaInicioFin, estadoActivo) VALUES (?, ?, ?, ?, 1)";
+        String consultaSQL = "INSERT INTO reportecontiene (idReporte, idActividad, fechaInicioReal, fechaInicioFin) VALUES (?, ?, ?, ?)";
         boolean insercionExitosa = false;
 
         try {
@@ -99,7 +101,7 @@ public class ReporteContieneDAO implements IReporteContieneDAO {
     public ReporteContieneDTO buscarReporteContienePorID(int idReporte) throws SQLException, IOException {
 
         String consultaSQL = "SELECT * FROM reportecontiene WHERE idReporte = ?";
-        ReporteContieneDTO reporte = new ReporteContieneDTO(-1, -1, null, null, -1);
+        ReporteContieneDTO reporte = new ReporteContieneDTO(-1, -1, null, null);
 
         try {
 
@@ -124,5 +126,27 @@ public class ReporteContieneDAO implements IReporteContieneDAO {
             }
         }
         return reporte;
+    }
+
+    public List<ReporteContieneDTO> listarReporteContienePorIDReporte(int idReporte) throws SQLException, IOException {
+        String consultaSQL = "SELECT * FROM reportecontiene WHERE idReporte = ?";
+        List<ReporteContieneDTO> listaReporteContiene = new ArrayList<>();
+
+        try (Connection conexion = new ConexionBaseDeDatos().getConnection();
+             PreparedStatement sentencia = conexion.prepareStatement(consultaSQL)) {
+
+            sentencia.setInt(1, idReporte);
+            try (ResultSet resultado = sentencia.executeQuery()) {
+                while (resultado.next()) {
+                    ReporteContieneDTO reporteContiene = new ReporteContieneDTO();
+                    reporteContiene.setIdReporte(resultado.getInt("idReporte"));
+                    reporteContiene.setIdActividad(resultado.getInt("idActividad"));
+                    reporteContiene.setFechaInicioReal(resultado.getTimestamp("fechaInicioReal"));
+                    reporteContiene.setFechaFinReal(resultado.getTimestamp("fechaInicioFin"));
+                    listaReporteContiene.add(reporteContiene);
+                }
+            }
+        }
+        return listaReporteContiene;
     }
 }

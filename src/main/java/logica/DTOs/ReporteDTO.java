@@ -11,6 +11,7 @@ public class ReporteDTO {
     private Timestamp fecha;
     private String matricula;
 
+
     public ReporteDTO() {
 
     }

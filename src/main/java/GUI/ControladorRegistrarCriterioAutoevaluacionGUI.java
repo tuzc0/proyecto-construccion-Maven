@@ -53,6 +53,7 @@ public class ControladorRegistrarCriterioAutoevaluacionGUI {
 
     @FXML
     public void guardarCriterio() {
+
         CriterioAutoevaluacionDAO criterioAutoevaluacionDAO = new CriterioAutoevaluacionDAO();
         String descripcion = textoDescripcionCriterio.getText();
 

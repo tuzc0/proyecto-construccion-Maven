@@ -110,4 +110,32 @@ public class CronogramaActividadesDAO implements ICronogramaActividadesDAO {
 
         return cronogramaEncontrado;
     }
+
+    public CronogramaActividadesDTO buscarCronogramaPorMatricula(String matricula) throws SQLException, IOException {
+        CronogramaActividadesDTO cronogramaEncontrado = null;
+        String buscarSQLCronograma = "SELECT * FROM cronograma WHERE matriculaEstudiante = ? LIMIT 1";
+
+        try {
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaCronograma = conexionBaseDeDatos.prepareStatement(buscarSQLCronograma);
+            sentenciaCronograma.setString(1, matricula);
+            resultadoConsultaCronograma = sentenciaCronograma.executeQuery();
+
+            if (resultadoConsultaCronograma.next()) {
+                cronogramaEncontrado = new CronogramaActividadesDTO(
+                        resultadoConsultaCronograma.getInt("idCronograma"),
+                        resultadoConsultaCronograma.getString("matriculaEstudiante"),
+                        resultadoConsultaCronograma.getInt("idProyecto"),
+                        resultadoConsultaCronograma.getInt("idPeriodo"),
+                        resultadoConsultaCronograma.getInt("estadoActivo")
+                );
+            }
+        } finally {
+            if (sentenciaCronograma != null) {
+                sentenciaCronograma.close();
+            }
+        }
+
+        return cronogramaEncontrado;
+    }
 }

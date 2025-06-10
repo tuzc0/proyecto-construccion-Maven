@@ -15,35 +15,32 @@ public class ReporteDAO implements IReporteDAO {
     PreparedStatement sentenciaReporte = null;
     ResultSet resultadoReporte;
 
-    public boolean insertarReporte(ReporteDTO reporte) throws SQLException, IOException {
-
-        String insertarSQLReporte = "INSERT INTO reporte VALUES (?, ?, ?, ?, ?, ?)";
-        boolean reporteInsertado = false;
+    public int insertarReporte(ReporteDTO reporte) throws SQLException, IOException {
+        String insertarSQLReporte = "INSERT INTO reporte(numeroHoras, metodologia, observaciones, fecha, idEstudiante) VALUES (?, ?, ?, ?, ?)";
+        int idGenerado = -1;
 
         try {
-
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-            sentenciaReporte = conexionBaseDeDatos.prepareStatement(insertarSQLReporte);
-            sentenciaReporte.setInt(1, reporte.getIDReporte());
-            sentenciaReporte.setInt(2, reporte.getNumeroHoras());
-            sentenciaReporte.setString(3, reporte.getMetodologia());
-            sentenciaReporte.setString(4, reporte.getObservaciones());
-            sentenciaReporte.setTimestamp(5, reporte.getFecha());
-            sentenciaReporte.setString(6, reporte.getMatricula());
+            sentenciaReporte = conexionBaseDeDatos.prepareStatement(insertarSQLReporte, PreparedStatement.RETURN_GENERATED_KEYS);
+            sentenciaReporte.setInt(1, reporte.getNumeroHoras());
+            sentenciaReporte.setString(2, reporte.getMetodologia());
+            sentenciaReporte.setString(3, reporte.getObservaciones());
+            sentenciaReporte.setTimestamp(4, reporte.getFecha());
+            sentenciaReporte.setString(5, reporte.getMatricula());
 
             if (sentenciaReporte.executeUpdate() > 0) {
-                reporteInsertado = true;
+                ResultSet generatedKeys = sentenciaReporte.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    idGenerado = generatedKeys.getInt(1);
+                }
             }
-
         } finally {
-
             if (sentenciaReporte != null) {
-
                 sentenciaReporte.close();
             }
         }
 
-        return reporteInsertado;
+        return idGenerado;
     }
 
     public boolean modificarReporte(ReporteDTO reporte) throws SQLException, IOException {

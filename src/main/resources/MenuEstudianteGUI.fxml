@@ -8,7 +8,7 @@
       <Button layoutX="132.0" layoutY="87.0" mnemonicParsing="false" onAction="#abrirEditarPerfilEstudiante" text="ver perfil" />
       <Button layoutX="132.0" layoutY="146.0" mnemonicParsing="false" text="consultar proyecto" />
       <Button layoutX="132.0" layoutY="209.0" mnemonicParsing="false" text="consultar cronograma de actividades" />
-      <Button layoutX="132.0" layoutY="261.0" mnemonicParsing="false" text="registrar reporte mensual" />
+      <Button layoutX="132.0" layoutY="261.0" mnemonicParsing="false" onAction="#abrirRegistrarReporteMensual" text="registrar reporte mensual" />
       <Button layoutX="127.0" layoutY="320.0" mnemonicParsing="false" onAction="#abrirConsultarEvaluacionesEstudiante" text="consultar evaluaciones" />
       <Button fx:id="botonRegistrarAutoevaluacion" layoutX="135.0" layoutY="376.0" mnemonicParsing="false" onAction="#abrirRegistrarAutoevaluacion" text="registrar autoevaluacion" />
       <Button fx:id="botonConsultarAutoevaluacion" layoutX="332.0" layoutY="376.0" mnemonicParsing="false" onAction="#abrirConsultarAutoevaluacion" text="Consultar autoevaluacion" />

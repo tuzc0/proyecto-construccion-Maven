@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CronogramaContieneDAO implements ICronogramaContieneDAO {
 
@@ -129,4 +131,33 @@ public class CronogramaContieneDAO implements ICronogramaContieneDAO {
 
         return cronogramaContieneDTO;
     }
+
+    public List<CronogramaContieneDTO> listarCronogramaContienePorID(int idCronograma) throws SQLException, IOException {
+        List<CronogramaContieneDTO> listaCronogramaContiene = new ArrayList<>();
+        String consultaSQL = "SELECT * FROM cronogramacontiene WHERE idCronograma = ?";
+
+        try {
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaCronograma = conexionBaseDeDatos.prepareStatement(consultaSQL);
+            sentenciaCronograma.setInt(1, idCronograma);
+            resultadoConsulta = sentenciaCronograma.executeQuery();
+
+            while (resultadoConsulta.next()) {
+                CronogramaContieneDTO cronogramaContieneDTO = new CronogramaContieneDTO(
+                        resultadoConsulta.getInt(1),
+                        resultadoConsulta.getInt(2),
+                        resultadoConsulta.getString(3),
+                        resultadoConsulta.getInt(4)
+                );
+                listaCronogramaContiene.add(cronogramaContieneDTO);
+            }
+        } finally {
+            if (sentenciaCronograma != null) {
+                sentenciaCronograma.close();
+            }
+        }
+
+        return listaCronogramaContiene;
+    }
+
 }

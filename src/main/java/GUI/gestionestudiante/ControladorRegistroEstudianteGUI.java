@@ -7,15 +7,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
 import logica.DAOs.CuentaDAO;
 import logica.DAOs.EstudianteDAO;
+import logica.DAOs.GrupoDAO;
 import logica.DAOs.UsuarioDAO;
 import logica.DTOs.CuentaDTO;
 import logica.DTOs.EstudianteDTO;
+import logica.DTOs.GrupoDTO;
 import logica.DTOs.UsuarioDTO;
 import javafx.scene.image.ImageView;
 import logica.VerificacionUsuario;
-import logica.utilidadesproyecto.EncriptadorContraseñas;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
@@ -39,10 +41,10 @@ public class ControladorRegistroEstudianteGUI {
     private TextField campoCorreo;
 
     @FXML
-    private PasswordField contraseñaIngresada;
+    private PasswordField campoContraseña;
 
     @FXML
-    private PasswordField contraseñaConfirmada;
+    private PasswordField campoConfirmarContraseña;
 
     @FXML
     private TextField campoContraseñaVisible;
@@ -51,7 +53,10 @@ public class ControladorRegistroEstudianteGUI {
     private TextField campoConfirmarContraseñaVisible;
 
     @FXML
-    private ImageView imagenOjo;
+    private Button botonVerContraseña;
+
+    @FXML
+    private ImageView iconoOjo;
 
     private boolean contraseñaVisible = false;
 
@@ -60,17 +65,13 @@ public class ControladorRegistroEstudianteGUI {
     AuxiliarGestionEstudiante auxiliarGestionEstudiante = new AuxiliarGestionEstudiante();
     int NRC = auxiliarGestionEstudiante.obtenerNRC();
 
-    EncriptadorContraseñas encriptadorContraseñas = new EncriptadorContraseñas();
-
     @FXML
     private void initialize() {
 
-        campoContraseñaVisible.textProperty().bindBidirectional(contraseñaIngresada.textProperty());
-        campoConfirmarContraseñaVisible.textProperty().bindBidirectional(contraseñaConfirmada.textProperty());
+        campoContraseñaVisible.textProperty().bindBidirectional(campoContraseña.textProperty());
+        campoConfirmarContraseñaVisible.textProperty().bindBidirectional(campoConfirmarContraseña.textProperty());
 
-
-        utilidadesContraseña.inicializarIcono(imagenOjo);
-
+        utilidadesContraseña.inicializarIcono(iconoOjo);
 
         campoContraseñaVisible.setVisible(false);
         campoContraseñaVisible.setManaged(false);
@@ -82,11 +83,11 @@ public class ControladorRegistroEstudianteGUI {
     @FXML
     private void alternarVisibilidadContrasena() {
         utilidadesContraseña.alternarVisibilidadContrasena(
-                contraseñaIngresada,
+                campoContraseña,
                 campoContraseñaVisible,
-                contraseñaConfirmada,
+                campoConfirmarContraseña,
                 campoConfirmarContraseñaVisible,
-                imagenOjo
+                iconoOjo
         );
     }
 
@@ -94,13 +95,11 @@ public class ControladorRegistroEstudianteGUI {
     @FXML
     private void guardarEstudiante(ActionEvent event) {
 
-
-
         String nombre = campoNombre.getText();
         String apellidos = campoApellidos.getText();
         String matricula = campoMatricula.getText();
         String correo = campoCorreo.getText();
-        String contraseña = contraseñaIngresada.getText();
+        String contraseña = campoContraseña.getText();
         int estadoActivo = 1;
         int idUsuario = 0;
 
@@ -111,7 +110,8 @@ public class ControladorRegistroEstudianteGUI {
         try {
 
 
-            List<String> listaDeCamposVacios = VerificacionUsuario.camposVacios(nombre, apellidos, correo, correo, contraseña);
+            List<String> listaDeCamposVacios =
+                    VerificacionUsuario.camposVacios(nombre, apellidos, correo, correo, contraseña);
 
             if (!listaDeCamposVacios.isEmpty()) {
 
@@ -126,58 +126,45 @@ public class ControladorRegistroEstudianteGUI {
 
             if (!verificacionUsuario.correoValido(correo)) {
 
-                utilidades.mostrarAlerta("Correo electrónico inválido",
-                        "El correo electrónico ingresado no es válido.",
-                        "Por favor, ingrese un correo electrónico con el formato correcto."
-                );
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml",
+                        "Correo electronico ingresado inválido.");
                 return;
             }
 
             if (!verificacionUsuario.matriculaValida(matricula)) {
 
-                utilidades.mostrarAlerta("Matricula inválida",
-                        "La matrícula ingresada no es válida.",
-                        "Por favor, ingrese una matrícula con el formato correcto."
-                );
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml",
+                        "Matrícula ingresada inválida.");
                 return;
             }
 
             if (!verificacionUsuario.contrasenaValida(contraseña)) {
 
-                utilidades.mostrarAlerta("Contraseña inválida",
-                        "La contraseña ingresada no es válida.",
-                        "Por favor, ingrese una contraseña que cumpla con los requisitos de seguridad."
-                );
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml",
+                        "Contraseña ingresada inválida,.");
                 return;
             }
 
             if (!verificacionUsuario.nombreValido(nombre)) {
 
-                utilidades.mostrarAlerta("Nombre inválido",
-                        "El nombre ingresado no es válido.",
-                        "Por favor, ingrese un nombre que contenga solo letras."
-                );
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml",
+                        "Nombre ingresado inválido.");
                 return;
             }
 
             if (!verificacionUsuario.apellidosValidos(apellidos)) {
 
-                utilidades.mostrarAlerta("Apellidos inválidos",
-                        "Los apellidos ingresados no son válidos.",
-                        "Por favor, ingrese apellidos que contengan solo letras."
-                );
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml",
+                        "Apellidos ingresados inválidos.");
                 return;
             }
 
-            if (!UtilidadesContraseña.esContraseñaIgual(contraseñaIngresada, contraseñaConfirmada)) {
+            if (!UtilidadesContraseña.esContraseñaIgual(campoContraseña, campoConfirmarContraseña)) {
 
-                utilidades.mostrarAlerta("Contraseñas no coinciden",
-                        "Las contraseñas ingresadas no coinciden.",
-                        "Por favor, asegúrese de que ambas contraseñas sean idénticas.");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml",
+                        "Las contraseñas ingresadas no coinciden.");
                 return;
             }
-
-            contraseña = encriptadorContraseñas.encriptar(contraseña);
 
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             CuentaDAO cuentaDAO = new CuentaDAO();
@@ -188,9 +175,7 @@ public class ControladorRegistroEstudianteGUI {
 
             if (estudianteExistente.getMatricula() != "N/A"){
 
-                utilidades.mostrarAlerta("Matrícula ya registrada",
-                        "La matrícula ingresada ya está asociada a un estudiante.",
-                        "Por favor, utilice otra matrícula o inicie sesión si ya tiene una cuenta.");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "La matrícula ya existe.");
                 return;
 
             }
@@ -241,27 +226,18 @@ public class ControladorRegistroEstudianteGUI {
                     "No se pudo registrar el estudiante",
                     "Por favor, intente nuevamente más tarde.");
             logger.error("Error inesperado al registrar el estudiante: " + e);
-
         }
-
     }
-
-
-
 
     @FXML
     private void cancelarRegistro(ActionEvent event) {
-
 
         campoNombre.clear();
         campoApellidos.clear();
         campoMatricula.clear();
         campoCorreo.clear();
-        contraseñaIngresada.clear();
-        contraseñaConfirmada.clear();
+        campoContraseña.clear();
+        campoConfirmarContraseña.clear();
 
     }
-
-
-
 }

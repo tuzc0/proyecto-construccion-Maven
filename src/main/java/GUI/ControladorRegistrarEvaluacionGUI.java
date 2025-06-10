@@ -29,10 +29,10 @@ public class ControladorRegistrarEvaluacionGUI {
     Utilidades utilidades = new Utilidades();
 
     @FXML
-    Label etiquetaPromedioEvaluacionGenerado;
+    Label promedioEvaluacionGenerado;
 
     @FXML
-    TextArea textoComentarios;
+    TextArea campoComentarios;
 
     @FXML
     TableView<ContenedorCriteriosEvaluacion> tablaCriteriosEvaluacion;
@@ -47,7 +47,7 @@ public class ControladorRegistrarEvaluacionGUI {
     TableColumn<ContenedorCriteriosEvaluacion, String> columnaCalificacion;
 
     @FXML
-    Label etiquetaEstudianteEvaluado;
+    Label campoEstudianteEvaluado;
 
     static int idEvaluacionGenerada = 0;
 
@@ -61,13 +61,16 @@ public class ControladorRegistrarEvaluacionGUI {
     @FXML
     public void initialize() {
 
-        columnaNumeroCriterio.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getCriterioEvaluacion().getNumeroCriterio())));
-        columnaCriterio.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCriterioEvaluacion().getDescripcion()));
-        columnaCalificacion.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getEvaluacionContiene().getCalificacion())));
+        columnaNumeroCriterio.setCellValueFactory(cellData ->
+                new SimpleStringProperty(String.valueOf(cellData.getValue().getCriterioEvaluacion().getNumeroCriterio())));
+        columnaCriterio.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getCriterioEvaluacion().getDescripcion()));
+        columnaCalificacion.setCellValueFactory(cellData ->
+                new SimpleStringProperty(String.valueOf(cellData.getValue().getEvaluacionContiene().getCalificacion())));
 
         tablaCriteriosEvaluacion.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        etiquetaEstudianteEvaluado.setText(matriculaEstudianteEvaluado);
+        campoEstudianteEvaluado.setText(matriculaEstudianteEvaluado);
 
         actualizarCalificacion();
 
@@ -91,9 +94,12 @@ public class ControladorRegistrarEvaluacionGUI {
                 if (nuevaCalificacion < 0 || nuevaCalificacion > 10 ) {
 
                     logger.warn("La calificación debe estar entre 0 y 100.");
-                    utilidades.mostrarAlerta("Error", "La calificación debe estar entre 0 y 10.", "porfavor llene todos los campos");
+                    utilidades.mostrarAlerta("Error",
+                            "La calificación debe estar entre 0 y 10.",
+                            "porfavor llene todos los campos");
                     return;
                 }
+
                 evaluacionContiene.setCalificacion(nuevaCalificacion);
 
                 EvaluacionContieneDAO evaluacionContieneDAO = new EvaluacionContieneDAO();
@@ -111,7 +117,7 @@ public class ControladorRegistrarEvaluacionGUI {
                 logger.warn("El valor ingresado no es un número válido.");
             } catch (SQLException | IOException e) {
 
-                logger.error("Error al actualizar la calificación: " + e.getMessage());
+                logger.error("Error al actualizar la calificación: " + e);
             }
         });
 
@@ -127,15 +133,19 @@ public class ControladorRegistrarEvaluacionGUI {
             EvaluacionContieneDAO evaluacionContieneDAO = new EvaluacionContieneDAO();
 
             List<CriterioEvaluacionDTO> listaCriterios = criterioEvaluacionDAO.listarCriteriosActivos();
-            List<EvaluacionContieneDTO> listaEvaluacionContiene = evaluacionContieneDAO.listarCriteriosEvaluacionPorIdEvaluacion(idEvaluacionGenerada);
-            ObservableList<ContenedorCriteriosEvaluacion> listaContenedorCriterios = FXCollections.observableArrayList();
+            List<EvaluacionContieneDTO> listaEvaluacionContiene =
+                    evaluacionContieneDAO.listarCriteriosEvaluacionPorIdEvaluacion(idEvaluacionGenerada);
+            ObservableList<ContenedorCriteriosEvaluacion> listaContenedorCriterios =
+                    FXCollections.observableArrayList();
 
             for (CriterioEvaluacionDTO criterio : listaCriterios){
 
                 for (EvaluacionContieneDTO evaluacionContiene : listaEvaluacionContiene){
 
                     if (criterio.getIDCriterio() == evaluacionContiene.getIdCriterio()){
-                        ContenedorCriteriosEvaluacion contenedorCriterios = new ContenedorCriteriosEvaluacion(criterio, evaluacionContiene);
+
+                        ContenedorCriteriosEvaluacion contenedorCriterios =
+                                new ContenedorCriteriosEvaluacion(criterio, evaluacionContiene);
                         listaContenedorCriterios.add(contenedorCriterios);
                     }
                 }
@@ -146,26 +156,25 @@ public class ControladorRegistrarEvaluacionGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL: " + e.getMessage());
+            logger.error("Error de SQL: " + e);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO: " + e.getMessage());
+            logger.error("Error de IO: " + e);
 
         } catch (Exception e){
 
-            logger.error("Error inesperado: " + e.getMessage());
+            logger.error("Error inesperado: " + e);
 
         }
     }
 
     public void registrarEvaluacionVacia () {
-        EvaluacionDAO evaluacionDAO = new EvaluacionDAO();
 
+        EvaluacionDAO evaluacionDAO = new EvaluacionDAO();
         EvaluacionDTO evaluacionDTO = new EvaluacionDTO();
 
-
-        evaluacionDTO.setComentarios(textoComentarios.getText());
+        evaluacionDTO.setComentarios(campoComentarios.getText());
         evaluacionDTO.setMatriculaEstudiante(matriculaEstudianteEvaluado);
         evaluacionDTO.setCalificacionFinal(0.0f);
         evaluacionDTO.setEstadoActivo(1);
@@ -179,13 +188,13 @@ public class ControladorRegistrarEvaluacionGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL: " + e.getMessage());
+            logger.error("Error de SQL: " + e);
         } catch (IOException e) {
 
-            logger.error("Error de IO: " + e.getMessage());
+            logger.error("Error de IO: " + e);
         } catch (Exception e) {
 
-            logger.error("Error inesperado: " + e.getMessage());
+            logger.error("Error inesperado: " + e);
         }
     }
 
@@ -208,19 +217,17 @@ public class ControladorRegistrarEvaluacionGUI {
                 evaluacionContieneDAO.insertarEvaluacionContiene(evaluacionContieneDTO);
             }
 
-
-
         } catch (SQLException e) {
 
-            logger.error("Error de SQL: " + e.getMessage());
+            logger.error("Error de SQL: " + e);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO: " + e.getMessage());
+            logger.error("Error de IO: " + e);
 
         } catch (Exception e) {
 
-            logger.error("Error inesperado: " + e.getMessage());
+            logger.error("Error inesperado: " + e);
         }
     }
 
@@ -230,26 +237,25 @@ public class ControladorRegistrarEvaluacionGUI {
         EvaluacionDAO evaluacionDAO = new EvaluacionDAO();
         EvaluacionContieneDAO evaluacionContieneDAO = new EvaluacionContieneDAO();
 
-
         try {
 
             evaluacionContieneDAO.eliminarCriteriosPorIdEvaluacion(idEvaluacionGenerada);
             evaluacionDAO.eliminarEvaluacionDefinitivamente(idEvaluacionGenerada);
-            javafx.stage.Stage stage = (javafx.stage.Stage) textoComentarios.getScene().getWindow();
+            javafx.stage.Stage stage = (javafx.stage.Stage) campoComentarios.getScene().getWindow();
             stage.close();
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL: " + e.getMessage());
+            logger.error("Error de SQL: " + e);
             e.printStackTrace();
 
         } catch (IOException e) {
 
-            logger.error("Error de IO: " + e.getMessage());
+            logger.error("Error de IO: " + e);
 
         } catch (Exception e) {
 
-            logger.error("Error inesperado: " + e.getMessage());
+            logger.error("Error inesperado: " + e);
         }
     }
 
@@ -262,34 +268,37 @@ public class ControladorRegistrarEvaluacionGUI {
 
         try{
 
-            List<EvaluacionContieneDTO> listaEvaluacionContiene = evaluacionContieneDAO.listarCriteriosEvaluacionPorIdEvaluacion(idEvaluacionGenerada);
+            List<EvaluacionContieneDTO> listaEvaluacionContiene =
+                    evaluacionContieneDAO.listarCriteriosEvaluacionPorIdEvaluacion(idEvaluacionGenerada);
 
             for (EvaluacionContieneDTO evaluacionContiene : listaEvaluacionContiene){
+
                 calificacionFinal += evaluacionContiene.getCalificacion();
 
                 if (evaluacionContiene.getCalificacion() < 1 || evaluacionContiene.getCalificacion() > 10) {
-                    utilidades.mostrarAlerta("Error", "La calificación debe estar entre 0 y 10.", "porfavor llene todos los campos");
+
+                    utilidades.mostrarAlerta("Error",
+                            "La calificación debe estar entre 0 y 10.",
+                            "porfavor llene todos los campos");
                     return;
                 }
             }
 
-
-
             calificacionFinal = calificacionFinal / listaEvaluacionContiene.size();
             String promedioFormateado = String.format("%.2f", calificacionFinal);
-            etiquetaPromedioEvaluacionGenerado.setText(promedioFormateado);
+            promedioEvaluacionGenerado.setText(promedioFormateado);
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL: " + e.getMessage());
+            logger.error("Error de SQL: " + e);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO: " + e.getMessage());
+            logger.error("Error de IO: " + e);
 
         } catch (Exception e) {
 
-            logger.error("Error inesperado: " + e.getMessage());
+            logger.error("Error inesperado: " + e);
         }
 
     }
@@ -302,7 +311,7 @@ public class ControladorRegistrarEvaluacionGUI {
         try {
 
             EvaluacionDTO evaluacionDTO = new EvaluacionDTO();
-            evaluacionDTO.setComentarios(textoComentarios.getText());
+            evaluacionDTO.setComentarios(campoComentarios.getText());
             evaluacionDTO.setMatriculaEstudiante(matriculaEstudianteEvaluado);
             evaluacionDTO.setCalificacionFinal(calificacionFinal);
             evaluacionDTO.setEstadoActivo(1);
@@ -313,37 +322,49 @@ public class ControladorRegistrarEvaluacionGUI {
 
             if (calificacionFinal < 1 || calificacionFinal > 10) {
 
-                utilidades.mostrarAlerta("Error", "Debe de calcular la calificacio primero", "porfavor calcule la calificacion final");
+                utilidades.mostrarAlerta("Error",
+                        "Debe de calcular la calificacio primero",
+                        "porfavor calcule la calificacion final");
                 return;
             }
 
             if (actualizado) {
 
-                utilidades.mostrarAlerta("Éxito", "Evaluación guardada correctamente.", "La evaluación ha sido guardada.");
-                javafx.stage.Stage stage = (javafx.stage.Stage) textoComentarios.getScene().getWindow();
+                utilidades.mostrarAlerta("Éxito",
+                        "Evaluación guardada correctamente.",
+                        "La evaluación ha sido guardada.");
+                javafx.stage.Stage stage = (javafx.stage.Stage) campoComentarios.getScene().getWindow();
                 stage.close();
 
             } else {
 
-                utilidades.mostrarAlerta("Error", "No se pudo guardar la evaluación.", "ocurrio un error porfavor intentelo de nuevo en unos minutos");
+                utilidades.mostrarAlerta("Error",
+                        "No se pudo guardar la evaluación.",
+                        "ocurrio un error porfavor intentelo de nuevo en unos minutos");
                 logger.warn("No se pudo guardar la evaluación.");
             }
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL: " + e.getMessage());
-            utilidades.mostrarAlerta("Error", "Error de conexion " , "ocurrio un error porfavor intentelo de nuevo en unos minutos");
+            logger.error("Error de SQL: " + e);
+            utilidades.mostrarAlerta("Error",
+                    "Error de conexion " ,
+                    "ocurrio un error porfavor intentelo de nuevo en unos minutos");
 
 
         } catch (IOException e) {
 
-            utilidades.mostrarAlerta("Error", "ocurrio un error " , "ocurrio un error porfavor intentelo de nuevo en unos minutos");
-            logger.error("Error de IO: " + e.getMessage());
+            utilidades.mostrarAlerta("Error",
+                    "ocurrio un error " ,
+                    "ocurrio un error porfavor intentelo de nuevo en unos minutos");
+            logger.error("Error de IO: " + e);
 
         } catch (Exception e) {
 
-            utilidades.mostrarAlerta("Error", "ocurrio un error ", "ocurrio un error porfavor intentelo de nuevo en unos minutos");
-            logger.error("Error inesperado: " + e.getMessage());
+            utilidades.mostrarAlerta("Error",
+                    "ocurrio un error ",
+                    "ocurrio un error porfavor intentelo de nuevo en unos minutos");
+            logger.error("Error inesperado: " + e);
         }
     }
 

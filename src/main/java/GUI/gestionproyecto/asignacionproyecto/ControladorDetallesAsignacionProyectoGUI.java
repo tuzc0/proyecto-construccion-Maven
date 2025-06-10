@@ -78,9 +78,20 @@ public class ControladorDetallesAsignacionProyectoGUI {
             etiquetaOrganizacionVinculada.setText(organizacionDTO.getNombre());
 
         } catch (SQLException e) {
-            manejarError("Error al cargar datos del proyecto", e);
+
+            LOGGER.severe("Error al cargar los detalles del estudiante en MySQL: " + e);
+            UTILIDADES.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error al cargar los datos.",
+                    "Por favor, intente nuevamente o contacte al administrador.");
+
         } catch (IOException e) {
-            manejarError("Error al cargar datos del proyecto", e);
+
+            LOGGER.severe("Error al cargar los detalles del estudiante: " + e);
+            UTILIDADES.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error al intentar cargar los datos del estudiante.",
+                    "Por favor, intente nuevamente o contacte al administrador.");
         }
     }
 
@@ -114,47 +125,64 @@ public class ControladorDetallesAsignacionProyectoGUI {
                         organizacionDTO
                 );
 
-                UTILIDADES.mostrarAlerta("Archivo descargado",
+                UTILIDADES.mostrarAlerta(
+                        "Archivo descargado",
                         "El archivo fue descargado de forma exitosa",
                         "");
             }
-        } catch (SQLException | IOException | DocumentException e) {
-            manejarError("Error al generar documento", e);
+
+        } catch (DocumentException e) {
+
+            LOGGER.severe("Error al gerar documento: " + e);
+            UTILIDADES.mostrarAlerta(
+                    "Error al generar el documento.",
+                    "No se puedo generar el PDF.",
+                    "Ocurrió un problema al crear el documento. Por favor, intente nuevamente o contacte al administrador.");
+
+        } catch (SQLException e) {
+
+            LOGGER.severe("Error de base de datos: " + e);
+            UTILIDADES.mostrarAlerta(
+                    "Error",
+                    "Ocurrió problema al acceder a los datos.",
+                    "Por favor, intente nuevamente o contacte al administrador.");
+
+        } catch (IOException e) {
+
+            LOGGER.severe("Error de E/S: " + e);
+            UTILIDADES.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un problema al procesar los datos.",
+                    "Por favor, intente nuevamente o contacte al administrador.");
         }
     }
 
     @FXML
     private void reasignarProyecto() {
+
         ProyectoDAO proyectoDAO = new ProyectoDAO();
         ManejadorDeAccionAsignacion manejador = new ManejadorDeAccionAsignacion();
 
         try {
+
             List<ProyectoDTO> proyectosDisponibles = proyectoDAO.listarProyectosConCupo();
 
-            // Primero abrir la nueva ventana
             manejador.mostrarSeleccionProyecto(
                     estudianteAsignado,
                     controladorAsignacionPrincipal,
                     proyectosDisponibles
             );
 
-            // Luego cerrar la actual (solo si la nueva se abrió correctamente)
             Stage ventanaActual = (Stage) botonReasignar.getScene().getWindow();
             ventanaActual.close();
 
         } catch (SQLException | IOException e) {
+
             UTILIDADES.mostrarAlerta(
                     "Error",
                     "No se pudo iniciar la reasignación",
                     "Por favor intentelo de nuevo más tarde");
             LOGGER.severe("Error en reasignación: " + e);
         }
-    }
-
-    private void manejarError(String mensaje, Exception e) {
-        LOGGER.severe(mensaje + ": " + e);
-        UTILIDADES.mostrarAlerta("Error",
-                "Ocurrió un error: " + mensaje,
-                "Por favor, intente nuevamente o contacte al administrador.");
     }
 }

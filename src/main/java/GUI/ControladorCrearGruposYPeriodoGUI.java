@@ -16,6 +16,8 @@ import logica.DTOs.GrupoDTO;
 import logica.DTOs.PeriodoDTO;
 import logica.DTOs.UsuarioDTO;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 public class ControladorCrearGruposYPeriodoGUI {
@@ -51,17 +53,22 @@ public class ControladorCrearGruposYPeriodoGUI {
 
         cargarPeriodos();
 
-        comboPeriodo.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                restringirFechas(newValue);
+        comboPeriodo.getSelectionModel().selectedItemProperty().addListener((periodoObservado,
+                                                                             periodoAnterior,
+                                                                             nuevoPeriodo) -> {
+            if (nuevoPeriodo != null) {
+                restringirFechas(nuevoPeriodo);
             }
         });
 
         etiquetaExperienciaEducativa.setText("Practicas Profesionales");
 
-        columnaGrupo.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNombre()));
-        columnaNRC.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(String.valueOf(cellData.getValue().getNRC())));
-        columnaAcademico.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(String.valueOf(cellData.getValue().getNumeroPersonal())));
+        columnaGrupo.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNombre()));
+        columnaNRC.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(String.valueOf(cellData.getValue().getNRC())));
+        columnaAcademico.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(String.valueOf(cellData.getValue().getNumeroPersonal())));
         cargarGruposActivos();
 
     }
@@ -114,20 +121,26 @@ public class ControladorCrearGruposYPeriodoGUI {
         try {
             // Validate that both dates are selected
             if (fechaInicio.getValue() == null || fechaFinal.getValue() == null) {
-                utilidades.mostrarAlerta("Error", "Fechas inválidas", "Debe seleccionar ambas fechas.");
+                utilidades.mostrarAlerta("Error",
+                        "Fechas inválidas",
+                        "Debe seleccionar ambas fechas.");
                 return;
             }
 
             // Validate that the start date is before the end date
             if (!fechaInicio.getValue().isBefore(fechaFinal.getValue())) {
-                utilidades.mostrarAlerta("Error", "Fechas inválidas", "La fecha de inicio debe ser menor a la fecha final.");
+                utilidades.mostrarAlerta("Error",
+                        "Fechas inválidas",
+                        "La fecha de inicio debe ser menor a la fecha final.");
                 return;
             }
 
             // Check if there is already an active period
             PeriodoDAO periodoDAO = new PeriodoDAO();
             if (periodoDAO.existePeriodoActivo()) {
-                utilidades.mostrarAlerta("Error", "Periodo activo", "Ya existe un periodo activo. Desactívelo antes de crear uno nuevo.");
+                utilidades.mostrarAlerta("Error",
+                        "Periodo activo",
+                        "Ya existe un periodo activo. Desactívelo antes de crear uno nuevo.");
                 return;
             }
 
@@ -141,9 +154,14 @@ public class ControladorCrearGruposYPeriodoGUI {
 
             periodoDAO.crearNuevoPeriodo(nuevoPeriodo);
 
-            utilidades.mostrarAlerta("Éxito", "Periodo creado", "El nuevo periodo se ha creado correctamente.");
+            utilidades.mostrarAlerta("Éxito",
+                    "Periodo creado",
+                    "El nuevo periodo se ha creado correctamente.");
+
         } catch (Exception e) {
-            utilidades.mostrarAlerta("Error", "Error al crear el periodo", "Ocurrió un error al guardar el periodo: " + e.getMessage());
+            utilidades.mostrarAlerta("Error",
+                    "Error al crear el periodo",
+                    "Ocurrió un error al guardar el periodo: ");
         }
     }
 
@@ -152,7 +170,9 @@ public class ControladorCrearGruposYPeriodoGUI {
         GrupoDTO grupoSeleccionado = tablaGrupos.getSelectionModel().getSelectedItem();
 
         if (grupoSeleccionado == null) {
-            utilidades.mostrarAlerta("Error", "Grupo no seleccionado", "Por favor, seleccione un grupo para eliminar.");
+            utilidades.mostrarAlerta("Error",
+                    "Grupo no seleccionado",
+                    "Por favor, seleccione un grupo para eliminar.");
             return;
         }
 
@@ -164,7 +184,9 @@ public class ControladorCrearGruposYPeriodoGUI {
                     eliminarGrupoConfirmado(grupoSeleccionado);
                 },
                 () -> {
-                    utilidades.mostrarAlerta("Cancelado", "Eliminación cancelada", "No se ha eliminado ningún grupo.");
+                    utilidades.mostrarAlerta("Cancelado",
+                            "Eliminación cancelada",
+                            "No se ha eliminado ningún grupo.");
                 }
 
         );
@@ -176,9 +198,14 @@ public class ControladorCrearGruposYPeriodoGUI {
             GrupoDAO grupoDAO = new GrupoDAO();
             grupoDAO.eliminarGrupoPorNRC(grupoSeleccionado.getNRC());
             cargarGruposActivos();
-            utilidades.mostrarAlerta("Éxito", "Grupo eliminado", "El grupo se ha eliminado correctamente.");
+            utilidades.mostrarAlerta("Éxito",
+                    "Grupo eliminado",
+                    "El grupo se ha eliminado correctamente.");
+
         } catch (Exception e) {
-            utilidades.mostrarAlerta("Error", "Error al eliminar el grupo", "Ocurrió un error al eliminar el grupo: " + e.getMessage());
+            utilidades.mostrarAlerta("Error",
+                    "Error al eliminar el grupo",
+                    "Ocurrió un error al eliminar el grupo: ");
         }
     }
 
@@ -192,13 +219,17 @@ public class ControladorCrearGruposYPeriodoGUI {
             List<GrupoDTO> gruposActivos = grupoDAO.mostrarGruposActivos();
             tablaGrupos.setItems(FXCollections.observableArrayList(gruposActivos));
 
+        } catch (SQLException e) {
 
-        } catch (Exception e) {
-            utilidades.mostrarAlerta("Error", "Error al cargar grupos", "Ocurrió un error al cargar los grupos activos: " + e.getMessage());
+            utilidades.mostrarAlerta("Error de base de datos",
+                    "Error al cargar grupos",
+                    "Ocurrió un problema al acceder a la base de datos: " + e);
+
+        } catch (IOException e) {
+            utilidades.mostrarAlerta("Error de entrada/salida",
+                    "Error al cargar grupos",
+                    "Ocurrió un problema al procesar los datos: " + e);
+
         }
     }
-
-
-
-
 }

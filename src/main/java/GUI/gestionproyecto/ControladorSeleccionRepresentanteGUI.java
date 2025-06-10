@@ -96,14 +96,14 @@ public class ControladorSeleccionRepresentanteGUI {
 
         } catch (SQLException e) {
 
-            LOGGER.error("Error SQL al cargar representantes y organizaciones: " + e.getMessage(), e);
+            LOGGER.error("Error SQL al cargar representantes y organizaciones: ", e);
             UTILIDADES.mostrarAlerta("Error",
                     "Error al cargar los datos",
                     "No se pudo cargar la lista de representantes y organizaciones");
 
         } catch (IOException e) {
 
-            LOGGER.error("Error de IO al cargar representantes y organizaciones: " + e.getMessage(), e);
+            LOGGER.error("Error de IO al cargar representantes y organizaciones: ", e);
             UTILIDADES.mostrarAlerta("Error",
                     "Error al cargar datos",
                     "No se pudo cargar la lista de representantes y organizaciones.");

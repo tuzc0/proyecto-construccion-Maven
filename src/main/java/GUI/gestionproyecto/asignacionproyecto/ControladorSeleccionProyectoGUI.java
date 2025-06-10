@@ -30,7 +30,6 @@ public class ControladorSeleccionProyectoGUI {
                                  List<ProyectoDTO> proyectos) {
 
         if (campoNombreEstudiante == null || comboProyectos == null) {
-            System.err.println("Error: Componentes FXML no inicializados");
             return;
         }
 

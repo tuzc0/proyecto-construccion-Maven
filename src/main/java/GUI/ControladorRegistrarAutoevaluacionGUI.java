@@ -75,14 +75,11 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
     private static final String FOLDER_ID = "1LGx2JpfFoNvqm7Dodf6i8Q2ijqDDONzR";
 
-
     private Map<String, String> urlsDrive = new HashMap<>();
 
     private static final double TAMANO_MAXIMO_MB = 10.0;
 
     private List<java.io.File> archivosLocales = new ArrayList<>();
-
-
 
     static int idAutoevaluacion = 0;
 
@@ -106,10 +103,7 @@ public class ControladorRegistrarAutoevaluacionGUI {
         guardarAutoevaluacionVacia();
         guardarCriteriosVacios();
         cargarCriteriosAutoevaluacion();
-
-
     }
-
 
     public void cargarCriteriosAutoevaluacion() {
 
@@ -123,8 +117,11 @@ public class ControladorRegistrarAutoevaluacionGUI {
             ObservableList<ContenedorCriteriosAutoevaluacion> listaContenedorCriterios = FXCollections.observableArrayList();
 
             for (CriterioAutoevaluacionDTO criterio : listaCriterios) {
+
                 for (AutoEvaluacionContieneDTO autoEvaluacionContiene : listaAutoEvaluacionContiene) {
+
                     if (criterio.getIDCriterio() == autoEvaluacionContiene.getIdCriterio()) {
+
                         ContenedorCriteriosAutoevaluacion contenedorCriterios = new ContenedorCriteriosAutoevaluacion(criterio, autoEvaluacionContiene);
                         listaContenedorCriterios.add(contenedorCriterios);
                     }
@@ -135,26 +132,29 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL: " + e.getMessage());
+            logger.error("Error de SQL: " + e);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO: " + e.getMessage());
+            logger.error("Error de IO: " + e);
 
         } catch (Exception e) {
 
-            logger.error("Error inesperado: " + e.getMessage());
+            logger.error("Error inesperado: " + e);
 
         }
     }
 
     private void crearColumnaPuntuacion(TableColumn<ContenedorCriteriosAutoevaluacion, Void> columna, int valor) {
+
         columna.setCellFactory(col -> new TableCell<>() {
+
             private final RadioButton radio = new RadioButton();
 
             {
                 radio.setOnAction(e -> {
-                    AutoEvaluacionContieneDTO autoEvaluacionContiene = getTableView().getItems().get(getIndex()).getAutoEvaluacionContiene();
+                    AutoEvaluacionContieneDTO autoEvaluacionContiene =
+                            getTableView().getItems().get(getIndex()).getAutoEvaluacionContiene();
                     autoEvaluacionContiene.setCalificacion(valor);
                     getTableView().refresh();
                 });
@@ -162,11 +162,15 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
             @Override
             protected void updateItem(Void item, boolean empty) {
+
                 super.updateItem(item, empty);
+
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    AutoEvaluacionContieneDTO autoEvaluacionContiene = getTableView().getItems().get(getIndex()).getAutoEvaluacionContiene();
+
+                    AutoEvaluacionContieneDTO autoEvaluacionContiene =
+                            getTableView().getItems().get(getIndex()).getAutoEvaluacionContiene();
                     radio.setSelected(autoEvaluacionContiene.getCalificacion() == valor);
                     setGraphic(radio);
                 }
@@ -182,7 +186,9 @@ public class ControladorRegistrarAutoevaluacionGUI {
         for (ContenedorCriteriosAutoevaluacion contenedor : tablaAutoevaluacion.getItems()) {
             AutoEvaluacionContieneDTO autoEvaluacionContiene = contenedor.getAutoEvaluacionContiene();
             if (autoEvaluacionContiene.getCalificacion() == 0) {
-                utilidades.mostrarAlerta("Advertencia", "Calificación incompleta", "Debe calificar todos los criterios antes de calcular el promedio.");
+                utilidades.mostrarAlerta("Advertencia",
+                        "Calificación incompleta",
+                        "Debe calificar todos los criterios antes de calcular el promedio.");
                 return;
             }
             suma += autoEvaluacionContiene.getCalificacion();
@@ -235,6 +241,7 @@ public class ControladorRegistrarAutoevaluacionGUI {
             List<CriterioAutoevaluacionDTO> listaCriterios = criterioAutoevaluacionDAO.listarCriteriosAutoevaluacionActivos();
 
             for (CriterioAutoevaluacionDTO criterio : listaCriterios) {
+
                 AutoEvaluacionContieneDTO autoevaluacionContiene = new AutoEvaluacionContieneDTO();
                 autoevaluacionContiene.setIdCriterio(criterio.getIDCriterio());
                 autoevaluacionContiene.setIdAutoevaluacion(idAutoevaluacion);
@@ -259,13 +266,19 @@ public class ControladorRegistrarAutoevaluacionGUI {
     private void guardarAutoevaluacion() {
 
         if (archivosLocales.isEmpty()) {
-            utilidades.mostrarAlerta("Error", "Archivos no adjuntados", "Debe adjuntar al menos un archivo de evidencia antes de guardar.");
+
+            utilidades.mostrarAlerta("Error",
+                    "Archivos no adjuntados",
+                    "Debe adjuntar al menos un archivo de evidencia antes de guardar.");
             return;
         }
 
 
         if (etiquetaPromedio.getText() == null || etiquetaPromedio.getText().isEmpty()) {
-            utilidades.mostrarAlerta("Error", "Calificación no calculada", "Debe calcular la calificación final antes de guardar.");
+
+            utilidades.mostrarAlerta("Error",
+                    "Calificación no calculada",
+                    "Debe calcular la calificación final antes de guardar.");
             return;
         }
 
@@ -290,7 +303,9 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
             autoevaluacionDAO.modificarAutoevaluacion(autoevaluacion);
             actualizarCriteriosAutoevaluacion();
-            utilidades.mostrarAlerta("Registro Exitoso", "Autoevaluación guardada", "La autoevaluación se ha guardado correctamente.");
+            utilidades.mostrarAlerta("Registro Exitoso",
+                    "Autoevaluación guardada",
+                    "La autoevaluación se ha guardado correctamente.");
 
             Stage currentStage = (Stage) etiquetaFecha.getScene().getWindow();
             currentStage.close();
@@ -317,8 +332,11 @@ public class ControladorRegistrarAutoevaluacionGUI {
         AutoevaluacionContieneDAO autoevaluacionContieneDAO = new AutoevaluacionContieneDAO();
 
         try {
+
             for (ContenedorCriteriosAutoevaluacion contenedor : tablaAutoevaluacion.getItems()) {
+
                 AutoEvaluacionContieneDTO autoEvaluacionContiene = contenedor.getAutoEvaluacionContiene();
+
                 if (autoEvaluacionContiene.getCalificacion() > 0) {
                     autoevaluacionContieneDAO.modificarCalificacion(autoEvaluacionContiene);
                 }
@@ -367,6 +385,7 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
     @FXML
     private void seleccionarArchivo() {
+
         SelectorArchivos selector = new SelectorArchivos(
                 listaArchivos.getScene().getWindow(),
                 "Seleccionar archivos de evidencia"
@@ -375,10 +394,13 @@ public class ControladorRegistrarAutoevaluacionGUI {
         List<java.io.File> archivosSeleccionados = selector.seleccionarMultiplesArchivos();
 
         if (archivosSeleccionados != null && !archivosSeleccionados.isEmpty()) {
+
             if (SelectorArchivos.validarArchivos(archivosSeleccionados, TAMANO_MAXIMO_MB)) {
+
                 archivosLocales.addAll(archivosSeleccionados);
                 actualizarListaArchivos();
                 lblErrorArchivos.setText("");
+
             } else {
                 lblErrorArchivos.setText("Archivos no válidos. Verifique tamaño y formatos.");
             }
@@ -388,9 +410,11 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
 
     private void actualizarListaArchivos() {
+
         listaArchivos.getItems().clear();
 
         for (java.io.File archivo : archivosLocales) {
+
             String nombre = archivo.getName();
             String extension = nombre.substring(nombre.lastIndexOf('.') + 1).toUpperCase();
             double sizeMB = archivo.length() / (1024.0 * 1024.0);

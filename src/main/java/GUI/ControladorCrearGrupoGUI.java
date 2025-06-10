@@ -50,25 +50,30 @@ public class ControladorCrearGrupoGUI {
         String nombreSeleccionado = comboAcademico.getValue();
 
         if (nombreSeleccionado == null || nombreSeleccionado.isEmpty()) {
-            utilidades.mostrarAlerta("Error", "Académico no seleccionado", "Debe seleccionar un académico para crear el grupo.");
+            utilidades.mostrarAlerta("Error",
+                    "Académico no seleccionado",
+                    "Debe seleccionar un académico para crear el grupo.");
             return;
         }
 
         if (!academicoMap.containsKey(nombreSeleccionado)) {
-            utilidades.mostrarAlerta("Error", "Académico no válido", "Seleccione un académico válido.");
+            utilidades.mostrarAlerta("Error",
+                    "Académico no válido",
+                    "Seleccione un académico válido.");
             return;
         }
 
         int numeroPersonal = academicoMap.get(nombreSeleccionado);
 
         try {
-            // Validate that the academic is not already assigned to another group
+
             if (grupoDAO.existeGrupoPorNumeroAcademico(numeroPersonal)) {
-                utilidades.mostrarAlerta("Error", "Académico ya asignado", "El académico seleccionado ya está asignado a un grupo.");
+                utilidades.mostrarAlerta("Error",
+                        "Académico ya asignado",
+                        "El académico seleccionado ya está asignado a un grupo.");
                 return;
             }
 
-            // Proceed to save the group
             GrupoDTO nuevoGrupo = new GrupoDTO();
             nuevoGrupo.setNRC(Integer.parseInt(etiquetaNRC.getText()));
             nuevoGrupo.setNombre(textoNombreGrupo.getText());
@@ -78,34 +83,56 @@ public class ControladorCrearGrupoGUI {
 
             grupoDAO.crearNuevoGrupo(nuevoGrupo);
 
-            utilidades.mostrarAlerta("Éxito", "Grupo guardado", "El grupo se ha guardado correctamente.");
+            utilidades.mostrarAlerta("Éxito",
+                    "Grupo guardado",
+                    "El grupo se ha guardado correctamente.");
+
         } catch (SQLException e) {
-            utilidades.mostrarAlerta("Error", "Error al guardar el grupo", "No se pudo guardar el grupo en la base de datos.");
+
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "Error al guardar el grupo",
+                    "No se pudo guardar el grupo en la base de datos.");
+
         } catch (Exception e) {
-            utilidades.mostrarAlerta("Error inesperado", "Error", "Ocurrió un error inesperado: " + e.getMessage());
+
+            utilidades.mostrarAlerta("Error inesperado",
+                    "Error",
+                    "Ocurrió un error inesperado: ");
         }
     }
 
 
 
     public void cargarAcademicos() {
+
         AcademicoDAO academicoDAO = new AcademicoDAO();
 
         try {
+
             List<AcademicoDTO> academicos = academicoDAO.listarAcademicos();
             ObservableList<String> nombresAcademicos = FXCollections.observableArrayList();
 
             for (AcademicoDTO academico : academicos) {
+
                 String nombreCompleto = academico.getNombre() + " " + academico.getApellido();
                 nombresAcademicos.add(nombreCompleto);
                 academicoMap.put(nombreCompleto, academico.getNumeroDePersonal());
             }
 
             comboAcademico.setItems(nombresAcademicos);
+
         } catch (SQLException e) {
-            utilidades.mostrarAlerta("Error al cargar los académicos: ", "Error", "No se pudieron cargar los académicos desde la base de datos.");
+
+            utilidades.mostrarAlerta("Error al cargar los académicos: ",
+                    "Error",
+                    "No se pudieron cargar los académicos desde la base de datos.");
+
         } catch (Exception e) {
-            utilidades.mostrarAlerta("Error inesperado: " + e.getMessage(), "Error", "Ocurrió un error inesperado al cargar los académicos.");
+
+            utilidades.mostrarAlerta("Error inesperado: ",
+                    "Error",
+                    "Ocurrió un error inesperado al cargar los académicos.");
         }
     }
 
@@ -119,9 +146,13 @@ public class ControladorCrearGrupoGUI {
             etiquetaPeriodo.setText(periodo.getDescripcion());
 
         } catch (SQLException e) {
-            utilidades.mostrarAlerta("Error al cargar los periodos: " , "Error", "No se pudieron cargar los periodos desde la base de datos.");
+            utilidades.mostrarAlerta("Error al cargar los periodos: " ,
+                    "Error",
+                    "No se pudieron cargar los periodos desde la base de datos.");
         } catch (Exception e) {
-            utilidades.mostrarAlerta("Error inesperado: " + e.getMessage(), "Error", "Ocurrió un error inesperado al cargar los periodos.");
+            utilidades.mostrarAlerta("Error inesperado: ",
+                    "Error",
+                    "Ocurrió un error inesperado al cargar los periodos.");
         }
     }
 
@@ -136,10 +167,14 @@ public class ControladorCrearGrupoGUI {
 
         } catch (SQLException e) {
 
-            utilidades.mostrarAlerta("Error al generar NRC: " , "Error", "No se pudo generar el NRC desde la base de datos.");
+            utilidades.mostrarAlerta("Error al generar NRC: ",
+                    "Error",
+                    "No se pudo generar el NRC desde la base de datos.");
         } catch (Exception e) {
 
-            utilidades.mostrarAlerta("Error inesperado: " + e.getMessage(), "Error", "Ocurrió un error inesperado al generar el NRC.");
+            utilidades.mostrarAlerta("Error inesperado: ",
+                    "Error",
+                    "Ocurrió un error inesperado al generar el NRC.");
         }
 
     }

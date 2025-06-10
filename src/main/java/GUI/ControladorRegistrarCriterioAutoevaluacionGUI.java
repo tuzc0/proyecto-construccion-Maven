@@ -29,6 +29,7 @@ public class ControladorRegistrarCriterioAutoevaluacionGUI {
 
     @FXML
     public void initialize() {
+
         try {
 
             CriterioAutoevaluacionDAO criterioAutoevaluacionDAO = new CriterioAutoevaluacionDAO();
@@ -38,15 +39,15 @@ public class ControladorRegistrarCriterioAutoevaluacionGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error al obtener el número de criterio más alto: " + e.getMessage());
+            logger.error("Error al obtener el número de criterio más alto: " + e);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO: " + e.getMessage());
+            logger.error("Error de IO: " + e);
 
         } catch (Exception e) {
 
-            logger.error("Error inesperado: " + e.getMessage());
+            logger.error("Error inesperado: " + e);
 
         }
     }
@@ -59,7 +60,9 @@ public class ControladorRegistrarCriterioAutoevaluacionGUI {
 
         if (descripcion.isEmpty()) {
 
-            utilidades.mostrarAlerta("Error", "La descripción no puede estar vacía.", "Por favor llene todos los campos.");
+            utilidades.mostrarAlerta("Error",
+                    "La descripción no puede estar vacía.",
+                    "Por favor llene todos los campos.");
             return;
         }
 
@@ -73,24 +76,32 @@ public class ControladorRegistrarCriterioAutoevaluacionGUI {
 
             if (criterioAutoevaluacionDAO.crearNuevoCriterioAutoevaluacion(nuevoCriterio)) {
 
-                utilidades.mostrarAlerta("Éxito", "Criterio de autoevaluación guardado correctamente.", "Se ha registrado el criterio de forma exitosa.");
+                utilidades.mostrarAlerta("Éxito",
+                        "Criterio de autoevaluación guardado correctamente.",
+                        "Se ha registrado el criterio de forma exitosa.");
                 nuevoNumeroCriterio++;
                 textoDescripcionCriterio.clear();
                 numeroCriterio.setText(String.valueOf(nuevoNumeroCriterio));
 
             } else {
 
-                utilidades.mostrarAlerta("Error", "No se pudo guardar el criterio de autoevaluación.", "Por favor intente de nuevo.");
+                utilidades.mostrarAlerta("Error",
+                        "No se pudo guardar el criterio de autoevaluación.",
+                        "Por favor intente de nuevo.");
             }
         } catch (SQLException e) {
 
-            utilidades.mostrarAlerta("Error", "Error al guardar el criterio de autoevaluación.", "Por favor intente de nuevo.");
-            logger.error("Error al guardar el criterio de autoevaluación: " + e.getMessage());
+            utilidades.mostrarAlerta("Error",
+                    "Error al guardar el criterio de autoevaluación.",
+                    "Por favor intente de nuevo.");
+            logger.error("Error al guardar el criterio de autoevaluación: " + e);
 
         } catch (IOException e) {
 
-            utilidades.mostrarAlerta("Error", "Error de IO.", "Por favor intente de nuevo.");
-            logger.error("Error de IO: " + e.getMessage());
+            utilidades.mostrarAlerta("Error",
+                    "Error de IO.",
+                    "Por favor intente de nuevo.");
+            logger.error("Error de IO: " + e);
 
         }
     }

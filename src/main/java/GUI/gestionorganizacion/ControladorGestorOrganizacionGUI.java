@@ -57,8 +57,6 @@ public class ControladorGestorOrganizacionGUI {
     public void initialize() {
 
         cargarDatosOrganizacion();
-
-
     }
 
     @FXML
@@ -78,21 +76,23 @@ public class ControladorGestorOrganizacionGUI {
 
         } catch (IIOException e){
 
-            logger.warning("Error de IO: " + e.getMessage());
-            utilidades.mostrarAlerta("Error", "No se pudo cargar los datos", "error al cargar los datos de la organizacion seleccionada");
+            logger.warning("Error de IO: " + e);
+            utilidades.mostrarAlerta("Error", "No se pudo cargar los datos",
+                    "error al cargar los datos de la organizacion seleccionada");
 
         } catch (SQLException e) {
 
-            logger.warning("Error de SQL: " + e.getMessage());
-            utilidades.mostrarAlerta("Error", "No se pudo cargar los datos", "error al cargar los datos de la organizacion seleccionada");
+            logger.warning("Error de SQL: " + e);
+            utilidades.mostrarAlerta("Error", "No se pudo cargar los datos",
+                    "error al cargar los datos de la organizacion seleccionada");
 
         } catch (Exception e) {
 
-            logger.warning("Error: " + e.getMessage());
-            utilidades.mostrarAlerta("Error", "No se pudo cargar los datos", "error al cargar los datos de la organizacion seleccionada");
+            logger.warning("Error: " + e);
+            utilidades.mostrarAlerta("Error", "No se pudo cargar los datos",
+                    "error al cargar los datos de la organizacion seleccionada");
 
         }
-
     }
 
     public void editarOrganizacion() {

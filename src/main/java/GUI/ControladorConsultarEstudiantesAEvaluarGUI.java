@@ -54,15 +54,20 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
     @FXML
     public void initialize() {
 
-        columnaMatricula.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMatricula()));
-        columnaNombres.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNombre()));
-        columnaApellidos.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getApellido()));
+        columnaMatricula.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMatricula()));
+        columnaNombres.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNombre()));
+        columnaApellidos.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getApellido()));
 
         cargarEstudiantes();
         añadirBotonEvaluarATable();
 
-        tablaEstudiantes.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            estudianteSeleccionado = newValue;
+        tablaEstudiantes.getSelectionModel().selectedItemProperty().addListener((estudianteObservado,
+                                                                                 antiguoEstudiante,
+                                                                                 nuevoEstudiante) -> {
+            estudianteSeleccionado = nuevoEstudiante;
             tablaEstudiantes.refresh();
         });
     }
@@ -78,7 +83,7 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
             tablaEstudiantes.setItems(estudiantes);
 
         } catch (Exception e) {
-            logger.severe("Error al cargar la lista de estudiantes: " + e.getMessage());
+            logger.severe("Error al cargar la lista de estudiantes: " + e);
             utilidades.mostrarAlerta("Error", "Error de entrada/salida", "No se pudo cargar la lista de estudiantes.");
         }
     }
@@ -129,7 +134,7 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
 
-            stage.setOnCloseRequest(event -> {
+            stage.setOnCloseRequest(evento -> {
                 eliminarEvaluacion();
             });
 
@@ -138,7 +143,7 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
             cargarEstudiantes();
 
         } catch (IOException e) {
-            logger.severe("Error al abrir la ventana RegistrarEvaluacionGUI: " + e.getMessage());
+            logger.severe("Error al abrir la ventana RegistrarEvaluacionGUI: " + e);
         }
 
     }
@@ -155,13 +160,13 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
 
         } catch (SQLException e) {
 
-            logger.severe("Error de SQL: " + e.getMessage());
+            logger.severe("Error de SQL: " + e);
         } catch (IOException e) {
 
-            logger.severe("Error de IO: " + e.getMessage());
+            logger.severe("Error de IO: " + e);
         } catch (Exception e) {
 
-            logger.severe("Error inesperado: " + e.getMessage());
+            logger.severe("Error inesperado: " + e);
         }
     }
 
@@ -188,12 +193,15 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
 
             if (estudiantesFiltrados.isEmpty()) {
                 Utilidades utilidades = new Utilidades();
-                utilidades.mostrarAlerta("No encontrado", "Estudiante no encontrado", "No se encontró un estudiante con la matrícula: " + matriculaBuscada);
+                utilidades.mostrarAlerta("No encontrado",
+                        "Estudiante no encontrado",
+                        "No se encontró un estudiante con la matrícula: "
+                                + matriculaBuscada);
             } else {
                 tablaEstudiantes.setItems(estudiantesFiltrados);
             }
         } catch (Exception e) {
-            logger.severe("Error al buscar el estudiante: " + e.getMessage());
+            logger.severe("Error al buscar el estudiante: " + e);
         }
 
     }

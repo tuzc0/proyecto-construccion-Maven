@@ -30,6 +30,7 @@ public class ControladorRegistrarCriterioEvaluacionGUI {
 
     @FXML
     public void initialize (){
+
         try {
 
             CriterioEvaluacionDAO criterioEvaluacionDAO = new CriterioEvaluacionDAO();
@@ -39,15 +40,15 @@ public class ControladorRegistrarCriterioEvaluacionGUI {
 
         } catch (SQLException e ) {
 
-            logger.error("Error al obtener el número de criterio más alto: " + e.getMessage());
+            logger.error("Error al obtener el número de criterio más alto: " + e);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO: " + e.getMessage());
+            logger.error("Error de IO: " + e);
 
         } catch (Exception e) {
 
-            logger.error("Error inesperado: " + e.getMessage());
+            logger.error("Error inesperado: " + e);
 
         }
 
@@ -61,7 +62,10 @@ public class ControladorRegistrarCriterioEvaluacionGUI {
         String descripcion = textoDescripcionCriterio.getText();
 
         if (descripcion.isEmpty()) {
-            utilidades.mostrarAlerta("Error", "La descripción no puede estar vacía.", "porfavor llene todos los campos");
+
+            utilidades.mostrarAlerta("Error",
+                    "La descripción no puede estar vacía.",
+                    "porfavor llene todos los campos");
             return;
         }
 
@@ -74,23 +78,31 @@ public class ControladorRegistrarCriterioEvaluacionGUI {
             nuevoCriterio.setIDCriterio(0);
 
             if (criterioEvaluacionDAO.crearNuevoCriterioEvaluacion(nuevoCriterio)) {
-                utilidades.mostrarAlerta("Éxito", "Criterio de evaluación guardado correctamente.", "se ha registrado el criterio de forma exitosa");
+                utilidades.mostrarAlerta("Éxito",
+                        "Criterio de evaluación guardado correctamente.",
+                        "se ha registrado el criterio de forma exitosa");
                 nuevoNumeroCriterio ++;
                 textoDescripcionCriterio.clear();
                 numeroCriterio.setText(String.valueOf(nuevoNumeroCriterio));
 
             } else {
-                utilidades.mostrarAlerta("Error", "No se pudo guardar el criterio de evaluación.", "porfavor llene todos los campos");
+                utilidades.mostrarAlerta("Error",
+                        "No se pudo guardar el criterio de evaluación.",
+                        "porfavor llene todos los campos");
             }
 
         } catch (SQLException e){
 
-            utilidades.mostrarAlerta("Error", "Error al obtener el número de criterio más alto.", "porfavor llene todos los campos");
-            logger.error("Error al obtener el número de criterio más alto: " + e.getMessage());
+            utilidades.mostrarAlerta("Error",
+                    "Error al obtener el número de criterio más alto.",
+                    "porfavor llene todos los campos");
+            logger.error("Error al obtener el número de criterio más alto: " + e);
         } catch (IOException e) {
 
-            utilidades.mostrarAlerta("Error", "Error al guardar el criterio de evaluación.", "porfavor llene todos los campos");
-            logger.error("Error al guardar el criterio de evaluación: " + e.getMessage());
+            utilidades.mostrarAlerta("Error",
+                    "Error al guardar el criterio de evaluación.",
+                    "porfavor llene todos los campos");
+            logger.error("Error al guardar el criterio de evaluación: " + e);
         }
 
     }

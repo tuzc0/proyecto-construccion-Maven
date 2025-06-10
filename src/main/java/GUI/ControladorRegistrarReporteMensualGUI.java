@@ -83,11 +83,9 @@ public class ControladorRegistrarReporteMensualGUI {
 
     VerificacionEntradas verificacionEntradas = new VerificacionEntradas();
 
-
-
-
     @FXML
     public void initialize() {
+
         etiquetaMatricula.setText(matricula);
         etiquetaFecha.setText(LocalDate.now().toString());
 
@@ -102,12 +100,11 @@ public class ControladorRegistrarReporteMensualGUI {
         crearReporteVacio();
         cargarActividades();
 
-
-
     }
 
     @FXML
     private void seleccionarArchivo() {
+
         SelectorArchivos selector = new SelectorArchivos(
                 listaArchivos.getScene().getWindow(),
                 "Seleccionar archivos de evidencia"
@@ -116,10 +113,13 @@ public class ControladorRegistrarReporteMensualGUI {
         List<java.io.File> archivosSeleccionados = selector.seleccionarMultiplesArchivos();
 
         if (archivosSeleccionados != null && !archivosSeleccionados.isEmpty()) {
+
             if (SelectorArchivos.validarArchivos(archivosSeleccionados, TAMANO_MAXIMO_MB)) {
+
                 archivosLocales.addAll(archivosSeleccionados);
                 actualizarListaArchivos();
                 etiquetaErrorArchivos.setText("");
+
             } else {
                 etiquetaErrorArchivos.setText("Archivos no válidos. Verifique tamaño y formatos.");
             }
@@ -129,18 +129,28 @@ public class ControladorRegistrarReporteMensualGUI {
     @FXML
     public void guardarReporte () {
 
-        if (campoMetodologia.getText().isEmpty() || campoObservaciones.getText().isEmpty() || campoHoras.getText().isEmpty()) {
-            utilidades.mostrarAlerta("Error", "Campos incompletos", "Debe completar todos los campos antes de guardar el reporte.");
+        if (campoMetodologia.getText().isEmpty() || campoObservaciones.getText().isEmpty() ||
+                campoHoras.getText().isEmpty()) {
+
+            utilidades.mostrarAlerta("Error",
+                    "Campos incompletos",
+                    "Debe completar todos los campos antes de guardar el reporte.");
             return;
         }
 
         if (tablaActividades.getItems().isEmpty()) {
-            utilidades.mostrarAlerta("Error", "No hay actividades", "Debe añadir al menos una actividad al reporte.");
+
+            utilidades.mostrarAlerta("Error",
+                    "No hay actividades",
+                    "Debe añadir al menos una actividad al reporte.");
             return;
         }
 
         if (listaArchivos.getItems().isEmpty()) {
-            utilidades.mostrarAlerta("Error", "No hay archivos adjuntos", "Debe adjuntar al menos un archivo de evidencia.");
+
+            utilidades.mostrarAlerta("Error",
+                    "No hay archivos adjuntos",
+                    "Debe adjuntar al menos un archivo de evidencia.");
             return;
         }
 
@@ -149,26 +159,39 @@ public class ControladorRegistrarReporteMensualGUI {
         String horasTexto = campoHoras.getText();
 
         if (metodologia.isEmpty() || observaciones.isEmpty() || horasTexto.isEmpty()) {
-            utilidades.mostrarAlerta("Error", "Campos incompletos", "Debe completar todos los campos antes de guardar el reporte.");
+
+            utilidades.mostrarAlerta("Error",
+                    "Campos incompletos",
+                    "Debe completar todos los campos antes de guardar el reporte.");
             return;
         }
 
         if (!verificacionEntradas.esEnteroPositivo(horasTexto)) {
-            utilidades.mostrarAlerta("Error", "Número de horas inválido", "El número de horas debe ser un número entero positivo.");
+
+            utilidades.mostrarAlerta("Error",
+                    "Número de horas inválido",
+                    "El número de horas debe ser un número entero positivo.");
             return;
         }
 
         if (!verificacionEntradas.esTextoSeguro(observaciones)) {
-            utilidades.mostrarAlerta("Error", "Número de horas inválido", "El número de horas debe ser un número positivo.");
+
+            utilidades.mostrarAlerta("Error",
+                    "Número de horas inválido",
+                    "El número de horas debe ser un número positivo.");
             return;
         }
 
         if (!verificacionEntradas.esTextoSeguro(metodologia)) {
-            utilidades.mostrarAlerta("Error", "Metodología inválida", "La metodología debe ser un texto seguro.");
+
+            utilidades.mostrarAlerta("Error",
+                    "Metodología inválida",
+                    "La metodología debe ser un texto seguro.");
             return;
         }
 
         try {
+
             ReporteDAO reporteDAO = new ReporteDAO();
             ReporteDTO reporteDTO = new ReporteDTO();
 
@@ -181,34 +204,40 @@ public class ControladorRegistrarReporteMensualGUI {
 
             reporteDAO.modificarReporte(reporteDTO);
 
-            utilidades.mostrarAlerta("Éxito", "Reporte guardado", "El reporte se ha guardado correctamente.");
+            utilidades.mostrarAlerta("Éxito",
+                    "Reporte guardado",
+                    "El reporte se ha guardado correctamente.");
 
             guardarEvidenciaReporte();
 
         } catch (SQLException e) {
             logger.error("Error al guardar el reporte: ", e);
-            utilidades.mostrarAlerta("Error", "No se pudo guardar el reporte", "Por favor, intente nuevamente más tarde.");
+            utilidades.mostrarAlerta("Error",
+                    "No se pudo guardar el reporte",
+                    "Por favor, intente nuevamente más tarde.");
+
         } catch (IOException e) {
 
             logger.error("Error de IO al guardar el reporte: ", e);
-            utilidades.mostrarAlerta("Error", "No se pudo guardar el reporte", "Por favor, intente nuevamente más tarde.");
+            utilidades.mostrarAlerta("Error",
+                    "No se pudo guardar el reporte",
+                    "Por favor, intente nuevamente más tarde.");
+
         } catch (Exception e) {
 
             logger.error("Error inesperado al guardar el reporte: ", e);
-            utilidades.mostrarAlerta("Error", "Ocurrió un error inesperado", "Por favor, intente nuevamente más tarde.");
+            utilidades.mostrarAlerta("Error",
+                    "Ocurrió un error inesperado",
+                    "Por favor, intente nuevamente más tarde.");
         }
     }
 
-
-
-
-
-
-
     private void actualizarListaArchivos() {
+
         listaArchivos.getItems().clear();
 
         for (java.io.File archivo : archivosLocales) {
+
             String nombre = archivo.getName();
             String extension = nombre.substring(nombre.lastIndexOf('.') + 1).toUpperCase();
             double sizeMB = archivo.length() / (1024.0 * 1024.0);
@@ -249,11 +278,15 @@ public class ControladorRegistrarReporteMensualGUI {
     private void subirUrlBD() {
 
         try{
+
             EvidenciaReporteDAO evidenciaDAO = new EvidenciaReporteDAO();
 
             for (java.io.File archivo : archivosLocales) {
+
                 String url = urlsDrive.get(archivo.getName());
+
                 if (url != null) {
+
                     EvidenciaReporteDTO evidencia = new EvidenciaReporteDTO();
                     evidencia.setIdEvidencia(0);
                     evidencia.setURL(url);
@@ -337,18 +370,24 @@ public class ControladorRegistrarReporteMensualGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error al crear el reporte: " + e.getMessage());
-            utilidades.mostrarAlerta("Error", "No se pudo crear el reporte.", "Por favor, intente nuevamente más tarde.");
+            logger.error("Error al crear el reporte: " + e);
+            utilidades.mostrarAlerta("Error",
+                    "No se pudo crear el reporte.",
+                    "Por favor, intente nuevamente más tarde.");
 
         } catch (IOException e) {
 
-            logger.error("Error de IO al crear el reporte: " + e.getMessage());
-            utilidades.mostrarAlerta("Error", "No se pudo crear el reporte.", "Por favor, intente nuevamente más tarde.");
+            logger.error("Error de IO al crear el reporte: " + e);
+            utilidades.mostrarAlerta("Error",
+                    "No se pudo crear el reporte.",
+                    "Por favor, intente nuevamente más tarde.");
 
         } catch (Exception e) {
 
-            logger.error("Error inesperado al crear el reporte: " + e.getMessage());
-            utilidades.mostrarAlerta("Error", "No se pudo crear el reporte.", "Por favor, intente nuevamente más tarde.");
+            logger.error("Error inesperado al crear el reporte: " + e);
+            utilidades.mostrarAlerta("Error",
+                    "No se pudo crear el reporte.",
+                    "Por favor, intente nuevamente más tarde.");
         }
     }
 
@@ -356,18 +395,25 @@ public class ControladorRegistrarReporteMensualGUI {
     public void añadirActividad() {
 
         if (fechaInicio.getValue() == null || fechaFin.getValue() == null) {
-            utilidades.mostrarAlerta("Error", "Fechas incompletas", "Debe seleccionar ambas fechas");
+
+            utilidades.mostrarAlerta("Error",
+                    "Fechas incompletas",
+                    "Debe seleccionar ambas fechas");
             return;
         }
 
         if (fechaInicio.getValue().isAfter(fechaFin.getValue())) {
-            utilidades.mostrarAlerta("Error", "Fecha de inicio posterior a fecha de fin", "La fecha de inicio no puede ser posterior a la fecha de fin.");
+
+            utilidades.mostrarAlerta("Error",
+                    "Fecha de inicio posterior a fecha de fin",
+                    "La fecha de inicio no puede ser posterior a la fecha de fin.");
             return;
         }
 
         ReporteContieneDAO reporteContieneDAO = new ReporteContieneDAO();
 
         try {
+
             ReporteContieneDTO reporteContieneDTO = new ReporteContieneDTO();
             reporteContieneDTO.setIdReporte(idReporte);
             reporteContieneDTO.setFechaInicioReal(Timestamp.valueOf(fechaInicio.getValue().atStartOfDay()));
@@ -379,7 +425,9 @@ public class ControladorRegistrarReporteMensualGUI {
             reporteContieneDTO.setIdActividad(idActividadSeleccionada);
             reporteContieneDAO.insertarReporteContiene(reporteContieneDTO);
 
-            utilidades.mostrarAlerta("Éxito", "Actividad añadida", "La actividad se ha añadido al reporte.");
+            utilidades.mostrarAlerta("Éxito",
+                    "Actividad añadida",
+                    "La actividad se ha añadido al reporte.");
 
 
             tablaActividades.getItems().clear();
@@ -388,16 +436,19 @@ public class ControladorRegistrarReporteMensualGUI {
         } catch (SQLException e) {
 
             logger.error("Error al añadir actividad: " + e);
-            utilidades.mostrarAlerta("Error", "No se pudo añadir la actividad", "Por favor, intente nuevamente más tarde.");
+            utilidades.mostrarAlerta("Error",
+                    "No se pudo añadir la actividad",
+                    "Por favor, intente nuevamente más tarde.");
 
         } catch (Exception e) {
             logger.error("Error inesperado: " + e);
-            utilidades.mostrarAlerta("Error", "Ocurrió un error inesperado", "Por favor, intente nuevamente más tarde.");
+            utilidades.mostrarAlerta("Error",
+                    "Ocurrió un error inesperado",
+                    "Por favor, intente nuevamente más tarde.");
         }
     }
 
     public int obtenerIdActividadSeleccionada() {
-
 
         String actividadSeleccionada = comboActividades.getValue();
 
@@ -405,8 +456,12 @@ public class ControladorRegistrarReporteMensualGUI {
 
             String idActividadStr = actividadSeleccionada.replaceAll("[^0-9]", "");
             return Integer.parseInt(idActividadStr);
+
         } else {
-            utilidades.mostrarAlerta("Error", "No se seleccionó ninguna actividad.", "Por favor, seleccione una actividad.");
+
+            utilidades.mostrarAlerta("Error",
+                    "No se seleccionó ninguna actividad.",
+                    "Por favor, seleccione una actividad.");
             return -1;
         }
     }
@@ -438,21 +493,24 @@ public class ControladorRegistrarReporteMensualGUI {
         } catch (SQLException e) {
 
             logger.error("Error al cargar las actividades: " + e);
-            utilidades.mostrarAlerta("Error", "No se pudieron cargar las actividades.", "Por favor, intente nuevamente más tarde.");
-            e.printStackTrace();
+            utilidades.mostrarAlerta("Error",
+                    "No se pudieron cargar las actividades.",
+                    "Por favor, intente nuevamente más tarde.");
 
         } catch (IOException e) {
 
             logger.error("Error de IO al cargar las actividades: " + e);
-            utilidades.mostrarAlerta("Error", "No se pudieron cargar las actividades.", "Por favor, intente nuevamente más tarde.");
+            utilidades.mostrarAlerta("Error",
+                    "No se pudieron cargar las actividades.",
+                    "Por favor, intente nuevamente más tarde.");
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al cargar las actividades: " + e);
-            utilidades.mostrarAlerta("Error", "No se pudieron cargar las actividades.", "Por favor, intente nuevamente más tarde.");
+            utilidades.mostrarAlerta("Error",
+                    "No se pudieron cargar las actividades.",
+                    "Por favor, intente nuevamente más tarde.");
         }
-
-
     }
 
     @FXML
@@ -462,7 +520,4 @@ public class ControladorRegistrarReporteMensualGUI {
         stage.close();
 
     }
-
-
-
 }

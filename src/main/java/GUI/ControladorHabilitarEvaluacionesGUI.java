@@ -67,30 +67,28 @@ public class ControladorHabilitarEvaluacionesGUI {
 
         cargarCriterios();
         tablaCriterios.getSelectionModel().setSelectionMode(javafx.scene.control.SelectionMode.MULTIPLE);
-
-
     }
-
 
     public void cargarCriterios() {
 
         try{
 
             CriterioEvaluacionDAO criterioEvaluacionDAO = new CriterioEvaluacionDAO();
-            ObservableList<CriterioEvaluacionDTO> listaCriterios = FXCollections.observableArrayList(criterioEvaluacionDAO.listarCriteriosActivos());
+            ObservableList<CriterioEvaluacionDTO> listaCriterios =
+                    FXCollections.observableArrayList(criterioEvaluacionDAO.listarCriteriosActivos());
             tablaCriterios.setItems(listaCriterios);
 
         } catch (SQLException e) {
 
-            logger.severe("Error al cargar los criterios: " + e.getMessage());
+            logger.severe("Error al cargar los criterios: " + e);
 
         } catch (IOException e) {
 
-            logger.severe("Error de IO: " + e.getMessage());
+            logger.severe("Error de IO: " + e);
 
         } catch (Exception e){
 
-            logger.severe("Error inesperado: " + e.getMessage());
+            logger.severe("Error inesperado: " + e);
 
         }
     }
@@ -113,35 +111,47 @@ public class ControladorHabilitarEvaluacionesGUI {
 
         } catch (IOException e) {
 
-            logger.severe("Error al abrir la ventana RegistrarCriterioEvaluacionGUI: " + e.getMessage());
+            logger.severe("Error al abrir la ventana RegistrarCriterioEvaluacionGUI: " + e);
         }
     }
 
     @FXML
     public void eliminarCriterio() {
+
         CriterioEvaluacionDTO criterioSeleccionado = tablaCriterios.getSelectionModel().getSelectedItem();
 
         if (criterioSeleccionado == null) {
+
             logger.warning("No se ha seleccionado ningún criterio para eliminar.");
-            utilidades.mostrarAlerta("Error", "No se ha seleccionado ningún criterio.", "porfavor seleccione un criterio para eliminar");
+            utilidades.mostrarAlerta("Error",
+                    "No se ha seleccionado ningún criterio.",
+                    "porfavor seleccione un criterio para eliminar");
             return;
         }
 
         try {
+
             CriterioEvaluacionDAO criterioEvaluacionDAO = new CriterioEvaluacionDAO();
-            boolean eliminado = criterioEvaluacionDAO.eliminarCriterioEvaluacionPorID(criterioSeleccionado.getIDCriterio());
+            boolean eliminado =
+                    criterioEvaluacionDAO.eliminarCriterioEvaluacionPorID(criterioSeleccionado.getIDCriterio());
 
             if (eliminado) {
+
                 logger.info("Criterio eliminado correctamente.");
                 criterioEvaluacionDAO.enumerarCriterios();
                 cargarCriterios();
+
             } else {
                 logger.warning("No se pudo eliminar el criterio.");
             }
+
         } catch (SQLException e) {
-            logger.severe("Error al eliminar el criterio: " + e.getMessage());
+
+            logger.severe("Error al eliminar el criterio: " + e);
+
         } catch (IOException e) {
-            logger.severe("Error de IO al eliminar el criterio: " + e.getMessage());
+
+            logger.severe("Error de IO al eliminar el criterio: " + e);
         }
     }
 
@@ -166,7 +176,6 @@ public class ControladorHabilitarEvaluacionesGUI {
 
         tablaCriterios.setEditable(true);
 
-
         botonAñadirCriterio.setDisable(true);
         botonCancelar.setDisable(true);
         botonHabilitarEvaluaciones.setDisable(true);
@@ -174,7 +183,9 @@ public class ControladorHabilitarEvaluacionesGUI {
     }
 
     private void actualizarCriterioEnBaseDeDatos(CriterioEvaluacionDTO criterio) {
+
         try {
+
             CriterioEvaluacionDAO criterioEvaluacionDAO = new CriterioEvaluacionDAO();
             boolean actualizado = criterioEvaluacionDAO.modificarCriterioEvaluacion(criterio);
 
@@ -183,8 +194,9 @@ public class ControladorHabilitarEvaluacionesGUI {
             } else {
                 logger.warning("No se pudo actualizar el criterio.");
             }
+
         } catch (SQLException | IOException e) {
-            logger.severe("Error al actualizar el criterio: " + e.getMessage());
+            logger.severe("Error al actualizar el criterio: " + e);
         }
     }
 

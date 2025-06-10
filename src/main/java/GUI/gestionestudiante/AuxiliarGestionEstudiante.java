@@ -16,8 +16,6 @@ public class AuxiliarGestionEstudiante {
 
     public int obtenerNRC () {
 
-        System.out.println("Número de personal: " + numeroDePersonal);
-
         int NRC = -1;
 
         Utilidades utilidades = new Utilidades();
@@ -27,7 +25,6 @@ public class AuxiliarGestionEstudiante {
         try{
 
             GrupoDTO grupo = grupoDAO.buscarGrupoActivoPorNumeroDePersonal(numeroDePersonal);
-            System.out.println("Grupo encontrado: " + numeroDePersonal);
             if (grupo.getNRC() != -1) {
 
                 NRC = grupo.getNRC();
@@ -45,7 +42,7 @@ public class AuxiliarGestionEstudiante {
 
         } catch (SQLException e) {
 
-            logger.error("Error al obtener el NRC: " + e.getMessage());
+            logger.error("Error al obtener el NRC: " + e);
 
             utilidades.mostrarAlerta(
                     "Error al obtener NRC",
@@ -54,7 +51,7 @@ public class AuxiliarGestionEstudiante {
             );
         } catch (IOException e) {
 
-            logger.error("Error de entrada/salida al obtener el NRC: " + e.getMessage());
+            logger.error("Error de entrada/salida al obtener el NRC: " + e);
             utilidades.mostrarAlerta(
                     "Error de entrada/salida",
                     "No se pudo obtener el NRC",
@@ -62,10 +59,6 @@ public class AuxiliarGestionEstudiante {
             );
         }
 
-        System.out.println("NRC obtenido: " + NRC);
         return NRC;
-
-
-
     }
 }

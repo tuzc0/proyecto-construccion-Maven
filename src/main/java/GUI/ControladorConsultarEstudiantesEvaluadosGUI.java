@@ -60,15 +60,20 @@ public class ControladorConsultarEstudiantesEvaluadosGUI {
     @FXML
     public void initialize() {
 
-        columnaMatricula.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMatricula()));
-        columnaNombres.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNombre()));
-        columnaApellidos.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getApellido()));
+        columnaMatricula.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMatricula()));
+        columnaNombres.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNombre()));
+        columnaApellidos.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getApellido()));
 
         cargarEstudiantes();
         añadirBotonVerEvaluacionesATabla();
 
-        tablaEstudiantes.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            estudianteSeleccionado = newValue;
+        tablaEstudiantes.getSelectionModel().selectedItemProperty().addListener((estudianteObservado,
+                                                                                 antiguoEstudiante,
+                                                                                 nuevoEstudiante) -> {
+            estudianteSeleccionado = nuevoEstudiante;
             tablaEstudiantes.refresh();
         });
     }
@@ -85,7 +90,9 @@ public class ControladorConsultarEstudiantesEvaluadosGUI {
 
         } catch (Exception e) {
             logger.severe("Error al cargar la lista de estudiantes: " + e);
-            utilidades.mostrarAlerta("Error", "Error de entrada/salida", "No se pudo cargar la lista de estudiantes.");
+            utilidades.mostrarAlerta("Error",
+                    "Error de entrada/salida",
+                    "No se pudo cargar la lista de estudiantes.");
         }
     }
 
@@ -147,7 +154,7 @@ public class ControladorConsultarEstudiantesEvaluadosGUI {
             cargarEstudiantes();
 
         } catch (IOException e) {
-            logger.severe("Error al abrir la ventana RegistrarEvaluacionGUI: " + e.getMessage());
+            logger.severe("Error al abrir la ventana RegistrarEvaluacionGUI: " + e);
         }
 
     }
@@ -179,7 +186,7 @@ public class ControladorConsultarEstudiantesEvaluadosGUI {
                 tablaEstudiantes.setItems(estudiantesFiltrados);
             }
         } catch (Exception e) {
-            logger.severe("Error al buscar el estudiante: " + e.getMessage());
+            logger.severe("Error al buscar el estudiante: " + e);
         }
     }
 }

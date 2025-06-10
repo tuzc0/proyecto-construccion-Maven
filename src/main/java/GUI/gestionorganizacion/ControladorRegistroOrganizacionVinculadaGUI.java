@@ -62,28 +62,36 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
 
         int estadoActivo = 1;
 
-        if (nombreOrganizacion.isEmpty() || correoOrganizacion.isEmpty() || contactoOrganizacion.isEmpty() || direccionOrganizacion.isEmpty()) {
-            utilidades.mostrarAlerta("Error de registro", "Campos vacíos", "Por favor, complete todos los campos.");
+        if (nombreOrganizacion.isEmpty() || correoOrganizacion.isEmpty() || contactoOrganizacion.isEmpty() ||
+                direccionOrganizacion.isEmpty()) {
+
+            utilidades.mostrarAlerta("Error de registro", "Campos vacíos",
+                    "Por favor, complete todos los campos.");
             return;
         }
 
         if (!verificacionUsuario.nombreValido(nombreOrganizacion)) {
-            utilidades.mostrarAlerta("Error de registro", "Nombre inválido", "El nombre de la organización no es válido.");
+            utilidades.mostrarAlerta("Error de registro",
+                    "Nombre inválido", "El nombre de la organización no es válido.");
             return;
         }
 
         if (!verificacionUsuario.nombreValido(nombreOrganizacion)) {
-            utilidades.mostrarAlerta("Error de registro", "Nombre inválido", "El nombre de la organización no es válido.");
+            utilidades.mostrarAlerta("Error de registro", "Nombre inválido",
+                    "El nombre de la organización no es válido.");
             return;
         }
 
         if (!verificacionUsuario.correoValido(correoOrganizacion)) {
-            utilidades.mostrarAlerta("Error de registro", "Correo inválido", "El correo de la organización no es válido.");
+            utilidades.mostrarAlerta("Error de registro", "Correo inválido",
+                    "El correo de la organización no es válido.");
             return;
         }
 
         OrganizacionVinculadaDAO organizacionDAO= new OrganizacionVinculadaDAO();
-        OrganizacionVinculadaDTO organizacionDTO = new OrganizacionVinculadaDTO(idOrganizacion, nombreOrganizacion, correoOrganizacion, contactoOrganizacion, direccionOrganizacion, estadoActivo);
+        OrganizacionVinculadaDTO organizacionDTO =
+                new OrganizacionVinculadaDTO(idOrganizacion, nombreOrganizacion, correoOrganizacion,
+                        contactoOrganizacion, direccionOrganizacion, estadoActivo);
 
 
         try {
@@ -91,36 +99,42 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
             OrganizacionVinculadaDTO organizacionExistente = organizacionDAO.buscarOrganizacionPorCorreo(correoOrganizacion);
 
             if (!organizacionExistente.getCorreo().equals("N/A")) {
-                utilidades.mostrarAlerta("Error de registro", "Correo ya registrado", "El correo electrónico ya está asociado a otra organización.");
+                utilidades.mostrarAlerta("Error de registro", "Correo ya registrado",
+                        "El correo electrónico ya está asociado a otra organización.");
                 return;
             }
 
             organizacionExistente = organizacionDAO.buscarOrganizacionPorTelefono(contactoOrganizacion);
 
             if (!organizacionExistente.getNumeroDeContacto().equals("N/A")) {
-                utilidades.mostrarAlerta("Error de registro", "Número de contacto ya registrado", "El número de contacto ya está asociado a otra organización.");
+                utilidades.mostrarAlerta("Error de registro", "Número de contacto ya registrado",
+                        "El número de contacto ya está asociado a otra organización.");
                 return;
             }
 
             idOrganizacion = organizacionDAO.crearNuevaOrganizacion(organizacionDTO);
-            utilidades.mostrarAlerta("Registro exitoso", "Organización registrada", "La organización ha sido registrada exitosamente.");
+            utilidades.mostrarAlerta("Registro exitoso", "Organización registrada",
+                    "La organización ha sido registrada exitosamente.");
             registrarRepresentante();
             botonRegistrarRepresentante.setDisable(false);
 
         } catch (SQLException e) {
 
-            utilidades.mostrarAlerta("Error de registro", "Error al registrar la organización", "No se pudo registrar la organización. Por favor, inténtelo de nuevo más tarde.");
-            logger.severe("Error al registrar la organización: " + e.getMessage());
+            utilidades.mostrarAlerta("Error de registro", "Error al registrar la organización",
+                    "No se pudo registrar la organización. Por favor, inténtelo de nuevo más tarde.");
+            logger.severe("Error al registrar la organización: " + e);
 
         } catch (IOException e){
 
-            utilidades.mostrarAlerta("Error de registro", "Error al registrar la organización", "No se pudo registrar la organización. Por favor, inténtelo de nuevo más tarde.");
-            logger.severe("Error al registrar la organización: " + e.getMessage());
+            utilidades.mostrarAlerta("Error de registro", "Error al registrar la organización",
+                    "No se pudo registrar la organización. Por favor, inténtelo de nuevo más tarde.");
+            logger.severe("Error al registrar la organización: " + e);
 
         } catch (Exception e) {
 
-            utilidades.mostrarAlerta("Error de registro", "Error al registrar la organización", "No se pudo registrar la organización. Por favor, inténtelo de nuevo más tarde.");
-            logger.severe("Error al registrar la organización: " + e.getMessage());
+            utilidades.mostrarAlerta("Error de registro", "Error al registrar la organización",
+                    "No se pudo registrar la organización. Por favor, inténtelo de nuevo más tarde.");
+            logger.severe("Error al registrar la organización: " + e);
 
         }
     }
@@ -133,8 +147,8 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
         String correoRepresentante = campoCorreoRepresentante.getText();
         String contactoRepresentante = campoContactoRepresentante.getText();
 
-        auxiliarRegistroRepresentante.registrarRepresentante(nombreRepresentante, apellidosRepresentante, correoRepresentante, contactoRepresentante, idOrganizacion);
-
+        auxiliarRegistroRepresentante.registrarRepresentante(nombreRepresentante, apellidosRepresentante,
+                correoRepresentante, contactoRepresentante, idOrganizacion);
 
     }
 
@@ -142,9 +156,6 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
     private void guardarOrganizacionYRepresentante() {
 
         registrarOrganizacion();
-
-
-
     }
 
     @FXML
@@ -175,8 +186,9 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
 
         } catch (IOException e) {
 
-            logger.severe("Error al abrir la ventana de registro representante: " + e.getMessage());
-            utilidades.mostrarAlerta("Error", "Error al abrir la ventana de registro", "No se pudo abrir la ventana de registro. Por favor, inténtelo de nuevo más tarde.");
+            logger.severe("Error al abrir la ventana de registro representante: " + e);
+            utilidades.mostrarAlerta("Error", "Error al abrir la ventana de registro",
+                    "No se pudo abrir la ventana de registro. Por favor, inténtelo de nuevo más tarde.");
 
         }
     }

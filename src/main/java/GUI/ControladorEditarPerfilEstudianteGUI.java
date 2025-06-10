@@ -147,13 +147,17 @@ public class ControladorEditarPerfilEstudianteGUI {
 
             if (nuevaContrasena.isEmpty() || nuevaContrasenaDescifrada.isEmpty()) {
 
-                utilidades.mostrarAlerta("Campos vacíos", "Por favor, complete todos los campos.", "No se puede guardar el perfil sin completar la contraseña.");
+                utilidades.mostrarAlerta("Campos vacíos",
+                        "Por favor, complete todos los campos.",
+                        "No se puede guardar el perfil sin completar la contraseña.");
                 return;
             }
 
             if (!verificacionUsuario.contrasenaValida(nuevaContrasena) || !verificacionUsuario.contrasenaValida(nuevaContrasenaDescifrada)) {
 
-                utilidades.mostrarAlerta("Contraseña inválida", "La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una minúscula, un número y un carácter especial.", "Por favor, ingrese una contraseña válida.");
+                utilidades.mostrarAlerta("Contraseña inválida",
+                        "La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una minúscula, un número y un carácter especial.",
+                        "Por favor, ingrese una contraseña válida.");
                 return;
             }
 
@@ -164,15 +168,15 @@ public class ControladorEditarPerfilEstudianteGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error al actualizar el perfil del estudiante: " + e.getMessage());
+            logger.error("Error al actualizar el perfil del estudiante: " + e);
 
         } catch (IOException e) {
 
-            logger.error("Error de entrada/salida al actualizar el perfil del estudiante: " + e.getMessage());
+            logger.error("Error de entrada/salida al actualizar el perfil del estudiante: " + e);
 
         } catch (Exception e) {
 
-            logger.error("Error inesperado al actualizar el perfil del estudiante: " + e.getMessage());
+            logger.error("Error inesperado al actualizar el perfil del estudiante: " + e);
 
         }
 

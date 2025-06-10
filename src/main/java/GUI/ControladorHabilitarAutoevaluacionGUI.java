@@ -67,20 +67,21 @@ public class ControladorHabilitarAutoevaluacionGUI {
         try {
 
             CriterioAutoevaluacionDAO criterioAutoevaluacionDAO = new CriterioAutoevaluacionDAO();
-            ObservableList<CriterioAutoevaluacionDTO> listaCriterios = FXCollections.observableArrayList(criterioAutoevaluacionDAO.listarCriteriosAutoevaluacionActivos());
+            ObservableList<CriterioAutoevaluacionDTO> listaCriterios =
+                    FXCollections.observableArrayList(criterioAutoevaluacionDAO.listarCriteriosAutoevaluacionActivos());
             tablaCriterios.setItems(listaCriterios);
 
         } catch (SQLException e){
 
-            logger.error("Error al cargar los datos de la tabla de criterios de autoevaluación: " + e.getMessage());
+            logger.error("Error al cargar los datos de la tabla de criterios de autoevaluación: " + e);
 
         } catch (IOException e) {
 
-            logger.error("Error al cargar los datos de la tabla de criterios de autoevaluación: " + e.getMessage());
+            logger.error("Error al cargar los datos de la tabla de criterios de autoevaluación: " + e);
 
         } catch (Exception e) {
 
-            logger.error("Error inesperado al cargar los datos de la tabla de criterios de autoevaluación: " + e.getMessage());
+            logger.error("Error inesperado al cargar los datos de la tabla de criterios de autoevaluación: " + e);
 
         }
     }
@@ -103,11 +104,11 @@ public class ControladorHabilitarAutoevaluacionGUI {
 
         } catch (IOException e) {
 
-            logger.error("Error al abrir la ventana de registrar criterio de autoevaluación: " + e.getMessage());
+            logger.error("Error al abrir la ventana de registrar criterio de autoevaluación: " + e);
 
         } catch (Exception e) {
 
-            logger.error("Error inesperado al abrir la ventana de registrar criterio de autoevaluación: " + e.getMessage());
+            logger.error("Error inesperado al abrir la ventana de registrar criterio de autoevaluación: " + e);
         }
 
     }
@@ -117,26 +118,38 @@ public class ControladorHabilitarAutoevaluacionGUI {
         CriterioAutoevaluacionDTO criterioSeleccionado = tablaCriterios.getSelectionModel().getSelectedItem();
 
         if (criterioSeleccionado == null) {
+
             logger.warn("No se ha seleccionado ningún criterio para eliminar.");
-            utilidades.mostrarAlerta("Error", "No se ha seleccionado ningún criterio.", "Por favor seleccione un criterio para eliminar.");
+            utilidades.mostrarAlerta("Error",
+                    "No se ha seleccionado ningún criterio.",
+                    "Por favor seleccione un criterio para eliminar.");
             return;
         }
 
         try {
+
             CriterioAutoevaluacionDAO criterioAutoevaluacionDAO = new CriterioAutoevaluacionDAO();
-            boolean eliminado = criterioAutoevaluacionDAO.eliminarCriterioAutoevaluacionPorID(criterioSeleccionado.getIDCriterio());
+            boolean eliminado =
+                    criterioAutoevaluacionDAO.eliminarCriterioAutoevaluacionPorID(criterioSeleccionado.getIDCriterio());
 
             if (eliminado) {
+
                 logger.info("Criterio de autoevaluación eliminado correctamente.");
                 criterioAutoevaluacionDAO.enumerarCriterios();
                 cargarCriterios();
+
             } else {
+
                 logger.warn("No se pudo eliminar el criterio de autoevaluación.");
             }
+
         } catch (SQLException e) {
-            logger.error("Error al eliminar el criterio de autoevaluación: " + e.getMessage());
+
+            logger.error("Error al eliminar el criterio de autoevaluación: " + e);
+
         } catch (IOException e) {
-            logger.error("Error de IO al eliminar el criterio de autoevaluación: " + e.getMessage());
+
+            logger.error("Error de IO al eliminar el criterio de autoevaluación: " + e);
         }
     }
 
@@ -166,7 +179,9 @@ public class ControladorHabilitarAutoevaluacionGUI {
     }
 
     private void actualizarCriterioEnBaseDeDatos(CriterioAutoevaluacionDTO criterio) {
+
         try {
+
             CriterioAutoevaluacionDAO criterioAutoevaluacionDAO = new CriterioAutoevaluacionDAO();
             boolean actualizado = criterioAutoevaluacionDAO.modificarCriterioAutoevaluacion(criterio);
 
@@ -175,8 +190,10 @@ public class ControladorHabilitarAutoevaluacionGUI {
             } else {
                 logger.warn("No se pudo actualizar el criterio de autoevaluación.");
             }
+
         } catch (SQLException | IOException e) {
-            logger.error("Error al actualizar el criterio de autoevaluación: " + e.getMessage());
+
+            logger.error("Error al actualizar el criterio de autoevaluación: " + e);
         }
     }
 

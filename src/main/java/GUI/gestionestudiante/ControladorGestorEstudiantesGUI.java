@@ -15,9 +15,11 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import logica.DAOs.CuentaDAO;
 import logica.DAOs.EstudianteDAO;
+import logica.DAOs.GrupoDAO;
 import logica.DAOs.UsuarioDAO;
 import logica.DTOs.CuentaDTO;
 import logica.DTOs.EstudianteDTO;
+import logica.DTOs.GrupoDTO;
 import logica.DTOs.UsuarioDTO;
 import logica.VerificacionUsuario;
 import org.apache.logging.log4j.Logger;
@@ -52,16 +54,16 @@ public class ControladorGestorEstudiantesGUI {
     private TableColumn<EstudianteDTO, String> columnaApellidos;
 
     @FXML
-    private Label etiquetaNombreEncontrado;
+    private Label campoNombreEncontrado;
 
     @FXML
-    private Label etiquetaApellidoEncontrado;
+    private Label campoApellidoEncontrado;
 
     @FXML
-    private Label etiquetaMatriculaEncontrada;
+    private Label campoMatriculaEncontrada;
 
     @FXML
-    private Label etiquetaCorreoEncontrado;
+    private Label campoCorreoEncontrado;
 
     @FXML
     private TextField campoNombreEditable;
@@ -88,7 +90,7 @@ public class ControladorGestorEstudiantesGUI {
     private Button botonCancelarSeleccion;
 
     @FXML
-    private Label etiquetaNumeroEstudiantesSeleccionados;
+    private Label campoNumeroEstudiantesSeleccionados;
 
     @FXML
     private Button botonEliminarEstudiante;
@@ -113,9 +115,12 @@ public class ControladorGestorEstudiantesGUI {
 
         botonSeleccionarEstudiantes.setCursor(Cursor.HAND);
 
-        columnaMatricula.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMatricula()));
-        columnaNombres.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNombre()));
-        columnaApellidos.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getApellido()));
+        columnaMatricula.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMatricula()));
+        columnaNombres.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNombre()));
+        columnaApellidos.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getApellido()));
 
         cargarEstudiantes();
         tablaEstudiantes.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -163,11 +168,7 @@ public class ControladorGestorEstudiantesGUI {
 
         if (matricula.isEmpty()) {
 
-            utilidades.mostrarAlerta(
-                    "Campos vacíos",
-                    "Por favor, ingrese una matrícula.",
-                    "El campo de matrícula no puede estar vacío."
-            );
+            utilidades.mostrarVentana("/CamposVaciosGUI.fxml");
         }
 
         try {
@@ -178,29 +179,25 @@ public class ControladorGestorEstudiantesGUI {
             CuentaDAO cuentaDAO = new CuentaDAO();
             if (estudiante.getIdUsuario() != -1) {
 
-                etiquetaNombreEncontrado.setText(estudiante.getNombre());
-                etiquetaApellidoEncontrado.setText(estudiante.getApellido());
-                etiquetaMatriculaEncontrada.setText(estudiante.getMatricula());
+                campoNombreEncontrado.setText(estudiante.getNombre());
+                campoApellidoEncontrado.setText(estudiante.getApellido());
+                campoMatriculaEncontrada.setText(estudiante.getMatricula());
 
                 idEstudiante = estudiante.getIdUsuario();
                 CuentaDTO cuenta = cuentaDAO.buscarCuentaPorID(idEstudiante);
-                etiquetaCorreoEncontrado.setText(cuenta.getCorreoElectronico());
+                campoCorreoEncontrado.setText(cuenta.getCorreoElectronico());
             } else {
 
-                etiquetaNombreEncontrado.setText("No hay estudiante con esa matricula");
-                etiquetaApellidoEncontrado.setText("");
-                etiquetaMatriculaEncontrada.setText("");
-                etiquetaCorreoEncontrado.setText("");
+                campoNombreEncontrado.setText("No hay estudiante con esa matricula");
+                campoApellidoEncontrado.setText("");
+                campoMatriculaEncontrada.setText("");
+                campoCorreoEncontrado.setText("");
             }
 
         } catch (SQLException | IOException e) {
 
-            utilidades.mostrarAlerta(
-                    "Error al buscar estudiante",
-                    "No se pudo encontrar el estudiante",
-                    "Por favor, verifique la matrícula e intente nuevamente."
-            );
-            logger.error("Error al buscar el estudiante: " + e.getMessage());
+            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al buscar el estudiante.");
+            logger.error("Error al buscar el estudiante: " + e);
         }
     }
 
@@ -217,23 +214,19 @@ public class ControladorGestorEstudiantesGUI {
 
             if (estudiante.getIdUsuario() != -1) {
 
-                etiquetaNombreEncontrado.setText(estudiante.getNombre());
-                etiquetaApellidoEncontrado.setText(estudiante.getApellido());
-                etiquetaMatriculaEncontrada.setText(estudiante.getMatricula());
+                campoNombreEncontrado.setText(estudiante.getNombre());
+                campoApellidoEncontrado.setText(estudiante.getApellido());
+                campoMatriculaEncontrada.setText(estudiante.getMatricula());
 
                 idEstudiante = estudiante.getIdUsuario();
                 CuentaDTO cuenta = cuentaDAO.buscarCuentaPorID(idEstudiante);
-                etiquetaCorreoEncontrado.setText(cuenta.getCorreoElectronico());
+                campoCorreoEncontrado.setText(cuenta.getCorreoElectronico());
             }
 
         } catch (SQLException | IOException e) {
 
-            logger.error("Error al mostrar detalles del estudiante: " + e.getMessage());
-            utilidades.mostrarAlerta(
-                    "Error al mostrar detalles",
-                    "No se pudieron mostrar los detalles del estudiante",
-                    "Por favor, intente nuevamente más tarde."
-            );
+            logger.error("Error al mostrar detalles del estudiante: " + e);
+            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al mostrar detalles del estudiante.");
         }
     }
 
@@ -266,7 +259,7 @@ public class ControladorGestorEstudiantesGUI {
 
         } catch (IOException e) {
 
-            logger.error("Error al abrir la ventana de registro: " + e.getMessage());
+            logger.error("Error al abrir la ventana de registro: " + e);
             utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al abrir la ventana de registro.");
         }
     }
@@ -275,7 +268,7 @@ public class ControladorGestorEstudiantesGUI {
     private void eliminarEstudiante() {
 
         Utilidades utilidades = new Utilidades();
-        String matricula = etiquetaMatriculaEncontrada.getText().trim();
+        String matricula = campoMatriculaEncontrada.getText().trim();
 
         if (matricula.isEmpty()) {
 
@@ -290,7 +283,8 @@ public class ControladorGestorEstudiantesGUI {
 
             if (eliminado) {
 
-                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "El estudiante ha sido eliminado correctamente.");
+                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml",
+                        "El estudiante ha sido eliminado correctamente.");
                 cargarEstudiantes();
 
             } else {
@@ -300,7 +294,7 @@ public class ControladorGestorEstudiantesGUI {
 
         } catch (SQLException | IOException e) {
 
-            logger.error("Error al eliminar el estudiante: " + e.getMessage());
+            logger.error("Error al eliminar el estudiante: " + e);
             utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al eliminar el estudiante.");
         }
     }
@@ -311,24 +305,23 @@ public class ControladorGestorEstudiantesGUI {
         botonEliminarSeleccionado.setManaged(true);
         botonEliminarSeleccionado.setVisible(true);
         botonCancelarSeleccion.setVisible(true);
-        etiquetaNumeroEstudiantesSeleccionados.setVisible(true);
+        campoNumeroEstudiantesSeleccionados.setVisible(true);
         botonEditar.setDisable(true);
         botonEliminarEstudiante.setDisable(true);
         botonRegistrarEstudiante.setDisable(true);
 
-        tablaEstudiantes.getSelectionModel().getSelectedItems().addListener((ListChangeListener<EstudianteDTO>) change -> {
+        tablaEstudiantes.getSelectionModel().getSelectedItems().addListener((ListChangeListener<EstudianteDTO>)
+                cambioEstudiante -> {
 
             int cantidadSeleccionados = tablaEstudiantes.getSelectionModel().getSelectedItems().size();
             if (cantidadSeleccionados > 0) {
 
-                etiquetaNumeroEstudiantesSeleccionados.setText("Estudiantes seleccionados: " + cantidadSeleccionados);
+                campoNumeroEstudiantesSeleccionados.setText("Estudiantes seleccionados: " + cantidadSeleccionados);
             } else {
 
-                etiquetaNumeroEstudiantesSeleccionados.setText(" ");
+                campoNumeroEstudiantesSeleccionados.setText(" ");
             }
         });
-
-
     }
 
     @FXML
@@ -353,7 +346,9 @@ public class ControladorGestorEstudiantesGUI {
             EstudianteDAO estudianteDAO = new EstudianteDAO();
             for (EstudianteDTO estudiante : seleccionados) {
 
-                boolean eliminado = estudianteDAO.eliminarEstudiantePorMatricula(0, estudiante.getMatricula());
+                boolean eliminado =
+                        estudianteDAO.eliminarEstudiantePorMatricula(0, estudiante.getMatricula());
+
                 if (!eliminado) {
 
                     error = true;
@@ -362,7 +357,7 @@ public class ControladorGestorEstudiantesGUI {
             }
         } catch (SQLException | IOException e) {
 
-            logger.error("Error al eliminar el estudiante: " + e.getMessage());
+            logger.error("Error al eliminar el estudiante: " + e);
             error = true;
         }
 
@@ -400,33 +395,33 @@ public class ControladorGestorEstudiantesGUI {
         botonEliminarSeleccionado.setManaged(false);
         botonEliminarSeleccionado.setVisible(false);
         botonCancelarSeleccion.setVisible(false);
-        etiquetaNumeroEstudiantesSeleccionados.setVisible(false);
+        campoNumeroEstudiantesSeleccionados.setVisible(false);
         botonEliminarEstudiante.setDisable(false);
         botonEditar.setDisable(false);
         botonRegistrarEstudiante.setDisable(false);
 
         tablaEstudiantes.getSelectionModel().clearSelection();
-        etiquetaNumeroEstudiantesSeleccionados.setText(" ");
+        campoNumeroEstudiantesSeleccionados.setText(" ");
 
     }
 
     @FXML
     private void editarEstudiante() {
 
-        campoNombreEditable.setText(etiquetaNombreEncontrado.getText());
-        campoApellidoEditable.setText(etiquetaApellidoEncontrado.getText());
-        campoMatriculaEditable.setText(etiquetaMatriculaEncontrada.getText());
-        campoCorreoEditable.setText(etiquetaCorreoEncontrado.getText());
+        campoNombreEditable.setText(campoNombreEncontrado.getText());
+        campoApellidoEditable.setText(campoApellidoEncontrado.getText());
+        campoMatriculaEditable.setText(campoMatriculaEncontrada.getText());
+        campoCorreoEditable.setText(campoCorreoEncontrado.getText());
 
         campoNombreEditable.setVisible(true);
         campoApellidoEditable.setVisible(true);
         campoMatriculaEditable.setVisible(true);
         campoCorreoEditable.setVisible(true);
 
-        etiquetaNombreEncontrado.setVisible(false);
-        etiquetaApellidoEncontrado.setVisible(false);
-        etiquetaMatriculaEncontrada.setVisible(false);
-        etiquetaCorreoEncontrado.setVisible(false);
+        campoNombreEncontrado.setVisible(false);
+        campoApellidoEncontrado.setVisible(false);
+        campoMatriculaEncontrada.setVisible(false);
+        campoCorreoEncontrado.setVisible(false);
 
 
         botonGuardar.setVisible(true);
@@ -448,10 +443,10 @@ public class ControladorGestorEstudiantesGUI {
         campoMatriculaEditable.setVisible(false);
         campoCorreoEditable.setVisible(false);
 
-        etiquetaNombreEncontrado.setVisible(true);
-        etiquetaApellidoEncontrado.setVisible(true);
-        etiquetaMatriculaEncontrada.setVisible(true);
-        etiquetaCorreoEncontrado.setVisible(true);
+        campoNombreEncontrado.setVisible(true);
+        campoApellidoEncontrado.setVisible(true);
+        campoMatriculaEncontrada.setVisible(true);
+        campoCorreoEncontrado.setVisible(true);
 
         botonGuardar.setVisible(false);
         botonCancelar.setVisible(false);
@@ -466,8 +461,8 @@ public class ControladorGestorEstudiantesGUI {
     @FXML
     private void guardarCambios() {
 
-        String matriculaEcontrada = etiquetaMatriculaEncontrada.getText().trim();
-        String correoEncontrado = etiquetaCorreoEncontrado.getText().trim();
+        String matriculaEcontrada = campoMatriculaEncontrada.getText().trim();
+        String correoEncontrado = campoCorreoEncontrado.getText().trim();
 
         String nombre = campoNombreEditable.getText().trim();
         String apellidos = campoApellidoEditable.getText().trim();
@@ -479,7 +474,8 @@ public class ControladorGestorEstudiantesGUI {
 
         try {
 
-            List<String> listaDeCamposVacios = VerificacionUsuario.camposVacios(nombre, apellidos, correo, correo, correoEncontrado);
+            List<String> listaDeCamposVacios =
+                    VerificacionUsuario.camposVacios(nombre, apellidos, correo, correo, correoEncontrado);
 
             if (!listaDeCamposVacios.isEmpty()) {
 
@@ -511,7 +507,6 @@ public class ControladorGestorEstudiantesGUI {
                 utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Correo inválido.");
                 return;
             }
-
 
             EstudianteDAO estudianteDAO = new EstudianteDAO();
             CuentaDAO cuentaDAO = new CuentaDAO();
@@ -547,10 +542,10 @@ public class ControladorGestorEstudiantesGUI {
             cuentaDAO.modificarCuenta(new CuentaDTO(correo, contrasena, idEstudiante));
             estudianteDAO.modificarEstudiante(new EstudianteDTO(idEstudiante, nombre, apellidos, matricula, 1,0));
 
-            etiquetaNombreEncontrado.setText(nombre);
-            etiquetaApellidoEncontrado.setText(apellidos);
-            etiquetaMatriculaEncontrada.setText(matricula);
-            etiquetaCorreoEncontrado.setText(correo);
+            campoNombreEncontrado.setText(nombre);
+            campoApellidoEncontrado.setText(apellidos);
+            campoMatriculaEncontrada.setText(matricula);
+            campoCorreoEncontrado.setText(correo);
 
             cancelarEdicion();
             cargarEstudiantes();
@@ -558,7 +553,7 @@ public class ControladorGestorEstudiantesGUI {
         } catch (SQLException | IOException e) {
 
             utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al guardar los cambios.");
-            logger.error("Error al guardar los cambios: " + e.getMessage());
+            logger.error("Error al guardar los cambios: " + e);
         }
 
         botonSeleccionarEstudiantes.setDisable(false);

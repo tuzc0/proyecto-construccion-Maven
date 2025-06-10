@@ -51,13 +51,14 @@ public class ControladorConsultarOrganizacionGUI {
     @FXML
     public void initialize() {
 
-
         tablaOrganizaciones.setCursor(Cursor.HAND);
 
-
-        columnaNombre.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNombre()));
-        columnaCorreo.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getCorreo()));
-        columnaContacto.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNumeroDeContacto()));
+        columnaNombre.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNombre()));
+        columnaCorreo.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getCorreo()));
+        columnaContacto.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNumeroDeContacto()));
 
 
         cargarOrganizaciones();
@@ -67,8 +68,10 @@ public class ControladorConsultarOrganizacionGUI {
 
         tablaOrganizaciones.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        tablaOrganizaciones.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            organizacionSeleccionada = newValue;
+        tablaOrganizaciones.getSelectionModel().selectedItemProperty().addListener((
+                organizacionObservada,
+                valorOrganizacionAnterior, nuevoValorOrganizacion) -> {
+            organizacionSeleccionada = nuevoValorOrganizacion;
             tablaOrganizaciones.refresh();
         });
     }
@@ -80,23 +83,28 @@ public class ControladorConsultarOrganizacionGUI {
         try {
 
             OrganizacionVinculadaDAO organizacionDAO = new OrganizacionVinculadaDAO();
-            ObservableList <OrganizacionVinculadaDTO> organizaciones = FXCollections.observableArrayList(organizacionDAO.obtenerTodasLasOrganizaciones());
+            ObservableList <OrganizacionVinculadaDTO> organizaciones =
+                    FXCollections.observableArrayList(organizacionDAO.obtenerTodasLasOrganizaciones());
             tablaOrganizaciones.setItems(organizaciones);
 
         } catch (IOException e) {
 
-            logger.severe("Error al cargar las organizaciones: " + e.getMessage());
-            utilidades.mostrarAlerta("Error", "Error de entrada/salida", "No se pudo cargar la lista de organizaciones.");
+            logger.severe("Error al cargar las organizaciones: " + e);
+            utilidades.mostrarAlerta("Error", "Error de entrada/salida",
+                    "No se pudo cargar la lista de organizaciones.");
 
         } catch (SQLException e) {
 
-            logger.severe("Error al cargar las organizaciones: " + e.getMessage());
-            utilidades.mostrarAlerta("Error", "Error de SQL", "No se pudo cargar la lista de organizaciones.");
+            logger.severe("Error al cargar las organizaciones: " + e);
+            utilidades.mostrarAlerta("Error", "Error de SQL",
+                    "No se pudo cargar la lista de organizaciones.");
 
         } catch (Exception e) {
 
-            logger.severe("Error inesperado al cargar las organizaciones: " + e.getMessage());
-            utilidades.mostrarAlerta("Error", "Error inesperado", "No se pudo cargar la lista de organizaciones.");
+            logger.severe("Error inesperado al cargar las organizaciones: " + e);
+            utilidades.mostrarAlerta("Error",
+                    "Error inesperado",
+                    "No se pudo cargar la lista de organizaciones.");
 
         }
     }
@@ -105,7 +113,8 @@ public class ControladorConsultarOrganizacionGUI {
 
     private void añadirBotonConsultarATable() {
 
-        Callback<TableColumn<OrganizacionVinculadaDTO, Void>, TableCell<OrganizacionVinculadaDTO, Void>> cellFactory = param -> new TableCell<>() {
+        Callback<TableColumn<OrganizacionVinculadaDTO, Void>, TableCell<OrganizacionVinculadaDTO, Void>> cellFactory =
+                param -> new TableCell<>() {
 
             private final Button botonConsultar = new Button("Consultar");
 
@@ -118,7 +127,9 @@ public class ControladorConsultarOrganizacionGUI {
 
             @Override
             protected void updateItem(Void item, boolean empty) {
+
                 super.updateItem(item, empty);
+
                 if (empty || getTableView().getItems().get(getIndex()) != organizacionSeleccionada) {
                     setGraphic(null);
                 } else {
@@ -132,7 +143,8 @@ public class ControladorConsultarOrganizacionGUI {
 
     private void añadirBotonEliminarATable() {
 
-        Callback<TableColumn<OrganizacionVinculadaDTO, Void>, TableCell<OrganizacionVinculadaDTO, Void>> cellFactory = param -> new TableCell<>() {
+        Callback<TableColumn<OrganizacionVinculadaDTO, Void>, TableCell<OrganizacionVinculadaDTO, Void>> cellFactory =
+                param -> new TableCell<>() {
 
             private final Button botonEliminar = new Button("Eliminar");
 
@@ -181,8 +193,9 @@ public class ControladorConsultarOrganizacionGUI {
 
         } catch (Exception e) {
 
-            logger.severe("Error al abrir la ventana de detalles de la organización: " + e.getMessage());
-            utilidades.mostrarAlerta("Error", "Error al abrir la ventana", "No se pudo abrir la ventana de detalles de la organización.");
+            logger.severe("Error al abrir la ventana de detalles de la organización: " + e);
+            utilidades.mostrarAlerta("Error", "Error al abrir la ventana",
+                    "No se pudo abrir la ventana de detalles de la organización.");
         }
     }
 
@@ -195,19 +208,23 @@ public class ControladorConsultarOrganizacionGUI {
             OrganizacionVinculadaDAO organizacionDAO = new OrganizacionVinculadaDAO();
             organizacionDAO.eliminarOrganizacionPorID(organizacionSeleccionada.getIdOrganizacion());
             cargarOrganizaciones();
-            utilidades.mostrarAlerta("Éxito", "Organización eliminada", "La organización ha sido eliminada correctamente.");
+            utilidades.mostrarAlerta("Éxito", "Organización eliminada",
+                    "La organización ha sido eliminada correctamente.");
         } catch (IOException e) {
 
-            logger.severe("Error al eliminar la organización: " + e.getMessage());
-            utilidades.mostrarAlerta("Error", "Error de entrada/salida", "No se pudo eliminar la organización.");
+            logger.severe("Error al eliminar la organización: " + e);
+            utilidades.mostrarAlerta("Error", "Error de entrada/salida",
+                    "No se pudo eliminar la organización.");
         } catch (SQLException e) {
 
-            logger.severe("Error al eliminar la organización: " + e.getMessage());
-            utilidades.mostrarAlerta("Error", "Error de SQL", "No se pudo eliminar la organización.");
+            logger.severe("Error al eliminar la organización: " + e);
+            utilidades.mostrarAlerta("Error", "Error de SQL",
+                    "No se pudo eliminar la organización.");
         } catch (Exception e) {
 
-            logger.severe("Error inesperado al eliminar la organización: " + e.getMessage());
-            utilidades.mostrarAlerta("Error", "Error inesperado", "No se pudo eliminar la organización.");
+            logger.severe("Error inesperado al eliminar la organización: " + e);
+            utilidades.mostrarAlerta("Error", "Error inesperado",
+                    "No se pudo eliminar la organización.");
         }
     }
 
@@ -236,7 +253,4 @@ public class ControladorConsultarOrganizacionGUI {
     private void abrirVentanaRegistrarOrganizacion(){
 
     }
-
-
-
 }

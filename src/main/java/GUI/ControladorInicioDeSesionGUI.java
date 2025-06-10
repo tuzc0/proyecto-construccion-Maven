@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import logica.DAOs.*;
 import logica.DTOs.*;
+import logica.utilidadesproyecto.EncriptadorContraseñas;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
@@ -42,6 +43,7 @@ public class ControladorInicioDeSesionGUI {
 
     UtilidadesContraseña utilidadesContraseña = new UtilidadesContraseña();
 
+    EncriptadorContraseñas encriptadorContraseñas = new EncriptadorContraseñas();
 
 
     @FXML
@@ -82,6 +84,7 @@ public class ControladorInicioDeSesionGUI {
             CuentaDTO cuenta = cuentaDAO.buscarCuentaPorCorreo(correo);
             correoEncontrado = cuenta.getCorreoElectronico();
             contraseñaEncontrada = cuenta.getContrasena();
+
             idUsuario = cuenta.getIdUsuario();
 
             if (correoEncontrado.equals("N/A")) {

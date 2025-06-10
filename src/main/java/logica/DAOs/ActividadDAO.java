@@ -4,10 +4,8 @@ import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.ActividadDTO;
 import logica.interfaces.IActividadDAO;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.security.Key;
+import java.sql.*;
 
 public class ActividadDAO implements IActividadDAO {
 
@@ -15,26 +13,33 @@ public class ActividadDAO implements IActividadDAO {
     PreparedStatement sentenciaActividad = null;
     ResultSet resultadoConsulta;
 
-    public boolean crearNuevaActividad(ActividadDTO actividad) throws SQLException, IOException {
+    public int crearNuevaActividad(ActividadDTO actividad) throws SQLException, IOException {
 
-        boolean actividadInsertada = false;
-
-        String insertarSQLActividad = "INSERT INTO actividad VALUES(?, ?, ?, ?, ?, ?, ?)";
+        String insertarSQLActividad = "INSERT INTO actividad (nombre, duracion, hitos, fechaInicio, fechaFin, estadoActivo) " +
+                "VALUES(?, ?, ?, ?, ?, ?)";
+        int idActividadInsertada = -1;
 
         try {
 
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-            sentenciaActividad = conexionBaseDeDatos.prepareStatement(insertarSQLActividad);
-            sentenciaActividad.setInt(1, actividad.getIDActividad());
-            sentenciaActividad.setString(2, actividad.getNombre());
-            sentenciaActividad.setString(3, actividad.getDuracion());
-            sentenciaActividad.setString(4, actividad.getHitos());
-            sentenciaActividad.setTimestamp(5, actividad.getFechaInicio());
-            sentenciaActividad.setTimestamp(6, actividad.getFechaFin());
-            sentenciaActividad.setInt(7, actividad.getEstadoActivo());
+            sentenciaActividad = conexionBaseDeDatos.prepareStatement(insertarSQLActividad, Statement.RETURN_GENERATED_KEYS);
+            sentenciaActividad.setString(1, actividad.getNombre());
+            sentenciaActividad.setString(2, actividad.getDuracion());
+            sentenciaActividad.setString(3, actividad.getHitos());
+            sentenciaActividad.setDate(4, actividad.getFechaInicio());
+            sentenciaActividad.setDate(5, actividad.getFechaFin());
+            sentenciaActividad.setInt(6, actividad.getEstadoActivo());
 
-            if (sentenciaActividad.executeUpdate() > 0) {
-                actividadInsertada = true;
+            int filasAfectadas = sentenciaActividad.executeUpdate();
+
+            if (filasAfectadas > 0) {
+
+                ResultSet generadorDeLlave = sentenciaActividad.getGeneratedKeys();
+
+                if (generadorDeLlave.next()) {
+
+                    idActividadInsertada = generadorDeLlave.getInt(1);
+                }
             }
 
         } finally {
@@ -45,7 +50,7 @@ public class ActividadDAO implements IActividadDAO {
             }
         }
 
-        return actividadInsertada;
+        return idActividadInsertada;
     }
 
     public boolean eliminarActividadPorID(int idActividad) throws SQLException, IOException {
@@ -87,8 +92,8 @@ public class ActividadDAO implements IActividadDAO {
             sentenciaActividad.setString(1, actividad.getNombre());
             sentenciaActividad.setString(2, actividad.getDuracion());
             sentenciaActividad.setString(3, actividad.getHitos());
-            sentenciaActividad.setTimestamp(4, actividad.getFechaInicio());
-            sentenciaActividad.setTimestamp(5, actividad.getFechaFin());
+            sentenciaActividad.setDate(4, actividad.getFechaInicio());
+            sentenciaActividad.setDate(5, actividad.getFechaFin());
             sentenciaActividad.setInt(6, actividad.getEstadoActivo());
             sentenciaActividad.setInt(7, actividad.getIDActividad());
 
@@ -126,8 +131,8 @@ public class ActividadDAO implements IActividadDAO {
                 actividad.setNombre(resultadoConsulta.getString("nombre"));
                 actividad.setDuracion(resultadoConsulta.getString("duracion"));
                 actividad.setHitos(resultadoConsulta.getString("hitos"));
-                actividad.setFechaInicio(resultadoConsulta.getTimestamp("fechaInicio"));
-                actividad.setFechaFin(resultadoConsulta.getTimestamp("fechaFin"));
+                actividad.setFechaFin(resultadoConsulta.getDate("fechaInicio"));
+                actividad.setFechaFin(resultadoConsulta.getDate("fechaFin"));
                 actividad.setEstadoActivo(resultadoConsulta.getInt("estadoActivo"));
             }
 
@@ -142,4 +147,3 @@ public class ActividadDAO implements IActividadDAO {
         return actividad;
     }
 }
-

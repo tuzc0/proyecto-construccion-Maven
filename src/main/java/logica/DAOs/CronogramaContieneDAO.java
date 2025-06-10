@@ -17,7 +17,7 @@ public class CronogramaContieneDAO implements ICronogramaContieneDAO {
 
     public boolean insertarCronogramaContiene(CronogramaContieneDTO cronograma) throws SQLException, IOException {
 
-        String consultaSQL = "INSERT INTO cronogramacontiene (idCronograma, idActividad, estadoActivo) VALUES (?, ?, 1)";
+        String consultaSQL = "INSERT INTO cronogramacontiene (idCronograma, idActividad, mes, estadoActivo) VALUES (?, ?,?, ?)";
         boolean cronogramaInsertado = false;
 
         try {
@@ -26,6 +26,8 @@ public class CronogramaContieneDAO implements ICronogramaContieneDAO {
             sentenciaCronograma = conexionBaseDeDatos.prepareStatement(consultaSQL);
             sentenciaCronograma.setInt(1, cronograma.getIdCronograma());
             sentenciaCronograma.setInt(2, cronograma.getIdActividad());
+            sentenciaCronograma.setString(3, cronograma.getMes());
+            sentenciaCronograma.setInt(4, cronograma.getEstadoActivo());
 
             if (sentenciaCronograma.executeUpdate() > 0) {
                 cronogramaInsertado = true;
@@ -70,7 +72,7 @@ public class CronogramaContieneDAO implements ICronogramaContieneDAO {
 
     public boolean modificarActividadesDeCronograma(CronogramaContieneDTO cronograma) throws SQLException, IOException {
 
-        String consultaSQL = "UPDATE cronogramacontiene SET idActividad = ? WHERE idCronograma = ?";
+        String consultaSQL = "UPDATE cronogramacontiene SET idActividad = ?, mes = ? WHERE idCronograma = ?";
         boolean cronogramaModificado = false;
 
         try {
@@ -78,7 +80,8 @@ public class CronogramaContieneDAO implements ICronogramaContieneDAO {
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaCronograma = conexionBaseDeDatos.prepareStatement(consultaSQL);
             sentenciaCronograma.setInt(1, cronograma.getIdActividad());
-            sentenciaCronograma.setInt(2, cronograma.getIdCronograma());
+            sentenciaCronograma.setString(2, cronograma.getMes());
+            sentenciaCronograma.setInt(3, cronograma.getIdCronograma());
 
             if (sentenciaCronograma.executeUpdate() > 0) {
                 cronogramaModificado = true;
@@ -97,7 +100,7 @@ public class CronogramaContieneDAO implements ICronogramaContieneDAO {
 
     public CronogramaContieneDTO buscarCronogramaContienePorID(int idCronograma) throws SQLException, IOException {
 
-        CronogramaContieneDTO cronograma = new CronogramaContieneDTO(-1, -1,-1);
+        CronogramaContieneDTO cronogramaContieneDTO = new CronogramaContieneDTO(-1, -1,null,0);
 
         String consultaSQL = "SELECT * FROM cronogramacontiene WHERE idCronograma = ?";
 
@@ -110,9 +113,10 @@ public class CronogramaContieneDAO implements ICronogramaContieneDAO {
 
             if (resultadoConsulta.next()) {
 
-                int idActividad = resultadoConsulta.getInt("idActividad");
-                int estadoActivo = resultadoConsulta.getInt("estadoActivo");
-                cronograma = new CronogramaContieneDTO(idCronograma, idActividad, estadoActivo);
+                cronogramaContieneDTO.setIdCronograma(resultadoConsulta.getInt(1));
+                cronogramaContieneDTO.setIdActividad(resultadoConsulta.getInt(2));
+                cronogramaContieneDTO.setMes(resultadoConsulta.getString(3));
+                cronogramaContieneDTO.setEstadoActivo(resultadoConsulta.getInt(4));
             }
 
         } finally {
@@ -123,6 +127,6 @@ public class CronogramaContieneDAO implements ICronogramaContieneDAO {
             }
         }
 
-        return cronograma;
+        return cronogramaContieneDTO;
     }
 }

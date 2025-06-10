@@ -10,13 +10,13 @@ public class HorarioProyectoDTO {
     private String diaSemana;
     private Time horaInicio;
     private Time horaFin;
-    private int idEstudiante;
+    private String idEstudiante;
 
     public HorarioProyectoDTO() {
     }
 
     public HorarioProyectoDTO(int idHorario, int idProyecto, String diaSemana,
-                              Time horaInicio, Time horaFin, int idEstudiante) {
+                              Time horaInicio, Time horaFin, String idEstudiante) {
 
         this.idHorario = idHorario;
         this.idProyecto = idProyecto;
@@ -76,12 +76,12 @@ public class HorarioProyectoDTO {
         this.horaFin = horaFin;
     }
 
-    public int getIdEstudiante() {
+    public String getIdEstudiante() {
 
         return idEstudiante;
     }
 
-    public void setIdEstudiante(int idEstudiante) {
+    public void setIdEstudiante(String idEstudiante) {
 
         this.idEstudiante = idEstudiante;
     }

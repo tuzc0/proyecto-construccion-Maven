@@ -1,29 +1,27 @@
 package logica.DTOs;
 
-import java.sql.Timestamp;
-
 public class CronogramaActividadesDTO {
 
     private int IDCronograma;
     private String matriculaEstudiante;
-    private String agostoFebrero;
-    private String septiembreMarzo;
-    private String octubreAbril;
-    private String noviembreMayo;
+    private int idProyecto;
+    private int idPeriodo;
+    private int estadoActivo;
+
 
 
     public CronogramaActividadesDTO() {
 
     }
 
-    public CronogramaActividadesDTO(int IDCronograma, String matriculaEstudiante, String agostoFebrero, String septiembreMarzo, String octubreAbril, String noviembreMayo) {
+    public CronogramaActividadesDTO(int IDCronograma, String matriculaEstudiante, int idProyecto, int idPeriodo, int estadoActivo) {
 
         this.IDCronograma = IDCronograma;
         this.matriculaEstudiante = matriculaEstudiante;
-        this.agostoFebrero = agostoFebrero;
-        this.septiembreMarzo = septiembreMarzo;
-        this.octubreAbril = octubreAbril;
-        this.noviembreMayo = noviembreMayo;
+        this.idProyecto = idProyecto;
+        this.idPeriodo = idPeriodo;
+        this.estadoActivo = estadoActivo;
+
     }
 
     public int getIDCronograma() {
@@ -46,43 +44,33 @@ public class CronogramaActividadesDTO {
         this.matriculaEstudiante = matriculaEstudiante;
     }
 
-    public String getAgostoFebrero() {
+    public int getIdProyecto() {
 
-        return agostoFebrero;
+        return idProyecto;
     }
 
-    public void setAgostoFebrero(String agostoFebrero) {
+    public void setIdProyecto(int idProyecto) {
 
-        this.agostoFebrero = agostoFebrero;
+        this.idProyecto = idProyecto;
     }
 
-    public String getSeptiembreMarzo() {
+    public int getIdPeriodo() {
 
-        return septiembreMarzo;
+        return idPeriodo;
     }
 
-    public void setSeptiembreMarzo(String septiembreMarzo) {
+    public void setIdPeriodo(int idPeriodo) {
 
-        this.septiembreMarzo = septiembreMarzo;
+        this.idPeriodo = idPeriodo;
     }
 
-    public String getOctubreAbril() {
+    public int getEstadoActivo() {
 
-        return octubreAbril;
+        return estadoActivo;
     }
 
-    public void setOctubreAbril(String octubreAbril) {
+    public void setEstadoActivo(int estadoActivo) {
 
-        this.octubreAbril = octubreAbril;
-    }
-
-    public String getNoviembreMayo() {
-
-        return noviembreMayo;
-    }
-
-    public void setNoviembreMayo(String noviembreMayo) {
-
-        this.noviembreMayo = noviembreMayo;
+        this.estadoActivo = estadoActivo;
     }
 }

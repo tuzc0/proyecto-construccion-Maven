@@ -17,7 +17,6 @@ public class ProyectoDTO {
     private String actividades;
     private String responsabilidades;
     private String duracion;
-    private int idCronograma;
     private int estadoActivo;
     private int idRepresentante;
     private String descripcion;
@@ -32,7 +31,7 @@ public class ProyectoDTO {
     public ProyectoDTO(int idProyecto, String nombre, String objetivoGeneral,
                        String objetivosInmediatos, String objetivosMediatos, String metodologia,
                        String recursos, String actividades, String responsabilidades, String duracion,
-                       int idCronograma, int estadoActivo, int idRepresentante, String descripcion,
+                       int estadoActivo, int idRepresentante, String descripcion,
                        int usuariosDirectos, int usuariosIndirectos, int estudiantesRequeridos) {
 
         this.idProyecto = idProyecto;
@@ -45,7 +44,6 @@ public class ProyectoDTO {
         this.actividades = actividades;
         this.responsabilidades = responsabilidades;
         this.duracion = duracion;
-        this.idCronograma = idCronograma;
         this.estadoActivo = estadoActivo;
         this.idRepresentante = idRepresentante;
         this.descripcion = descripcion;
@@ -152,16 +150,6 @@ public class ProyectoDTO {
     public void setDuracion(String duracion) {
 
         this.duracion = duracion;
-    }
-
-    public int getIdCronograma() {
-
-        return idCronograma;
-    }
-
-    public void setIdCronograma(int idCronograma) {
-
-        this.idCronograma = idCronograma;
     }
 
     public int getEstadoActivo() {

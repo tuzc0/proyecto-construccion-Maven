@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public interface IActividadDAO {
 
-    boolean crearNuevaActividad(ActividadDTO actividad) throws SQLException, IOException;
+    int crearNuevaActividad(ActividadDTO actividad) throws SQLException, IOException;
 
     boolean eliminarActividadPorID(int idActividad) throws SQLException, IOException;
 

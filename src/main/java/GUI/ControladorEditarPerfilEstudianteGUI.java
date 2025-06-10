@@ -13,6 +13,7 @@ import logica.DAOs.EstudianteDAO;
 import logica.DTOs.CuentaDTO;
 import logica.DTOs.EstudianteDTO;
 import logica.VerificacionUsuario;
+import logica.utilidadesproyecto.EncriptadorContraseñas;
 import org.apache.logging.log4j.Logger;
 
 
@@ -56,6 +57,8 @@ public class ControladorEditarPerfilEstudianteGUI {
 
     UtilidadesContraseña utilidadesContraseña = new UtilidadesContraseña();
 
+    EncriptadorContraseñas encriptadorContraseñas = new EncriptadorContraseñas();
+
     Utilidades utilidades = new Utilidades();
 
     String matricula = ControladorInicioDeSesionGUI.matricula;
@@ -94,7 +97,7 @@ public class ControladorEditarPerfilEstudianteGUI {
             etiquetaApellidos.setText(estudianteDTO.getApellido());
             etiquetaMatricula.setText(estudianteDTO.getMatricula());
             etiquetaCorreo.setText(cuentaDTO.getCorreoElectronico());
-            campoContraseña.setText(cuentaDTO.getContrasena());
+            campoContraseña.setText(encriptadorContraseñas.desencriptar(cuentaDTO.getContrasena()));
 
 
         } catch (SQLException e) {
@@ -154,7 +157,8 @@ public class ControladorEditarPerfilEstudianteGUI {
                 return;
             }
 
-            cuentaDTO.setContrasena(nuevaContrasena);
+            String contraseñaEncriptada = encriptadorContraseñas.encriptar(nuevaContrasena);
+            cuentaDTO.setContrasena(contraseñaEncriptada);
             cuentaDTO.setCorreoElectronico(etiquetaCorreo.getText());
             cuentaDAO.modificarCuenta(cuentaDTO);
 
@@ -165,6 +169,10 @@ public class ControladorEditarPerfilEstudianteGUI {
         } catch (IOException e) {
 
             logger.error("Error de entrada/salida al actualizar el perfil del estudiante: " + e.getMessage());
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al actualizar el perfil del estudiante: " + e.getMessage());
 
         }
 

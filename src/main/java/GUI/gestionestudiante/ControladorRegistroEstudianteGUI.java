@@ -10,11 +10,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 import logica.DAOs.CuentaDAO;
 import logica.DAOs.EstudianteDAO;
-import logica.DAOs.GrupoDAO;
 import logica.DAOs.UsuarioDAO;
 import logica.DTOs.CuentaDTO;
 import logica.DTOs.EstudianteDTO;
-import logica.DTOs.GrupoDTO;
 import logica.DTOs.UsuarioDTO;
 import javafx.scene.image.ImageView;
 import logica.VerificacionUsuario;
@@ -41,10 +39,10 @@ public class ControladorRegistroEstudianteGUI {
     private TextField campoCorreo;
 
     @FXML
-    private PasswordField campoContraseña;
+    private PasswordField contraseñaIngresada;
 
     @FXML
-    private PasswordField campoConfirmarContraseña;
+    private PasswordField contraseñaConfirmada;
 
     @FXML
     private TextField campoContraseñaVisible;
@@ -56,7 +54,7 @@ public class ControladorRegistroEstudianteGUI {
     private Button botonVerContraseña;
 
     @FXML
-    private ImageView iconoOjo;
+    private ImageView imagenOjo;
 
     private boolean contraseñaVisible = false;
 
@@ -68,10 +66,10 @@ public class ControladorRegistroEstudianteGUI {
     @FXML
     private void initialize() {
 
-        campoContraseñaVisible.textProperty().bindBidirectional(campoContraseña.textProperty());
-        campoConfirmarContraseñaVisible.textProperty().bindBidirectional(campoConfirmarContraseña.textProperty());
+        campoContraseñaVisible.textProperty().bindBidirectional(contraseñaIngresada.textProperty());
+        campoConfirmarContraseñaVisible.textProperty().bindBidirectional(contraseñaConfirmada.textProperty());
 
-        utilidadesContraseña.inicializarIcono(iconoOjo);
+        utilidadesContraseña.inicializarIcono(imagenOjo);
 
         campoContraseñaVisible.setVisible(false);
         campoContraseñaVisible.setManaged(false);
@@ -83,11 +81,11 @@ public class ControladorRegistroEstudianteGUI {
     @FXML
     private void alternarVisibilidadContrasena() {
         utilidadesContraseña.alternarVisibilidadContrasena(
-                campoContraseña,
+                contraseñaIngresada,
                 campoContraseñaVisible,
-                campoConfirmarContraseña,
+                contraseñaConfirmada,
                 campoConfirmarContraseñaVisible,
-                iconoOjo
+                imagenOjo
         );
     }
 
@@ -99,7 +97,7 @@ public class ControladorRegistroEstudianteGUI {
         String apellidos = campoApellidos.getText();
         String matricula = campoMatricula.getText();
         String correo = campoCorreo.getText();
-        String contraseña = campoContraseña.getText();
+        String contraseña = contraseñaIngresada.getText();
         int estadoActivo = 1;
         int idUsuario = 0;
 
@@ -159,7 +157,7 @@ public class ControladorRegistroEstudianteGUI {
                 return;
             }
 
-            if (!UtilidadesContraseña.esContraseñaIgual(campoContraseña, campoConfirmarContraseña)) {
+            if (!UtilidadesContraseña.esContraseñaIgual(contraseñaIngresada, contraseñaConfirmada)) {
 
                 utilidades.mostrarVentanaAviso("/AvisoGUI.fxml",
                         "Las contraseñas ingresadas no coinciden.");
@@ -236,8 +234,8 @@ public class ControladorRegistroEstudianteGUI {
         campoApellidos.clear();
         campoMatricula.clear();
         campoCorreo.clear();
-        campoContraseña.clear();
-        campoConfirmarContraseña.clear();
+        contraseñaIngresada.clear();
+        contraseñaConfirmada.clear();
 
     }
 }

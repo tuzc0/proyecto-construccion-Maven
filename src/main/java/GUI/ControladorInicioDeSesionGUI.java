@@ -82,6 +82,7 @@ public class ControladorInicioDeSesionGUI {
             CuentaDTO cuenta = cuentaDAO.buscarCuentaPorCorreo(correo);
             correoEncontrado = cuenta.getCorreoElectronico();
             contraseñaEncontrada = cuenta.getContrasena();
+            contraseñaEncontrada = encriptadorContraseñas.desencriptar(contraseñaEncontrada);
 
             idUsuario = cuenta.getIdUsuario();
 
@@ -150,8 +151,8 @@ public class ControladorInicioDeSesionGUI {
 
             if (academico.getIdUsuario() != -1) {
 
-                utilidades.mostrarVentana("/MenuAcademicoGUI.fxml");
                 numeroDePersonal = academico.getNumeroDePersonal();
+                utilidades.mostrarVentana("/MenuAcademicoGUI.fxml");
                 return;
             }
 

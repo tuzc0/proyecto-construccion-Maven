@@ -103,6 +103,7 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
                     matriculaEstudianteSeleccionado = estudianteSeleccionado.getMatricula();
                     abrirVentanaRegistrarEvaluacion();
 
+
                 });
             }
 
@@ -143,7 +144,9 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
             cargarEstudiantes();
 
         } catch (IOException e) {
+
             logger.severe("Error al abrir la ventana RegistrarEvaluacionGUI: " + e);
+            e.printStackTrace();
         }
 
     }

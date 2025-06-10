@@ -4,16 +4,18 @@ public class CronogramaContieneDTO {
 
     private int idCronograma;
     private int idActividad;
+    private String mes;
     private int estadoActivo;
 
     public CronogramaContieneDTO() {
 
     }
 
-    public CronogramaContieneDTO(int idCronograma, int idActividad, int estadoActivo) {
+    public CronogramaContieneDTO(int idCronograma, int idActividad, String mes, int estadoActivo) {
 
         this.idCronograma = idCronograma;
         this.idActividad = idActividad;
+        this.mes = mes;
         this.estadoActivo = estadoActivo;
     }
 
@@ -35,6 +37,16 @@ public class CronogramaContieneDTO {
     public void setIdActividad(int idActividad) {
 
         this.idActividad = idActividad;
+    }
+
+    public String getMes() {
+
+        return mes;
+    }
+
+    public void setMes(String mes) {
+
+        this.mes = mes;
     }
 
     public int getEstadoActivo() {

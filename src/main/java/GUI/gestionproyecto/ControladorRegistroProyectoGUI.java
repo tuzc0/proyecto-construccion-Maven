@@ -331,13 +331,12 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
         int estudiantesRequedidos = Integer.parseInt(textoEstudiantesRequeridos);
         int estadoActivoProyecto = 1;
         int idProyecto = 0;
-        int idCronograma = 0;
 
         proyectoDTO = new ProyectoDTO(
                 idProyecto, nombreProyecto, objetivosGeneralesProyecto,
                 objetivosInmediatosProyecto, objetivosMediatosProyecto, metodologiaProyecto,
                 recursosProyecto, actividadesProyecto, responsabilidadesProyecto,
-                duracionProyecto, idCronograma, estadoActivoProyecto, idRepresentante,
+                duracionProyecto, estadoActivoProyecto, idRepresentante,
                 descripcionProyecto, usuariosDirectos, usuariosIndirectos, estudiantesRequedidos
         );
 
@@ -533,7 +532,7 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
                 int horaFin = Integer.parseInt(horarios.get(2).getValue());
                 int minutoFin = Integer.parseInt(horarios.get(3).getValue());
                 int idHorario = 0;
-                int idEstudiante = 0;
+                String idEstudiante = null;
 
                 Time horaInicioSQL = Time.valueOf(String.format("%02d:%02d:00", horaInicio, minutoInicio));
                 Time horaFinSQL = Time.valueOf(String.format("%02d:%02d:00", horaFin, minutoFin));

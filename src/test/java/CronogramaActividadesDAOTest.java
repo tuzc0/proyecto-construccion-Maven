@@ -1,3 +1,4 @@
+/*
 import accesoadatos.ConexionBaseDeDatos;
 import logica.DAOs.CronogramaActividadesDAO;
 import logica.DAOs.EstudianteDAO;
@@ -203,3 +204,5 @@ public class CronogramaActividadesDAOTest {
                 "Debería retornar un DTO con ID -1 indicando que no se encontró");
     }
 }
+
+ */

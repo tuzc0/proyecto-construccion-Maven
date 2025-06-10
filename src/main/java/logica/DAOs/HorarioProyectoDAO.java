@@ -31,12 +31,7 @@ public class HorarioProyectoDAO implements IHorarioProyectoDAO {
             sentenciaHorarioProyecto.setString(3, horarioProyectoDTO.getDiaSemana());
             sentenciaHorarioProyecto.setTime(4, horarioProyectoDTO.getHoraInicio());
             sentenciaHorarioProyecto.setTime(5, horarioProyectoDTO.getHoraFin());
-
-            if (horarioProyectoDTO.getIdEstudiante() > 0) {
-                sentenciaHorarioProyecto.setInt(6, horarioProyectoDTO.getIdEstudiante());
-            } else {
-                sentenciaHorarioProyecto.setNull(6, Types.INTEGER);
-            }
+            sentenciaHorarioProyecto.setString(6,horarioProyectoDTO.getIdEstudiante());
 
             if (sentenciaHorarioProyecto.executeUpdate() > 0) {
                 proyectoInsertado = true;
@@ -129,7 +124,7 @@ public class HorarioProyectoDAO implements IHorarioProyectoDAO {
                 String dia = resultadoBusquedaHorario.getString("diaSemana");
                 Time horaDeInicio = resultadoBusquedaHorario.getTime("horaInicio");
                 Time horaDeFin = resultadoBusquedaHorario.getTime("horaFin");
-                int idEstudiante = resultadoBusquedaHorario.getInt("idEstudiante");
+                String idEstudiante = resultadoBusquedaHorario.getString("idEstudiante");
 
                 HorarioProyectoDTO horarioProyectoDTO = new HorarioProyectoDTO(iDHorario, iDProyecto, dia, horaDeInicio, horaDeFin, idEstudiante);
                 listaHorarios.add(horarioProyectoDTO);

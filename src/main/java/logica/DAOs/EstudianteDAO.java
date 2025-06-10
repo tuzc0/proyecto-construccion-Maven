@@ -206,7 +206,7 @@ public class EstudianteDAO implements IEstudianteDAO {
     public EstudianteDTO buscarEstudiantePorMatricula(String matricula) throws SQLException, IOException {
 
         EstudianteDTO estudiante = new EstudianteDTO(-1, "N/A", "N/A",
-                "N/A", 0,0);
+                "N/A", 0,-1);
 
         String buscarSQL = "SELECT * FROM vista_estudiante WHERE matricula = ?";
 

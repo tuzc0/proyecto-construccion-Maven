@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="934.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividadesGUI">
+    <top>
+        <AnchorPane prefHeight="60.0" prefWidth="934.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label layoutX="282.0" layoutY="12.0" prefHeight="36.0" prefWidth="369.0" text="Registro Cronograma Actividades">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" BorderPane.alignment="CENTER">
+            <content>
+                <VBox spacing="20" style="-fx-padding: 15;">
+
+                    <VBox spacing="10">
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 18;" text="Dias y Horarios:">
+                            <padding>
+                                <Insets bottom="5" />
+                            </padding>
+                        </Label>
+
+                        <VBox spacing="15" style="-fx-padding: 0 0 0 10;">
+
+                            <HBox alignment="CENTER_LEFT" spacing="10">
+                                <CheckBox fx:id="checkLunes" style="-fx-font-size: 14;" />
+                                <Label prefWidth="80" text="Lunes" />
+                                <ComboBox fx:id="comboHoraInicioLunesHorario" prefWidth="90" promptText="Hora" />
+                                <Label text="-" />
+                                <ComboBox fx:id="comboMinutosInicioLunesHorario" prefWidth="90" promptText="Minutos" />
+                                <Label text="a" />
+                                <ComboBox fx:id="comboHoraFinLunesHorario" prefWidth="90" promptText="Hora" />
+                                <Label text="-" />
+                                <ComboBox fx:id="comboMinutosFinLunesHorario" prefWidth="90" promptText="Minutos" />
+                            </HBox>
+
+                            <HBox alignment="CENTER_LEFT" spacing="10">
+                                <CheckBox fx:id="checkMartes" style="-fx-font-size: 14;" />
+                                <Label prefWidth="80" text="Martes" />
+                                <ComboBox fx:id="comboHoraInicioMartesHorario" prefWidth="90" promptText="Hora" />
+                                <Label text="-" />
+                                <ComboBox fx:id="comboMinutosInicioMartesHorario" prefWidth="90" promptText="Minutos" />
+                                <Label text="a" />
+                                <ComboBox fx:id="comboHoraFinMartesHorario" prefWidth="90" promptText="Hora" />
+                                <Label text="-" />
+                                <ComboBox fx:id="comboMinutosFinMartesHorario" prefWidth="90" promptText="Minutos" />
+                            </HBox>
+
+                            <HBox alignment="CENTER_LEFT" spacing="10">
+                                <CheckBox fx:id="checkMiercoles" style="-fx-font-size: 14;" />
+                                <Label prefWidth="80" text="Miércoles" />
+                                <ComboBox fx:id="comboHoraInicioMiercolesHorario" prefWidth="90" promptText="Hora" />
+                                <Label text="-" />
+                                <ComboBox fx:id="comboMinutosInicioMiercolesHorario" prefWidth="90" promptText="Minutos" />
+                                <Label text="a" />
+                                <ComboBox fx:id="comboHoraFinMiercolesHorario" prefWidth="90" promptText="Hora" />
+                                <Label text="-" />
+                                <ComboBox fx:id="comboMinutosFinMiercolesHorario" prefWidth="90" promptText="Minutos" />
+                            </HBox>
+
+                            <HBox alignment="CENTER_LEFT" spacing="10">
+                                <CheckBox fx:id="checkJueves" style="-fx-font-size: 14;" />
+                                <Label prefWidth="80" text="Jueves" />
+                                <ComboBox fx:id="comboHoraInicioJuevesHorario" prefWidth="90" promptText="Hora" />
+                                <Label text="-" />
+                                <ComboBox fx:id="comboMinutosInicioJuevesHorario" prefWidth="90" promptText="Minutos" />
+                                <Label text="a" />
+                                <ComboBox fx:id="comboHoraFinJuevesHorario" prefWidth="90" promptText="Hora" />
+                                <Label text="-" />
+                                <ComboBox fx:id="comboMinutosFinJuevesHorario" prefWidth="90" promptText="Minutos" />
+                            </HBox>
+
+                            <HBox alignment="CENTER_LEFT" spacing="10">
+                                <CheckBox fx:id="checkViernes" style="-fx-font-size: 14;" />
+                                <Label prefWidth="80" text="Viernes" />
+                                <ComboBox fx:id="comboHoraInicioViernesHorario" prefWidth="90" promptText="Hora" />
+                                <Label text="-" />
+                                <ComboBox fx:id="comboMinutosInicioViernesHorario" prefWidth="90" promptText="Minutos" />
+                                <Label text="a" />
+                                <ComboBox fx:id="comboHoraFinViernesHorario" prefWidth="90" promptText="Hora" />
+                                <Label text="-" />
+                                <ComboBox fx:id="comboMinutosFinViernesHorario" prefWidth="90" promptText="Minutos" />
+                            </HBox>
+                        </VBox>
+
+                    </VBox>
+
+                    <Separator />
+
+                    <VBox fx:id="vboxActividades" spacing="15">
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 18;" text="Actividades:" />
+
+                        <VBox fx:id="contenedorActividades" spacing="20" style="-fx-padding: 0 0 0 15;">
+                            <VBox spacing="5" style="-fx-border-color: lightgray; -fx-border-radius: 5; -fx-padding: 10;">
+                                <Label style="-fx-font-weight: bold; -fx-font-size: 14;" text="Actividad #1" />
+                                <GridPane alignment="CENTER" hgap="10" prefWidth="865.0" style="-fx-padding: 20;" vgap="10">
+                                    <columnConstraints>
+                                        <ColumnConstraints prefWidth="200" />
+                                        <ColumnConstraints prefWidth="600" />
+                                    </columnConstraints>
+
+                                    <rowConstraints>
+                                        <RowConstraints minHeight="30" />
+                                        <RowConstraints minHeight="30" />
+                                        <RowConstraints minHeight="30" />
+                                        <RowConstraints minHeight="30" />
+                                        <RowConstraints minHeight="30" />
+                                    </rowConstraints>
+
+                                    <Label text="Nombre de la actividad:" GridPane.rowIndex="0" />
+                                    <Label text="Duración:" GridPane.rowIndex="1" />
+                                    <Label text="Hitos:" GridPane.rowIndex="2" />
+                                    <Label text="Fecha de Inicio:" GridPane.rowIndex="3" />
+                                    <Label text="Fecha Fin:" GridPane.rowIndex="4" />
+
+                                    <VBox spacing="3" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                        <TextField fx:id="campoNombreActividad" promptText="Ingrese el nombre..." />
+                                        <Label fx:id="contadorNombreActividad" style="-fx-text-fill: gray;" text="255/255" />
+                                    </VBox>
+
+                                    <VBox spacing="3" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                        <TextField fx:id="campoDuracionActividad" promptText="Ej: 3 semanas" />
+                                        <Label fx:id="contadorDuracionActividad" style="-fx-text-fill: gray;" text="255/255" />
+                                    </VBox>
+
+                                    <VBox spacing="3" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                        <TextField fx:id="campoHitosActividad" promptText="Ej: Entrega inicial, revisión, entrega final..." />
+                                        <Label fx:id="contadorHitosActividad" style="-fx-text-fill: gray;" text="255/255" />
+                                    </VBox>
+                                    <DatePicker fx:id="fechaInicioActividad" prefHeight="31.0" prefWidth="230.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <DatePicker fx:id="fechaFinActividad" prefHeight="31.0" prefWidth="232.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                </GridPane>
+                            </VBox>
+                        </VBox>
+
+                        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10 0 0 15;">
+                            <Button fx:id="botonAgregarActividad" style="-fx-font-size: 14;" text="+ Agregar Actividad" />
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+
+    <bottom>
+        <AnchorPane prefHeight="60.0" prefWidth="934.0" BorderPane.alignment="CENTER">
+            <children>
+                <HBox alignment="CENTER_RIGHT" spacing="15" style="-fx-padding: 10;">
+                    <Button fx:id="botonCancelar" onAction="#cancelar" style="-fx-font-size: 14; -fx-pref-width: 120;" text="Cancelar" />
+                    <Button fx:id="botonGuardar" onAction="#guardarCronograma" style="-fx-font-size: 14; -fx-pref-width: 120;" text="Guardar" />
+                </HBox>
+            </children>
+        </AnchorPane>
+    </bottom>
+</BorderPane>

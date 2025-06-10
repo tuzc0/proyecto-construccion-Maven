@@ -25,9 +25,9 @@ public class ProyectoDAO implements IProyectoDAO {
             nombre, objetivogeneral, objetivosinmediatos, 
             objetivosmediatos, metodologia, recursos,
             actividades, responsabilidades, duracion,
-            idCronograma, estadoActivo, idRepresentante,
+            estadoActivo, idRepresentante,
             descripciongeneral, usuariosDirectos, usuariosIndirectos, estudiantesrequeridos
-        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""";
+        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""";
 
         int idProyectoGenerado = -1;
 
@@ -45,19 +45,12 @@ public class ProyectoDAO implements IProyectoDAO {
             sentenciaProyecto.setString(7, proyectoDTO.getActividades());
             sentenciaProyecto.setString(8, proyectoDTO.getResponsabilidades());
             sentenciaProyecto.setString(9, proyectoDTO.getDuracion());
-
-            if (proyectoDTO.getIdCronograma() > 0) {
-                sentenciaProyecto.setInt(10, proyectoDTO.getIdCronograma());
-            } else {
-                sentenciaProyecto.setNull(10, Types.INTEGER);
-            }
-
-            sentenciaProyecto.setInt(11, proyectoDTO.getEstadoActivo());
-            sentenciaProyecto.setInt(12, proyectoDTO.getIdRepresentante());
-            sentenciaProyecto.setString(13, proyectoDTO.getDescripcion());
-            sentenciaProyecto.setInt(14, proyectoDTO.getUsuariosDirectos());
-            sentenciaProyecto.setInt(15, proyectoDTO.getUsuariosIndirectos());
-            sentenciaProyecto.setInt(16, proyectoDTO.getEstudiantesRequeridos());
+            sentenciaProyecto.setInt(10, proyectoDTO.getEstadoActivo());
+            sentenciaProyecto.setInt(11, proyectoDTO.getIdRepresentante());
+            sentenciaProyecto.setString(12, proyectoDTO.getDescripcion());
+            sentenciaProyecto.setInt(13, proyectoDTO.getUsuariosDirectos());
+            sentenciaProyecto.setInt(14, proyectoDTO.getUsuariosIndirectos());
+            sentenciaProyecto.setInt(15, proyectoDTO.getEstudiantesRequeridos());
             sentenciaProyecto.executeUpdate();
 
             ResultSet idNuevoProyecto = sentenciaProyecto.getGeneratedKeys();
@@ -149,39 +142,12 @@ public class ProyectoDAO implements IProyectoDAO {
         return proyectoModificado;
     }
 
-    public boolean adjuntarCronogramaProyecto(int idProyecto, int idCronograma) throws SQLException, IOException {
-
-        String modificarSQLProyecto = "UPDATE proyecto SET idCronograma = ? WHERE IDProyecto = ?";
-        boolean cronogramaAdjuntado = false;
-
-        try {
-
-            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-            sentenciaProyecto = conexionBaseDeDatos.prepareStatement(modificarSQLProyecto);
-            sentenciaProyecto.setInt(1, idCronograma);
-            sentenciaProyecto.setInt(2, idProyecto);
-
-            if (sentenciaProyecto.executeUpdate() > 0) {
-                cronogramaAdjuntado = true;
-            }
-
-        } finally {
-
-            if (sentenciaProyecto != null) {
-
-                sentenciaProyecto.close();
-            }
-        }
-
-        return cronogramaAdjuntado;
-    }
-
     public ProyectoDTO buscarProyectoPorNombre(String nombreProyecto) throws SQLException, IOException {
 
         String consultaSQLProyecto = "SELECT * FROM proyecto WHERE LOWER(nombre) = LOWER(?)";
         ProyectoDTO proyecto = new ProyectoDTO(-1, null, null,
                 null, null, null, null,
-                null, null, null, -1, -1,
+                null, null, null, -1,
                 -1, null, -1, -1,-1);
 
         try {
@@ -203,7 +169,6 @@ public class ProyectoDAO implements IProyectoDAO {
                 proyecto.setActividades(resultadoProyecto.getString("actividades"));
                 proyecto.setResponsabilidades(resultadoProyecto.getString("responsabilidades"));
                 proyecto.setDuracion(resultadoProyecto.getString("duracion"));
-                proyecto.setIdCronograma(resultadoProyecto.getInt("idCronograma"));
                 proyecto.setEstadoActivo(resultadoProyecto.getInt("estadoActivo"));
                 proyecto.setIdRepresentante(resultadoProyecto.getInt("idRepresentante"));
                 proyecto.setDescripcion(resultadoProyecto.getString("descripciongeneral"));
@@ -228,7 +193,7 @@ public class ProyectoDAO implements IProyectoDAO {
         String consultaSQLProyecto = "SELECT * FROM proyecto WHERE idProyecto = ?";
         ProyectoDTO proyecto = new ProyectoDTO(-1, null, null,
                 null, null, null, null,
-                null, null, null, -1, -1,
+                null, null, null, -1,
                 -1, null, -1, -1,-1);
 
         try {
@@ -250,7 +215,6 @@ public class ProyectoDAO implements IProyectoDAO {
                 proyecto.setActividades(resultadoProyecto.getString("actividades"));
                 proyecto.setResponsabilidades(resultadoProyecto.getString("responsabilidades"));
                 proyecto.setDuracion(resultadoProyecto.getString("duracion"));
-                proyecto.setIdCronograma(resultadoProyecto.getInt("idCronograma"));
                 proyecto.setEstadoActivo(resultadoProyecto.getInt("estadoActivo"));
                 proyecto.setIdRepresentante(resultadoProyecto.getInt("idRepresentante"));
                 proyecto.setDescripcion(resultadoProyecto.getString("descripciongeneral"));
@@ -293,7 +257,6 @@ public class ProyectoDAO implements IProyectoDAO {
                 String actividades = resultadoProyecto.getString("actividades");
                 String responsabilidades = resultadoProyecto.getString("responsabilidades");
                 String duracion = resultadoProyecto.getString("duracion");
-                int idCronograma = resultadoProyecto.getInt("idCronograma");
                 int estadoActivo = resultadoProyecto.getInt("estadoActivo");
                 int idRepresentante = resultadoProyecto.getInt("idRepresentante");
                 String descripcion = resultadoProyecto.getString("descripciongeneral");
@@ -303,7 +266,7 @@ public class ProyectoDAO implements IProyectoDAO {
 
                 ProyectoDTO proyecto = new ProyectoDTO(idProyecto, nombreProyecto, objetivoGeneral,
                         objetivosInmediatos, objetivosMediatos, metodologia, recursos, actividades, responsabilidades,
-                        duracion, idCronograma, estadoActivo, idRepresentante, descripcion, usuariosDirectos, usuariosIndirectos,
+                        duracion, estadoActivo, idRepresentante, descripcion, usuariosDirectos, usuariosIndirectos,
                         estudiantesRequeridos);
                 proyectos.add(proyecto);
             }
@@ -334,7 +297,6 @@ public class ProyectoDAO implements IProyectoDAO {
             actividadesProyecto,
             responsabilidadesProyecto,
             duracionProyecto,
-            idCronograma,
             estadoActivoProyecto,
             idRepresentanteProyecto,
             descripcionProyecto,
@@ -365,7 +327,6 @@ public class ProyectoDAO implements IProyectoDAO {
                 proyecto.setActividades(resultadoProyecto.getString("actividadesProyecto"));
                 proyecto.setResponsabilidades(resultadoProyecto.getString("responsabilidadesProyecto"));
                 proyecto.setDuracion(resultadoProyecto.getString("duracionProyecto"));
-                proyecto.setIdCronograma(resultadoProyecto.getInt("idCronograma"));
                 proyecto.setEstadoActivo(resultadoProyecto.getInt("estadoActivoProyecto"));
                 proyecto.setIdRepresentante(resultadoProyecto.getInt("idRepresentanteProyecto"));
                 proyecto.setDescripcion(resultadoProyecto.getString("descripcionProyecto"));

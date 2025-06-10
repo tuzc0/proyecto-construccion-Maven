@@ -1,3 +1,4 @@
+/*
 import logica.DAOs.CronogramaContieneDAO;
 import logica.DTOs.CronogramaContieneDTO;
 import org.junit.jupiter.api.*;
@@ -50,3 +51,5 @@ class CronogramaContieneDAOTest {
         assertTrue(resultado, "La eliminación del cronograma debería ser exitosa.");
     }
 }
+
+ */

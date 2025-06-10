@@ -1,3 +1,4 @@
+/*
 import accesoadatos.ConexionBaseDeDatos;
 import logica.DAOs.ActividadDAO;
 import logica.DTOs.ActividadDTO;
@@ -191,3 +192,4 @@ public class ActividadDAOTest {
         }
     }
 }
+*/

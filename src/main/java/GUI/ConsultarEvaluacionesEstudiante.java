@@ -4,6 +4,7 @@ import GUI.utilidades.Utilidades;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import logica.DAOs.AcademicoEvaluadorDAO;
 import logica.DAOs.EvaluacionDAO;
@@ -24,18 +25,32 @@ public class ConsultarEvaluacionesEstudiante {
     @FXML
     private VBox contenedorEvaluaciones;
 
+    @FXML
+    Label etiquetaCalificacion;
+
     String matricula = ControladorInicioDeSesionGUI.matricula;
 
     Utilidades utilidades = new Utilidades();
 
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+        System.out.println("Matricula establecida: " + matricula);
+        cargarEvaluaciones();
+    }
+
+
     @FXML
     public void initialize() {
 
-        cargarEvaluaciones();
+        if (matricula != null && !matricula.isBlank() ) {
+            cargarEvaluaciones();
+        }
     }
 
     private void cargarEvaluaciones() {
         EvaluacionDAO evaluacionDAO = new EvaluacionDAO();
+        double calificacionFinal = calcularCalificacionFinal();
+        etiquetaCalificacion.setText(String.valueOf(calificacionFinal));
 
         try {
             List<EvaluacionDTO> listaEvaluaciones = evaluacionDAO.listarEvaluacionesPorIdEstudiante(matricula);
@@ -68,6 +83,40 @@ public class ConsultarEvaluacionesEstudiante {
         }
     }
 
+    public double calcularCalificacionFinal() {
+        EvaluacionDAO evaluacionDAO = new EvaluacionDAO();
+        double calificacionFinal = 0.0;
+
+        try {
+
+            List<EvaluacionDTO> listaEvaluaciones = evaluacionDAO.listarEvaluacionesPorIdEstudiante(matricula);
+
+            if (listaEvaluaciones == null || listaEvaluaciones.isEmpty()) {
+                logger.info("No se encontraron evalauciones " + matricula);
+                return 0.0;
+            }
+
+            double sumaCalificaciones = 0.0;
+            for (EvaluacionDTO evaluacion : listaEvaluaciones) {
+                sumaCalificaciones += evaluacion.getCalificacionFinal();
+            }
+
+
+            calificacionFinal = sumaCalificaciones / listaEvaluaciones.size();
+
+        } catch (SQLException e) {
+
+            utilidades.mostrarAlerta("Error al calcular la calificación final", "No se pudieron obtener las evaluaciones del estudiante.", "Error de conexión");
+            logger.error("Error al calcular la calificación final: " + e);
+
+        } catch (IOException e) {
+            utilidades.mostrarAlerta("Error de entrada/salida", "Ocurrió un error al intentar cargar los datos del estudiante.", "Error de conexión");
+            logger.error("Error de entrada/salida al calcular la calificación final: " +  e);
+        }
+
+        return calificacionFinal;
+    }
+
 
     private String obtenerNombreEvaluador(int numeroPersonal) {
 
@@ -92,4 +141,6 @@ public class ConsultarEvaluacionesEstudiante {
 
         return nombreEvaluador;
     }
+
+
 }

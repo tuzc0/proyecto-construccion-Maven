@@ -220,5 +220,36 @@ public class GrupoDAO implements IGrupoDAO {
         return nuevoNRC;
     }
 
+    public GrupoDTO buscarGrupoActivoPorNumeroDePersonal(int numeroPersonal) throws SQLException, IOException {
+
+        GrupoDTO grupo = new GrupoDTO(-1, "N/A", -1, -1, -1);
+        String sql = "SELECT * FROM Grupo WHERE numeroPersonal = ? AND estadoActivo = 1 LIMIT 1";
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaGrupo = conexionBaseDeDatos.prepareStatement(sql);
+            sentenciaGrupo.setInt(1, numeroPersonal);
+            resultadoGrupo = sentenciaGrupo.executeQuery();
+
+            if (resultadoGrupo.next()) {
+                grupo = new GrupoDTO(
+                        resultadoGrupo.getInt("NRC"),
+                        resultadoGrupo.getString("nombre"),
+                        resultadoGrupo.getInt("numeroPersonal"),
+                        resultadoGrupo.getInt("idPeriodo"),
+                        resultadoGrupo.getInt("estadoActivo")
+                );
+            }
+
+        } finally {
+
+            if (sentenciaGrupo != null) {
+                sentenciaGrupo.close();
+            }
+        }
+
+        return grupo;
+    }
 }
 

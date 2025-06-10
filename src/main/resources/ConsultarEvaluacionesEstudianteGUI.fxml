@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="GUI.ConsultarEvaluacionesEstudiante"
-      spacing="0" style="-fx-background-color: #f5f7fa;">
+<VBox spacing="0" style="-fx-background-color: #f5f7fa;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ConsultarEvaluacionesEstudiante">
 
     <!-- Encabezado con gradiente y sombra -->
     <HBox alignment="CENTER" spacing="15" style="-fx-background-color: linear-gradient(to right, #4a6baf, #3a5f9a); -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2);">
@@ -21,7 +22,7 @@
                 <DropShadow color="#00000080" radius="3" />
             </effect>
         </ImageView>
-        <Label text="Mis Evaluaciones" style="-fx-text-fill: white; -fx-font-weight: bold;">
+        <Label style="-fx-text-fill: white; -fx-font-weight: bold;" text="Evaluaciones">
             <font>
                 <Font name="System Bold" size="24" />
             </font>
@@ -29,12 +30,28 @@
                 <DropShadow color="#00000080" radius="3" />
             </effect>
         </Label>
+      <Label style="-fx-text-fill: white; -fx-font-weight: bold;" text="calificacion:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <effect>
+            <DropShadow color="#00000080" radius="3" />
+         </effect>
+      </Label>
+      <Label fx:id="etiquetaCalificacion" style="-fx-text-fill: white; -fx-font-weight: bold;" text="calificacion:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <effect>
+            <DropShadow color="#00000080" radius="3" />
+         </effect>
+      </Label>
     </HBox>
 
     <!-- Contenedor principal con ScrollPane -->
     <StackPane style="-fx-padding: 20; -fx-background-color: #f5f7fa;">
-        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" style="-fx-background: transparent; -fx-background-color: transparent;">
-            <VBox fx:id="contenedorEvaluaciones" spacing="15" alignment="TOP_CENTER" style="-fx-background-color: transparent;">
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background: transparent; -fx-background-color: transparent;" vbarPolicy="AS_NEEDED">
+            <VBox fx:id="contenedorEvaluaciones" alignment="TOP_CENTER" spacing="15" style="-fx-background-color: transparent;">
                 <!-- Los elementos se agregarán dinámicamente aquí -->
             </VBox>
         </ScrollPane>

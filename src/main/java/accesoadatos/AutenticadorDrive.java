@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class AutenticadorDrive {
-    private static final String RUTA_CREDENCIALES = "src/main/resources/Credenciales.json";
+    private static final String RUTA_CREDENCIALES = "src/main/resources/Credenciales2.json";
     private static final List<String> ALCANCES = Collections.singletonList(DriveScopes.DRIVE_FILE);
 
     public static Drive obtenerServicioDrive() throws IOException, GeneralSecurityException {

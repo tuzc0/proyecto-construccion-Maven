@@ -1,37 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="239.0" prefWidth="389.0" spacing="15" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="GUI.ControladorCrearGrupoGUI">
+<VBox alignment="CENTER" spacing="20" style="-fx-background-color: #f8f9fa; -fx-padding: 25;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="GUI.ControladorCrearGrupoGUI">
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20"/>
+    </padding>
 
+    <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Crear Nuevo Grupo">
+        <font>
+            <Font name="System Bold" size="18.0" />
+        </font>
+    </Label>
 
-    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Crear Nuevo Grupo" />
+    <VBox alignment="CENTER_LEFT" spacing="15" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e0e0e0;">
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Label style="-fx-font-weight: bold; -fx-min-width: 120;" text="Nombre del grupo:" />
+            <TextField fx:id="textoNombreGrupo" style="-fx-background-color: #ffffff; -fx-border-color: #bdc3c7; -fx-border-radius: 4;" promptText="Ej. Grupo A" />
+        </HBox>
 
-    <HBox alignment="CENTER" spacing="10">
-        <Label text="Nombre del grupo:" />
-        <TextField fx:id="textoNombreGrupo" promptText="Ej. Grupo A" />
-    </HBox>
-   <HBox alignment="CENTER" spacing="10">
-      <children>
-         <Label text="NRC: " />
-         <Label fx:id="etiquetaNRC" text="NRC" />
-      </children>
-   </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Label style="-fx-font-weight: bold; -fx-min-width: 120;" text="NRC:" />
+            <Label fx:id="etiquetaNRC" style="-fx-text-fill: #3498db; -fx-font-weight: bold;" text="NRC" />
+        </HBox>
 
-    <HBox alignment="CENTER" spacing="10">
-        <Label text="Académico:" />
-        <ComboBox fx:id="comboAcademico" prefWidth="250" />
-    </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Label style="-fx-font-weight: bold; -fx-min-width: 120;" text="Académico:" />
+            <ComboBox fx:id="comboAcademico" style="-fx-background-color: white; -fx-border-color: #bdc3c7; -fx-pref-width: 250;" />
+        </HBox>
 
-    <HBox alignment="CENTER" spacing="10">
-        <Label text="Período:" />
-      <Label fx:id="etiquetaPeriodo" text="Periodo" />
-    </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Label style="-fx-font-weight: bold; -fx-min-width: 120;" text="Período:" />
+            <Label fx:id="etiquetaPeriodo" style="-fx-text-fill: #3498db; -fx-font-weight: bold;" text="Periodo" />
+        </HBox>
+    </VBox>
 
-    <Button onAction="#guardarGrupo" text="Guardar Grupo" />
+    <Button onAction="#guardarGrupo" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 200; -fx-pref-height: 35;" text="Guardar Grupo">
+        <font>
+            <Font name="System Bold" size="14.0" />
+        </font>
+    </Button>
 </VBox>

@@ -137,6 +137,8 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
     @FXML
     private Button botonSeleccionarRepresentante;
 
+
+
     private final Utilidades UTILIDADES = new Utilidades();
 
     @FXML

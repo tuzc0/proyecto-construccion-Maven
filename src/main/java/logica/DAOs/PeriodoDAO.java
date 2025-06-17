@@ -115,6 +115,8 @@ public class PeriodoDAO implements IPeriodoDAO {
                 periodo.setIDPeriodo(resultadoConsultaPeriodo.getInt("idPeriodo"));
                 periodo.setDescripcion(resultadoConsultaPeriodo.getString("descripcion"));
                 periodo.setEstadoActivo(resultadoConsultaPeriodo.getInt("estadoActivo"));
+                periodo.setFechaInicio(resultadoConsultaPeriodo.getDate("fechaInicio"));
+                periodo.setFechaFinal(resultadoConsultaPeriodo.getDate("fechaFinal"));
             }
 
         } finally {

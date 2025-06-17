@@ -1,5 +1,6 @@
 package GUI.gestionorganizacion;
 
+import GUI.ControladorConsultarEstudiantesAEvaluarGUI;
 import GUI.utilidades.Utilidades;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +18,7 @@ import java.util.logging.Logger;
 
 public class ControladorRegistroOrganizacionVinculadaGUI {
 
-    Logger logger = Logger.getLogger(ControladorRegistroOrganizacionVinculadaGUI.class.getName());
+    Logger logger = Logger.getLogger(ControladorConsultarEstudiantesAEvaluarGUI.class.getName());
 
     @FXML
     private TextField campoNombreOrganizacion;
@@ -124,17 +125,25 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
                     "No se pudo registrar la organización. Por favor, inténtelo de nuevo más tarde.");
             logger.severe("Error al registrar la organización: " + e);
 
+
+
+
         } catch (IOException e){
 
             utilidades.mostrarAlerta("Error de registro", "Error al registrar la organización",
                     "No se pudo registrar la organización. Por favor, inténtelo de nuevo más tarde.");
             logger.severe("Error al registrar la organización: " + e);
 
+
+
         } catch (Exception e) {
 
             utilidades.mostrarAlerta("Error de registro", "Error al registrar la organización",
                     "No se pudo registrar la organización. Por favor, inténtelo de nuevo más tarde.");
             logger.severe("Error al registrar la organización: " + e);
+
+
+
 
         }
     }

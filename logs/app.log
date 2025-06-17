@@ -5807,3 +5807,6 @@ java.io.FileNotFoundException: src\main\resources\Credenciales2.json (El sistema
 	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
 	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
 	at java.lang.Thread.run(Thread.java:1570) [?:?]
+2025-06-17 16:26:02 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
+2025-06-17 16:27:06 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
+2025-06-17 16:27:13 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  

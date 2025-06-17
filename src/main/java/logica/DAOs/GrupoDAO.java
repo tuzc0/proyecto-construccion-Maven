@@ -73,6 +73,32 @@ public class GrupoDAO implements IGrupoDAO {
         return grupoEliminado;
     }
 
+    public boolean eliminarGruposPorPeriodo(int idPeriodo) throws SQLException, IOException {
+
+        boolean gruposEliminados = false;
+        String sql = "UPDATE Grupo SET estadoActivo = 0 WHERE idPeriodo = ?";
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaGrupo = conexionBaseDeDatos.prepareStatement(sql);
+            sentenciaGrupo.setInt(1, idPeriodo);
+
+            if (sentenciaGrupo.executeUpdate() > 0) {
+                gruposEliminados = true;
+            }
+
+        } finally {
+
+            if (sentenciaGrupo != null) {
+                sentenciaGrupo.close();
+            }
+        }
+
+        return gruposEliminados;
+    }
+
+
     public boolean modificarGrupo(GrupoDTO grupo) throws SQLException, IOException {
 
         boolean grupoModificado = false;
@@ -139,6 +165,40 @@ public class GrupoDAO implements IGrupoDAO {
 
         List<GrupoDTO> grupos = new ArrayList<>();
         String sql = "SELECT * FROM Grupo WHERE estadoActivo = 1";
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaGrupo = conexionBaseDeDatos.prepareStatement(sql);
+            resultadoGrupo = sentenciaGrupo.executeQuery();
+
+            while (resultadoGrupo.next()) {
+                GrupoDTO grupo = new GrupoDTO(
+                        resultadoGrupo.getInt("NRC"),
+                        resultadoGrupo.getString("nombre"),
+                        resultadoGrupo.getInt("numeroPersonal"),
+                        resultadoGrupo.getInt("idPeriodo"),
+                        resultadoGrupo.getInt("estadoActivo")
+                );
+                grupos.add(grupo);
+            }
+
+        } finally {
+
+            if (sentenciaGrupo != null) {
+                sentenciaGrupo.close();
+            }
+        }
+
+        return grupos;
+    }
+
+    public List<GrupoDTO> mostrarGruposActivosEnPeriodoActivo() throws SQLException, IOException {
+
+        List<GrupoDTO> grupos = new ArrayList<>();
+        String sql = "SELECT g.* FROM Grupo g " +
+                "JOIN Periodo p ON g.idPeriodo = p.idPeriodo " +
+                "WHERE g.estadoActivo = 1 AND p.estadoActivo = 1";
 
         try {
 

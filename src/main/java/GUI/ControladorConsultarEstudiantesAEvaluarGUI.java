@@ -91,7 +91,6 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
     private void añadirBotonEvaluarATable() {
 
 
-
         Callback<TableColumn<EstudianteDTO, Void>, TableCell<EstudianteDTO, Void>> cellFactory = param -> new TableCell<>() {
 
             private final Button botonEvaluar = new Button("Evaluar");

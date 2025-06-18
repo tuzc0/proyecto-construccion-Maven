@@ -46,7 +46,7 @@ public class ControladorConsultarOrganizacionGUI {
 
     private OrganizacionVinculadaDTO organizacionSeleccionada;
 
-    public static int idOrganizacionSeleccionada;
+    public static int idOrganizacionSeleccionada = 0;
 
     @FXML
     public void initialize() {
@@ -179,10 +179,10 @@ public class ControladorConsultarOrganizacionGUI {
 
         try {
 
+            idOrganizacionSeleccionada = organizacion.getIdOrganizacion();
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestorOrganizacionGUI.fxml"));
             Parent root = loader.load();
-
-            idOrganizacionSeleccionada = organizacion.getIdOrganizacion();
 
 
             Stage stage = new Stage();
@@ -251,6 +251,23 @@ public class ControladorConsultarOrganizacionGUI {
 
     @FXML
     private void abrirVentanaRegistrarOrganizacion(){
+
+        Utilidades utilidades = new Utilidades();
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistroOrganizacionVinculadaGUI.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Registrar Organización Vinculada");
+            stage.show();
+
+        } catch (IOException e) {
+            logger.severe("Error al abrir la ventana de registro de organización: " + e);
+            utilidades.mostrarAlerta("Error", "Error al abrir la ventana",
+                    "No se pudo abrir la ventana de registro de organización.");
+        }
 
     }
 }

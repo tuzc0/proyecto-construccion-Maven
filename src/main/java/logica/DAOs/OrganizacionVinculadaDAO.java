@@ -122,9 +122,9 @@ public class OrganizacionVinculadaDAO implements IOvDAO {
 
                 organizacionVinculada.setIdOrganizacion(resultadoConsultaOrganizacionVinculada.getInt("idOV"));
                 organizacionVinculada.setNombre(resultadoConsultaOrganizacionVinculada.getString("nombre"));
+                organizacionVinculada.setDireccion(resultadoConsultaOrganizacionVinculada.getString("direccion"));
                 organizacionVinculada.setCorreo(resultadoConsultaOrganizacionVinculada.getString("correo"));
                 organizacionVinculada.setNumeroDeContacto(resultadoConsultaOrganizacionVinculada.getString("numeroContacto"));
-                organizacionVinculada.setDireccion(resultadoConsultaOrganizacionVinculada.getString("direccion"));
                 organizacionVinculada.setEstadoActivo(resultadoConsultaOrganizacionVinculada.getInt("estadoActivo"));
             }
 

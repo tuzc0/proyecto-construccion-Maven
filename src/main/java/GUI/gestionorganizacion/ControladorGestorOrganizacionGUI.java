@@ -9,6 +9,7 @@ import logica.DAOs.OrganizacionVinculadaDAO;
 import logica.DTOs.OrganizacionVinculadaDTO;
 
 import javax.imageio.IIOException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
@@ -64,17 +65,21 @@ public class ControladorGestorOrganizacionGUI {
 
         Utilidades utilidades = new Utilidades();
         OrganizacionVinculadaDAO organizacionDAO = new OrganizacionVinculadaDAO();
-        OrganizacionVinculadaDTO organizacionDTO = new OrganizacionVinculadaDTO();
+
 
         try {
 
-            organizacionDTO = organizacionDAO.buscarOrganizacionPorID(idOrganizacionSeleccionada);
-            campoNombreEncontrado.setText(organizacionDTO.getNombre());
-            campoCorreoEncontrado.setText(organizacionDTO.getCorreo());
-            campoContactoEncontrado.setText(organizacionDTO.getNumeroDeContacto());
-            campoDireccionEncontrada.setText(organizacionDTO.getDireccion());
+            OrganizacionVinculadaDTO organizacionDTO = organizacionDAO.buscarOrganizacionPorID(idOrganizacionSeleccionada);
+            String nombre = organizacionDTO.getNombre();
+            String correo = organizacionDTO.getCorreo();
+            String contacto = organizacionDTO.getNumeroDeContacto();
+            String direccion = organizacionDTO.getDireccion();
+            campoNombreEncontrado.setText(nombre);
+            campoCorreoEncontrado.setText(correo);
+            campoContactoEncontrado.setText(contacto);
+            campoDireccionEncontrada.setText(direccion);
 
-        } catch (IIOException e){
+        } catch (IOException e){
 
             logger.warning("Error de IO: " + e);
             utilidades.mostrarAlerta("Error", "No se pudo cargar los datos",

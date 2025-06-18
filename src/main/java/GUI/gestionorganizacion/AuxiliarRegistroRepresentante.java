@@ -85,17 +85,23 @@ public class AuxiliarRegistroRepresentante {
                     "Error de conexión",
                     "No se pudo conectar a la base de datos.");
 
+            e. printStackTrace();
+
         } catch (SQLException e) {
 
             utilidades.mostrarAlerta("Error",
                     "Error al registrar el representante",
                     "No se pudo registrar el representante.");
 
+            e.printStackTrace();
+
         } catch (Exception e) {
 
             utilidades.mostrarAlerta("Error",
                     "Error al registrar el representante",
                     "No se pudo registrar el representante.");
+
+            e.printStackTrace();
         }
     }
 }

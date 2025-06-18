@@ -91,8 +91,8 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
 
         OrganizacionVinculadaDAO organizacionDAO= new OrganizacionVinculadaDAO();
         OrganizacionVinculadaDTO organizacionDTO =
-                new OrganizacionVinculadaDTO(idOrganizacion, nombreOrganizacion, correoOrganizacion,
-                        contactoOrganizacion, direccionOrganizacion, estadoActivo);
+                new OrganizacionVinculadaDTO(idOrganizacion, nombreOrganizacion, direccionOrganizacion,correoOrganizacion,
+                        contactoOrganizacion,  estadoActivo);
 
 
         try {

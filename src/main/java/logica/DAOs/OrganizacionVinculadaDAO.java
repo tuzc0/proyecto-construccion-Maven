@@ -219,9 +219,9 @@ public class OrganizacionVinculadaDAO implements IOvDAO {
                 OrganizacionVinculadaDTO organizacion = new OrganizacionVinculadaDTO(
                         resultadoConsultaOrganizacionVinculada.getInt("idOV"),
                         resultadoConsultaOrganizacionVinculada.getString("nombre"),
+                        resultadoConsultaOrganizacionVinculada.getString("direccion"),
                         resultadoConsultaOrganizacionVinculada.getString("correo"),
                         resultadoConsultaOrganizacionVinculada.getString("numeroContacto"),
-                        resultadoConsultaOrganizacionVinculada.getString("direccion"),
                         resultadoConsultaOrganizacionVinculada.getInt("estadoActivo")
                 );
                 listaOrganizaciones.add(organizacion);

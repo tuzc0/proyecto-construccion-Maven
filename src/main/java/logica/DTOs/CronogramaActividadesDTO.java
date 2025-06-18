@@ -8,8 +8,6 @@ public class CronogramaActividadesDTO {
     private int idPeriodo;
     private int estadoActivo;
 
-
-
     public CronogramaActividadesDTO() {
 
     }

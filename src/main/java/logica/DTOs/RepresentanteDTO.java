@@ -1,5 +1,7 @@
 package logica.DTOs;
 
+import java.util.Objects;
+
 public class RepresentanteDTO {
 
     private int IDRepresentante;
@@ -96,15 +98,30 @@ public class RepresentanteDTO {
     }
 
     @Override
-    public String toString() {
-        return "RepresentanteDTO{" +
-                "IDRepresentante=" + IDRepresentante +
-                ", correo='" + correo + '\'' +
-                ", telefono='" + telefono + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", apellidos='" + apellidos + '\'' +
-                ", idOrganizacion=" + idOrganizacion +
-                ", estadoActivo=" + estadoActivo +
-                '}';
+    public boolean equals(Object objetoAComparar) {
+
+        if (this == objetoAComparar) {
+            return true;
+        }
+
+        if (objetoAComparar == null || getClass() != objetoAComparar.getClass()) {
+            return false;
+        }
+
+        RepresentanteDTO representanteComparado = (RepresentanteDTO) objetoAComparar;
+
+        return IDRepresentante == representanteComparado.IDRepresentante &&
+                idOrganizacion == representanteComparado.idOrganizacion &&
+                estadoActivo == representanteComparado.estadoActivo &&
+                Objects.equals(correo, representanteComparado.correo) &&
+                Objects.equals(telefono, representanteComparado.telefono) &&
+                Objects.equals(nombre, representanteComparado.nombre) &&
+                Objects.equals(apellidos, representanteComparado.apellidos);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(IDRepresentante, correo, telefono, nombre, apellidos, idOrganizacion, estadoActivo);
     }
 }

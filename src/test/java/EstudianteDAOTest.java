@@ -1,6 +1,8 @@
 import accesoadatos.ConexionBaseDeDatos;
+import logica.DAOs.AcademicoDAO;
 import logica.DAOs.EstudianteDAO;
 import logica.DAOs.UsuarioDAO;
+import logica.DTOs.AcademicoDTO;
 import logica.DTOs.EstudianteDTO;
 import logica.DTOs.UsuarioDTO;
 import org.junit.jupiter.api.*;
@@ -24,156 +26,199 @@ class EstudianteDAOTest {
     private final List<String> MATRICULAS_INSERTADAS = new ArrayList<>();
     private final List<Integer> IDS_USUARIOS_INSERTADOS = new ArrayList<>();
 
-    @BeforeAll
+    @BeforeEach
     void prepararDatosDePrueba() {
+
+        estudianteDAO = new EstudianteDAO();
+        usuarioDAO = new UsuarioDAO();
+
+        MATRICULAS_INSERTADAS.clear();
+        IDS_USUARIOS_INSERTADOS.clear();
 
         try {
 
-            estudianteDAO = new EstudianteDAO();
-            usuarioDAO = new UsuarioDAO();
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
 
-            for (String matricula : MATRICULAS_INSERTADAS) {
-                conexionBaseDeDatos.prepareStatement("DELETE FROM estudiante WHERE matricula = '" + matricula + "'").executeUpdate();
+            for (String matricula : List.of("S23014102", "S23014095", "S23014069", "S23014054")) {
+
+                conexionBaseDeDatos
+                        .prepareStatement("DELETE FROM estudiante WHERE matricula = '" + matricula + "'")
+                        .executeUpdate();
             }
 
-            MATRICULAS_INSERTADAS.clear();
-            IDS_USUARIOS_INSERTADOS.clear();
+            conexionBaseDeDatos
+                    .prepareStatement("DELETE FROM usuario WHERE idUsuario BETWEEN 1000 AND 2000")
+                    .executeUpdate();
 
-            conexionBaseDeDatos.prepareStatement("DELETE FROM estudiante").executeUpdate();
-            conexionBaseDeDatos.prepareStatement("DELETE FROM usuario WHERE idUsuario BETWEEN 1000 AND 2000").executeUpdate();
+            int idUsuario = 0;
+            int estadoActivo = 1;
+
+            UsuarioDTO usuarioEstudiante1DTO = new UsuarioDTO(idUsuario, "Claudio", "Trujillo Zepeda", estadoActivo);
+            UsuarioDTO usuarioEstudiante2DTO = new UsuarioDTO(idUsuario, "Irene", "Paz Gonzalez", estadoActivo);
+            UsuarioDTO usuarioEstudiante3DTO = new UsuarioDTO(idUsuario, "Angel", "Aburto Ruiz", estadoActivo);
+
+            int idUsuarioEstudiante1 = usuarioDAO.insertarUsuario(usuarioEstudiante1DTO);
+            int idUsuarioEstudiante2 = usuarioDAO.insertarUsuario(usuarioEstudiante2DTO);
+            int idUsuarioEstudiante3 = usuarioDAO.insertarUsuario(usuarioEstudiante3DTO);
+
+
+
+            int idProyecto = 0;
+
+            IDS_USUARIOS_INSERTADOS.addAll(List.of(idUsuarioEstudiante1, idUsuarioEstudiante2, idUsuarioEstudiante3));
+
+            estudianteDAO.insertarEstudiante(new EstudianteDTO(idUsuarioEstudiante1,
+                    usuarioEstudiante1DTO.getNombre(), usuarioEstudiante1DTO.getApellido(), "S23014102",
+                    usuarioEstudiante1DTO.getEstado(), idProyecto));
+
+            estudianteDAO.insertarEstudiante(new EstudianteDTO(idUsuarioEstudiante2,
+                    usuarioEstudiante2DTO.getNombre(), usuarioEstudiante2DTO.getApellido(), "S23014095",
+                    usuarioEstudiante2DTO.getEstado(), idProyecto));
+
+            estudianteDAO.insertarEstudiante(new EstudianteDTO(idUsuarioEstudiante3,
+                    usuarioEstudiante3DTO.getNombre(), usuarioEstudiante3DTO.getApellido(), "S23014069",
+                    usuarioEstudiante3DTO.getEstado(), idProyecto));
+
+            MATRICULAS_INSERTADAS.addAll(List.of("S23014102", "S23014095", "S23014069"));
 
         } catch (SQLException | IOException e) {
 
-            fail("Error al preparar los datos de prueba: " + e.getMessage());
+            fail("Error en @BeforeEach al preparar datos: " + e);
         }
     }
 
-    @AfterAll
+    @AfterEach
     void limpiarDatosDePrueba() {
 
         try {
 
             for (String matricula : MATRICULAS_INSERTADAS) {
-                conexionBaseDeDatos.prepareStatement("DELETE FROM estudiante WHERE matricula = '" + matricula + "'").executeUpdate();
+
+                conexionBaseDeDatos
+                        .prepareStatement("DELETE FROM estudiante WHERE matricula = " + matricula)
+                        .executeUpdate();
             }
 
             for (int idUsuario : IDS_USUARIOS_INSERTADOS) {
-                conexionBaseDeDatos.prepareStatement("DELETE FROM usuario WHERE idUsuario = " + idUsuario).executeUpdate();
+
+                conexionBaseDeDatos
+                        .prepareStatement("DELETE FROM usuario WHERE idUsuario = " + idUsuario)
+                        .executeUpdate();
             }
 
             conexionBaseDeDatos.close();
 
         } catch (SQLException e) {
 
-            fail("Error al limpiar los datos de prueba: " + e.getMessage());
+            fail("Error en @AfterEach al limpiar datos: " + e);
         }
     }
 
     @Test
     void testInsertarEstudianteConDatosValidos() {
 
+        int idProyecto = 0;
+
         try {
 
-            UsuarioDTO usuarioDTO = new UsuarioDTO(0, "Juan", "Pérez", 1);
+            UsuarioDTO usuarioDTO = new UsuarioDTO(0, "Manuel", "Valdivia Garcia", 1);
             int idUsuario = usuarioDAO.insertarUsuario(usuarioDTO);
             IDS_USUARIOS_INSERTADOS.add(idUsuario);
 
-            EstudianteDTO estudianteDTO = new EstudianteDTO(idUsuario, "Juan", "Pérez", "A12345", 1,0);
+            EstudianteDTO estudianteDTO = new EstudianteDTO(idUsuario, usuarioDTO.getNombre(), usuarioDTO.getApellido(),
+                    "S23014054", usuarioDTO.getEstado(),idProyecto);
             boolean resultadoAlInsertar = estudianteDAO.insertarEstudiante(estudianteDTO);
 
             assertTrue(resultadoAlInsertar, "El estudiante debería ser insertado correctamente.");
-            MATRICULAS_INSERTADAS.add("A12345");
+            MATRICULAS_INSERTADAS.add("S23014054");
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba excepción: " + e.getMessage());
+            fail("No se esperaba excepción: " + e);
         }
     }
 
     @Test
     void testInsertarEstudianteConDatosInvalidos() {
 
-        EstudianteDTO estudianteInvalido = new EstudianteDTO(-1, null, null, null, 1,0);
+        int idUsuario = -1;
+        int idProyecto = 0;
+        int estadoActivo = 1;
 
-        assertThrows(SQLException.class, () -> estudianteDAO.insertarEstudiante(estudianteInvalido),
+        EstudianteDTO estudianteDTO = new EstudianteDTO(idUsuario, null, null, null,
+                estadoActivo, idProyecto);
+
+        assertThrows(SQLException.class, () -> estudianteDAO.insertarEstudiante(estudianteDTO),
                 "Se esperaba una excepción debido a datos inválidos.");
     }
 
     @Test
     void testBuscarEstudiantePorMatriculaConDatosValidos() {
 
+        EstudianteDTO estudianteEsperado = new EstudianteDTO(IDS_USUARIOS_INSERTADOS.get(0),
+                "Claudio", "Trujillo Zepeda", "S23014102", 1, 0);
+
         try {
 
-            UsuarioDTO usuarioDTO = new UsuarioDTO(0, "Laura", "Gómez", 1);
-            int idUsuario = usuarioDAO.insertarUsuario(usuarioDTO);
-            IDS_USUARIOS_INSERTADOS.add(idUsuario);
-
-            EstudianteDTO estudianteABuscar = new EstudianteDTO(idUsuario, "Laura", "Gómez", "A12346", 1,0);
-            estudianteDAO.insertarEstudiante(estudianteABuscar);
-            MATRICULAS_INSERTADAS.add("A12346");
-
-            EstudianteDTO estudianteEncontrado = estudianteDAO.buscarEstudiantePorMatricula("A12346");
-            assertEquals(estudianteABuscar, estudianteEncontrado, "El estudiante encontrado debería coincidir con el esperado.");
+            EstudianteDTO estudianteEncontrado = estudianteDAO.buscarEstudiantePorMatricula("S23014102");
+            assertEquals(estudianteEsperado, estudianteEncontrado,
+                    "El estudiante encontrado debería coincidir con el esperado.");
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba excepción: " + e.getMessage());
+            fail("No se esperaba excepción: " + e);
         }
     }
 
     @Test
     void testBuscarEstudiantePorMatriculaConDatosInvalidos() {
 
+        EstudianteDTO estudianteEsperado = new EstudianteDTO(-1, "N/A", "N/A", "N/A", 0,0);
+
         try {
 
-            EstudianteDTO estudianteABuscar = new EstudianteDTO(-1, "N/A", "N/A", "N/A", 0,0);
-            EstudianteDTO estudianteEncontrado = estudianteDAO.buscarEstudiantePorMatricula("Inexistente");
+            EstudianteDTO estudianteEncontrado = estudianteDAO.buscarEstudiantePorMatricula("S23014037");
 
-            assertEquals(estudianteABuscar, estudianteEncontrado,
+            assertEquals(estudianteEsperado, estudianteEncontrado,
                     "El estudiante encontrado debería ser el estudiante por defecto.");
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba excepción: " + e.getMessage());
+            fail("No se esperaba excepción: " + e);
         }
     }
 
     @Test
     void testModificarEstudianteConDatosValidos() {
 
+        EstudianteDTO estudianteModificadoEsperado = new EstudianteDTO(IDS_USUARIOS_INSERTADOS.get(1),
+                "Gillermo", "Velazquez Rosiles", "S23014102", 1,0);
+
         try {
 
-            UsuarioDTO usuarioDTO = new UsuarioDTO(0, "Carlos", "Martínez", 1);
-            int idUsuario = usuarioDAO.insertarUsuario(usuarioDTO);
-            IDS_USUARIOS_INSERTADOS.add(idUsuario);
-
-            EstudianteDTO estudianteDTO = new EstudianteDTO(idUsuario, "Carlos", "Martínez", "A12347", 1,0);
-            estudianteDAO.insertarEstudiante(estudianteDTO);
-            MATRICULAS_INSERTADAS.add("A12347");
-
-            EstudianteDTO estudianteModificado = new EstudianteDTO(idUsuario, "Carlos", "Martínez López", "A12347", 1,0);
-            boolean resultadoAlModificar = estudianteDAO.modificarEstudiante(estudianteModificado);
+            boolean resultadoAlModificar = estudianteDAO.modificarEstudiante(estudianteModificadoEsperado);
             assertTrue(resultadoAlModificar, "El estudiante debería ser modificado correctamente.");
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba excepción: " + e.getMessage());
+            fail("No se esperaba excepción: " + e);
         }
     }
 
     @Test
     void testModificarEstudianteConDatosInvalidos() {
 
+        EstudianteDTO estudianteInvalido = new EstudianteDTO(-1, null, null, null,
+                1,1);
+
         try {
 
-            EstudianteDTO estudianteInvalido = new EstudianteDTO(-1, null, null, null, 1,1);
             boolean resultadoModificacion = estudianteDAO.modificarEstudiante(estudianteInvalido);
             assertFalse(resultadoModificacion, "Se esperaba que la modificación fallara debido a datos inválidos.");
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba excepción: " + e.getMessage());
+            fail("No se esperaba excepción: " + e);
         }
 
 
@@ -197,92 +242,90 @@ class EstudianteDAOTest {
     @Test
     void testEliminarEstudiantePorMatriculaConDatosValidos() {
 
+        int estadoActivo = 0;
+        String matriculaAEliminar = "S23014095";
+
         try {
 
-            UsuarioDTO usuarioDTO = new UsuarioDTO(0, "Ana", "López", 1);
-            int idUsuario = usuarioDAO.insertarUsuario(usuarioDTO);
-            IDS_USUARIOS_INSERTADOS.add(idUsuario);
-
-            EstudianteDTO estudianteDTO = new EstudianteDTO(idUsuario, "Ana", "López", "A12348", 1,0);
-            estudianteDAO.insertarEstudiante(estudianteDTO);
-            MATRICULAS_INSERTADAS.add("A12348");
-
-            boolean resultadoAlEliminar = estudianteDAO.eliminarEstudiantePorMatricula(0, "A12348");
+            boolean resultadoAlEliminar = estudianteDAO.eliminarEstudiantePorMatricula(estadoActivo, matriculaAEliminar);
             assertTrue(resultadoAlEliminar, "El estudiante debería ser eliminado correctamente.");
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba excepción: " + e.getMessage());
+            fail("No se esperaba excepción: " + e);
         }
     }
 
     @Test
     void testEliminarEstudiantePorMatriculaConDatosInvalidos() {
 
+        int estadoActivo = 0;
+        String matriculaAEliminar = "SSSSSSSS";
+
         try {
 
-            boolean resultadoAlEliminar = estudianteDAO.eliminarEstudiantePorMatricula(0, "Inexistente");
+            boolean resultadoAlEliminar = estudianteDAO.eliminarEstudiantePorMatricula(estadoActivo, matriculaAEliminar);
             assertFalse(resultadoAlEliminar, "No debería eliminarse un estudiante inexistente.");
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba excepción: " + e.getMessage());
+            fail("No se esperaba excepción: " + e);
         }
     }
 
     @Test
     void testListarEstudiantesConDatos() {
 
+        List<EstudianteDTO> listaEsperada = List.of(
+                new EstudianteDTO(IDS_USUARIOS_INSERTADOS.get(0), "Claudio", "Trujillo Zepeda",
+                        "S23014102", 1, 0),
+                new EstudianteDTO(IDS_USUARIOS_INSERTADOS.get(1), "Irene", "Paz Gonzalez",
+                        "S23014095", 1, 0),
+                new EstudianteDTO(IDS_USUARIOS_INSERTADOS.get(2), "Angel", "Aburto Ruiz",
+                        "S23014069", 1, 0)
+        );
+
         try {
 
-            UsuarioDTO usuarioEstudiante1 = new UsuarioDTO(0, "Juan", "Pérez", 1);
-            int idJuan = usuarioDAO.insertarUsuario(usuarioEstudiante1);
-            IDS_USUARIOS_INSERTADOS.add(idJuan);
+            List<EstudianteDTO> listaRecuperada = estudianteDAO.listarEstudiantes();
 
-            EstudianteDTO estudianteDTO1 = new EstudianteDTO(idJuan, "Juan", "Pérez", "B10001", 1,0);
-            estudianteDAO.insertarEstudiante(estudianteDTO1);
-            MATRICULAS_INSERTADAS.add("B10001");
+            assertEquals(listaEsperada.size(), listaRecuperada.size(),
+                    "La cantidad de estudiantes recuperados debería ser igual a la esperada.");
 
-            UsuarioDTO usuarioEstudiante2 = new UsuarioDTO(0, "Laura", "Gómez", 1);
-            int idLaura = usuarioDAO.insertarUsuario(usuarioEstudiante2);
-            IDS_USUARIOS_INSERTADOS.add(idLaura);
+            for (int estudianteRecuperado = 0; estudianteRecuperado < listaEsperada.size(); estudianteRecuperado++) {
 
-            EstudianteDTO estudianteDTO2 = new EstudianteDTO(idLaura, "Laura", "Gómez", "B10002", 1,0);
-            estudianteDAO.insertarEstudiante(estudianteDTO2);
-            MATRICULAS_INSERTADAS.add("B10002");
-
-            List<EstudianteDTO> listaEsperada = List.of(estudianteDTO1, estudianteDTO2);
-
-            List<EstudianteDTO> listaObtenida = estudianteDAO.listarEstudiantes();
-            assertTrue(listaObtenida.containsAll(listaEsperada),
-                    "La lista de estudiantes obtenida debería contener los datos esperados.");
+                assertTrue(listaEsperada.get(estudianteRecuperado).equals(listaRecuperada.get(estudianteRecuperado)),
+                        "El estudiante esperado debería ser igual al estudiante recuperado.");
+            }
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba excepción: " + e.getMessage());
+            fail("No se esperaba una excepción: " + e);
         }
     }
 
-
-
     @Test
     void testListarEstudiantesSinDatos() {
+
+        int resultadoEsperado = 0;
+        int estadoActivo = 0;
 
         try {
 
             for (String matricula : MATRICULAS_INSERTADAS) {
 
-                estudianteDAO.eliminarEstudiantePorMatricula(0, matricula);
+                estudianteDAO.eliminarEstudiantePorMatricula(estadoActivo, matricula);
             }
 
             MATRICULAS_INSERTADAS.clear();
 
             List<EstudianteDTO> estudiantes = estudianteDAO.listarEstudiantes();
-            assertEquals(0, estudiantes.size(), "La lista de estudiantes debería estar vacía.");
+            assertEquals(resultadoEsperado, estudiantes.size(),
+                    "La lista de estudiantes debería estar vacía.");
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba excepción: " + e.getMessage());
+            fail("No se esperaba excepción: " + e);
         }
     }
 }

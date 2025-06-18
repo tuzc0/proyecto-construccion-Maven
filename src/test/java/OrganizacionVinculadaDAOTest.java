@@ -1,6 +1,8 @@
 import accesoadatos.ConexionBaseDeDatos;
 import logica.DAOs.OrganizacionVinculadaDAO;
+import logica.DTOs.AcademicoEvaluadorDTO;
 import logica.DTOs.OrganizacionVinculadaDTO;
+import logica.DTOs.UsuarioDTO;
 import org.junit.jupiter.api.*;
 import java.io.IOException;
 import java.sql.Connection;
@@ -14,234 +16,406 @@ import static org.junit.jupiter.api.Assertions.*;
 public class OrganizacionVinculadaDAOTest {
 
     private OrganizacionVinculadaDAO organizacionDAO;
-    private Connection conexionBaseDeDatos;
+
     private final List<Integer> IDS_ORGANIZACIONES_INSERTADAS = new ArrayList<>();
 
-    @BeforeAll
+    @BeforeEach
     void prepararDatosDePrueba() {
 
-        try {
+        organizacionDAO = new OrganizacionVinculadaDAO();
+        IDS_ORGANIZACIONES_INSERTADAS.clear();
 
-            organizacionDAO = new OrganizacionVinculadaDAO();
-            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection()) {
 
-            PreparedStatement limpiarTabla = conexionBaseDeDatos.prepareStatement(
-                    "DELETE FROM organizacionvinculada WHERE idOV BETWEEN 1000 AND 2000");
-            limpiarTabla.executeUpdate();
-            limpiarTabla.close();
+            for (int idOrganizacion : List.of(1, 2, 3, 4)) {
+
+                PreparedStatement eliminar = conexionBaseDeDatos.prepareStatement
+                        ("DELETE FROM organizacionvinculada WHERE idOV = ?");
+                eliminar.setInt(1, idOrganizacion);
+                eliminar.executeUpdate();
+            }
+
+            IDS_ORGANIZACIONES_INSERTADAS.add(organizacionDAO.crearNuevaOrganizacion
+                    (new OrganizacionVinculadaDTO(1, "Empresa 1", "Dirección 1",
+                            "empresa1@test.com", "5551111111", 1)));
+            IDS_ORGANIZACIONES_INSERTADAS.add(organizacionDAO.crearNuevaOrganizacion
+                    (new OrganizacionVinculadaDTO(2, "Empresa 2", "Dirección 2",
+                            "empresa2@test.com", "5552222222", 1)));
+            IDS_ORGANIZACIONES_INSERTADAS.add(organizacionDAO.crearNuevaOrganizacion
+                    (new OrganizacionVinculadaDTO(3, "Empresa 3", "Dirección 3",
+                            "empresa3@test.com", "5553333333", 1)));
 
         } catch (SQLException | IOException e) {
 
-            fail("Error al preparar datos de prueba: " + e);
+            fail("Error en @BeforeEach al preparar datos: " + e);
         }
     }
 
-    @AfterAll
+
+    @AfterEach
     void limpiarDatosDePrueba() {
 
-        try {
+        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection()) {
 
             for (int idOrganizacion : IDS_ORGANIZACIONES_INSERTADAS) {
 
-                PreparedStatement eliminar = conexionBaseDeDatos.prepareStatement(
-                        "DELETE FROM organizacionvinculada WHERE idOV = ?");
-
-                eliminar.setInt(1, idOrganizacion);
-                eliminar.executeUpdate();
-                eliminar.close();
+                PreparedStatement consultaPreparadaSQL = conexionBaseDeDatos.prepareStatement
+                        ("DELETE FROM organizacionvinculada WHERE idOV = ?");
+                consultaPreparadaSQL.setInt(1, idOrganizacion);
+                consultaPreparadaSQL.executeUpdate();
             }
 
-            conexionBaseDeDatos.close();
+        } catch (SQLException | IOException e) {
 
-        } catch (SQLException e) {
             fail("Error al limpiar datos: " + e);
         }
     }
 
+
+
     @Test
-    void crearOrganizacionVinculadaConDatosValidos() throws SQLException, IOException {
-        OrganizacionVinculadaDTO org = new OrganizacionVinculadaDTO(0, "Empresa Test", "Calle Falsa 123","test@empresa.com",
-                "5551234567", 1);
-        int idGenerado = organizacionDAO.crearNuevaOrganizacion(org);
-        assertTrue(idGenerado > 0, "Debería retornar ID válido");
-        IDS_ORGANIZACIONES_INSERTADAS.add(idGenerado);
+    void crearOrganizacionVinculadaConDatosValidos() {
+
+        OrganizacionVinculadaDTO organizacionDTO = new OrganizacionVinculadaDTO(0, "Empresa Test",
+                "Calle Falsa 123","test@empresa.com", "5551234567", 1);
+
+        try {
+
+            int idOrganizacionGenerado = organizacionDAO.crearNuevaOrganizacion(organizacionDTO);
+            assertTrue(idOrganizacionGenerado > 0, "Debería retornar ID válido");
+            IDS_ORGANIZACIONES_INSERTADAS.add(idOrganizacionGenerado);
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al crear organización: " + e);
+        }
+
     }
 
     @Test
     void crearOrganizacionVinculadaConDatosInvalidos() {
-        OrganizacionVinculadaDTO orgInvalida = new OrganizacionVinculadaDTO(0, null, null, null, null, 1);
-        assertThrows(SQLException.class, () -> organizacionDAO.crearNuevaOrganizacion(orgInvalida),
+
+        OrganizacionVinculadaDTO organizacionInvalida = new OrganizacionVinculadaDTO(0, null,
+                null, null, null, 1);
+
+        assertThrows(SQLException.class, () -> organizacionDAO.crearNuevaOrganizacion(organizacionInvalida),
                 "Debería lanzar excepción con datos inválidos");
     }
 
     @Test
-    void eliminarOrganizacionConIDValido() throws SQLException, IOException {
-        OrganizacionVinculadaDTO org = new OrganizacionVinculadaDTO(0, "Empresa Eliminar", "Calle Falsa 123","eliminar@empresa.com",
-                "5551234567", 1);
-        int idGenerado = organizacionDAO.crearNuevaOrganizacion(org);
-        IDS_ORGANIZACIONES_INSERTADAS.add(idGenerado);
+    void eliminarOrganizacionConIDValido() {
 
-        boolean resultado = organizacionDAO.eliminarOrganizacionPorID(idGenerado);
-        assertTrue(resultado, "Debería eliminar correctamente");
+        int idOrganizacionAEliminar = IDS_ORGANIZACIONES_INSERTADAS.get(0);
+
+        try {
+
+            boolean resultadoObtenido = organizacionDAO.eliminarOrganizacionPorID(idOrganizacionAEliminar);
+            assertTrue(resultadoObtenido, "Debería eliminar correctamente");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al eliminar organización: " + e);
+        }
     }
 
     @Test
-    void eliminarOrganizacionConIDInvalido() throws SQLException, IOException {
-        boolean resultado = organizacionDAO.eliminarOrganizacionPorID(-1);
-        assertFalse(resultado, "No debería eliminar con ID inválido");
+    void eliminarOrganizacionConIDInvalido() {
+
+        int idInvalido = -1;
+
+        try {
+
+            boolean resultadoObtenido = organizacionDAO.eliminarOrganizacionPorID(idInvalido);
+            assertFalse(resultadoObtenido, "No debería eliminar con ID inválido");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al eliminar organización con ID inválido: " + e);
+        }
     }
 
     @Test
-    void eliminarOrganizacionInexistente() throws SQLException, IOException {
-        boolean resultado = organizacionDAO.eliminarOrganizacionPorID(99999);
-        assertFalse(resultado, "No debería eliminar organización inexistente");
+    void eliminarOrganizacionInexistente() {
+
+        try {
+
+            boolean resultadoObtenido = organizacionDAO.eliminarOrganizacionPorID(99999);
+            assertFalse(resultadoObtenido, "No debería eliminar organización inexistente");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al eliminar organización inexistente: " + e);
+        }
     }
 
     @Test
-    void modificarOrganizacionConDatosValidos() throws SQLException, IOException {
-        OrganizacionVinculadaDTO org = new OrganizacionVinculadaDTO(0, "Empresa Modificar", "Calle Falsa 123","modificar@empresa.com",
-                "5551234567", 1);
-        int idGenerado = organizacionDAO.crearNuevaOrganizacion(org);
-        IDS_ORGANIZACIONES_INSERTADAS.add(idGenerado);
+    void modificarOrganizacionConDatosValidos() {
 
-        OrganizacionVinculadaDTO orgModificada = new OrganizacionVinculadaDTO(idGenerado, "Empresa Modificada", "Calle Verdadera 456",
+        int idOrganizacionAModificar = IDS_ORGANIZACIONES_INSERTADAS.get(1);
+        OrganizacionVinculadaDTO organizacionModificada = new OrganizacionVinculadaDTO(idOrganizacionAModificar,
+                "Empresa Modificada", "Calle Verdadera 456",
                 "modificado@empresa.com", "5557654321",1);
 
-        boolean resultado = organizacionDAO.modificarOrganizacion(orgModificada);
-        assertTrue(resultado, "Debería modificar correctamente");
+        try {
+
+            boolean resultadoObtenido = organizacionDAO.modificarOrganizacion(organizacionModificada);
+            assertTrue(resultadoObtenido, "Debería modificar correctamente");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al modificar organización: " + e);
+        }
     }
 
     @Test
-    void modificarOrganizacionConDatosInvalidos() throws SQLException, IOException {
-        OrganizacionVinculadaDTO orgInvalida = new OrganizacionVinculadaDTO(1, null, null, null, null, 1);
-        boolean resultado = organizacionDAO.modificarOrganizacion(orgInvalida);
-        assertFalse(resultado, "No debería modificar con datos inválidos");
+    void modificarOrganizacionConDatosInvalidos() {
+
+        OrganizacionVinculadaDTO organizacionModificadaDatosInvalidos = new OrganizacionVinculadaDTO(2,
+                null, null, null, null, 1);
+
+        try {
+
+            boolean resultadoPrueba = organizacionDAO.modificarOrganizacion(organizacionModificadaDatosInvalidos);
+            assertFalse(resultadoPrueba, "No debería modificar con datos inválidos");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al modificar organización con datos inválidos: " + e);
+        }
     }
 
     @Test
-    void modificarOrganizacionInexistente() throws SQLException, IOException {
-        OrganizacionVinculadaDTO orgInexistente = new OrganizacionVinculadaDTO(99999, "Inexistente",
-                "inexistente@empresa.com", "5550000000", "Dirección", 1);
-        boolean resultado = organizacionDAO.modificarOrganizacion(orgInexistente);
-        assertFalse(resultado, "No debería modificar organización inexistente");
+    void modificarOrganizacionInexistente() {
+
+        OrganizacionVinculadaDTO organizacionInexistente = new OrganizacionVinculadaDTO(99999,
+                "Inexistente", "inexistente@empresa.com", "5550000000",
+                "Dirección", 1);
+
+        try {
+
+            boolean resultadoPrueba = organizacionDAO.modificarOrganizacion(organizacionInexistente);
+            assertFalse(resultadoPrueba, "No debería modificar organización inexistente");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al modificar organización inexistente: " + e);
+        }
     }
 
     @Test
-    void buscarOrganizacionPorIDValido() throws SQLException, IOException {
-        OrganizacionVinculadaDTO org = new OrganizacionVinculadaDTO(0, "Empresa Buscar", "Calle Falsa 123","buscar@empresa.com",
-                "5551234567", 1);
-        int idGenerado = organizacionDAO.crearNuevaOrganizacion(org);
-        IDS_ORGANIZACIONES_INSERTADAS.add(idGenerado);
+    void buscarOrganizacionPorIDValido() {
 
-        OrganizacionVinculadaDTO orgEsperada = new OrganizacionVinculadaDTO(idGenerado, "Empresa Buscar",
-                "buscar@empresa.com", "5551234567", "Calle Falsa 123", 1);
+        int idOrganizacionABuscar = IDS_ORGANIZACIONES_INSERTADAS.get(2);
+        OrganizacionVinculadaDTO organizacionEsperada = new OrganizacionVinculadaDTO(idOrganizacionABuscar, "Empresa 3",
+                "Dirección 3", "empresa3@test.com", "5553333333", 1);
 
-        OrganizacionVinculadaDTO orgEncontrada = organizacionDAO.buscarOrganizacionPorID(idGenerado);
-        assertEquals(orgEsperada, orgEncontrada, "Debería encontrar la organización correcta");
+        try {
+
+            OrganizacionVinculadaDTO organizacionEncontrada =
+                    organizacionDAO.buscarOrganizacionPorID(idOrganizacionABuscar);
+            assertEquals(organizacionEsperada, organizacionEncontrada,
+                    "Debería encontrar la organización correcta");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al buscar organización por ID: " + e);
+        }
+
     }
 
     @Test
-    void buscarOrganizacionPorIDInvalido() throws SQLException, IOException {
-        OrganizacionVinculadaDTO orgEsperada = new OrganizacionVinculadaDTO(-1, "N/A", "N/A", "N/A", "N/A", 0);
-        OrganizacionVinculadaDTO orgEncontrada = organizacionDAO.buscarOrganizacionPorID(-1);
-        assertEquals(orgEsperada, orgEncontrada, "Debería retornar organización por defecto");
+    void buscarOrganizacionPorIDInvalido() {
+
+        int idOrganizacionInvalido = -1;
+        OrganizacionVinculadaDTO organizacionEsperada = new OrganizacionVinculadaDTO(-1, "N/A",
+                "N/A", "N/A", "N/A", 0);
+
+        try {
+
+            OrganizacionVinculadaDTO organizacionEncontrada = organizacionDAO.buscarOrganizacionPorID(idOrganizacionInvalido);
+            assertEquals(organizacionEsperada, organizacionEncontrada, "Debería retornar organización por defecto");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al buscar organización por ID inválido: " + e);
+        }
+
     }
 
     @Test
-    void buscarOrganizacionInexistentePorID() throws SQLException, IOException {
-        OrganizacionVinculadaDTO orgEsperada = new OrganizacionVinculadaDTO(-1, "N/A", "N/A", "N/A", "N/A", 0);
-        OrganizacionVinculadaDTO orgEncontrada = organizacionDAO.buscarOrganizacionPorID(99999);
-        assertEquals(orgEsperada, orgEncontrada, "Debería retornar organización por defecto");
+    void buscarOrganizacionInexistentePorID() {
+
+        int idOrganizacionInexistente = 99999;
+        OrganizacionVinculadaDTO organizacionEsperada = new OrganizacionVinculadaDTO(-1, "N/A",
+                "N/A", "N/A", "N/A", 0);
+
+        try {
+
+            OrganizacionVinculadaDTO orgEncontrada = organizacionDAO.buscarOrganizacionPorID(idOrganizacionInexistente);
+            assertEquals(organizacionEsperada, orgEncontrada, "Debería retornar organización por defecto");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al buscar organización inexistente por ID: " + e);
+        }
     }
 
     @Test
-    void buscarOrganizacionPorCorreoValido() throws SQLException, IOException {
-        OrganizacionVinculadaDTO org = new OrganizacionVinculadaDTO(0, "Empresa Correo","Calle Falsa 123", "correo@empresa.com",
-                "5551234567",  1);
-        int idGenerado = organizacionDAO.crearNuevaOrganizacion(org);
-        IDS_ORGANIZACIONES_INSERTADAS.add(idGenerado);
+    void buscarOrganizacionPorCorreoValido() {
 
-        OrganizacionVinculadaDTO orgEsperada = new OrganizacionVinculadaDTO(idGenerado, "Empresa Correo",
-                "correo@empresa.com", "5551234567", "Calle Falsa 123", 1);
+        int idOrganizacion = IDS_ORGANIZACIONES_INSERTADAS.get(0);
+        String correoABuscar = "empresa1@test.com";
+        OrganizacionVinculadaDTO organizacionEsperada = new OrganizacionVinculadaDTO(idOrganizacion, "Empresa 1",
+                "Dirección 1","empresa1@test.com", "5551111111", 1);
 
-        OrganizacionVinculadaDTO orgEncontrada = organizacionDAO.buscarOrganizacionPorCorreo("correo@empresa.com");
-        assertEquals(orgEsperada, orgEncontrada, "Debería encontrar la organización correcta");
+        try {
+
+            OrganizacionVinculadaDTO organizacionEncontrada =
+                    organizacionDAO.buscarOrganizacionPorCorreo(correoABuscar);
+            assertEquals(organizacionEsperada, organizacionEncontrada,
+                    "Debería encontrar la organización correcta");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al buscar organización por correo: " + e);
+        }
     }
 
     @Test
-    void buscarOrganizacionPorCorreoInvalido() throws SQLException, IOException {
-        OrganizacionVinculadaDTO orgEsperada = new OrganizacionVinculadaDTO(-1, "N/A", "N/A", "N/A", "N/A", 0);
-        OrganizacionVinculadaDTO orgEncontrada = organizacionDAO.buscarOrganizacionPorCorreo(null);
-        assertEquals(orgEsperada, orgEncontrada, "Debería retornar organización por defecto");
+    void buscarOrganizacionPorCorreoInvalido() {
+
+        OrganizacionVinculadaDTO organizacionEsperada = new OrganizacionVinculadaDTO(-1, "N/A",
+                "N/A", "N/A", "N/A", 0);
+
+        try {
+
+            OrganizacionVinculadaDTO orgEncontrada = organizacionDAO.buscarOrganizacionPorCorreo(null);
+            assertEquals(organizacionEsperada, orgEncontrada, "Debería retornar organización por defecto");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al buscar organización por correo inválido: " + e);
+        }
     }
 
     @Test
-    void buscarOrganizacionInexistentePorCorreo() throws SQLException, IOException {
-        OrganizacionVinculadaDTO orgEsperada = new OrganizacionVinculadaDTO(-1, "N/A", "N/A", "N/A", "N/A", 0);
-        OrganizacionVinculadaDTO orgEncontrada = organizacionDAO.buscarOrganizacionPorCorreo("noexiste@empresa.com");
-        assertEquals(orgEsperada, orgEncontrada, "Debería retornar organización por defecto");
+    void buscarOrganizacionInexistentePorCorreo() {
+
+        String correoInexistente = "noexiste@empresa.com";
+        OrganizacionVinculadaDTO organizacionEsperada = new OrganizacionVinculadaDTO(-1, "N/A",
+                "N/A", "N/A", "N/A", 0);
+
+        try {
+
+            OrganizacionVinculadaDTO organizacionEncontrada =
+                    organizacionDAO.buscarOrganizacionPorCorreo(correoInexistente);
+            assertEquals(organizacionEsperada, organizacionEncontrada,
+                    "Debería retornar organización por defecto");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al buscar organización inexistente por correo: " + e);
+        }
     }
 
     @Test
-    void buscarOrganizacionPorTelefonoValido() throws SQLException, IOException {
-        OrganizacionVinculadaDTO org = new OrganizacionVinculadaDTO(0, "Empresa Teléfono", "Calle Falsa 123","telefono@empresa.com",
-                "5559876543", 1);
-        int idGenerado = organizacionDAO.crearNuevaOrganizacion(org);
-        IDS_ORGANIZACIONES_INSERTADAS.add(idGenerado);
+    void buscarOrganizacionPorTelefonoValido() {
 
-        OrganizacionVinculadaDTO orgEsperada = new OrganizacionVinculadaDTO(idGenerado, "Empresa Teléfono",
-                "telefono@empresa.com", "5559876543", "Calle Falsa 123", 1);
+        int idOrganizacion = IDS_ORGANIZACIONES_INSERTADAS.get(1);
+        String telefonoABuscar = "5552222222";
+        OrganizacionVinculadaDTO organizacionEsperada = new OrganizacionVinculadaDTO(idOrganizacion, "Empresa 2",
+                "Dirección 2", "empresa2@test.com", "5552222222",  1);
 
-        OrganizacionVinculadaDTO orgEncontrada = organizacionDAO.buscarOrganizacionPorTelefono("5559876543");
-        assertEquals(orgEsperada, orgEncontrada, "Debería encontrar la organización correcta");
+        try {
+
+            OrganizacionVinculadaDTO organizacionEncontrada =
+                    organizacionDAO.buscarOrganizacionPorTelefono(telefonoABuscar);
+            assertEquals(organizacionEsperada, organizacionEncontrada, "Debería encontrar la organización correcta");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al buscar organización por teléfono: " + e);
+        }
     }
 
     @Test
-    void buscarOrganizacionPorTelefonoInvalido() throws SQLException, IOException {
-        OrganizacionVinculadaDTO orgEsperada = new OrganizacionVinculadaDTO(-1, "N/A", "N/A", "N/A", "N/A", 0);
-        OrganizacionVinculadaDTO orgEncontrada = organizacionDAO.buscarOrganizacionPorTelefono(null);
-        assertEquals(orgEsperada, orgEncontrada, "Debería retornar organización por defecto");
+    void buscarOrganizacionPorTelefonoInvalido() {
+
+        OrganizacionVinculadaDTO organizacionEsperada = new OrganizacionVinculadaDTO(-1, "N/A",
+                "N/A", "N/A", "N/A", 0);
+
+        try {
+
+            OrganizacionVinculadaDTO organizacionEncontrada = organizacionDAO.buscarOrganizacionPorTelefono("");
+            assertEquals(organizacionEsperada, organizacionEncontrada, "Debería retornar organización por defecto");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al buscar organización por teléfono inválido: " + e);
+        }
     }
 
     @Test
-    void buscarOrganizacionInexistentePorTelefono() throws SQLException, IOException {
-        OrganizacionVinculadaDTO orgEsperada = new OrganizacionVinculadaDTO(-1, "N/A", "N/A", "N/A", "N/A", 0);
-        OrganizacionVinculadaDTO orgEncontrada = organizacionDAO.buscarOrganizacionPorTelefono("0000000000");
-        assertEquals(orgEsperada, orgEncontrada, "Debería retornar organización por defecto");
+    void buscarOrganizacionInexistentePorTelefono() {
+
+        OrganizacionVinculadaDTO organizacionEsperada = new OrganizacionVinculadaDTO(-1, "N/A",
+                "N/A", "N/A", "N/A", 0);
+
+        try {
+
+            OrganizacionVinculadaDTO organizacionEncontrada =
+                    organizacionDAO.buscarOrganizacionPorTelefono("0000000000");
+            assertEquals(organizacionEsperada, organizacionEncontrada,
+                    "Debería retornar organización por defecto");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al buscar organización inexistente por teléfono: " + e);
+        }
     }
 
     @Test
-    void obtenerTodasLasOrganizacionesConDatos() throws SQLException, IOException {
+    void obtenerTodasLasOrganizacionesConDatos() {
 
-        PreparedStatement limpiar = conexionBaseDeDatos.prepareStatement(
-                "DELETE FROM organizacionvinculada WHERE idOV BETWEEN 1000 AND 2000");
-        limpiar.executeUpdate();
-        limpiar.close();
+        List<OrganizacionVinculadaDTO> listaEsperada = List.of(
 
+                new OrganizacionVinculadaDTO(IDS_ORGANIZACIONES_INSERTADAS.get(0), "Empresa 1", "Dirección 1",
+                        "empresa1@test.com", "5551111111", 1),
+                new OrganizacionVinculadaDTO(IDS_ORGANIZACIONES_INSERTADAS.get(1), "Empresa 2", "Dirección 2",
+                        "empresa2@test.com", "5552222222", 1),
+                new OrganizacionVinculadaDTO(IDS_ORGANIZACIONES_INSERTADAS.get(2), "Empresa 3", "Dirección 3",
+                        "empresa3@test.com", "5553333333", 1)
+        );
 
-        OrganizacionVinculadaDTO org1 = new OrganizacionVinculadaDTO(0, "Empresa 1", "Dirección 1","empresa1@test.com",
-                "5551111111", 1);
-        OrganizacionVinculadaDTO org2 = new OrganizacionVinculadaDTO(0, "Empresa 2", "Dirección 2", "empresa2@test.com",
-                "5552222222",  1);
+        try {
 
-        int id1 = organizacionDAO.crearNuevaOrganizacion(org1);
-        int id2 = organizacionDAO.crearNuevaOrganizacion(org2);
-        IDS_ORGANIZACIONES_INSERTADAS.add(id1);
-        IDS_ORGANIZACIONES_INSERTADAS.add(id2);
+            List<OrganizacionVinculadaDTO> listaEncontrada = organizacionDAO.obtenerTodasLasOrganizaciones();
 
-        List<OrganizacionVinculadaDTO> organizaciones = organizacionDAO.obtenerTodasLasOrganizaciones();
-        assertTrue(organizaciones.size() >= 2, "Debería obtener al menos 2 organizaciones");
+            for (int organizacionEncontrada = 0; organizacionEncontrada < listaEsperada.size(); organizacionEncontrada++) {
+
+                assertTrue(listaEsperada.get(organizacionEncontrada).equals(listaEncontrada.get(organizacionEncontrada)),
+                        "La organización esperada debería ser igual a la organización encontrada.");
+            }
+
+        } catch (SQLException | IOException e) {
+
+            fail("No se esperaba una excepción: " + e);
+        }
     }
 
     @Test
-    void obtenerTodasLasOrganizacionesSinDatos() throws SQLException, IOException {
+    void obtenerTodasLasOrganizacionesSinDatos() {
 
-        PreparedStatement limpiar = conexionBaseDeDatos.prepareStatement(
-                "UPDATE organizacionvinculada SET estadoActivo = 0");
-        limpiar.executeUpdate();
-        limpiar.close();
+        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection()) {
 
-        List<OrganizacionVinculadaDTO> organizaciones = organizacionDAO.obtenerTodasLasOrganizaciones();
-        assertTrue(organizaciones.isEmpty(), "La lista debería estar vacía");
+            conexionBaseDeDatos.prepareStatement("DELETE FROM organizacionvinculada").executeUpdate();
+
+            List<OrganizacionVinculadaDTO> listaEncontrada = organizacionDAO.obtenerTodasLasOrganizaciones();
+            assertTrue(listaEncontrada.isEmpty(), "La lista debería estar vacía si no hay organizaciones");
+
+        } catch (SQLException | IOException e) {
+
+            fail("No se esperaba una excepción: " + e);
+        }
     }
 }

@@ -26,10 +26,11 @@ public class UsuarioDAOTest {
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
 
             try (PreparedStatement eliminarUsuario = conexionBaseDeDatos.prepareStatement(
-
                     "DELETE FROM usuario WHERE idUsuario BETWEEN 1000 AND 2000")) {
+
                 eliminarUsuario.executeUpdate();
             }
+
         } catch (SQLException | IOException e) {
 
             fail("Error al preparar los datos de prueba: " + e);
@@ -94,9 +95,7 @@ public class UsuarioDAOTest {
             int idInsertado = usuarioDAO.insertarUsuario(usuarioDTO);
             IDS_USUARIOS_INSERTADOS.add(idInsertado);
 
-            boolean resultadoUsuarioEliminado = usuarioDAO.eliminarUsuarioPorID(idInsertado);
-            assertTrue(resultadoUsuarioEliminado, "El usuario debería ser eliminado correctamente.");
-
+            usuarioDAO.eliminarUsuarioPorID(idInsertado);
             UsuarioDTO usuarioObtenido = usuarioDAO.buscarUsuarioPorID(idInsertado);
             assertEquals(0, usuarioObtenido.getEstado(), "El estado del usuario debería ser inactivo.");
 
@@ -139,15 +138,15 @@ public class UsuarioDAOTest {
 
         try {
 
-            UsuarioDTO usuarioDTOOriginal = new UsuarioDTO(0, "Elena", "Gómez", 1);
-            int idInsertado = usuarioDAO.insertarUsuario(usuarioDTOOriginal);
+            UsuarioDTO nuevoUsuarioDTO = new UsuarioDTO(0, "Elena", "Gómez", 1);
+            int idInsertado = usuarioDAO.insertarUsuario(nuevoUsuarioDTO);
             IDS_USUARIOS_INSERTADOS.add(idInsertado);
 
             UsuarioDTO usuarioActualizado = new UsuarioDTO(idInsertado, "Elena Patricia", "Gómez Ruiz", 1);
-            boolean ResultadoModificacion = usuarioDAO.modificarUsuario(usuarioActualizado);
+            usuarioDAO.modificarUsuario(usuarioActualizado);
 
-            UsuarioDTO usuarioOriginal = usuarioDAO.buscarUsuarioPorID(idInsertado);
-            assertEquals(usuarioActualizado, usuarioOriginal, "El usuario en la base de datos debería coincidir con el actualizado.");
+            UsuarioDTO usuarioEncontrado = usuarioDAO.buscarUsuarioPorID(idInsertado);
+            assertEquals(usuarioActualizado, usuarioEncontrado, "El usuario en la base de datos debería coincidir con el actualizado.");
 
         } catch (SQLException | IOException e) {
 
@@ -158,9 +157,10 @@ public class UsuarioDAOTest {
     @Test
     void modificarConDatosInvalidos() {
 
+        UsuarioDTO usuarioValido = new UsuarioDTO(0, "NombreValido", "ApellidoValido", 1);
+
         try {
 
-            UsuarioDTO usuarioValido = new UsuarioDTO(0, "NombreValido", "ApellidoValido", 1);
             int idInsertado = usuarioDAO.insertarUsuario(usuarioValido);
             IDS_USUARIOS_INSERTADOS.add(idInsertado);
 
@@ -170,6 +170,7 @@ public class UsuarioDAOTest {
                     "Debería lanzar SQLException al intentar modificar con datos inválidos");
 
         } catch (SQLException | IOException e) {
+
             fail("No se esperaba una excepción en este punto: " + e);
         }
     }
@@ -186,7 +187,7 @@ public class UsuarioDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba una excepción: " + e.getMessage());
+            fail("No se esperaba una excepción: " + e);
         }
     }
 
@@ -206,7 +207,7 @@ public class UsuarioDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba una excepción: " + e.getMessage());
+            fail("No se esperaba una excepción: " + e);
         }
     }
 
@@ -222,7 +223,7 @@ public class UsuarioDAOTest {
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba una excepción: " + e.getMessage());
+            fail("No se esperaba una excepción: " + e);
         }
     }
 

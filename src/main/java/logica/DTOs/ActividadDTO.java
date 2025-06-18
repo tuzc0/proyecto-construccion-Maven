@@ -19,7 +19,8 @@ public class ActividadDTO {
 
     }
 
-    public ActividadDTO(int IDActividad, String nombre, String duracion, String hitos, Date fechaInicio, Date fechaFin, int estadoActivo) {
+    public ActividadDTO(int IDActividad, String nombre, String duracion, String hitos, Date fechaInicio,
+                        Date fechaFin, int estadoActivo) {
 
         this.IDActividad = IDActividad;
         this.nombre = nombre;

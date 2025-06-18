@@ -102,7 +102,7 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
     public AcademicoEvaluadorDTO buscarAcademicoEvaluadorPorNumeroDePersonal(int numeroDePersonal) throws SQLException, IOException {
 
         String consultaSQL = "SELECT * FROM vista_evaluadores WHERE numeroDePersonal = ?";
-        AcademicoEvaluadorDTO academicoEvaluador = new AcademicoEvaluadorDTO(-1,-1, "", "", 0);
+        AcademicoEvaluadorDTO academicoEvaluador = new AcademicoEvaluadorDTO(-1,-1, "N/A", "N/A", 0);
 
         try {
 
@@ -153,7 +153,8 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
                 String nombreAcademico = resultadoConsulta.getString("nombre");
                 int estadoActivo = resultadoConsulta.getInt("estadoActivo");
 
-                AcademicoEvaluadorDTO academico = new AcademicoEvaluadorDTO(numeroDePersonalAcademico, idUsuario, nombreAcademico, apellidos, estadoActivo);
+                AcademicoEvaluadorDTO academico = new AcademicoEvaluadorDTO(numeroDePersonalAcademico, idUsuario,
+                        nombreAcademico, apellidos, estadoActivo);
                 academicos.add(academico);
             }
 

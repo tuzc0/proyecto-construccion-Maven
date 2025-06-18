@@ -86,23 +86,29 @@ public class OrganizacionVinculadaDTO {
     }
 
     @Override
-    public boolean equals(Object organizacionAComparar) {
+    public boolean equals(Object objetoAComparar) {
 
-        if (this == organizacionAComparar) {
+        if (this == objetoAComparar) {
             return true;
         }
 
-        if (organizacionAComparar == null || getClass() != organizacionAComparar.getClass()) {
+        if (objetoAComparar == null || getClass() != objetoAComparar.getClass()) {
             return false;
         }
 
-        OrganizacionVinculadaDTO organizacionComparada = (OrganizacionVinculadaDTO) organizacionAComparar;
+        OrganizacionVinculadaDTO organizacionComparada = (OrganizacionVinculadaDTO) objetoAComparar;
 
         return IdOrganizacion == organizacionComparada.IdOrganizacion &&
                 estadoActivo == organizacionComparada.estadoActivo &&
                 Objects.equals(nombre, organizacionComparada.nombre) &&
+                Objects.equals(direccion, organizacionComparada.direccion) &&
                 Objects.equals(correo, organizacionComparada.correo) &&
-                Objects.equals(numeroDeContacto, organizacionComparada.numeroDeContacto) &&
-                Objects.equals(direccion, organizacionComparada.direccion);
+                Objects.equals(numeroDeContacto, organizacionComparada.numeroDeContacto);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(IdOrganizacion, nombre, direccion, correo, numeroDeContacto, estadoActivo);
     }
 }

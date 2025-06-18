@@ -1,6 +1,7 @@
 package logica.DTOs;
 
 import java.sql.Date;
+import java.util.Objects;
 
 public class PeriodoDTO {
 
@@ -74,6 +75,31 @@ public class PeriodoDTO {
     public void setEstadoActivo(int estadoActivo) {
 
         this.estadoActivo = estadoActivo;
+    }
+
+    @Override
+    public boolean equals(Object objetoAComparar) {
+
+        if (this == objetoAComparar) {
+            return true;
+        }
+        if (objetoAComparar == null || getClass() != objetoAComparar.getClass()) {
+            return false;
+        }
+
+        PeriodoDTO periodoComparado = (PeriodoDTO) objetoAComparar;
+
+        return IDPeriodo == periodoComparado.IDPeriodo &&
+                estadoActivo == periodoComparado.estadoActivo &&
+                Objects.equals(descripcion, periodoComparado.descripcion) &&
+                Objects.equals(fechaInicio, periodoComparado.fechaInicio) &&
+                Objects.equals(fechaFinal, periodoComparado.fechaFinal);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(IDPeriodo, descripcion, estadoActivo, fechaInicio, fechaFinal);
     }
 }
 

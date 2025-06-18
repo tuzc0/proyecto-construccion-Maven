@@ -27,10 +27,10 @@ public class CoordinadorDAOTest {
         usuarioDAO = new UsuarioDAO();
         coordinadorDAO = new CoordinadorDAO();
 
-        try {
+        NUMEROS_DE_PERSONAL_INSERTADOS.clear();
+        IDS_USUARIOS_INSERTADOS.clear();
 
-            NUMEROS_DE_PERSONAL_INSERTADOS.clear();
-            IDS_USUARIOS_INSERTADOS.clear();
+        try {
 
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
 
@@ -49,15 +49,18 @@ public class CoordinadorDAOTest {
             UsuarioDTO usuarioCoordinador2 = new UsuarioDTO(0, "Nombre2", "Apellido2", 1);
             UsuarioDTO usuarioCoordinador3 = new UsuarioDTO(0, "Nombre3", "Apellido3", 1);
 
-            int idUsuario1 = usuarioDAO.insertarUsuario(usuarioCoordinador1);
-            int idUsuario2 = usuarioDAO.insertarUsuario(usuarioCoordinador2);
-            int idUsuario3 = usuarioDAO.insertarUsuario(usuarioCoordinador3);
+            int idUsuarioCoordinador1 = usuarioDAO.insertarUsuario(usuarioCoordinador1);
+            int idUsuarioCoordinador2 = usuarioDAO.insertarUsuario(usuarioCoordinador2);
+            int idUsuarioCoordinador3 = usuarioDAO.insertarUsuario(usuarioCoordinador3);
 
-            IDS_USUARIOS_INSERTADOS.addAll(List.of(idUsuario1, idUsuario2, idUsuario3));
+            IDS_USUARIOS_INSERTADOS.addAll(List.of(idUsuarioCoordinador1, idUsuarioCoordinador2, idUsuarioCoordinador3));
 
-            coordinadorDAO.insertarCoordinador(new CoordinadorDTO(1001, idUsuario1, "Nombre1", "Apellido1", 1));
-            coordinadorDAO.insertarCoordinador(new CoordinadorDTO(1002, idUsuario2, "Nombre2", "Apellido2", 1));
-            coordinadorDAO.insertarCoordinador(new CoordinadorDTO(1003, idUsuario3, "Nombre3", "Apellido3", 1));
+            coordinadorDAO.insertarCoordinador(new CoordinadorDTO(1001, idUsuarioCoordinador1,
+                    "Nombre1", "Apellido1", 1));
+            coordinadorDAO.insertarCoordinador(new CoordinadorDTO(1002, idUsuarioCoordinador2,
+                    "Nombre2", "Apellido2", 1));
+            coordinadorDAO.insertarCoordinador(new CoordinadorDTO(1003, idUsuarioCoordinador3,
+                    "Nombre3", "Apellido3", 1));
 
             NUMEROS_DE_PERSONAL_INSERTADOS.addAll(List.of(1001, 1002, 1003));
 
@@ -97,13 +100,15 @@ public class CoordinadorDAOTest {
     @Test
     void insertarCoordinadorConDatosValidos() {
 
+        UsuarioDTO usuarioDTO = new UsuarioDTO(0, "CoordinadorTest", "ApellidoTest", 1);
+
         try {
 
-            UsuarioDTO usuarioDTO = new UsuarioDTO(0, "CoordinadorTest", "ApellidoTest", 1);
             int idUsuario = usuarioDAO.insertarUsuario(usuarioDTO);
             IDS_USUARIOS_INSERTADOS.add(idUsuario);
 
-            CoordinadorDTO nuevoCoordinador = new CoordinadorDTO(55555, idUsuario, "Nombre", "Apellido", 1);
+            CoordinadorDTO nuevoCoordinador = new CoordinadorDTO(55555, idUsuario, "Nombre",
+                    "Apellido", 1);
             boolean resultadoInsertar = coordinadorDAO.insertarCoordinador(nuevoCoordinador);
 
             assertTrue(resultadoInsertar, "El coordinador debería ser insertado correctamente.");
@@ -119,6 +124,7 @@ public class CoordinadorDAOTest {
     void insertarCoordinadorConDatosInvalidos() {
 
         CoordinadorDTO coordinadorInvalido = new CoordinadorDTO(99999, -1, "Nombre", "Apellido", 1);
+
         assertThrows(SQLException.class, () -> coordinadorDAO.insertarCoordinador(coordinadorInvalido),
                 "Se esperaba una excepción debido a datos inválidos.");
     }
@@ -163,7 +169,8 @@ public class CoordinadorDAOTest {
             CoordinadorDTO coordinadorExistente = coordinadorDAO.buscarCoordinadorPorNumeroDePersonal(1003);
             int idUsuario = coordinadorExistente.getIdUsuario();
 
-            CoordinadorDTO coordinadorActualizado = new CoordinadorDTO(1003, idUsuario, "NuevoNombre", "NuevoApellido", 1);
+            CoordinadorDTO coordinadorActualizado = new CoordinadorDTO(1003, idUsuario,
+                    "NuevoNombre", "NuevoApellido", 1);
             boolean resultadoModificar = coordinadorDAO.modificarCoordinador(coordinadorActualizado);
 
             assertTrue(resultadoModificar, "El coordinador debería ser modificado correctamente.");
@@ -177,7 +184,8 @@ public class CoordinadorDAOTest {
     @Test
     void modificarCoordinadorConDatosInvalidos() {
 
-        CoordinadorDTO coordinadorInvalido = new CoordinadorDTO(1003, -100, "Nombre", "Apellido", 1);
+        CoordinadorDTO coordinadorInvalido = new CoordinadorDTO(1003, -100,
+                "Nombre", "Apellido", 1);
 
         try {
 
@@ -193,7 +201,8 @@ public class CoordinadorDAOTest {
     @Test
     void modificarCoordinadorInexistente() {
 
-        CoordinadorDTO coordinadorInexistente = new CoordinadorDTO(77777, 9999, "X", "Y", 1);
+        CoordinadorDTO coordinadorInexistente = new CoordinadorDTO(77777, 9999, "X",
+                "Y", 1);
 
         try {
 
@@ -209,13 +218,15 @@ public class CoordinadorDAOTest {
     @Test
     void buscarCoordinadorPorNumeroDePersonalConDatosValidos() {
 
-        CoordinadorDTO coordinadorEsperado = new CoordinadorDTO(1001, IDS_USUARIOS_INSERTADOS.get(0), "Nombre1", "Apellido1", 1);
+        CoordinadorDTO coordinadorEsperado = new CoordinadorDTO(1001, IDS_USUARIOS_INSERTADOS.get(0),
+                "Nombre1", "Apellido1", 1);
 
         try {
 
             CoordinadorDTO coordinadorEncontrado =
                     coordinadorDAO.buscarCoordinadorPorNumeroDePersonal(coordinadorEsperado.getNumeroDePersonal());
-            assertEquals(coordinadorEsperado, coordinadorEncontrado, "El coordinador debería ser encontrado correctamente.");
+            assertEquals(coordinadorEsperado, coordinadorEncontrado,
+                    "El coordinador debería ser encontrado correctamente.");
 
         } catch (SQLException | IOException e) {
 
@@ -227,12 +238,14 @@ public class CoordinadorDAOTest {
     void buscarCoordinadorPorNumeroDePersonalInexistente() {
 
         int numeroDePersonalInexistente = 99999;
+        CoordinadorDTO coordinadorEsperado = new CoordinadorDTO(-1, -1, "N/A",
+                "N/A", 0);
 
         try {
 
             CoordinadorDTO coordinadorEncontrado =
                     coordinadorDAO.buscarCoordinadorPorNumeroDePersonal(numeroDePersonalInexistente);
-            assertEquals(-1, coordinadorEncontrado.getNumeroDePersonal(), "No debería encontrarse un coordinador con ese número.");
+            assertEquals(coordinadorEsperado, coordinadorEncontrado, "Debería retornar un DTO igual al esperado.");
 
         } catch (SQLException | IOException e) {
 
@@ -243,11 +256,13 @@ public class CoordinadorDAOTest {
     @Test
     void buscarCoordinadorPorNumeroDePersonalInvalido() {
 
+        int idInvalido = -1;
+        CoordinadorDTO coordinadorEsperado = new CoordinadorDTO(-1, -1, "N/A",
+                "N/A", 0);
+
         try {
 
-            CoordinadorDTO coordinadorObtenido = coordinadorDAO.buscarCoordinadorPorNumeroDePersonal(-1);
-            CoordinadorDTO coordinadorEsperado = new CoordinadorDTO(-1, -1, "N/A", "N/A", 0);
-
+            CoordinadorDTO coordinadorObtenido = coordinadorDAO.buscarCoordinadorPorNumeroDePersonal(idInvalido);
             assertEquals(coordinadorEsperado, coordinadorObtenido,
                     "Debería retornar el coordinador por defecto para número inválido");
 
@@ -260,11 +275,13 @@ public class CoordinadorDAOTest {
     @Test
     void buscarCoordinadorPorIDInvalido() {
 
+        int idInvalido = -1;
+        CoordinadorDTO coordinadorEsperado = new CoordinadorDTO(-1, -1, "N/A",
+                "N/A", 0);
+
         try {
 
-            CoordinadorDTO coordinadorObtenido = coordinadorDAO.buscarCoordinadorPorID(-1);
-            CoordinadorDTO coordinadorEsperado = new CoordinadorDTO(-1, -1, "N/A", "N/A", 0);
-
+            CoordinadorDTO coordinadorObtenido = coordinadorDAO.buscarCoordinadorPorID(idInvalido);
             assertEquals(coordinadorEsperado, coordinadorObtenido,
                     "Debería retornar el coordinador por defecto para ID inválido");
 
@@ -277,16 +294,11 @@ public class CoordinadorDAOTest {
     @Test
     void buscarCoordinadorPorIDValido() {
 
-        try {
+        int idValido = IDS_USUARIOS_INSERTADOS.get(0);
+        CoordinadorDTO coordinadorEsperado = new CoordinadorDTO(1001, idValido, "Nombre1",
+                "Apellido1", 1);
 
-            int idValido = IDS_USUARIOS_INSERTADOS.get(0);
-            CoordinadorDTO coordinadorEsperado = new CoordinadorDTO(
-                    1001,
-                    idValido,
-                    "Nombre1",
-                    "Apellido1",
-                    1
-            );
+        try {
 
             CoordinadorDTO coordinadorObtenido = coordinadorDAO.buscarCoordinadorPorID(idValido);
             assertEquals(coordinadorEsperado, coordinadorObtenido,
@@ -301,12 +313,13 @@ public class CoordinadorDAOTest {
     @Test
     void buscarCoordinadorPorIDInexistente() {
 
+        int idInexistente = 9999;
+        CoordinadorDTO coordinadorEsperado = new CoordinadorDTO(-1, -1, "N/A",
+                "N/A", 0);
+
         try {
 
-            int idInexistente = 9999;
             CoordinadorDTO coordinadorObtenido = coordinadorDAO.buscarCoordinadorPorID(idInexistente);
-            CoordinadorDTO coordinadorEsperado = new CoordinadorDTO(-1, -1, "N/A", "N/A", 0);
-
             assertEquals(coordinadorEsperado, coordinadorObtenido,
                     "Debería retornar el coordinador por defecto para ID inexistente");
 

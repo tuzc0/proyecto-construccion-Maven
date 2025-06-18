@@ -133,21 +133,32 @@ public class CriterioEvaluacionDAO implements ICriterioEvaluacionDAO {
     }
 
     public List<CriterioEvaluacionDTO> listarCriteriosActivos() throws SQLException, IOException {
+
         List<CriterioEvaluacionDTO> criteriosActivos = new ArrayList<>();
         String consultaSQL = "SELECT * FROM criterioevaluacion WHERE estadoActivo = 1";
 
-        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-             PreparedStatement sentenciaCriterio = conexionBaseDeDatos.prepareStatement(consultaSQL);
-             ResultSet resultadoConsulta = sentenciaCriterio.executeQuery()) {
+        try {
 
-            while (resultadoConsulta.next()) {
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaCriterio = conexionBaseDeDatos.prepareStatement(consultaSQL);
+            resultadoConsultaCriterio = sentenciaCriterio.executeQuery();
+
+            while (resultadoConsultaCriterio.next()) {
+
                 CriterioEvaluacionDTO criterio = new CriterioEvaluacionDTO(
-                        resultadoConsulta.getInt("idCriterio"),
-                        resultadoConsulta.getString("descripcion"),
-                        resultadoConsulta.getInt("numeroCriterio"),
-                        resultadoConsulta.getInt("estadoActivo")
+                        resultadoConsultaCriterio.getInt("idCriterio"),
+                        resultadoConsultaCriterio.getString("descripcion"),
+                        resultadoConsultaCriterio.getInt("numeroCriterio"),
+                        resultadoConsultaCriterio.getInt("estadoActivo")
                 );
                 criteriosActivos.add(criterio);
+            }
+
+        } finally {
+
+            if (sentenciaCriterio != null) {
+
+                sentenciaCriterio.close();
             }
         }
 
@@ -155,21 +166,34 @@ public class CriterioEvaluacionDAO implements ICriterioEvaluacionDAO {
     }
 
     public CriterioEvaluacionDTO buscarCriterioActivoPorNumero(int numeroCriterio) throws SQLException, IOException {
+
         String buscarSQLCriterio = "SELECT * FROM criterioevaluacion WHERE numeroCriterio = ? AND estadoActivo = 1";
         CriterioEvaluacionDTO criterioEncontrado = new CriterioEvaluacionDTO(-1, "N/A", -1, -1);
 
-        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-             PreparedStatement sentenciaCriterio = conexionBaseDeDatos.prepareStatement(buscarSQLCriterio)) {
+        try {
 
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaCriterio = conexionBaseDeDatos.prepareStatement(buscarSQLCriterio);
             sentenciaCriterio.setInt(1, numeroCriterio);
+
             try (ResultSet resultadoConsulta = sentenciaCriterio.executeQuery()) {
+
                 if (resultadoConsulta.next()) {
+
                     int idCriterio = resultadoConsulta.getInt("idCriterio");
                     String descripcion = resultadoConsulta.getString("descripcion");
                     int numero = resultadoConsulta.getInt("numeroCriterio");
                     int estadoActivo = resultadoConsulta.getInt("estadoActivo");
+
                     criterioEncontrado = new CriterioEvaluacionDTO(idCriterio, descripcion, numero, estadoActivo);
                 }
+            }
+
+        } finally {
+
+            if (sentenciaCriterio != null) {
+
+                sentenciaCriterio.close();
             }
         }
 
@@ -177,15 +201,28 @@ public class CriterioEvaluacionDAO implements ICriterioEvaluacionDAO {
     }
 
     public int obtenerNumeroCriterioMasAlto() throws SQLException, IOException {
+
         String consultaSQL = "SELECT MAX(numeroCriterio) AS maxNumero FROM criterioevaluacion WHERE estadoActivo = 1";
         int numeroCriterioMasAlto = -1;
 
-        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-             PreparedStatement sentencia = conexionBaseDeDatos.prepareStatement(consultaSQL);
-             ResultSet resultadoConsulta = sentencia.executeQuery()) {
+        try {
 
-            if (resultadoConsulta.next()) {
-                numeroCriterioMasAlto = resultadoConsulta.getInt("maxNumero");
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaCriterio = conexionBaseDeDatos.prepareStatement(consultaSQL);
+            resultadoConsultaCriterio = sentenciaCriterio.executeQuery();
+
+            if (resultadoConsultaCriterio.next()) {
+                numeroCriterioMasAlto = resultadoConsultaCriterio.getInt("maxNumero");
+
+                if (resultadoConsultaCriterio.wasNull()) {
+                    numeroCriterioMasAlto = -1;
+                }
+            }
+
+        } finally {
+
+            if (sentenciaCriterio != null) {
+                sentenciaCriterio.close();
             }
         }
 
@@ -193,25 +230,44 @@ public class CriterioEvaluacionDAO implements ICriterioEvaluacionDAO {
     }
 
     public void enumerarCriterios() throws SQLException, IOException {
+
         String obtenerCriteriosSQL = "SELECT * FROM criterioevaluacion WHERE estadoActivo = 1";
         String actualizarCriterioSQL = "UPDATE criterioevaluacion SET numeroCriterio = ? WHERE idCriterio = ?";
 
-        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-             PreparedStatement obtenerCriteriosStmt = conexionBaseDeDatos.prepareStatement(obtenerCriteriosSQL);
-             ResultSet resultadoConsulta = obtenerCriteriosStmt.executeQuery()) {
+        PreparedStatement sentenciaActualizarCriterio = null;
+
+        try {
+
+            sentenciaCriterio = conexionBaseDeDatos.prepareStatement(obtenerCriteriosSQL);
+            resultadoConsultaCriterio = sentenciaCriterio.executeQuery();
 
             int numeroCriterio = 1;
 
-            while (resultadoConsulta.next()) {
-                int idCriterio = resultadoConsulta.getInt("idCriterio");
+            while (resultadoConsultaCriterio.next()) {
 
-                try (PreparedStatement actualizarCriterioStmt = conexionBaseDeDatos.prepareStatement(actualizarCriterioSQL)) {
-                    actualizarCriterioStmt.setInt(1, numeroCriterio);
-                    actualizarCriterioStmt.setInt(2, idCriterio);
-                    actualizarCriterioStmt.executeUpdate();
+                int idCriterio = resultadoConsultaCriterio.getInt("idCriterio");
+
+                try {
+
+                    sentenciaActualizarCriterio = conexionBaseDeDatos.prepareStatement(actualizarCriterioSQL);
+                    sentenciaActualizarCriterio.setInt(1, numeroCriterio);
+                    sentenciaActualizarCriterio.setInt(2, idCriterio);
+                    sentenciaActualizarCriterio.executeUpdate();
+
+                } finally {
+
+                    if (sentenciaActualizarCriterio != null) {
+                        sentenciaActualizarCriterio.close();
+                    }
                 }
 
                 numeroCriterio++;
+            }
+
+        } finally {
+
+            if (sentenciaCriterio != null) {
+                sentenciaCriterio.close();
             }
         }
     }

@@ -91,14 +91,16 @@ class CuentaDAOTest {
             assertTrue(resultado, "La cuenta debería ser creada correctamente.");
 
         } catch (SQLException | IOException e) {
+
             fail("No se esperaba excepción: " + e);
         }
     }
 
     @Test
-    void testCrearNuevaCuentaConDatosInvalidos() {
+    void testCrearNuevaCuentaConDatosVacios() {
 
         CuentaDTO cuentaInvalida = new CuentaDTO(null, null, -1);
+
         assertThrows(SQLException.class, () -> cuentaDAO.crearNuevaCuenta(cuentaInvalida),
                 "Se esperaba una excepción debido a datos inválidos.");
     }

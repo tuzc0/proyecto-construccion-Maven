@@ -114,7 +114,7 @@ public class ActividadDAO implements IActividadDAO {
 
     public ActividadDTO buscarActividadPorID(int idActividad) throws SQLException, IOException {
 
-        ActividadDTO actividad = new ActividadDTO(-1, "Sin nombre", "Sin duración", "Sin hitos",null, null,  0);
+        ActividadDTO actividad = new ActividadDTO(-1, "N/A", "N/A", "N/A",null, null,  0);
 
         String buscarSQLActividad = "SELECT * FROM actividad WHERE IDActividad = ?";
 
@@ -131,7 +131,7 @@ public class ActividadDAO implements IActividadDAO {
                 actividad.setNombre(resultadoConsulta.getString("nombre"));
                 actividad.setDuracion(resultadoConsulta.getString("duracion"));
                 actividad.setHitos(resultadoConsulta.getString("hitos"));
-                actividad.setFechaFin(resultadoConsulta.getDate("fechaInicio"));
+                actividad.setFechaInicio(resultadoConsulta.getDate("fechaInicio"));
                 actividad.setFechaFin(resultadoConsulta.getDate("fechaFin"));
                 actividad.setEstadoActivo(resultadoConsulta.getInt("estadoActivo"));
             }

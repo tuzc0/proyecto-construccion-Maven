@@ -1,20 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="561.0" prefWidth="933.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorMenuCoordinador">
-   <children>
-      <Button layoutX="81.0" layoutY="77.0" mnemonicParsing="false" onAction="#abrirRegistroAcademico" text="Registrar Academico" />
-      <Button layoutX="79.0" layoutY="109.0" mnemonicParsing="false" onAction="#abrirConsultarAcademico" text="Consultar Academico" />
-      <Button layoutX="79.0" layoutY="268.0" mnemonicParsing="false" onAction="#abrirRegistrarOrganizacion" text="Registrar Organizacion vinculada" />
-      <Button layoutX="78.0" layoutY="305.0" mnemonicParsing="false" onAction="#abrirConsultarOrganizacionVinculada" text="Consultar organizacion vinculada" />
-      <Button layoutX="78.0" layoutY="374.0" mnemonicParsing="false" onAction="#abrirRegistroProyecto" text="registrar proyecto" />
-      <Button layoutX="78.0" layoutY="409.0" mnemonicParsing="false" onAction="#abrirConsultarProyecto" text="consultar lista de proyectos" />
-      <Button layoutX="487.0" layoutY="83.0" mnemonicParsing="false" onAction="#abrirHabilitarEvaluaciones" text="habilitar evaluaciones" />
-      <Button layoutX="487.0" layoutY="121.0" mnemonicParsing="false" text="consultar estadisticas" />
-      <Button layoutX="78.0" layoutY="445.0" mnemonicParsing="false" onAction="#abrirAsignarEstudianteAProyecto" text="Asignar estudiante a proyecto" />
-      <Button layoutX="81.0" layoutY="169.0" mnemonicParsing="false" onAction="#abrirRegistroAcademicoEvaludoar" text="Registrar Academico Evaludor" />
-      <Button layoutX="79.0" layoutY="201.0" mnemonicParsing="false" onAction="#abrirConsultarAcademicoEvaluador" text="Consultar Academico Evaluador" />
-   </children>
-</Pane>
+<VBox alignment="TOP_CENTER" prefHeight="521.0" prefWidth="1000" spacing="20" style="-fx-background-color: #f0f4f8; -fx-padding: 30;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorMenuCoordinador">
+
+   <!-- Encabezado -->
+   <Label style="-fx-text-fill: #1e3a8a; -fx-font-weight: bold;" text="Menú del Coordinador">
+      <font>
+         <Font name="System Bold" size="28" />
+      </font>
+      <effect>
+         <DropShadow color="rgba(0,0,0,0.1)" radius="3" spread="0.3" />
+      </effect>
+   </Label>
+
+   <!-- Contenedor principal -->
+   <HBox alignment="TOP_CENTER" spacing="40">
+
+      <!-- Columna Izquierda - Gestión Académica -->
+      <VBox prefWidth="300" spacing="10" style="-fx-background-color: white; -fx-background-radius: 8; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+         <Label style="-fx-text-fill: #2563eb; -fx-font-weight: bold;" text="Gestión Académica">
+            <font>
+               <Font size="16" />
+            </font>
+         </Label>
+
+         <Button onAction="#abrirRegistroAcademico" style="-fx-background-color: #e0e7ff; -fx-text-fill: #1e40af; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 8 15; -fx-cursor: hand;" text="Registrar Académico" />
+
+         <Button onAction="#abrirConsultarAcademico" style="-fx-background-color: #e0e7ff; -fx-text-fill: #1e40af; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 8 15; -fx-cursor: hand;" text="Consultar Académico" />
+
+         <Button onAction="#abrirRegistroAcademicoEvaludoar" style="-fx-background-color: #e0e7ff; -fx-text-fill: #1e40af; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 8 15; -fx-cursor: hand;" text="Registrar Académico Evaluador" />
+
+         <Button onAction="#abrirConsultarAcademicoEvaluador" style="-fx-background-color: #e0e7ff; -fx-text-fill: #1e40af; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 8 15; -fx-cursor: hand;" text="Consultar Académico Evaluador" />
+      </VBox>
+
+      <!-- Columna Centro - Gestión de Proyectos -->
+      <VBox prefWidth="300" spacing="10" style="-fx-background-color: white; -fx-background-radius: 8; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+         <Label style="-fx-text-fill: #2563eb; -fx-font-weight: bold;" text="Gestión de Proyectos">
+            <font>
+               <Font size="16" />
+            </font>
+         </Label>
+
+         <Button onAction="#abrirRegistroProyecto" style="-fx-background-color: #dbeafe; -fx-text-fill: #1e40af; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 8 15; -fx-cursor: hand;" text="Registrar Proyecto" />
+
+         <Button onAction="#abrirConsultarProyecto" style="-fx-background-color: #dbeafe; -fx-text-fill: #1e40af; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 8 15; -fx-cursor: hand;" text="Consultar Proyectos" />
+
+         <Button onAction="#abrirAsignarEstudianteAProyecto" style="-fx-background-color: #dbeafe; -fx-text-fill: #1e40af; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 8 15; -fx-cursor: hand;" text="Asignar Estudiante" />
+      </VBox>
+
+      <!-- Columna Derecha - Configuraciones -->
+      <VBox prefWidth="300" spacing="10" style="-fx-background-color: white; -fx-background-radius: 8; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+         <Label style="-fx-text-fill: #2563eb; -fx-font-weight: bold;" text="Configuraciones">
+            <font>
+               <Font size="16" />
+            </font>
+         </Label>
+
+         <Button onAction="#abrirRegistrarOrganizacion" style="-fx-background-color: #ede9fe; -fx-text-fill: #5b21b6; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 8 15; -fx-cursor: hand;" text="Organizaciones Vinculadas" />
+
+         <Button onAction="#abrirConsultarOrganizacionVinculada" style="-fx-background-color: #ede9fe; -fx-text-fill: #5b21b6; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 8 15; -fx-cursor: hand;" text="Consultar Organizaciones" />
+
+         <Button onAction="#abrirHabilitarEvaluaciones" style="-fx-background-color: #ede9fe; -fx-text-fill: #5b21b6; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 8 15; -fx-cursor: hand;" text="Habilitar Evaluaciones" />
+
+         <Button style="-fx-background-color: #ede9fe; -fx-text-fill: #5b21b6; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 8 15; -fx-cursor: hand;" text="Consultar Estadísticas" />
+
+         <!-- Nueva opción de Gestionar Periodo -->
+         <Button onAction="#abrirGestionPeriodo" style="-fx-background-color: #fef3c7; -fx-text-fill: #92400e; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 8 15; -fx-cursor: hand;" text="Gestionar Periodo" />
+      </VBox>
+   </HBox>
+
+   <!-- Pie de página -->
+   <Label style="-fx-text-fill: #64748b; -fx-font-style: italic;" text="Sistema de Gestión de Practicas profesionales">
+      <font>
+         <Font size="12" />
+      </font>
+   </Label>
+</VBox>

@@ -78,6 +78,10 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
 
     public static int idOrganizacion = 0;
 
+    Utilidades utilidades = new Utilidades();
+
+    VerificacionUsuario verificacionUsuario = new VerificacionUsuario();
+
     VerificicacionGeneral verificicacionGeneral = new VerificicacionGeneral();
     final int MAX_CARACTERES_NOMBRE = 50;
     final int MAX_CARACTERES_CORREO = 100;
@@ -119,8 +123,6 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
 
     private void registrarOrganizacion() {
 
-        Utilidades utilidades = new Utilidades();
-        VerificacionUsuario verificacionUsuario = new VerificacionUsuario();
 
         String nombreOrganizacion = campoNombreOrganizacion.getText();
         String correoOrganizacion = campoCorreoOrganizacion.getText();
@@ -175,9 +177,7 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
 
             idOrganizacion = organizacionDAO.crearNuevaOrganizacion(organizacionDTO);
 
-            AuxiliarRegistroRepresentante auxiliarRegistroRepresentante = new AuxiliarRegistroRepresentante();
-            auxiliarRegistroRepresentante.registrarRepresentante(nombreRepresentante, apellidosRepresentante,
-                    correoRepresentante, contactoRepresentante, idOrganizacion);
+            registrarRepresentante();
 
             utilidades.mostrarAlerta("Registro exitoso", "Organización registrada",
                     "La organización y el representante han sido registrados exitosamente.");
@@ -222,6 +222,24 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
     @FXML
     private void cancelarRegistro() {
 
+        utilidades.mostrarAlertaConfirmacion(
+
+                "Confirmar eliminación",
+                "¿Está seguro que desea cancelar el registro?",
+                "Se cancelara el registro. Esta acción no se puede deshacer.",
+                () -> {
+                    cancelar();
+                },
+                () -> {
+                    utilidades.mostrarAlerta("Cancelado",
+                            "Registro cancelado",
+                            "No se ha cancelado el registro.");
+                }
+        );
+    }
+
+    private void cancelar(){
+
         campoNombreOrganizacion.clear();
         campoCorreoOrganizacion.clear();
         campoContactoOrganizacion.clear();
@@ -230,12 +248,12 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
         campoApellidosRepresentante.clear();
         campoContactoRepresentante.clear();
         campoCorreoRepresentante.clear();
+
     }
 
     @FXML
     private void registrarNuevoRepresentante() {
 
-        Utilidades utilidades = new Utilidades();
         try {
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistroRepresentanteGUI.fxml"));

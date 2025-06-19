@@ -43,4 +43,9 @@ public class ControladorMenuCoordinador {
 
     @FXML
     public void abrirHabilitarEvaluaciones() {utilidades.mostrarVentana(("/HabilitarEvaluacionesGUI.fxml"));}
+
+    @FXML
+    public void abrirGestionPeriodo() {
+        utilidades.mostrarVentana("/CreaeGruposYPeriodoGUI.fxml");
+    }
 }

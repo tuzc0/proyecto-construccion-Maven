@@ -1,96 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="971.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.gestionorganizacion.ControladorConsultarOrganizacionGUI">
-   <children>
-      <VBox layoutX="37.0" layoutY="80.0" prefHeight="437.0" prefWidth="910.0">
-         <children>
-            <HBox prefHeight="47.0" prefWidth="910.0">
-               <children>
-                  <HBox prefHeight="47.0" prefWidth="822.0">
-                     <children>
-                        <TextField fx:id="campoBusqueda" prefHeight="26.0" prefWidth="651.0" promptText="Ej. ejemplo@gmail.com" />
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="46.0" prefWidth="395.0">
-                     <children>
-                        <Button fx:id="botonBuscar" mnemonicParsing="false" onAction="#buscarOrganizacion" prefHeight="28.0" prefWidth="229.0" text="Buscar">
-                           <graphic>
-                              <ImageView fitHeight="20.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                 <Image url="@/lupa.png" />
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="GUI.gestionorganizacion.ControladorConsultarOrganizacionGUI"
+      spacing="25" style="-fx-background-color: #f8fafc; -fx-padding: 30;"
+      prefWidth="1000" prefHeight="700">
 
-                              </ImageView>
-                           </graphic>
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Button>
-                     </children>
-                  </HBox>
-               </children>
-            </HBox>
-            <HBox prefHeight="398.0" prefWidth="910.0">
-               <children>
-                  <VBox prefHeight="394.0" prefWidth="963.0">
-                     <children>
-                        <TableView fx:id="tablaOrganizaciones" prefHeight="386.0" prefWidth="750.0">
-                           <columns>
-                              <TableColumn fx:id="columnaNombre" prefWidth="244.0000114440918" text="nombre" />
-                              <TableColumn fx:id="columnaCorreo" prefWidth="184.0" text="correo" />
-                              <TableColumn fx:id="columnaContacto" prefWidth="259.1998291015625" text="numero de contacto" />
-                              <TableColumn fx:id="columnaDetalles" minWidth="9.0" prefWidth="112.79998779296875" />
-                              <TableColumn fx:id="columnaBotonEliminar" prefWidth="109.5999755859375" />
-                           </columns>
-                        </TableView>
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="394.0" prefWidth="35.0" />
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-      <Label layoutX="351.0" layoutY="23.0" prefHeight="45.0" prefWidth="362.0" text="Lista de organizaciones">
+   <!-- Encabezado -->
+   <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-padding: 0 0 15 0;">
+      <Label text="Organizaciones Registradas" style="-fx-text-fill: #1e3a8a;">
          <font>
-            <Font name="System Bold" size="30.0" />
+            <Font name="Segoe UI Bold" size="26.0" />
          </font>
+         <effect>
+            <DropShadow color="rgba(0,0,0,0.05)" radius="3" spread="0.3"/>
+         </effect>
       </Label>
-      <Button fx:id="botonRegistrarEstudiante" layoutX="37.0" layoutY="533.0" mnemonicParsing="false" onAction="#abrirVentanaRegistrarOrganizacion" prefHeight="34.0" prefWidth="178.0" text="Registrar Organizacion">
+      <Region HBox.hgrow="ALWAYS"/>
+      <Button text="Registrar Organización" onAction="#abrirVentanaRegistrarOrganizacion"
+              style="-fx-background-color: #1e40af; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6;">
          <font>
-            <Font name="System Bold" size="14.0" />
+            <Font name="Segoe UI Semibold" size="14.0" />
          </font>
+         <effect>
+            <DropShadow color="rgba(30,64,175,0.3)" radius="5" spread="0.2"/>
+         </effect>
       </Button>
-      <Button fx:id="botonSeleccionarEstudiantes" layoutX="402.0" layoutY="533.0" mnemonicParsing="false" onAction="#activarModoSeleccion" prefHeight="34.0" prefWidth="218.0" text="Seleccionar Organizaciones">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Button>
-      <Button fx:id="botonEliminarSeleccionado" disable="true" layoutX="690.0" layoutY="527.0" mnemonicParsing="false" onAction="#eliminarOrganizacionSeleccionada" prefHeight="34.0" prefWidth="54.0" visible="false">
+   </HBox>
+
+   <!-- Barra de búsqueda -->
+   <HBox spacing="12" alignment="CENTER" style="-fx-padding: 0 0 20 0;">
+      <TextField fx:id="campoBusqueda" promptText="Buscar por nombre, correo o teléfono..."
+                 style="-fx-background-radius: 6; -fx-border-color: #d1d5db; -fx-border-radius: 6; -fx-padding: 10; -fx-font-size: 14; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.03), 4, 0, 0, 1);"
+                 prefWidth="700"/>
+      <Button fx:id="botonBuscar" mnemonicParsing="false" onAction="#buscarOrganizacion"
+              style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;">
          <graphic>
-            <ImageView fitHeight="37.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@/bote-basura.png" />
+            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+               <Image url="@/lupa.png" />
             </ImageView>
          </graphic>
-      </Button>
-      <Button fx:id="botonCancelarSeleccion" layoutX="776.0" layoutY="533.0" mnemonicParsing="false" onAction="#cancelarSeleccionOrganizacion" prefHeight="34.0" prefWidth="136.0" text="Cancelar seleccion" visible="false">
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="Segoe UI Semibold" size="14.0" />
          </font>
+         <effect>
+            <DropShadow color="rgba(59,130,246,0.3)" radius="5" spread="0.2"/>
+         </effect>
       </Button>
-      <Label fx:id="campoNumeroEstudiantesSeleccionados" layoutX="406.0" layoutY="580.0" prefHeight="20.0" prefWidth="211.0">
+   </HBox>
+
+   <!-- Tabla con columna de eliminación -->
+   <TableView fx:id="tablaOrganizaciones" style="-fx-border-color: #e5e7eb; -fx-border-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 8, 0, 0, 1);">
+      <columns>
+         <TableColumn fx:id="columnaNombre" text="Nombre" prefWidth="250" style="-fx-font-weight: bold;"/>
+         <TableColumn fx:id="columnaCorreo" text="Correo Electrónico" prefWidth="250"/>
+         <TableColumn fx:id="columnaContacto" text="Teléfono" prefWidth="150"/>
+         <TableColumn fx:id="columnaDetalles" text="" prefWidth="150"/>
+         <TableColumn fx:id="columnaBotonEliminar" text="Acciones" prefWidth="150">
+            <style>
+               -fx-alignment: CENTER;
+            </style>
+         </TableColumn>
+      </columns>
+      <style>
+         -fx-table-cell-border-color: transparent;
+         -fx-selection-bar: #e0e7ff;
+         -fx-selection-bar-non-focused: #f1f5f9;
+      </style>
+   </TableView>
+
+   <!-- Pie de página -->
+   <HBox alignment="CENTER_RIGHT" style="-fx-padding: 15 0 0 0;">
+      <Label fx:id="campoNumeroOrganizaciones" style="-fx-text-fill: #4b5563; -fx-font-style: italic;">
          <font>
-            <Font size="14.0" />
+            <Font name="Segoe UI" size="13.0" />
          </font>
       </Label>
-   </children>
-</Pane>
+   </HBox>
+</VBox>

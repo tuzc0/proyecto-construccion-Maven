@@ -22,6 +22,7 @@ public class VerificacionUsuario {
     private static final Pattern PATRON_CONTRASENA = Pattern.compile("^[a-zA-Z0-9]{6,64}$");
     private static final Pattern PATRON_NOMBRE = Pattern.compile("^[\\p{L}\\s]+$");
     private static final Pattern PATRON_CONTACTO = Pattern.compile("^\\d{10}$");
+    private static final Pattern PATRON_NOMBRE_ORGANIZACION = Pattern.compile("^[^'\"]+$");
 
 
     public static boolean correoValidoUV(String correo) {
@@ -62,6 +63,11 @@ public class VerificacionUsuario {
     public static boolean contactoValido(String contacto) {
 
         return validar(contacto, PATRON_CONTACTO);
+    }
+
+    public static boolean nombreOrganizacionValido(String nombre) {
+
+        return validar(nombre, PATRON_NOMBRE_ORGANIZACION);
     }
 
     public static List<String> camposVacios(String nombre, String apellidos, String numeroPersonal, String correo, String contrasena) {
@@ -130,7 +136,7 @@ public class VerificacionUsuario {
 
         if (nombre.isEmpty()) {
             errores.add("El nombre de la organización no puede estar vacío.");
-        } else if (!nombreValido(nombre)) {
+        } else if (!nombreOrganizacionValido(nombre)) {
             errores.add("El nombre de la organización no es válido.");
         }
 

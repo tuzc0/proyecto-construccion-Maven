@@ -1,16 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="521.0" prefWidth="767.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorMenuEstudianteGUI">
-   <children>
-      <Button layoutX="132.0" layoutY="87.0" mnemonicParsing="false" onAction="#abrirEditarPerfilEstudiante" text="ver perfil" />
-      <Button layoutX="132.0" layoutY="146.0" mnemonicParsing="false" text="consultar proyecto" />
-      <Button layoutX="132.0" layoutY="209.0" mnemonicParsing="false" onAction="#abrirRegistrarCronogramaActividades" text="registrar cronograma de actividades" />
-      <Button layoutX="132.0" layoutY="261.0" mnemonicParsing="false" onAction="#abrirRegistrarReporteMensual" text="registrar reporte mensual" />
-      <Button layoutX="127.0" layoutY="320.0" mnemonicParsing="false" onAction="#abrirConsultarEvaluacionesEstudiante" text="consultar evaluaciones" />
-      <Button fx:id="botonRegistrarAutoevaluacion" layoutX="135.0" layoutY="376.0" mnemonicParsing="false" onAction="#abrirRegistrarAutoevaluacion" text="registrar autoevaluacion" />
-      <Button fx:id="botonConsultarAutoevaluacion" layoutX="332.0" layoutY="376.0" mnemonicParsing="false" onAction="#abrirConsultarAutoevaluacion" text="Consultar autoevaluacion" />
-   </children>
-</Pane>
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="GUI.ControladorMenuEstudianteGUI"
+      spacing="20" style="-fx-background-color: #f8fafc; -fx-padding: 30;"
+      alignment="TOP_CENTER" prefWidth="800" prefHeight="600">
+
+   <!-- Encabezado -->
+   <Label text="Menú del Estudiante" style="-fx-text-fill: #1e3a8a; -fx-font-weight: bold;">
+      <font>
+         <Font name="System Bold" size="28" />
+      </font>
+      <effect>
+         <DropShadow color="rgba(0,0,0,0.1)" radius="3" spread="0.3"/>
+      </effect>
+   </Label>
+
+   <!-- Contenedor principal -->
+   <GridPane alignment="CENTER" hgap="20" vgap="15" style="-fx-padding: 20;">
+      <columnConstraints>
+         <ColumnConstraints prefWidth="350" />
+         <ColumnConstraints prefWidth="350" />
+      </columnConstraints>
+
+      <!-- Primera columna -->
+      <Button text="Ver Perfil" onAction="#abrirEditarPerfilEstudiante"
+              style="-fx-background-color: #e0f2fe; -fx-text-fill: #0369a1; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;"
+              GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+
+      <Button text="Consultar Proyecto"
+              style="-fx-background-color: #e0f2fe; -fx-text-fill: #0369a1; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;"
+              GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+
+      <Button text="Registrar Cronograma" onAction="#abrirRegistrarCronogramaActividades"
+              style="-fx-background-color: #dcfce7; -fx-text-fill: #166534; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;"
+              GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+
+      <Button text="Registrar Reporte Mensual" onAction="#abrirRegistrarReporteMensual"
+              style="-fx-background-color: #dcfce7; -fx-text-fill: #166534; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;"
+              GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+
+      <!-- Segunda columna -->
+      <Button text="Consultar Evaluaciones" onAction="#abrirConsultarEvaluacionesEstudiante"
+              style="-fx-background-color: #fef3c7; -fx-text-fill: #92400e; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;"
+              GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+      <Button fx:id="botonRegistrarAutoevaluacion" text="Registrar Autoevaluación" onAction="#abrirRegistrarAutoevaluacion"
+              style="-fx-background-color: #fee2e2; -fx-text-fill: #991b1b; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;"
+              GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+      <Button fx:id="botonConsultarAutoevaluacion" text="Consultar Autoevaluación" onAction="#abrirConsultarAutoevaluacion"
+              style="-fx-background-color: #fee2e2; -fx-text-fill: #991b1b; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;"
+              GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+   </GridPane>
+
+   <!-- Pie de página -->
+   <Label text="Sistema de Prácticas Profesionales" style="-fx-text-fill: #64748b; -fx-font-style: italic;">
+      <font>
+         <Font size="12" />
+      </font>
+   </Label>
+</VBox>

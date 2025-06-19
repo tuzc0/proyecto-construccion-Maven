@@ -31,7 +31,7 @@ public class AuxiliarRegistroRepresentante {
         }
 
         RepresentanteDTO representante =
-                new RepresentanteDTO(idRepresentante, nombre, apellidos, correo, numeroContacto, idOrganizacion, estadoActivo);
+                new RepresentanteDTO(idRepresentante, correo, numeroContacto, nombre, apellidos, idOrganizacion, estadoActivo);
         RepresentanteDAO representanteDAO = new RepresentanteDAO();
 
 

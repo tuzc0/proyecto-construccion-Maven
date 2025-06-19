@@ -7,6 +7,7 @@ import logica.VerificacionUsuario;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 public class AuxiliarRegistroRepresentante {
 
@@ -18,32 +19,15 @@ public class AuxiliarRegistroRepresentante {
         int estadoActivo = 1;
         int idRepresentante = 0;
 
+        List<String> errores = verificacionUsuario.validarRepresentante( nombre, apellidos, numeroContacto, correo );
 
-        if (nombre.isEmpty() || apellidos.isEmpty() || correo.isEmpty() || numeroContacto.isEmpty()) {
-            utilidades.mostrarAlerta("Error",
-                    "campos vacios.", "Por favor, complete todos los campos.");
+        if (!errores.isEmpty()) {
+
+            String mensajeError = String.join("\n", errores);
+            utilidades.mostrarAlerta("Error de validación",
+                    "Datos inválidos",
+                    mensajeError);
             return;
-        }
-
-        if (!verificacionUsuario.nombreValido(nombre)) {
-            utilidades.mostrarAlerta("Error",
-                    "Nombre inválido", "El nombre solo puede contener letras y espacios.");
-            return;
-
-        }
-
-        if (!verificacionUsuario.apellidosValidos(apellidos)) {
-            utilidades.mostrarAlerta("Error",
-                    "Apellidos inválidos", "Los apellidos solo pueden contener letras y espacios.");
-            return;
-
-        }
-
-        if (!verificacionUsuario.correoValido(correo)) {
-            utilidades.mostrarAlerta("Error",
-                    "Correo inválido", "El correo electrónico no es válido.");
-            return;
-
         }
 
         RepresentanteDTO representante =

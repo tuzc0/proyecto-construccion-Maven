@@ -7,10 +7,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import logica.DAOs.OrganizacionVinculadaDAO;
 import logica.DTOs.OrganizacionVinculadaDTO;
+import logica.VerificacionUsuario;
+import logica.verificacion.VerificicacionGeneral;
 
 import javax.imageio.IIOException;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Logger;
 
 
@@ -51,11 +54,33 @@ public class ControladorGestorOrganizacionGUI {
     @FXML
     private Button botonEditar;
 
+    @FXML
+    private Label etiquetaContadorNombre;
+
+    @FXML
+    private Label etiquetaContadorCorreo;
+
+    @FXML
+    private Label etiquetaContadorContacto;
+
+    @FXML
+    private Label etiquetaContadorDireccion;
+
     private int idOrganizacionSeleccionada = ControladorConsultarOrganizacionGUI.idOrganizacionSeleccionada;
 
+    VerificicacionGeneral verificicacionGeneral = new VerificicacionGeneral();
+    final int MAX_CARACTERES_NOMBRE = 50;
+    final int MAX_CARACTERES_CORREO = 100;
+    final int MAX_CARACTERES_CONTACTO = 10;
+    final int MAX_CARACTERES_DIRECCION = 255;
 
     @FXML
     public void initialize() {
+
+        verificicacionGeneral.contadorCaracteresTextField(campoNombreEditable, etiquetaContadorNombre, MAX_CARACTERES_NOMBRE);
+        verificicacionGeneral.contadorCaracteresTextField(campoCorreoEditable, etiquetaContadorCorreo, MAX_CARACTERES_CORREO);
+        verificicacionGeneral.contadorCaracteresTextField(campoContactoEditable, etiquetaContadorContacto, MAX_CARACTERES_CONTACTO);
+        verificicacionGeneral.contadorCaracteresTextField(campoDireccionEditable, etiquetaContadorDireccion, MAX_CARACTERES_DIRECCION);
 
         cargarDatosOrganizacion();
     }
@@ -122,6 +147,10 @@ public class ControladorGestorOrganizacionGUI {
         campoContactoEditable.setVisible(true);
         campoDireccionEditable.setVisible(true);
 
+        etiquetaContadorNombre.setVisible(true);
+        etiquetaContadorCorreo.setVisible(true);
+        etiquetaContadorContacto.setVisible(true);
+        etiquetaContadorDireccion.setVisible(true);
 
         botonCancelar.setVisible(true);
         botonGuardar.setVisible(true);
@@ -142,9 +171,85 @@ public class ControladorGestorOrganizacionGUI {
         campoContactoEditable.setVisible(false);
         campoDireccionEditable.setVisible(false);
 
+        etiquetaContadorNombre.setVisible(false);
+        etiquetaContadorCorreo.setVisible(false);
+        etiquetaContadorContacto.setVisible(false);
+        etiquetaContadorDireccion.setVisible(false);
+
         botonCancelar.setVisible(false);
         botonGuardar.setVisible(false);
         botonEditar.setVisible(true);
+    }
+
+    @FXML
+    public void guardarEdicion () {
+
+        Utilidades utilidades = new Utilidades();
+        VerificacionUsuario verificacionUsuario = new VerificacionUsuario();
+        OrganizacionVinculadaDAO organizacionDAO = new OrganizacionVinculadaDAO();
+        OrganizacionVinculadaDTO organizacionDTO = new OrganizacionVinculadaDTO();
+
+        String nombre = campoNombreEditable.getText();
+        String correo = campoCorreoEditable.getText();
+        String contacto = campoContactoEditable.getText();
+        String direccion = campoDireccionEditable.getText();
+
+        try {
+
+            List<String> errores = verificacionUsuario.validarOrganizacionVinculada(nombre, correo, contacto, direccion);
+
+            if (!errores.isEmpty()) {
+                String mensajeError = String.join("\n", errores);
+                utilidades.mostrarAlerta("Error de validación",
+                        "Datos inválidos",
+                        mensajeError);
+                return;
+            }
+
+            OrganizacionVinculadaDTO organizacionExistente = organizacionDAO.buscarOrganizacionPorCorreo(correo);
+
+            if (!organizacionExistente.getCorreo().equals("N/A")
+                    && !correo.equals(campoCorreoEncontrado.getText())) {
+                utilidades.mostrarAlerta("Error de registro", "Correo ya registrado",
+                        "El correo electrónico ya está asociado a otra organización.");
+                return;
+            }
+
+            organizacionExistente = organizacionDAO.buscarOrganizacionPorTelefono(contacto);
+
+            if (!organizacionExistente.getNumeroDeContacto().equals("N/A")
+                    && !contacto.equals(campoContactoEncontrado.getText())) {
+                utilidades.mostrarAlerta("Error de registro", "Número de contacto ya registrado",
+                        "El número de contacto ya está asociado a otra organización.");
+                return;
+            }
+
+            organizacionDTO.setIdOrganizacion(idOrganizacionSeleccionada);
+            organizacionDTO.setNombre(nombre);
+            organizacionDTO.setCorreo(correo);
+            organizacionDTO.setNumeroDeContacto(contacto);
+            organizacionDTO.setDireccion(direccion);
+
+            organizacionDAO.modificarOrganizacion(organizacionDTO);
+
+            utilidades.mostrarAlerta("Éxito", "Organización actualizada",
+                    "Los datos de la organización se han actualizado correctamente.");
+            cargarDatosOrganizacion();
+            cancelarEdicion();
+
+        } catch (IOException e) {
+            logger.warning("Error de IO: " + e);
+            utilidades.mostrarAlerta("Error", "No se pudo actualizar la organización",
+                    "error al actualizar los datos de la organizacion seleccionada");
+        } catch (SQLException e) {
+            logger.warning("Error de SQL: " + e);
+            utilidades.mostrarAlerta("Error", "No se pudo actualizar la organización",
+                    "error al actualizar los datos de la organizacion seleccionada");
+        } catch (Exception e) {
+            logger.warning("Error: " + e);
+            utilidades.mostrarAlerta("Error", "No se pudo actualizar la organización",
+                    "error al actualizar los datos de la organizacion seleccionada");
+        }
     }
 
     @FXML

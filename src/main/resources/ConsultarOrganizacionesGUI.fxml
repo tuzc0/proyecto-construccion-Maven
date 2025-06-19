@@ -20,7 +20,7 @@
                <children>
                   <HBox prefHeight="47.0" prefWidth="822.0">
                      <children>
-                        <TextField fx:id="campoCorreo" prefHeight="26.0" prefWidth="651.0" promptText="Ej. ejemplo@gmail.com" />
+                        <TextField fx:id="campoBusqueda" prefHeight="26.0" prefWidth="651.0" promptText="Ej. ejemplo@gmail.com" />
                      </children>
                   </HBox>
                   <HBox prefHeight="46.0" prefWidth="395.0">

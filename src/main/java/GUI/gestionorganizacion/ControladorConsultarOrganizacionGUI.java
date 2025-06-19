@@ -39,7 +39,7 @@ public class ControladorConsultarOrganizacionGUI {
     private TableView <OrganizacionVinculadaDTO> tablaOrganizaciones;
 
     @FXML
-    private TextField campoCorreo;
+    private TextField campoBusqueda;
 
     @FXML
     private TableColumn <OrganizacionVinculadaDTO, Void> columnaBotonEliminar;
@@ -230,6 +230,37 @@ public class ControladorConsultarOrganizacionGUI {
 
     @FXML
     private void buscarOrganizacion() {
+
+        String textoBusqueda = campoBusqueda.getText().trim();
+
+        if (textoBusqueda.isEmpty()) {
+            cargarOrganizaciones();
+            return;
+        }
+
+        Utilidades utilidades = new Utilidades();
+
+        try {
+            OrganizacionVinculadaDAO organizacionDAO = new OrganizacionVinculadaDAO();
+            ObservableList<OrganizacionVinculadaDTO> organizaciones =
+                    FXCollections.observableArrayList(organizacionDAO.buscarOrganizacionesPorNombre(textoBusqueda));
+            tablaOrganizaciones.setItems(organizaciones);
+        } catch (IOException e) {
+            logger.severe("Error al buscar organizaciones: " + e);
+            utilidades.mostrarAlerta("Error", "Error de entrada/salida",
+                    "No se pudo realizar la búsqueda de organizaciones.");
+        } catch (SQLException e) {
+            logger.severe("Error al buscar organizaciones: " + e);
+            utilidades.mostrarAlerta("Error", "Error de SQL",
+                    "No se pudo realizar la búsqueda de organizaciones.");
+        } catch (Exception e) {
+            logger.severe("Error inesperado al buscar organizaciones: " + e);
+            utilidades.mostrarAlerta("Error", "Error inesperado",
+                    "No se pudo realizar la búsqueda de organizaciones.");
+        }
+
+
+
 
     }
 

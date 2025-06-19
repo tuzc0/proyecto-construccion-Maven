@@ -23,14 +23,15 @@ public class VerificicacionGeneral {
 
     public void contadorCaracteresTextField(TextField campoDeTexto, Label contadorCaracteres, int numeroMaximoDeCaracteres) {
 
-        int numeroDeCaracteresMaximos = numeroMaximoDeCaracteres;
-
         campoDeTexto.textProperty().addListener((textoObservado, textoAnterior, textoActual) -> {
-            int cantidadCaracteresActuales = textoActual.length();
-            contadorCaracteres.setText(cantidadCaracteresActuales + "/" + numeroDeCaracteresMaximos);
+            if (textoActual.length() > numeroMaximoDeCaracteres) {
+                campoDeTexto.setText(textoAnterior);
+            } else {
+                contadorCaracteres.setText(textoActual.length() + "/" + numeroMaximoDeCaracteres);
+            }
         });
 
-        contadorCaracteres.setText("0/" + numeroDeCaracteresMaximos);
+        contadorCaracteres.setText("0/" + numeroMaximoDeCaracteres);
     }
 
     public static boolean validar(String campo, Pattern patron) {

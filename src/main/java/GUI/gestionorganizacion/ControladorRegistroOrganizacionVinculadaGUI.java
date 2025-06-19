@@ -7,13 +7,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import logica.DAOs.OrganizacionVinculadaDAO;
 import logica.DTOs.OrganizacionVinculadaDTO;
 import logica.VerificacionUsuario;
+import logica.verificacion.VerificicacionGeneral;
+
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class ControladorRegistroOrganizacionVinculadaGUI {
@@ -47,9 +52,70 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
     @FXML
     private Button botonRegistrarRepresentante;
 
+    @FXML
+    private Label etiquetaContadorNombre;
+
+    @FXML
+    private Label etiquetaContadorCorreo;
+
+    @FXML
+    private Label etiquetaContadorContacto;
+
+    @FXML
+    private Label etiquetaContadorDireccion;
+
+    @FXML
+    private Label etiquetaContadorNombreRepresentante;
+
+    @FXML
+    private Label etiquetaContadorApellidoRepresentante;
+
+    @FXML
+    private Label etiquetaContadorCorreoRepresentante;
+
+    @FXML
+    private Label etiquetaContadorContactoRepresentante;
+
     public static int idOrganizacion = 0;
 
+    VerificicacionGeneral verificicacionGeneral = new VerificicacionGeneral();
+    final int MAX_CARACTERES_NOMBRE = 50;
+    final int MAX_CARACTERES_CORREO = 100;
+    final int MAX_CARACTERES_CONTACTO = 10;
+    final int MAX_CARACTERES_DIRECCION = 255;
+    final int MAX_CARACTERES_APELLIDOS = 50;
 
+    @FXML
+    private void initialize() {
+
+
+
+        verificicacionGeneral.contadorCaracteresTextField(
+                campoNombreOrganizacion, etiquetaContadorNombre, MAX_CARACTERES_NOMBRE);
+
+        verificicacionGeneral.contadorCaracteresTextField(
+                campoCorreoOrganizacion, etiquetaContadorCorreo, MAX_CARACTERES_CORREO);
+
+        verificicacionGeneral.contadorCaracteresTextField(
+                campoContactoOrganizacion, etiquetaContadorContacto, MAX_CARACTERES_CONTACTO);
+
+        verificicacionGeneral.contadorCaracteresTextField(
+                campoDireccionOrganizacion, etiquetaContadorDireccion, MAX_CARACTERES_DIRECCION);
+
+        verificicacionGeneral.contadorCaracteresTextField(
+                campoNombreRepresentante, etiquetaContadorNombreRepresentante, MAX_CARACTERES_NOMBRE);
+
+        verificicacionGeneral.contadorCaracteresTextField(
+                campoApellidosRepresentante, etiquetaContadorApellidoRepresentante, MAX_CARACTERES_APELLIDOS);
+
+        verificicacionGeneral.contadorCaracteresTextField(
+                campoCorreoRepresentante, etiquetaContadorCorreoRepresentante, MAX_CARACTERES_CORREO);
+
+        verificicacionGeneral.contadorCaracteresTextField(
+                campoContactoRepresentante, etiquetaContadorContactoRepresentante, MAX_CARACTERES_CONTACTO);
+
+
+    }
 
     private void registrarOrganizacion() {
 
@@ -61,42 +127,36 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
         String contactoOrganizacion = campoContactoOrganizacion.getText();
         String direccionOrganizacion = campoDireccionOrganizacion.getText();
 
+        String nombreRepresentante = campoNombreRepresentante.getText();
+        String apellidosRepresentante = campoApellidosRepresentante.getText();
+        String correoRepresentante = campoCorreoRepresentante.getText();
+        String contactoRepresentante = campoContactoRepresentante.getText();
+
         int estadoActivo = 1;
 
-        if (nombreOrganizacion.isEmpty() || correoOrganizacion.isEmpty() || contactoOrganizacion.isEmpty() ||
-                direccionOrganizacion.isEmpty()) {
+        List<String> erroresOrganizacion = verificacionUsuario.validarOrganizacionVinculada(
+                nombreOrganizacion, correoOrganizacion, contactoOrganizacion, direccionOrganizacion);
 
-            utilidades.mostrarAlerta("Error de registro", "Campos vacíos",
-                    "Por favor, complete todos los campos.");
+        List<String> erroresRepresentante = verificacionUsuario.validarRepresentante(
+                nombreRepresentante, apellidosRepresentante, contactoRepresentante, correoRepresentante);
+
+        List<String> errores = new ArrayList<>();
+        errores.addAll(erroresOrganizacion);
+        errores.addAll(erroresRepresentante);
+
+        if (!errores.isEmpty()) {
+            String mensajeError = String.join("\n", errores);
+            utilidades.mostrarAlerta("Error de registro", "Datos inválidos",
+                    "Por favor, corrige los siguientes errores:\n" + mensajeError);
             return;
         }
 
-        if (!verificacionUsuario.nombreValido(nombreOrganizacion)) {
-            utilidades.mostrarAlerta("Error de registro",
-                    "Nombre inválido", "El nombre de la organización no es válido.");
-            return;
-        }
-
-        if (!verificacionUsuario.nombreValido(nombreOrganizacion)) {
-            utilidades.mostrarAlerta("Error de registro", "Nombre inválido",
-                    "El nombre de la organización no es válido.");
-            return;
-        }
-
-        if (!verificacionUsuario.correoValido(correoOrganizacion)) {
-            utilidades.mostrarAlerta("Error de registro", "Correo inválido",
-                    "El correo de la organización no es válido.");
-            return;
-        }
-
-        OrganizacionVinculadaDAO organizacionDAO= new OrganizacionVinculadaDAO();
+        OrganizacionVinculadaDAO organizacionDAO = new OrganizacionVinculadaDAO();
         OrganizacionVinculadaDTO organizacionDTO =
-                new OrganizacionVinculadaDTO(idOrganizacion, nombreOrganizacion, direccionOrganizacion,correoOrganizacion,
-                        contactoOrganizacion,  estadoActivo);
-
+                new OrganizacionVinculadaDTO(idOrganizacion, nombreOrganizacion, direccionOrganizacion, correoOrganizacion,
+                        contactoOrganizacion, estadoActivo);
 
         try {
-
             OrganizacionVinculadaDTO organizacionExistente = organizacionDAO.buscarOrganizacionPorCorreo(correoOrganizacion);
 
             if (!organizacionExistente.getCorreo().equals("N/A")) {
@@ -114,37 +174,29 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
             }
 
             idOrganizacion = organizacionDAO.crearNuevaOrganizacion(organizacionDTO);
+
+            AuxiliarRegistroRepresentante auxiliarRegistroRepresentante = new AuxiliarRegistroRepresentante();
+            auxiliarRegistroRepresentante.registrarRepresentante(nombreRepresentante, apellidosRepresentante,
+                    correoRepresentante, contactoRepresentante, idOrganizacion);
+
             utilidades.mostrarAlerta("Registro exitoso", "Organización registrada",
-                    "La organización ha sido registrada exitosamente.");
-            registrarRepresentante();
+                    "La organización y el representante han sido registrados exitosamente.");
             botonRegistrarRepresentante.setDisable(false);
 
         } catch (SQLException e) {
-
             utilidades.mostrarAlerta("Error de registro", "Error al registrar la organización",
                     "No se pudo registrar la organización. Por favor, inténtelo de nuevo más tarde.");
             logger.severe("Error al registrar la organización: " + e);
 
-
-
-
-        } catch (IOException e){
-
+        } catch (IOException e) {
             utilidades.mostrarAlerta("Error de registro", "Error al registrar la organización",
                     "No se pudo registrar la organización. Por favor, inténtelo de nuevo más tarde.");
             logger.severe("Error al registrar la organización: " + e);
-
-
 
         } catch (Exception e) {
-
             utilidades.mostrarAlerta("Error de registro", "Error al registrar la organización",
                     "No se pudo registrar la organización. Por favor, inténtelo de nuevo más tarde.");
             logger.severe("Error al registrar la organización: " + e);
-
-
-
-
         }
     }
 

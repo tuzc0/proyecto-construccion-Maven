@@ -236,5 +236,39 @@ public class OrganizacionVinculadaDAO implements IOvDAO {
 
         return listaOrganizaciones;
     }
+
+    public List<OrganizacionVinculadaDTO> buscarOrganizacionesPorNombre(String nombre) throws SQLException, IOException {
+        List<OrganizacionVinculadaDTO> listaOrganizaciones = new ArrayList<>();
+        String consultaSQL = "SELECT * FROM organizacionvinculada WHERE estadoActivo = 1 AND LOWER(nombre) LIKE ?";
+
+        try {
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaOrganizacionVinculada = conexionBaseDeDatos.prepareStatement(consultaSQL);
+
+
+            String terminoBusqueda = "%" + nombre.toLowerCase().replace(" ", "%") + "%";
+            sentenciaOrganizacionVinculada.setString(1, terminoBusqueda);
+
+            resultadoConsultaOrganizacionVinculada = sentenciaOrganizacionVinculada.executeQuery();
+
+            while (resultadoConsultaOrganizacionVinculada.next()) {
+                OrganizacionVinculadaDTO organizacion = new OrganizacionVinculadaDTO(
+                        resultadoConsultaOrganizacionVinculada.getInt("idOV"),
+                        resultadoConsultaOrganizacionVinculada.getString("nombre"),
+                        resultadoConsultaOrganizacionVinculada.getString("direccion"),
+                        resultadoConsultaOrganizacionVinculada.getString("correo"),
+                        resultadoConsultaOrganizacionVinculada.getString("numeroContacto"),
+                        resultadoConsultaOrganizacionVinculada.getInt("estadoActivo")
+                );
+                listaOrganizaciones.add(organizacion);
+            }
+        } finally {
+            if (sentenciaOrganizacionVinculada != null) {
+                sentenciaOrganizacionVinculada.close();
+            }
+        }
+
+        return listaOrganizaciones;
+    }
 }
 

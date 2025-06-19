@@ -22,24 +22,28 @@
                </font>
             </Label>
             <TextField fx:id="campoNombre" />
+            <Label fx:id="etiquetaContadorNombreRepresentante" text="0/50" />
             <Label prefHeight="38.0" prefWidth="78.0" text="Apellido">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
             <TextField fx:id="campoApellidos" />
+            <Label fx:id="etiquetaContadorApellidoRepresentante" text="0/50" />
             <Label prefHeight="26.0" prefWidth="130.0" text="Numero telefonico">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
             <TextField fx:id="campoContacto" promptText="Ej. S12345678" />
+            <Label fx:id="etiquetaContadorContactoRepresentante" text="0/10" />
             <Label prefHeight="26.0" prefWidth="118.0" text="correo electronico">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
             <TextField fx:id="campoCorreo" prefHeight="26.0" prefWidth="498.0" promptText="Ej. ejemplo@estudiantes.uv.mx" />
+            <Label fx:id="etiquetaContadorCorreoRepresentante" text="0/100" />
          </children>
       </VBox>
       <Button layoutX="320.0" layoutY="354.0" mnemonicParsing="false" onAction="#guardarRegistro" prefHeight="31.0" prefWidth="88.0" text="registrar">

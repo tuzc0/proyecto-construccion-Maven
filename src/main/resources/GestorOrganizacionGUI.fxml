@@ -27,6 +27,7 @@
                   <TextField fx:id="campoNombreEditable" visible="false" />
                </children>
             </StackPane>
+            <Label fx:id="etiquetaContadorNombre" text="0/50" visible="false" />
             <Label text="Correo">
                <font>
                   <Font name="System Bold" size="18.0" />
@@ -37,6 +38,7 @@
                   <TextField fx:id="campoCorreoEditable" visible="false" />
                </children>
             </StackPane>
+            <Label fx:id="etiquetaContadorCorreo" text="0/100" visible="false" />
             <Label text="Numero de contacto">
                <font>
                   <Font name="System Bold" size="18.0" />
@@ -47,6 +49,7 @@
                   <TextField fx:id="campoContactoEditable" visible="false" />
                </children>
             </StackPane>
+            <Label fx:id="etiquetaContadorContacto" text="0/10" visible="false" />
             <Label text="Direccion">
                <font>
                   <Font name="System Bold" size="18.0" />
@@ -59,8 +62,9 @@
             </StackPane>
          </children>
       </VBox>
-      <Button fx:id="botonEditar" layoutX="61.0" layoutY="390.0" mnemonicParsing="false" onAction="#editarOrganizacion" prefHeight="34.0" prefWidth="52.0" text="Editar" />
-      <Button fx:id="botonCancelar" layoutX="180.0" layoutY="390.0" mnemonicParsing="false" onAction="#cancelarEdicion" prefHeight="34.0" prefWidth="80.0" text="cancelar" visible="false" />
-      <Button fx:id="botonGuardar" layoutX="87.0" layoutY="390.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="80.0" text="guardar" visible="false" />
+      <Button fx:id="botonEditar" layoutX="61.0" layoutY="424.0" mnemonicParsing="false" onAction="#editarOrganizacion" prefHeight="34.0" prefWidth="52.0" text="Editar" />
+      <Button fx:id="botonCancelar" layoutX="180.0" layoutY="424.0" mnemonicParsing="false" onAction="#cancelarEdicion" prefHeight="34.0" prefWidth="80.0" text="cancelar" visible="false" />
+      <Button fx:id="botonGuardar" layoutX="264.0" layoutY="424.0" mnemonicParsing="false" onAction="#guardarEdicion" prefHeight="34.0" prefWidth="80.0" text="guardar" visible="false" />
+      <Label fx:id="etiquetaContadorDireccion" layoutX="61.0" layoutY="382.0" text="0/255" visible="false" />
    </children>
 </Pane>

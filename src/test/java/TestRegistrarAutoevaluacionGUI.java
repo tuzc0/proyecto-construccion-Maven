@@ -9,7 +9,7 @@ public class TestRegistrarAutoevaluacionGUI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Parent root = FXMLLoader.load(getClass().getResource("/RegistroCronogramaActividades.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/RegistroCronogramaActividadesGUI.fxml"));
 
 
         primaryStage.setTitle("Test Registrar Academico GUI");

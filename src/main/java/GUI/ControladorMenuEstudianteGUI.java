@@ -143,5 +143,10 @@ public class ControladorMenuEstudianteGUI {
 
     }
 
+    @FXML
+    public void abrirRegistrarCronogramaActividades() {
+
+        utilidades.mostrarVentana("/RegistroCronogramaActividadesGUI.fxml");
+    }
 
 }

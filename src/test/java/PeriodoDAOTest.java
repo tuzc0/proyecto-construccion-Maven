@@ -155,7 +155,7 @@ class PeriodoDAOTest {
     void testMostrarPeriodoActualExistente() {
 
         PeriodoDTO periodoEsperado = new PeriodoDTO(1,
-                "Periodo 2023", 1);
+                "Periodo 2023", 1, Date.valueOf("2023-01-01"), Date.valueOf("2023-12-31"));
 
         try {
 

@@ -196,6 +196,7 @@ public class ControladorGestorAcademicoEvaluadorGUI {
                 "Intenta más tarde o contacte al administrador."
             );
 
+
         } catch (IOException e) {
 
             LOGGER.error("Error de entrada/salida al buscar al académico: " + e);

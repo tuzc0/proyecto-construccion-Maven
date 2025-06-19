@@ -1,77 +1,127 @@
 import accesoadatos.ConexionBaseDeDatos;
-import logica.DAOs.AutoevaluacionDAO;
-import logica.DAOs.EstudianteDAO;
-import logica.DAOs.UsuarioDAO;
-import logica.DTOs.AutoevaluacionDTO;
-import logica.DTOs.EstudianteDTO;
-import logica.DTOs.UsuarioDTO;
+import logica.DAOs.*;
+import logica.DTOs.*;
 import org.junit.jupiter.api.*;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AutoevaluacionDAOTest {
 
-    private AutoevaluacionDAO autoevaluacionDAO;
-    private EstudianteDAO estudianteDAO;
+    private PeriodoDAO periodoDAO;
     private UsuarioDAO usuarioDAO;
+    private AcademicoDAO academicoDAO;
+    private GrupoDAO grupoDAO;
+    private EstudianteDAO estudianteDAO;
+    private AcademicoEvaluadorDAO academicoEvaluadorDAO;
+    private AutoevaluacionDAO autoevaluacionDAO;
     private Connection conexionBaseDeDatos;
 
-    private final List<Integer> IDS_AUTOEVALUACIONES_INSERTADAS = new ArrayList<>();
+    private final List<Integer> IDS_USUARIOS_INSERTADOS = new ArrayList<>();
+    private final List<Integer> IDS_GRUPOS_INSERTADOS = new ArrayList<>();
     private final List<String> MATRICULAS_INSERTADAS = new ArrayList<>();
-    private final List<Integer> IDS_USUARIOS_INSERTADOS    = new ArrayList<>();
+    private final List<Integer> IDS_AUTOEVALUACIONES_INSERTADAS = new ArrayList<>();
 
     @BeforeEach
     void prepararDatosDePrueba() {
 
-        autoevaluacionDAO = new AutoevaluacionDAO();
+        periodoDAO = new PeriodoDAO();
         usuarioDAO = new UsuarioDAO();
+        academicoDAO = new AcademicoDAO();
+        grupoDAO = new GrupoDAO();
+        estudianteDAO = new EstudianteDAO();
+        academicoEvaluadorDAO = new AcademicoEvaluadorDAO();
+        autoevaluacionDAO = new AutoevaluacionDAO();
+
+        MATRICULAS_INSERTADAS.clear();
+        IDS_USUARIOS_INSERTADOS.clear();
+        IDS_GRUPOS_INSERTADOS.clear();
+        IDS_AUTOEVALUACIONES_INSERTADAS.clear();
 
         try {
 
-            estudianteDAO = new EstudianteDAO();
-            IDS_AUTOEVALUACIONES_INSERTADAS.clear();
-            MATRICULAS_INSERTADAS.clear();
-            IDS_USUARIOS_INSERTADOS.clear();
-
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
 
-            conexionBaseDeDatos.prepareStatement("DELETE FROM autoevaluacion WHERE idAutoevaluacion BETWEEN 1000 AND 2000").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM autoevaluacion").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM estudiante").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM grupo").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM academicoevaluador").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM academico").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM periodo").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM usuario").executeUpdate();
 
-            conexionBaseDeDatos.prepareStatement("DELETE FROM estudiante WHERE matricula LIKE 'S230%'").executeUpdate();
+            periodoDAO.crearNuevoPeriodo(new PeriodoDTO(1, "Periodo 2025", 1,
+                    Date.valueOf("2023-01-01"), Date.valueOf("2023-12-31")));
 
-            conexionBaseDeDatos.prepareStatement("DELETE FROM usuario WHERE idUsuario BETWEEN 1000 AND 2000").executeUpdate();
+            UsuarioDTO usuarioAcademicoDTO = new UsuarioDTO(0, "Nombre", "Prueba", 1);
+            UsuarioDTO usuarioEstudiante1DTO = new UsuarioDTO(0, "Usuario2", "Apellido2", 1);
+            UsuarioDTO usuarioEstudiante2DTO = new UsuarioDTO(0, "Usuario3", "Apellido3", 1);
+            UsuarioDTO usuarioEstudiante3DTO = new UsuarioDTO(0, "Usuario4", "Apellido4", 1);
+            UsuarioDTO usuarioAcademcioEvaluadorDTO = new UsuarioDTO(0, "Usuario Evaluador",
+                    "Apellido Evaluador", 1);
 
-            UsuarioDTO usuarioEstudiante1DTO = new UsuarioDTO(0, "Nombre", "Prueba", 1);
-            UsuarioDTO usuarioEstudiante2DTO = new UsuarioDTO(0, "Usuario2", "Apellido2", 1);
-            UsuarioDTO usuarioEstudiante3DTO = new UsuarioDTO(0, "Usuario3", "Apellido3", 1);
-
+            int idUsuarioAcademico = usuarioDAO.insertarUsuario(usuarioAcademicoDTO);
             int idUsuarioEstudiante1 = usuarioDAO.insertarUsuario(usuarioEstudiante1DTO);
             int idUsuarioEstudiante2 = usuarioDAO.insertarUsuario(usuarioEstudiante2DTO);
             int idUsuarioEstudiante3 = usuarioDAO.insertarUsuario(usuarioEstudiante3DTO);
+            int idUsuarioAcademicoEvaluador = usuarioDAO.insertarUsuario(usuarioAcademcioEvaluadorDTO);
 
-            IDS_USUARIOS_INSERTADOS.addAll(List.of(idUsuarioEstudiante1, idUsuarioEstudiante2, idUsuarioEstudiante3));
+            IDS_USUARIOS_INSERTADOS.add(idUsuarioAcademico);
+            IDS_USUARIOS_INSERTADOS.add(idUsuarioEstudiante1);
+            IDS_USUARIOS_INSERTADOS.add(idUsuarioEstudiante2);
+            IDS_USUARIOS_INSERTADOS.add(idUsuarioEstudiante3);
+            IDS_USUARIOS_INSERTADOS.add(idUsuarioAcademicoEvaluador);
 
-            estudianteDAO.insertarEstudiante(new EstudianteDTO(idUsuarioEstudiante1, usuarioEstudiante1DTO.getNombre(), usuarioEstudiante1DTO.getApellido(), "S23014102", 1,0));
-            estudianteDAO.insertarEstudiante(new EstudianteDTO(idUsuarioEstudiante2, usuarioEstudiante2DTO.getNombre(), usuarioEstudiante2DTO.getApellido(), "S23014203", 1,0));
-            estudianteDAO.insertarEstudiante(new EstudianteDTO(idUsuarioEstudiante3, usuarioEstudiante3DTO.getNombre(), usuarioEstudiante3DTO.getApellido(), "S23014304", 1,0));
+            academicoDAO.insertarAcademico(new AcademicoDTO(1001, idUsuarioAcademico,
+                    usuarioAcademicoDTO.getNombre(), usuarioAcademicoDTO.getApellido(),
+                    usuarioAcademicoDTO.getEstado()));
 
-            MATRICULAS_INSERTADAS.addAll(List.of("S23014102", "S23014203", "S23014304"));
+            academicoEvaluadorDAO.insertarAcademicoEvaluador(new AcademicoEvaluadorDTO(1002, idUsuarioAcademicoEvaluador,
+                    usuarioAcademcioEvaluadorDTO.getNombre(), usuarioAcademcioEvaluadorDTO.getApellido(),
+                    usuarioAcademcioEvaluadorDTO.getEstado()));
 
-            autoevaluacionDAO.crearNuevaAutoevaluacion(new AutoevaluacionDTO(1001, Timestamp.valueOf("2023-01-01 00:00:00"), "Xalapa", 9.5f, "S23014102", 1));
-            autoevaluacionDAO.crearNuevaAutoevaluacion(new AutoevaluacionDTO(1002, Timestamp.valueOf("2023-02-02 00:00:00"), "Veracruz", 8.0f, "S23014203", 1));
-            autoevaluacionDAO.crearNuevaAutoevaluacion(new AutoevaluacionDTO(1003, Timestamp.valueOf("2023-03-03 00:00:00"), "Orizaba", 7.5f, "S23014304", 1));
+            grupoDAO.crearNuevoGrupo(new GrupoDTO(40776, "Grupo 1", 1001, 1, 1));
+            grupoDAO.crearNuevoGrupo(new GrupoDTO(40789, "Grupo 2", 1001, 1, 1));
 
-            IDS_AUTOEVALUACIONES_INSERTADAS.addAll(List.of(1001, 1002, 1003));
+            IDS_GRUPOS_INSERTADOS.add(40776);
+            IDS_GRUPOS_INSERTADOS.add(40789);
+
+            EstudianteDTO estudiante1DTO = new EstudianteDTO(idUsuarioEstudiante1,
+                    usuarioEstudiante1DTO.getNombre(), usuarioEstudiante1DTO.getApellido(),
+                    "S23014102", usuarioEstudiante1DTO.getEstado(), 0, 40776, 10);
+
+            EstudianteDTO estudiante2DTO = new EstudianteDTO(idUsuarioEstudiante2,
+                    usuarioEstudiante2DTO.getNombre(), usuarioEstudiante2DTO.getApellido(),
+                    "S23014095", usuarioEstudiante2DTO.getEstado(), 0, 40789, 7.5F);
+
+            EstudianteDTO estudiante3DTO = new EstudianteDTO(idUsuarioEstudiante3,
+                    usuarioEstudiante3DTO.getNombre(), usuarioEstudiante3DTO.getApellido(),
+                    "S23014103", usuarioEstudiante3DTO.getEstado(), 0, 40776, 5.0F);
+
+            estudianteDAO.insertarEstudiante(estudiante1DTO);
+            estudianteDAO.insertarEstudiante(estudiante2DTO);
+            estudianteDAO.insertarEstudiante(estudiante3DTO);
+
+            MATRICULAS_INSERTADAS.add(estudiante1DTO.getMatricula());
+            MATRICULAS_INSERTADAS.add(estudiante2DTO.getMatricula());
+            MATRICULAS_INSERTADAS.add(estudiante3DTO.getMatricula());
+
+            int idAutoevaluacion1DTO = autoevaluacionDAO.crearNuevaAutoevaluacion( new AutoevaluacionDTO(0,
+                    Timestamp.valueOf("2023-10-01 10:00:00"), "Aula 101", 8.5F,
+                    "S23014102", 1));
+            int idAutoevaluacion2DTO = autoevaluacionDAO.crearNuevaAutoevaluacion( new AutoevaluacionDTO(0,
+                    Timestamp.valueOf("2023-10-02 14:30:00"), "Laboratorio 202", 9.0F,
+                    "S23014095", 1
+            ));
+
+            IDS_AUTOEVALUACIONES_INSERTADAS.add(idAutoevaluacion1DTO);
+            IDS_AUTOEVALUACIONES_INSERTADAS.add(idAutoevaluacion2DTO);
 
         } catch (SQLException | IOException e) {
 
-            fail("Error en @BeforeEach al preparar datos: " + e.getMessage());
+            fail("Error en @BeforeEach al preparar datos: " + e);
         }
     }
 
@@ -80,188 +130,245 @@ public class AutoevaluacionDAOTest {
 
         try {
 
-            for (int idAutoevaluacion : IDS_AUTOEVALUACIONES_INSERTADAS) {
-                PreparedStatement eliminarAutoevaluacion = conexionBaseDeDatos.prepareStatement(
-                        "DELETE FROM autoevaluacion WHERE idAutoevaluacion = ?");
-                eliminarAutoevaluacion.setInt(1, idAutoevaluacion);
-                eliminarAutoevaluacion.executeUpdate();
-                eliminarAutoevaluacion.close();
-            }
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
 
-            for (String matricula : MATRICULAS_INSERTADAS) {
-                PreparedStatement eliminarEstudiante = conexionBaseDeDatos.prepareStatement(
-                        "DELETE FROM estudiante WHERE matricula = ?");
-                eliminarEstudiante.setString(1, matricula);
-                eliminarEstudiante.executeUpdate();
-                eliminarEstudiante.close();
-            }
-
-            for (int idUsuario : IDS_USUARIOS_INSERTADOS) {
-                PreparedStatement eliminarUsuario = conexionBaseDeDatos.prepareStatement(
-                        "DELETE FROM usuario WHERE idUsuario = ?");
-                eliminarUsuario.setInt(1, idUsuario);
-                eliminarUsuario.executeUpdate();
-                eliminarUsuario.close();
-            }
+            conexionBaseDeDatos.prepareStatement("DELETE FROM autoevaluacion").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM estudiante").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM grupo").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM academicoevaluador").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM academico").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM periodo").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM usuario").executeUpdate();
 
             conexionBaseDeDatos.close();
 
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
 
-            fail("Error en @AfterEach al limpiar datos: " + e.getMessage());
+            fail("Error en @AfterEach al limpiar datos: " + e);
         }
     }
 
-    /*
     @Test
-    void testInsertarAutoevaluacionConDatosValidos() {
+    void crearNuevaAutoevaluacionConDatosValidos() {
 
         try {
 
-            UsuarioDTO usuarioDTO = new UsuarioDTO(0, "AcademicoTest",
-                    "ApellidoTest", 1);
+            AutoevaluacionDTO autoevaluacionDTO = new AutoevaluacionDTO(0,
+                    Timestamp.valueOf("2023-10-03 09:00:00"), "Aula 102", 9.5F,
+                    MATRICULAS_INSERTADAS.get(2), 1);
+            int idAutoevaluacionCreada = autoevaluacionDAO.crearNuevaAutoevaluacion(autoevaluacionDTO);
 
-            int idUsuarioDTO = usuarioDAO.insertarUsuario(usuarioDTO);
-            IDS_USUARIOS_INSERTADOS.add(idUsuarioDTO);
-
-            estudianteDAO.insertarEstudiante(new EstudianteDTO(idUsuarioDTO,
-                    usuarioDTO.getNombre(), usuarioDTO.getApellido(), "S23014405", 1,0));
-            MATRICULAS_INSERTADAS.add("S23014405");
-
-            AutoevaluacionDTO nuevaAutoevaluacion = new AutoevaluacionDTO(1004, Timestamp.valueOf("2023-05-06 00:00:00"),
-                    "Acayucan", 6.4f,"S23014405", 1);
-            int insercionExitosa = autoevaluacionDAO.crearNuevaAutoevaluacion(nuevaAutoevaluacion);
-
-            assertTrue(insercionExitosa, "La autoevaluación debería ser insertado correctamente.");
-            IDS_AUTOEVALUACIONES_INSERTADAS.add(1004);
+            assertTrue(idAutoevaluacionCreada > 0,
+                    "ID de autoevaluación creada debe ser mayor que 0");
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba una excepción: " + e.getMessage());
-        }
-    }
-
-     */
-
-    @Test
-    void testInsertarAutoevaluacionConDatosInvalidos() {
-
-        AutoevaluacionDTO autoevaluacionDTO = new AutoevaluacionDTO(1006, Timestamp.valueOf("2023-05-06 00:00:00"),
-                "Coatzacoalcos", 6.4f, "S23014805", 1);
-
-        assertThrows(SQLException.class, () -> autoevaluacionDAO.crearNuevaAutoevaluacion(autoevaluacionDTO),
-                "Se esperaba una excepción debido a datos inválidos."
-        );
-    }
-
-    @Test
-    void testBuscarAutoevaluacionPorIDConDatosValidos() {
-
-        AutoevaluacionDTO autoevaluacionEsperada = new AutoevaluacionDTO(1001, Timestamp.valueOf("2023-01-01 00:00:00"),
-                "Xalapa", 9.5f,"S23014102", 1);
-
-        try {
-
-            AutoevaluacionDTO autoevaluacionEncontrada = autoevaluacionDAO.buscarAutoevaluacionPorID(autoevaluacionEsperada.getIDAutoevaluacion());
-            assertEquals(autoevaluacionEsperada, autoevaluacionEncontrada, "La autoevaluacion debería ser encontrado correctamente.");
-
-        } catch (SQLException | IOException e) {
-
-            fail("No se esperaba una excepción: " + e.getMessage());
+            fail("Error al crear nueva autoevaluación con datos válidos: " + e);
         }
     }
 
     @Test
-    void testBuscarAutoevaluacionPorIDConDatosInvalidos() {
+    void crearNuevaAutoevaluacionConMatriculaInexistente() {
 
-        int idAutoevaluacionInvalida = 99999;
-
-        try {
-
-            AutoevaluacionDTO autoevaluacionEncontrada = autoevaluacionDAO.buscarAutoevaluacionPorID(idAutoevaluacionInvalida);
-            assertEquals(-1, autoevaluacionEncontrada.getIDAutoevaluacion(), "No debería encontrarse una autoevaluación con ese número.");
-
-        } catch (SQLException | IOException e) {
-
-            fail("No se esperaba una excepción: " + e.getMessage());
-        }
-    }
-
-    @Test
-    void testEliminarAutoevaluacionPorIDConDatosValidos() {
-
-        int idAutoevaluacionParaEliminar = 1002;
-
-        try {
-
-            boolean resutadoDeEliminarAutoevaluacion = autoevaluacionDAO.eliminarAutoevaluacionPorID(idAutoevaluacionParaEliminar);
-            assertTrue(resutadoDeEliminarAutoevaluacion, "La autoevaluacion debería ser eliminada correctamente.");
-
-        } catch (SQLException | IOException e) {
-
-            fail("No se esperaba una excepción: " + e.getMessage());
-        }
-    }
-
-    @Test
-    void testEliminarAutoevaluacionPorIDConDatosInvalidos() {
-
-        int idAutoevaluacionInexistente = 88888;
-
-        try {
-
-            boolean resultadoDeEliminarAutoevaluacion = autoevaluacionDAO.eliminarAutoevaluacionPorID(idAutoevaluacionInexistente);
-            assertFalse(resultadoDeEliminarAutoevaluacion, "No debería eliminarse ninguna autoevaluacion inexistente.");
-
-        } catch (SQLException | IOException e) {
-
-            fail("No se esperaba una excepción: " + e.getMessage());
-        }
-    }
-
-    @Test
-    void testModificarAutoevaluacionConDatosValidos() {
-
-        try {
-
-            AutoevaluacionDTO autoevaluacionActualizada = new AutoevaluacionDTO(
-                    1003, Timestamp.valueOf("2023-01-15 00:00:00"), "NuevoLugar", 8.5f, "S23014102", 1);
-
-            boolean resultadoDeModificarAutoevaluacion = autoevaluacionDAO.modificarAutoevaluacion(autoevaluacionActualizada);
-            assertTrue(resultadoDeModificarAutoevaluacion, "La autoevaluación debería haberse modificado correctamente.");
-
-        } catch (SQLException | IOException e) {
-
-            fail("No se esperaba una excepción: " + e.getMessage());
-        }
-    }
-
-    @Test
-    void testModificarAutoevaluacionConDatosInvalidos() throws SQLException, IOException {
-
-        AutoevaluacionDTO autoevaluacionInvalida = new AutoevaluacionDTO(
-                1003, Timestamp.valueOf("2023-01-15 00:00:00"), "NuevoLugar", 8.5f, "S23014054", 1);
+        AutoevaluacionDTO autoevaluacionDTO = new AutoevaluacionDTO(0,
+                Timestamp.valueOf("2023-10-05 11:00:00"), "Aula 104", 8.0F,
+                "S99999999", 1);
 
         assertThrows(SQLException.class, () -> {
-            autoevaluacionDAO.modificarAutoevaluacion(autoevaluacionInvalida);
-        }, "Se esperaba una SQLException debido a la violación de la clave foránea.");
+            autoevaluacionDAO.crearNuevaAutoevaluacion(autoevaluacionDTO);
+        }, "Se esperaba SQLException al crear autoevaluación con matrícula inexistente");
     }
 
-
     @Test
-    void testModificarAutoevaluacionInexistente() {
-
-        AutoevaluacionDTO autoevaluacionInexistente = new AutoevaluacionDTO(
-                99999, Timestamp.valueOf("2023-01-01 00:00:00"), "LugarInexistente", 5.0f, "S23099999", 1);
+    void eliminarAutoevaluacionPorIDExistente() {
 
         try {
 
-            boolean resultadoModificacion = autoevaluacionDAO.modificarAutoevaluacion(autoevaluacionInexistente);
-            assertFalse(resultadoModificacion, "No debería modificarse una autoevaluación inexistente.");
+            int idAutoevaluacionAEliminar = IDS_AUTOEVALUACIONES_INSERTADAS.get(0);
+            boolean resultadoPrueba = autoevaluacionDAO.eliminarAutoevaluacionPorID(idAutoevaluacionAEliminar);
+
+            assertTrue(resultadoPrueba, "La autoevaluación debería haberse eliminado correctamente");
 
         } catch (SQLException | IOException e) {
 
-            fail("No se esperaba una excepción: " + e.getMessage());
+            fail("Error al eliminar autoevaluación por ID existente: " + e);
+        }
+    }
+
+    @Test
+    void eliminarAutoevaluacionPorIDInexistente() {
+
+        try {
+
+            int idAutoevaluacionInexistente = 9999;
+            boolean resultadoPrueba = autoevaluacionDAO.eliminarAutoevaluacionPorID(idAutoevaluacionInexistente);
+            assertFalse(resultadoPrueba, "No debería eliminar una autoevaluación con ID inexistente");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al eliminar autoevaluación por ID inexistente: " + e);
+        }
+    }
+
+    @Test
+    void modificarAutoevaluacionConDatosValidos() {
+
+        try {
+
+            AutoevaluacionDTO autoevaluacionAModificar = new AutoevaluacionDTO(IDS_AUTOEVALUACIONES_INSERTADAS.get(0),
+                    Timestamp.valueOf("2023-10-06 12:00:00"), "Aula 105", 9.0F,
+                    MATRICULAS_INSERTADAS.get(0), 1);
+            boolean resultadoPrueba = autoevaluacionDAO.modificarAutoevaluacion(autoevaluacionAModificar);
+
+            assertTrue(resultadoPrueba, "La autoevaluación debería haberse modificado correctamente");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al modificar autoevaluación con datos válidos: " + e);
+        }
+    }
+
+    @Test
+    void modificarAutoevaluacionConIDInexistente() {
+
+        AutoevaluacionDTO autoevaluacionAModificar = new AutoevaluacionDTO(9999,
+                Timestamp.valueOf("2023-10-07 13:00:00"), "Aula 106", 8.5F,
+                MATRICULAS_INSERTADAS.get(1), 1);
+
+        try {
+
+            boolean resultadoPrueba = autoevaluacionDAO.modificarAutoevaluacion(autoevaluacionAModificar);
+            assertFalse(resultadoPrueba, "Se espera que no se modifique la autoevaluacion con un ID invalido");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al modificar con datos inexistentes" +e );
+        }
+    }
+
+    @Test
+    void buscarAutoevaluacionPorIDExistente() {
+
+        AutoevaluacionDTO autoevalucionEsperada = new AutoevaluacionDTO(IDS_AUTOEVALUACIONES_INSERTADAS.get(0),
+                Timestamp.valueOf("2023-10-01 10:00:00"), "Aula 101", 8.5F,
+                MATRICULAS_INSERTADAS.get(0), 1);
+
+        try {
+
+            AutoevaluacionDTO autoevaluacionEncontrada = autoevaluacionDAO.buscarAutoevaluacionPorID(
+                    IDS_AUTOEVALUACIONES_INSERTADAS.get(0));
+
+            assertEquals(autoevalucionEsperada, autoevaluacionEncontrada,
+                    "La autoevaluación encontrada debería ser igual a la esperada");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al buscar autoevaluación por ID existente: " + e);
+        }
+    }
+
+    @Test
+    void buscarAutoevaluacionPorIDInexistente() {
+
+        AutoevaluacionDTO autoevaluacionEsperada = new AutoevaluacionDTO(-1, null, null,
+                -1, null, -1);
+
+        try {
+
+            AutoevaluacionDTO autoevaluacionEncontrada = autoevaluacionDAO.buscarAutoevaluacionPorID(9999);
+
+            assertEquals(autoevaluacionEsperada, autoevaluacionEncontrada,
+                    "La autoevaluación encontrada debería ser igual a la esperada para ID inexistente");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al buscar autoevaluación por ID inexistente: " + e);
+        }
+    }
+
+    @Test
+    void eliminarAutoevaluacionDefinitivamentePorIDExistente() {
+
+        AutoevaluacionDTO autoevaluacionEsperada = new AutoevaluacionDTO(-1, null, null,
+                -1, null, -1);
+
+        try {
+
+            int idAutoevaluacionAEliminar = IDS_AUTOEVALUACIONES_INSERTADAS.get(0);
+            autoevaluacionDAO.eliminarAutoevaluacionDefinitivamentePorID(idAutoevaluacionAEliminar);
+
+            AutoevaluacionDTO autoevaluacionEncontrada =
+                    autoevaluacionDAO.buscarAutoevaluacionPorID(idAutoevaluacionAEliminar);
+            assertEquals(autoevaluacionEsperada, autoevaluacionEncontrada,
+                    "La autoevaluación debería haber sido eliminada definitivamente");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al eliminar autoevaluación definitivamente por ID existente: " + e);
+        }
+    }
+
+    @Test
+    void buscarAutoevaluacionPorMatriculaExistente() {
+
+        AutoevaluacionDTO autoevaluacionEsperada = new AutoevaluacionDTO(IDS_AUTOEVALUACIONES_INSERTADAS.get(0),
+                Timestamp.valueOf("2023-10-01 10:00:00"), "Aula 101", 8.5F,
+                "S23014102", 1);
+
+        try {
+
+            AutoevaluacionDTO autoevaluacionesEncontradas =
+                    autoevaluacionDAO.buscarAutoevaluacionPorMatricula(MATRICULAS_INSERTADAS.get(0));
+            assertEquals(autoevaluacionEsperada, autoevaluacionesEncontradas,
+                    "La autoevaluación encontrada debería ser igual a la esperada");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al buscar autoevaluación por matrícula existente: " + e);
+        }
+    }
+
+    @Test
+    void buscarAutoevaluacionPorMatriculaInexistente() {
+
+        AutoevaluacionDTO autoevaluacionEsperada = new AutoevaluacionDTO(-1, null, " ",
+                -1, " ", -1);
+
+        try {
+
+            AutoevaluacionDTO autoevaluacionesEncontradas =
+                    autoevaluacionDAO.buscarAutoevaluacionPorMatricula("S99999999");
+
+            assertEquals(autoevaluacionEsperada, autoevaluacionesEncontradas,
+                    "La autoevaluación encontrada debería ser igual a la esperada para matrícula inexistente");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al buscar autoevaluación por matrícula inexistente: " + e);
+        }
+    }
+
+    @Test
+    void buscarAutoevaluacionPorMatriculaSinAuotoevaluacionesEnLaBase() {
+
+        AutoevaluacionDTO autoevaluacionEsperada = new AutoevaluacionDTO(-1, null, " ",
+                -1, " ", -1);
+
+        try {
+
+            PreparedStatement eliminarEvaluaciones = conexionBaseDeDatos
+                    .prepareStatement("DELETE FROM autoevaluacion");
+            eliminarEvaluaciones.executeUpdate();
+
+            AutoevaluacionDTO autoevaluacionesEncontradas =
+                    autoevaluacionDAO.buscarAutoevaluacionPorMatricula(MATRICULAS_INSERTADAS.get(0));
+
+            assertEquals( autoevaluacionEsperada, autoevaluacionesEncontradas,
+                    "La autoevaluación encontrada debería ser igual a la esperada");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al buscar autoevaluación por matrícula sin autoevaluaciones en la base de datos: " + e);
         }
     }
 }

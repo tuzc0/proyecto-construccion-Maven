@@ -15,7 +15,8 @@ public class EvaluacionDTO {
 
     }
 
-    public EvaluacionDTO(int IDEvaluacion, String comentarios, float calificacionFinal, int numeroPersonal, String matriculaEstudiante, int estadoActivo) {
+    public EvaluacionDTO(int IDEvaluacion, String comentarios, float calificacionFinal, int numeroPersonal,
+                         String matriculaEstudiante, int estadoActivo) {
 
         this.IDEvaluacion = IDEvaluacion;
         this.comentarios = comentarios;
@@ -112,17 +113,4 @@ public class EvaluacionDTO {
         return Objects.hash(IDEvaluacion, comentarios, calificacionFinal,
                 numeroPersonal, matriculaEstudiante, estadoActivo);
     }
-
-    @Override
-    public String toString() {
-        return "EvaluacionDTO{" +
-                "IDEvaluacion=" + IDEvaluacion +
-                ", comentarios='" + comentarios + '\'' +
-                ", calificacionFinal=" + calificacionFinal +
-                ", numeroPersonal=" + numeroPersonal +
-                ", matriculaEstudiante='" + matriculaEstudiante + '\'' +
-                ", estadoActivo=" + estadoActivo +
-                '}';
-    }
-
 }

@@ -1,5 +1,7 @@
 package logica.DTOs;
 
+import java.util.Objects;
+
 public class GrupoDTO {
 
     private int NRC;
@@ -70,5 +72,31 @@ public class GrupoDTO {
     public void setEstadoActivo(int estadoActivo) {
 
         this.estadoActivo = estadoActivo;
+    }
+
+    @Override
+    public boolean equals(Object objetoAComparar) {
+
+        if (this == objetoAComparar) {
+            return true;
+        }
+
+        if (objetoAComparar == null || getClass() != objetoAComparar.getClass()) {
+            return false;
+        }
+
+        GrupoDTO grupoComparado = (GrupoDTO) objetoAComparar;
+
+        return NRC == grupoComparado.NRC &&
+                numeroPersonal == grupoComparado.numeroPersonal &&
+                idPeriodo == grupoComparado.idPeriodo &&
+                estadoActivo == grupoComparado.estadoActivo &&
+                Objects.equals(nombre, grupoComparado.nombre);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(NRC, nombre, numeroPersonal, idPeriodo, estadoActivo);
     }
 }

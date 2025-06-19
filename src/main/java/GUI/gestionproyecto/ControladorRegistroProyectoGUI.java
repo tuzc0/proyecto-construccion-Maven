@@ -5,12 +5,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logica.DAOs.HorarioProyectoDAO;
 import logica.DAOs.ProyectoDAO;
@@ -20,6 +16,7 @@ import logica.DTOs.ProyectoDTO;
 import logica.DTOs.RepresentanteDTO;
 import logica.interfaces.ISeleccionRepresentante;
 import logica.utilidadesproyecto.SeleccionRepresentanteOrganizacion;
+import logica.verificacion.VerificadorDatosProyecto;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -255,9 +252,9 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
         String textoUsuariosIndirectos = campoUsuariosIndirectos.getText();
         String textoEstudiantesRequeridos = campoEstudianteRequeridos.getText();
 
-        ProyectoDTO proyectoDTO = new ProyectoDTO();
+        VerificadorDatosProyecto verificadorDatosProyecto = new VerificadorDatosProyecto();
 
-        List<String> camposFaltantes = proyectoDTO.camposVaciosProyecto(
+        List<String> camposFaltantes = verificadorDatosProyecto.camposVaciosProyecto(
                 nombreProyecto, descripcionProyecto, objetivosGeneralesProyecto,
                 objetivosInmediatosProyecto, objetivosMediatosProyecto, metodologiaProyecto,
                 recursosProyecto, actividadesProyecto, responsabilidadesProyecto,
@@ -274,7 +271,7 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
             return;
         }
 
-        List<String> erroresDeValidacion = proyectoDTO.validarCamposProyecto(
+        List<String> erroresDeValidacion = verificadorDatosProyecto.validarCamposProyecto(
                 nombreProyecto, descripcionProyecto, objetivosGeneralesProyecto,
                 objetivosInmediatosProyecto, objetivosMediatosProyecto, metodologiaProyecto,
                 recursosProyecto, actividadesProyecto, responsabilidadesProyecto,
@@ -326,6 +323,8 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
             );
             return;
         }
+
+        ProyectoDTO proyectoDTO;
 
         int idRepresentante = representanteSeleccionado.getIDRepresentante();
         int usuariosDirectos = Integer.parseInt(textoUsuariosDirectos);

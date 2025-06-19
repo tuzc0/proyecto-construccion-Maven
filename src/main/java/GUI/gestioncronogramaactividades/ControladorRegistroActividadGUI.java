@@ -8,6 +8,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import logica.DTOs.ActividadDTO;
+import logica.verificacion.VerificacionDeActividad;
 import org.apache.logging.log4j.Logger;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -81,7 +82,9 @@ public class ControladorRegistroActividadGUI {
                 estadoActivo
         );
 
-        List<String> camposVacios = actividadDTO.validarCamposVacios(nombreActividad, duracion, hitos);
+        VerificacionDeActividad verificacionActividad = new VerificacionDeActividad();
+
+        List<String> camposVacios = verificacionActividad.validarCamposVacios(nombreActividad, duracion, hitos);
 
         if (!camposVacios.isEmpty()) {
 
@@ -93,7 +96,7 @@ public class ControladorRegistroActividadGUI {
             return;
         }
 
-        List<String> datosInvalidos = actividadDTO.validarCamposInvalidos(nombreActividad, duracion, hitos);
+        List<String> datosInvalidos = verificacionActividad.validarCamposInvalidos(nombreActividad, duracion, hitos);
 
         if (!datosInvalidos.isEmpty()) {
 

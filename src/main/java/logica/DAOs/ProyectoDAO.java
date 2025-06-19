@@ -13,7 +13,6 @@ import java.util.List;
 
 public class ProyectoDAO implements IProyectoDAO {
 
-    private static final Logger log = LogManager.getLogger(ProyectoDAO.class);
     Connection conexionBaseDeDatos;
     PreparedStatement sentenciaProyecto = null;
     ResultSet resultadoProyecto;

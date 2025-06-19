@@ -1,9 +1,11 @@
-/*import logica.DAOs.*;
+import accesoadatos.ConexionBaseDeDatos;
+import logica.DAOs.*;
 import logica.DTOs.*;
 import org.junit.jupiter.api.*;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,244 +13,632 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ProyectoDAOTest {
 
-    private ProyectoDAO proyectoDAO;
-    private OrganizacionVinculadaDAO organizacionVinculadaDAO;
-    private CronogramaActividadesDAO cronogramaActividadesDAO;
-    private EstudianteDAO estudianteDAO;
-    private UsuarioDAO usuarioDAO;
+    private OrganizacionVinculadaDAO organizacionDAO;
     private RepresentanteDAO representanteDAO;
+    private ProyectoDAO proyectoDAO;
 
     private final List<Integer> IDS_PROYECTOS_INSERTADOS = new ArrayList<>();
     private final List<Integer> IDS_ORGANIZACIONES_INSERTADAS = new ArrayList<>();
-    private final List<Integer> IDS_CRONOGRAMAS_INSERTADOS = new ArrayList<>();
-    private final List<String> MATRICULAS_ESTUDIANTES_INSERTADAS = new ArrayList<>();
-    private final List<Integer> IDS_USUARIOS_INSERTADOS = new ArrayList<>();
     private final List<Integer> IDS_REPRESENTANTES_INSERTADOS = new ArrayList<>();
-
-    @BeforeAll
-    void inicializarDAOs() throws SQLException, IOException {
-        proyectoDAO = new ProyectoDAO();
-        organizacionVinculadaDAO = new OrganizacionVinculadaDAO();
-        cronogramaActividadesDAO = new CronogramaActividadesDAO();
-        estudianteDAO = new EstudianteDAO();
-        usuarioDAO = new UsuarioDAO();
-        representanteDAO = new RepresentanteDAO();
-    }
 
     @BeforeEach
     void prepararDatosDePrueba() {
-        try {
 
-            for (int idProyecto : IDS_PROYECTOS_INSERTADOS) {
-                proyectoDAO.eliminarProyectoPorID(idProyecto);
-            }
-            for (int idOrganizacion : IDS_ORGANIZACIONES_INSERTADAS) {
-                organizacionVinculadaDAO.eliminarOrganizacionPorID(idOrganizacion);
-            }
-            for (int idCronograma : IDS_CRONOGRAMAS_INSERTADOS) {
-                cronogramaActividadesDAO.modificarCronogramaDeActividades(
-                        new CronogramaActividadesDTO(idCronograma, "0", "0", "0", "0", "0", "0")
-                );
-            }
-            // <-- aquí cambiamos el 0 por el 1 para que coincida con la carrera usada al insertar -->
-            for (String matricula : MATRICULAS_ESTUDIANTES_INSERTADAS) {
-                estudianteDAO.eliminarEstudiantePorMatricula(1, matricula);
-            }
-            for (int idUsuario : IDS_USUARIOS_INSERTADOS) {
-                usuarioDAO.eliminarUsuarioPorID(idUsuario);
-            }
-            for (int idRepresentante : IDS_REPRESENTANTES_INSERTADOS) {
-                representanteDAO.eliminarRepresentantePorID(idRepresentante);
-            }
+        organizacionDAO = new OrganizacionVinculadaDAO();
+        representanteDAO = new RepresentanteDAO();
+        proyectoDAO = new ProyectoDAO();
 
-            // --- Insertar usuarios de prueba ---
-            UsuarioDTO usuarioPrueba1 = new UsuarioDTO(0, "Estudiante1", "Apellido1", 1);
-            UsuarioDTO usuarioPrueba2 = new UsuarioDTO(0, "Estudiante2", "Apellido2", 1);
-            int idUsuario1 = usuarioDAO.insertarUsuario(usuarioPrueba1);
-            int idUsuario2 = usuarioDAO.insertarUsuario(usuarioPrueba2);
-            IDS_USUARIOS_INSERTADOS.add(idUsuario1);
-            IDS_USUARIOS_INSERTADOS.add(idUsuario2);
+        IDS_PROYECTOS_INSERTADOS.clear();
+        IDS_ORGANIZACIONES_INSERTADAS.clear();
+        IDS_REPRESENTANTES_INSERTADOS.clear();
 
-            // --- Insertar estudiantes con los IDs correctos ---
-            EstudianteDTO estudiante1 = new EstudianteDTO(idUsuario1, "Estudiante1", "Apellido1", "12345", 1);
-            EstudianteDTO estudiante2 = new EstudianteDTO(idUsuario2, "Estudiante2", "Apellido2", "67890", 1);
-            estudianteDAO.insertarEstudiante(estudiante1);
-            estudianteDAO.insertarEstudiante(estudiante2);
-            MATRICULAS_ESTUDIANTES_INSERTADAS.add("12345");
-            MATRICULAS_ESTUDIANTES_INSERTADAS.add("67890");
+        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection()) {
 
-            // --- Insertar representantes ---
-            RepresentanteDTO representante1 = new RepresentanteDTO(0, "correo1@example.com", "1234567890", "Nombre1", "Apellido1", 1, 1);
-            RepresentanteDTO representante2 = new RepresentanteDTO(0, "correo2@example.com", "0987654321", "Nombre2", "Apellido2", 1, 1);
-            representanteDAO.insertarRepresentante(representante1);
-            representanteDAO.insertarRepresentante(representante2);
-            IDS_REPRESENTANTES_INSERTADOS.add(representante1.getIDRepresentante());
-            IDS_REPRESENTANTES_INSERTADOS.add(representante2.getIDRepresentante());
+            PreparedStatement eliminarProyectos =
+                    conexionBaseDeDatos.prepareStatement("DELETE FROM proyecto");
+            eliminarProyectos.executeUpdate();
 
-            // --- Organizaciones ---
-            int idOrganizacion1 = organizacionVinculadaDAO.crearNuevaOrganizacion(
-                    new OrganizacionVinculadaDTO(0, "Organizacion 1", "Direccion 1", "correo1@test.com", "1234567890", 1)
+            PreparedStatement eliminarRepresentantes =
+                    conexionBaseDeDatos.prepareStatement("DELETE FROM representante");
+            eliminarRepresentantes.executeUpdate();
+
+            PreparedStatement eliminarOrganizaciones =
+                    conexionBaseDeDatos.prepareStatement("DELETE FROM organizacionvinculada");
+            eliminarOrganizaciones.executeUpdate();
+
+            int idOrganizacion1 = organizacionDAO.crearNuevaOrganizacion(
+                    new OrganizacionVinculadaDTO(1, "Empresa 1", "Dirección 1",
+                            "empresa1@test.com", "5551111111", 1)
             );
-            int idOrganizacion2 = organizacionVinculadaDAO.crearNuevaOrganizacion(
-                    new OrganizacionVinculadaDTO(0, "Organizacion 2", "Direccion 2", "correo2@test.com", "0987654321", 1)
+            int idOrganizacion2 = organizacionDAO.crearNuevaOrganizacion(
+                    new OrganizacionVinculadaDTO(2, "Empresa 2", "Dirección 2",
+                            "empresa2@test.com", "5552222222", 1)
             );
+
             IDS_ORGANIZACIONES_INSERTADAS.add(idOrganizacion1);
             IDS_ORGANIZACIONES_INSERTADAS.add(idOrganizacion2);
 
-            // --- Cronogramas ---
-            int idCronograma1 = 1, idCronograma2 = 2;
-            cronogramaActividadesDAO.crearNuevoCronogramaDeActividades(
-                    new CronogramaActividadesDTO(idCronograma1,
-                            Timestamp.valueOf("2023-01-01 00:00:00"),
-                            Timestamp.valueOf("2023-12-31 23:59:59"),
-                            "12345")
+            representanteDAO.insertarRepresentante(
+                    new RepresentanteDTO(1, "representante1@gmail.com", "5554444444",
+                            "Representante 1", "Apellido 1", idOrganizacion1, 1)
             );
-            cronogramaActividadesDAO.crearNuevoCronogramaDeActividades(
-                    new CronogramaActividadesDTO(idCronograma2,
-                            Timestamp.valueOf("2023-02-01 00:00:00"),
-                            Timestamp.valueOf("2023-11-30 23:59:59"),
-                            "67890")
+            representanteDAO.insertarRepresentante(
+                    new RepresentanteDTO(2, "representante2@gmail.com", "5555555555",
+                            "Representante 2", "Apellido 2", idOrganizacion2, 1)
             );
-            IDS_CRONOGRAMAS_INSERTADOS.add(idCronograma1);
-            IDS_CRONOGRAMAS_INSERTADOS.add(idCronograma2);
 
-            // --- Proyectos ---
-            ProyectoDTO proyecto1 = new ProyectoDTO(0, "Proyecto 1", "Objetivo 1",
-                    "Inmediato 1", "Mediato 1", "Metodología 1",
-                    "Recursos 1", "Actividades 1", "Responsabilidades 1",
-                    "1 mes", "Lunes a Viernes", idCronograma1, 1, idOrganizacion1 ,"descripcion");
-            ProyectoDTO proyecto2 = new ProyectoDTO(0, "Proyecto 2", "Objetivo 2",
-                    "Inmediato 2", "Mediato 2", "Metodología 2",
-                    "Recursos 2", "Actividades 2", "Responsabilidades 2",
-                    "2 meses", "Lunes a Sábado", idCronograma2, 1, idOrganizacion2, "descripcion");
-            proyectoDAO.crearNuevoProyecto(proyecto1);
-            proyectoDAO.crearNuevoProyecto(proyecto2);
-            IDS_PROYECTOS_INSERTADOS.add(proyecto1.getIdProyecto());
-            IDS_PROYECTOS_INSERTADOS.add(proyecto2.getIdProyecto());
+            IDS_REPRESENTANTES_INSERTADOS.addAll(List.of(1, 2));
+
+            int idProyecto1 = proyectoDAO.crearNuevoProyecto(
+                    new ProyectoDTO(
+                            1,
+                            "Proyecto Innovador",
+                            "Desarrollar una solución tecnológica avanzada",
+                            "Implementar funcionalidades clave",
+                            "Mejorar la experiencia del usuario",
+                            "Metodología ágil",
+                            "Recursos tecnológicos y humanos",
+                            "Desarrollo, pruebas y despliegue",
+                            "Responsabilidad del equipo de desarrollo",
+                            "6 meses",
+                            1,
+                            1,
+                            "Proyecto para optimizar procesos internos",
+                            50,
+                            200,
+                            5
+                    )
+            );
+            int idProyecto2 = proyectoDAO.crearNuevoProyecto(
+                    new ProyectoDTO(
+                            2,
+                            "Proyecto Educativo",
+                            "Fomentar el aprendizaje interactivo en estudiantes",
+                            "Desarrollar una plataforma educativa",
+                            "Promover el uso de tecnología en la educación",
+                            "Metodología basada en diseño centrado en el usuario",
+                            "Recursos digitales y soporte técnico",
+                            "Análisis, diseño, desarrollo y evaluación",
+                            "Responsabilidad del equipo de diseño y desarrollo",
+                            "12 meses",
+                            1,
+                            2,
+                            "Proyecto para mejorar la calidad educativa mediante tecnología",
+                            100,
+                            500,
+                            0
+                    )
+            );
+
+            IDS_PROYECTOS_INSERTADOS.addAll(List.of(idProyecto1, idProyecto2));
 
         } catch (SQLException | IOException e) {
-            fail("Error al preparar los datos de prueba: " + e.getMessage());
+
+            fail("Error en @BeforeEach al preparar datos: " + e);
         }
     }
 
-    @AfterAll
-    void limpiarBaseDeDatos() {
+    @AfterEach
+    void limpiarDatosDePrueba() {
+
+        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection()) {
+
+            PreparedStatement eliminarProyectos =
+                    conexionBaseDeDatos.prepareStatement("DELETE FROM proyecto");
+            eliminarProyectos.executeUpdate();
+
+
+            PreparedStatement eliminarRepresentantes =
+                    conexionBaseDeDatos.prepareStatement("DELETE FROM representante");
+            eliminarRepresentantes.executeUpdate();
+
+            PreparedStatement eliminarOrganizaciones =
+                    conexionBaseDeDatos.prepareStatement("DELETE FROM organizacionvinculada");
+            eliminarOrganizaciones.executeUpdate();
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al limpiar datos: " + e);
+        }
+    }
+
+    @Test
+    void crearNuevoProyectoConDatosValidos() {
+
         try {
-            for (int idProyecto : IDS_PROYECTOS_INSERTADOS) {
-                proyectoDAO.eliminarProyectoPorID(idProyecto);
+
+            ProyectoDTO nuevoProyecto = new ProyectoDTO(
+                    3,
+                    "Proyecto de Investigación",
+                    "Investigar nuevas tecnologías emergentes",
+                    "Desarrollar prototipos funcionales",
+                    "Fomentar la innovación tecnológica",
+                    "Metodología de investigación aplicada",
+                    "Recursos de laboratorio y personal especializado",
+                    "Investigación, desarrollo y validación",
+                    "Responsabilidad del equipo de investigación",
+                    "18 meses",
+                    1,
+                    2,
+                    "Proyecto para explorar nuevas fronteras tecnológicas",
+                    75,
+                    300,
+                    8
+            );
+
+            int idProyectoCreado = proyectoDAO.crearNuevoProyecto(nuevoProyecto);
+            assertTrue(idProyectoCreado > 0, "El proyecto debería haberse creado con éxito");
+            IDS_PROYECTOS_INSERTADOS.add(idProyectoCreado);
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al crear nuevo proyecto: " + e);
+        }
+    }
+
+    @Test
+    void crearNuevoProyectoConDatosInvalidos() {
+
+        ProyectoDTO proyectoInvalido = new ProyectoDTO(
+                1,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                1,
+                4,
+                null,
+                20,
+                100,
+                10
+        );
+
+        assertThrows(SQLException.class, () -> {
+            proyectoDAO.crearNuevoProyecto(proyectoInvalido);
+            }, "Debería lanzar una excepción al intentar crear un proyecto con datos inválidos");
+    }
+
+    @Test
+    void crearNuevoProyectoConIDRepresentanteInexistente() {
+
+        ProyectoDTO proyectoInvalido = new ProyectoDTO(
+                3,
+                "Proyecto de Investigación",
+                "Investigar nuevas tecnologías emergentes",
+                "Desarrollar prototipos funcionales",
+                "Fomentar la innovación tecnológica",
+                "Metodología de investigación aplicada",
+                "Recursos de laboratorio y personal especializado",
+                "Investigación, desarrollo y validación",
+                "Responsabilidad del equipo de investigación",
+                "18 meses",
+                1,
+                4,
+                "Proyecto para explorar nuevas fronteras tecnológicas",
+                75,
+                300,
+                8
+        );
+
+        assertThrows(SQLException.class, () -> {
+            proyectoDAO.crearNuevoProyecto(proyectoInvalido);
+            }, "Debería lanzar una excepción al intentar crear un proyecto con un ID de representante inexistente");
+    }
+
+    @Test
+    void eliminarProyectoPorIDExistente() {
+
+        try {
+
+            boolean proyectoEliminado = proyectoDAO.eliminarProyectoPorID(IDS_PROYECTOS_INSERTADOS.get(0));
+            assertTrue(proyectoEliminado, "El proyecto debería haberse eliminado con éxito");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al eliminar proyecto por ID: " + e);
+        }
+    }
+
+    @Test
+    void eliminarProyectoPorIDInexistente() {
+
+        try {
+
+            boolean proyectoEliminado = proyectoDAO.eliminarProyectoPorID(999);
+            assertFalse(proyectoEliminado, "No debería eliminar un proyecto inexistente");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al eliminar proyecto por ID inexistente: " + e);
+        }
+    }
+
+    @Test
+    void modificarProyectoConDatosValidos() {
+
+        try {
+
+            ProyectoDTO proyectoModificado = new ProyectoDTO(
+                    IDS_PROYECTOS_INSERTADOS.get(1),
+                    "Proyecto Educativo Modificado",
+                    "Fomentar el aprendizaje interactivo en estudiantes",
+                    "Desarrollar una plataforma educativa mejorada",
+                    "Promover el uso de tecnología en la educación",
+                    "Metodología basada en diseño centrado en el usuario",
+                    "Recursos digitales y soporte técnico ampliados",
+                    "Análisis, diseño, desarrollo y evaluación",
+                    "Responsabilidad del equipo de diseño y desarrollo",
+                    "12 meses",
+                    1,
+                    2,
+                    "Proyecto para mejorar la calidad educativa mediante tecnología",
+                    120,
+                    600,
+                    15
+            );
+
+            boolean proyectoModificadoConExito = proyectoDAO.modificarProyecto(proyectoModificado);
+            assertTrue(proyectoModificadoConExito, "El proyecto debería haberse modificado con éxito");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al modificar proyecto: " + e);
+        }
+    }
+
+    @Test
+    void modificarProyectoConIDInexistente() {
+
+        ProyectoDTO proyectoInexistente = new ProyectoDTO(
+                999,
+                "Proyecto Inexistente",
+                "Descripción",
+                "Desarrollo",
+                "Objetivos",
+                "Metodología",
+                "Recursos",
+                "Actividades",
+                "Responsabilidades",
+                "6 meses",
+                1,
+                1,
+                "Descripción general",
+                50,
+                200,
+                5
+        );
+
+        try {
+
+            boolean proyectoModificado = proyectoDAO.modificarProyecto(proyectoInexistente);
+            assertFalse(proyectoModificado, "No debería modificar un proyecto inexistente");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al modificar proyecto inexistente: " + e);
+        }
+    }
+
+    @Test
+    void modificarProyectoConDatosInvalidos() {
+
+        ProyectoDTO proyectoInvalido = new ProyectoDTO(
+                IDS_PROYECTOS_INSERTADOS.get(1),
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                1,
+                2,
+                null,
+                20,
+                100,
+                10
+        );
+
+        assertThrows(SQLException.class, () -> {
+            proyectoDAO.modificarProyecto(proyectoInvalido);
+            }, "Debería lanzar una excepción al intentar modificar un proyecto con datos inválidos");
+    }
+
+    @Test
+    void buscarProyectoPorNombreValido() {
+
+        ProyectoDTO proyectoEsperado = new ProyectoDTO(
+                IDS_PROYECTOS_INSERTADOS.get(0),
+                "Proyecto Innovador",
+                "Desarrollar una solución tecnológica avanzada",
+                "Implementar funcionalidades clave",
+                "Mejorar la experiencia del usuario",
+                "Metodología ágil",
+                "Recursos tecnológicos y humanos",
+                "Desarrollo, pruebas y despliegue",
+                "Responsabilidad del equipo de desarrollo",
+                "6 meses",
+                1,
+                1,
+                "Proyecto para optimizar procesos internos",
+                50,
+                200,
+                5
+        );
+
+        try {
+
+            ProyectoDTO proyectosEncontrado = proyectoDAO.buscarProyectoPorNombre("Proyecto Innovador");
+            assertEquals(proyectoEsperado,proyectosEncontrado,
+                    "El proyecto encontrado deberia ser igual al proyecto esperado");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al buscar proyecto por nombre válido: " + e);
+        }
+    }
+
+    @Test
+    void buscarProyectoPorNombreInvalido() {
+
+        ProyectoDTO proyectoEsperado = new ProyectoDTO(
+                -1,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                -1,
+                -1,
+                null,
+                -1,
+                -1,
+                -1
+        );
+
+        try {
+
+            ProyectoDTO proyectoEncontrado = proyectoDAO.buscarProyectoPorNombre("Proyecto Inexistente");
+            assertEquals(proyectoEsperado, proyectoEncontrado,
+                    "El proyecto encontrado debería ser igual al proyecto esperado (inexistente)");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al buscar proyecto por nombre inválido: " + e);
+        }
+    }
+
+    @Test
+    void buscarProyectoPorIDExistente() {
+
+        int idProyecto = IDS_PROYECTOS_INSERTADOS.get(0);
+
+        ProyectoDTO proyectoEsperado = new ProyectoDTO(
+                idProyecto,
+                "Proyecto Innovador",
+                "Desarrollar una solución tecnológica avanzada",
+                "Implementar funcionalidades clave",
+                "Mejorar la experiencia del usuario",
+                "Metodología ágil",
+                "Recursos tecnológicos y humanos",
+                "Desarrollo, pruebas y despliegue",
+                "Responsabilidad del equipo de desarrollo",
+                "6 meses",
+                1,
+                1,
+                "Proyecto para optimizar procesos internos",
+                50,
+                200,
+                5
+        );
+
+        try {
+
+            ProyectoDTO proyectoEncontrado = proyectoDAO.buscarProyectoPorID(idProyecto);
+            assertEquals(proyectoEsperado, proyectoEncontrado,
+                    "El proyecto encontrado debería ser igual al proyecto esperado");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al buscar proyecto por ID existente: " + e);
+        }
+    }
+
+    @Test
+    void buscarProyectoPorIDInexistente() {
+
+        ProyectoDTO proyectoEsperado = new ProyectoDTO(
+                -1,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                -1,
+                -1,
+                null,
+                -1,
+                -1,
+                -1
+        );
+
+        try {
+
+            ProyectoDTO proyectoEncontrado = proyectoDAO.buscarProyectoPorID(999);
+            assertEquals(proyectoEsperado, proyectoEncontrado,
+                    "El proyecto encontrado debería ser igual al proyecto esperado (inexistente)");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al buscar proyecto por ID inválido: " + e);
+        }
+    }
+
+    @Test
+    void listarProyectosConDatosEnLaBase() {
+
+        try {
+
+            List<ProyectoDTO> proyectosEsperados = List.of(
+                    new ProyectoDTO(
+                            IDS_PROYECTOS_INSERTADOS.get(0),
+                            "Proyecto Innovador",
+                            "Desarrollar una solución tecnológica avanzada",
+                            "Implementar funcionalidades clave",
+                            "Mejorar la experiencia del usuario",
+                            "Metodología ágil",
+                            "Recursos tecnológicos y humanos",
+                            "Desarrollo, pruebas y despliegue",
+                            "Responsabilidad del equipo de desarrollo",
+                            "6 meses",
+                            1,
+                            1,
+                            "Proyecto para optimizar procesos internos",
+                            50,
+                            200,
+                            5
+                    ),
+                    new ProyectoDTO(
+                            IDS_PROYECTOS_INSERTADOS.get(1),
+                            "Proyecto Educativo",
+                            "Fomentar el aprendizaje interactivo en estudiantes",
+                            "Desarrollar una plataforma educativa",
+                            "Promover el uso de tecnología en la educación",
+                            "Metodología basada en diseño centrado en el usuario",
+                            "Recursos digitales y soporte técnico",
+                            "Análisis, diseño, desarrollo y evaluación",
+                            "Responsabilidad del equipo de diseño y desarrollo",
+                            "12 meses",
+                            1,
+                            2,
+                            "Proyecto para mejorar la calidad educativa mediante tecnología",
+                            100,
+                            500,
+                            0
+                    )
+            );
+
+            List<ProyectoDTO> proyectosObtenidos = proyectoDAO.listarProyectos();
+
+            for (int proyectoDTO = 0; proyectoDTO < proyectosEsperados.size(); proyectoDTO++) {
+
+                assertEquals(proyectosEsperados.get(proyectoDTO), proyectosObtenidos.get(proyectoDTO),
+                        "El proyecto en la posición " + proyectoDTO + " debería coincidir");
             }
-            for (int idOrganizacion : IDS_ORGANIZACIONES_INSERTADAS) {
-                organizacionVinculadaDAO.eliminarOrganizacionPorID(idOrganizacion);
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al listar proyectos con datos en la base: " + e);
+        }
+    }
+
+    @Test
+    void listarProyectosSinDatosEnLaBase() {
+
+        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection()) {
+
+            PreparedStatement eliminar = conexionBaseDeDatos.prepareStatement
+                    ("DELETE FROM proyecto");
+            eliminar.executeUpdate();
+
+            List<ProyectoDTO> proyectos = proyectoDAO.listarProyectos();
+            assertTrue(proyectos.isEmpty(), "La lista de proyectos debería estar vacía");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al listar proyectos sin datos en la base: " + e);
+        }
+    }
+
+    @Test
+    void listarProyectosConCupoConDatosEnLaBase() {
+
+        try {
+
+            List<ProyectoDTO> proyectosEsperados = List.of(
+                    new ProyectoDTO(
+                            IDS_PROYECTOS_INSERTADOS.get(0),
+                            "Proyecto Innovador",
+                            "Desarrollar una solución tecnológica avanzada",
+                            "Implementar funcionalidades clave",
+                            "Mejorar la experiencia del usuario",
+                            "Metodología ágil",
+                            "Recursos tecnológicos y humanos",
+                            "Desarrollo, pruebas y despliegue",
+                            "Responsabilidad del equipo de desarrollo",
+                            "6 meses",
+                            1,
+                            1,
+                            "Proyecto para optimizar procesos internos",
+                            50,
+                            200,
+                            5
+                    )
+            );
+
+            List<ProyectoDTO> proyectosConCupoObtenidos = proyectoDAO.listarProyectosConCupo();
+
+            for (int proyectoDTO = 0; proyectoDTO < proyectosEsperados.size(); proyectoDTO++) {
+
+                assertEquals(proyectosEsperados.get(proyectoDTO), proyectosConCupoObtenidos.get(proyectoDTO),
+                        "El proyecto con cupo en la posición " + proyectoDTO + " debería coincidir");
             }
-            for (int idCronograma : IDS_CRONOGRAMAS_INSERTADOS) {
-                cronogramaActividadesDAO.modificarCronogramaDeActividades(
-                        new CronogramaActividadesDTO(idCronograma, null, null, "0")
-                );
-            }
-            for (String matricula : MATRICULAS_ESTUDIANTES_INSERTADAS) {
-                estudianteDAO.eliminarEstudiantePorMatricula(1, matricula);
-            }
-            for (int idUsuario : IDS_USUARIOS_INSERTADOS) {
-                usuarioDAO.eliminarUsuarioPorID(idUsuario);
-            }
-            for (int idRepresentante : IDS_REPRESENTANTES_INSERTADOS) {
-                representanteDAO.eliminarRepresentantePorID(idRepresentante);
-            }
+
         } catch (SQLException | IOException e) {
-            fail("Error al limpiar la base de datos: " + e.getMessage());
+
+            fail("Error al listar proyectos con cupo con datos en la base: " + e);
         }
     }
 
     @Test
-    void testInsertarProyectoConDatosValidos() {
-        try {
-            ProyectoDTO nuevoProyecto = new ProyectoDTO(4, "Proyecto 4", "Objetivo 4", "Inmediato 4",
-                    "Mediato 4", "Metodología 4", "Recursos 4", "Actividades 4",
-                    "Responsabilidades 4", "4 meses", "Lunes a Viernes", 4, 1, 4,"descripcion");
-            boolean resultado = proyectoDAO.crearNuevoProyecto(nuevoProyecto);
-            assertTrue(resultado, "El proyecto debería ser insertado correctamente.");
+    void listarProyectosConCupoSinDatosEnLaBase() {
+
+        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection()) {
+
+            PreparedStatement eliminar = conexionBaseDeDatos.prepareStatement
+                    ("DELETE FROM proyecto");
+            eliminar.executeUpdate();
+
+            List<ProyectoDTO> proyectosConCupo = proyectoDAO.listarProyectosConCupo();
+            assertTrue(proyectosConCupo.isEmpty(), "La lista de proyectos con cupo debería estar vacía");
+
         } catch (SQLException | IOException e) {
-            fail("No se esperaba una excepción: " + e.getMessage());
+
+            fail("Error al listar proyectos con cupo sin datos en la base: " + e);
         }
     }
 
     @Test
-    void testInsertarProyectoConDatosInvalidos() {
-        ProyectoDTO proyectoInvalido = new ProyectoDTO(5, null, null, null,
-                null, null, null, null, null, null, null,
-                -1, -1, 1, null);
-        try {
-            boolean resultado = proyectoDAO.crearNuevoProyecto(proyectoInvalido);
-            assertFalse(resultado, "El proyecto no debería ser insertado con datos inválidos.");
-        } catch (SQLException | IOException e) {
-            assertTrue(true);
-        }
-    }
+    void listarProyectosSinCupoConDatosEnLaBase() {
 
-    @Test
-    void testBuscarProyectoPorIDConDatosValidos() {
-        try {
-            ProyectoDTO proyecto = proyectoDAO.buscarProyectoPorID(1);
-            assertEquals(1, proyecto.getIdProyecto(), "El ID del proyecto debería coincidir.");
-        } catch (SQLException | IOException e) {
-            fail("No se esperaba una excepción: " + e.getMessage());
-        }
-    }
+        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection()) {
 
-    @Test
-    void testBuscarProyectoPorIDConDatosInvalidos() {
-        try {
-            ProyectoDTO proyecto = proyectoDAO.buscarProyectoPorID(999);
-            assertEquals(-1, proyecto.getIdProyecto(), "No debería encontrarse un proyecto con ese ID.");
-        } catch (SQLException | IOException e) {
-            fail("No se esperaba una excepción: " + e.getMessage());
-        }
-    }
+            PreparedStatement eliminarProyectos = conexionBaseDeDatos.prepareStatement
+                    ("UPDATE proyecto SET estudiantesrequeridos = 0");
+            eliminarProyectos.executeUpdate();
 
-    @Test
-    void testEliminarProyectoPorIDConDatosValidos() {
-        try {
-            boolean resultado = proyectoDAO.eliminarProyectoPorID(2);
-            assertTrue(resultado, "El proyecto debería ser eliminado correctamente.");
-        } catch (SQLException | IOException e) {
-            fail("No se esperaba una excepción: " + e.getMessage());
-        }
-    }
+            List<ProyectoDTO> proyectosSinCupo = proyectoDAO.listarProyectosConCupo();
+            assertTrue(proyectosSinCupo.isEmpty(), "La lista de proyectos sin cupo debería estar vacía");
 
-    @Test
-    void testEliminarProyectoPorIDConDatosInvalidos() {
-        try {
-            boolean resultado = proyectoDAO.eliminarProyectoPorID(999);
-            assertFalse(resultado, "No debería eliminarse un proyecto inexistente.");
         } catch (SQLException | IOException e) {
-            assertTrue(true);
-        }
-    }
 
-    @Test
-    void testModificarProyectoConDatosValidos() {
-        try {
-            ProyectoDTO proyectoActualizado = new ProyectoDTO(3, "Proyecto Modificado", "Objetivo Modificado",
-                    "Inmediato Modificado", "Mediato Modificado", "Metodología Modificada",
-                    "Recursos Modificados", "Actividades Modificadas", "Responsabilidades Modificadas",
-                    "6 meses", "Lunes a Domingo", 3, 3, 1, "descripcion" );
-            boolean resultado = proyectoDAO.modificarProyecto(proyectoActualizado);
-            assertTrue(resultado, "El proyecto debería ser modificado correctamente.");
-        } catch (SQLException | IOException e) {
-            fail("No se esperaba una excepción: " + e.getMessage());
-        }
-    }
+            fail("Error al listar proyectos sin cupo sin datos en la base: " + e);
 
-    @Test
-    void testModificarProyectoConDatosInvalidos() {
-        ProyectoDTO proyectoInvalido = new ProyectoDTO(3, null, null, null, null,
-                null, null, null, null, null, null, -1, -1,
-                1, null);
-        try {
-            boolean resultado = proyectoDAO.modificarProyecto(proyectoInvalido);
-            assertFalse(resultado, "No debería modificarse un proyecto con datos inválidos.");
-        } catch (SQLException | IOException e) {
-            assertTrue(true);
         }
     }
-}*/
+}

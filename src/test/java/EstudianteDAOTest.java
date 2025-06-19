@@ -1,13 +1,12 @@
 import accesoadatos.ConexionBaseDeDatos;
-import logica.DAOs.AcademicoDAO;
-import logica.DAOs.EstudianteDAO;
-import logica.DAOs.UsuarioDAO;
-import logica.DTOs.AcademicoDTO;
-import logica.DTOs.EstudianteDTO;
-import logica.DTOs.UsuarioDTO;
+import logica.DAOs.*;
+import logica.DTOs.*;
+import logica.interfaces.IGrupoDAO;
 import org.junit.jupiter.api.*;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,19 +20,35 @@ class EstudianteDAOTest {
 
     private EstudianteDAO estudianteDAO;
     private UsuarioDAO usuarioDAO;
+    private GrupoDAO grupoDAO;
+    private AcademicoDAO academicoDAO;
+    private PeriodoDAO periodoDAO;
+    private ProyectoDAO proyectoDAO;
+    private OrganizacionVinculadaDAO organizacionDAO;
+    private RepresentanteDAO representanteDAO;
     private Connection conexionBaseDeDatos;
     
     private final List<String> MATRICULAS_INSERTADAS = new ArrayList<>();
     private final List<Integer> IDS_USUARIOS_INSERTADOS = new ArrayList<>();
+    private final List<Integer> IDS_GRUPOS_INSERTADOS = new ArrayList<>();
+    private final List<Integer> IDS_PROYECTOS_INSERTADOS = new ArrayList<>();
 
     @BeforeEach
     void prepararDatosDePrueba() {
 
         estudianteDAO = new EstudianteDAO();
         usuarioDAO = new UsuarioDAO();
+        grupoDAO = new GrupoDAO();
+        academicoDAO = new AcademicoDAO();
+        periodoDAO = new PeriodoDAO();
+        proyectoDAO = new ProyectoDAO();
+        organizacionDAO = new OrganizacionVinculadaDAO();
+        representanteDAO = new RepresentanteDAO();
 
         MATRICULAS_INSERTADAS.clear();
         IDS_USUARIOS_INSERTADOS.clear();
+        IDS_GRUPOS_INSERTADOS.clear();
+        IDS_PROYECTOS_INSERTADOS.clear();
 
         try {
 
@@ -46,26 +61,72 @@ class EstudianteDAOTest {
                         .executeUpdate();
             }
 
-            conexionBaseDeDatos
-                    .prepareStatement("DELETE FROM usuario WHERE idUsuario BETWEEN 1000 AND 2000")
+            for (int NRCGrupo : List.of(40776, 40789)) {
+
+                conexionBaseDeDatos
+                        .prepareStatement("DELETE FROM Grupo WHERE NRC = " + NRCGrupo)
+                        .executeUpdate();
+            }
+
+            conexionBaseDeDatos.prepareStatement("DELETE FROM periodo").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM academico").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM usuario WHERE idUsuario BETWEEN 1000 AND 2000")
                     .executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM organizacionvinculada").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM representante").executeUpdate();
 
             int idUsuario = 0;
             int estadoActivo = 1;
 
-            UsuarioDTO usuarioEstudiante1DTO = new UsuarioDTO(idUsuario, "Claudio", "Trujillo Zepeda", estadoActivo);
-            UsuarioDTO usuarioEstudiante2DTO = new UsuarioDTO(idUsuario, "Irene", "Paz Gonzalez", estadoActivo);
-            UsuarioDTO usuarioEstudiante3DTO = new UsuarioDTO(idUsuario, "Angel", "Aburto Ruiz", estadoActivo);
+            UsuarioDTO usuarioEstudiante1DTO = new UsuarioDTO(idUsuario, "Claudio", "Trujillo Zepeda",
+                    estadoActivo
+            );
+            UsuarioDTO usuarioEstudiante2DTO = new UsuarioDTO(idUsuario, "Irene", "Paz Gonzalez",
+                    estadoActivo
+            );
+            UsuarioDTO usuarioEstudiante3DTO = new UsuarioDTO(idUsuario, "Angel", "Aburto Ruiz",
+                    estadoActivo
+            );
+            UsuarioDTO usuarioAcademicoDTO = new UsuarioDTO(idUsuario, "Arturo", "Villa",
+                    estadoActivo
+            );
 
             int idUsuarioEstudiante1 = usuarioDAO.insertarUsuario(usuarioEstudiante1DTO);
             int idUsuarioEstudiante2 = usuarioDAO.insertarUsuario(usuarioEstudiante2DTO);
             int idUsuarioEstudiante3 = usuarioDAO.insertarUsuario(usuarioEstudiante3DTO);
+            int idUsuarioAcademico = usuarioDAO.insertarUsuario(usuarioAcademicoDTO);
 
+            IDS_USUARIOS_INSERTADOS.addAll(List.of(idUsuarioEstudiante1, idUsuarioEstudiante2,
+                    idUsuarioEstudiante3, idUsuarioAcademico)
+            );
 
+            academicoDAO.insertarAcademico(new AcademicoDTO(1001, idUsuarioAcademico,
+                    usuarioAcademicoDTO.getNombre(), usuarioAcademicoDTO.getApellido(),
+                    usuarioAcademicoDTO.getEstado())
+            );
 
+            periodoDAO.crearNuevoPeriodo(new PeriodoDTO(1, "Periodo 2024", 1,
+                    Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"))
+            );
+
+            grupoDAO.crearNuevoGrupo(new GrupoDTO(40776, "Grupo 1", 1001, 1,
+                    1)
+            );
+            grupoDAO.crearNuevoGrupo(new GrupoDTO(40789, "Grupo 2", 1001, 2,
+                    0)
+            );
+
+            IDS_GRUPOS_INSERTADOS.addAll(List.of(40776, 40789));
             int idProyecto = 0;
 
-            IDS_USUARIOS_INSERTADOS.addAll(List.of(idUsuarioEstudiante1, idUsuarioEstudiante2, idUsuarioEstudiante3));
+
+            organizacionDAO.crearNuevaOrganizacion(new OrganizacionVinculadaDTO(1, "Empresa 1",
+                    "Dirección 1", "empresa1@test.com", "5551111111", 1));
+
+            representanteDAO.insertarRepresentante(
+                    new RepresentanteDTO(1, "representate1@gmail.com", "5554444444",
+                            "Representante 1", "Apellido 1", 1, 1)
+            );
 
             estudianteDAO.insertarEstudiante(new EstudianteDTO(idUsuarioEstudiante1,
                     usuarioEstudiante1DTO.getNombre(), usuarioEstudiante1DTO.getApellido(), "S23014102",

@@ -11,6 +11,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logica.DAOs.*;
 import logica.DTOs.*;
+import logica.verificacion.VerificacionDeActividad;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -346,7 +347,9 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
     private boolean validarActividad(ActividadDTO actividadDTO) {
 
-        List<String> camposVacios = actividadDTO.validarCamposVacios(
+        VerificacionDeActividad verificacionActividad = new VerificacionDeActividad();
+
+        List<String> camposVacios = verificacionActividad.validarCamposVacios(
                 actividadDTO.getNombre(),
                 actividadDTO.getDuracion(),
                 actividadDTO.getHitos()
@@ -362,7 +365,7 @@ public class ControladorRegistroCronogramaActividadesGUI {
             return false;
         }
 
-        List<String> datosInvalidos = actividadDTO.validarCamposInvalidos(
+        List<String> datosInvalidos = verificacionActividad.validarCamposInvalidos(
                 actividadDTO.getNombre(),
                 actividadDTO.getDuracion(),
                 actividadDTO.getHitos()

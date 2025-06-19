@@ -21,6 +21,7 @@ import logica.DTOs.ProyectoDTO;
 import logica.DTOs.RepresentanteDTO;
 import logica.interfaces.ISeleccionRepresentante;
 import logica.utilidadesproyecto.SeleccionRepresentanteOrganizacion;
+import logica.verificacion.VerificadorDatosProyecto;
 import logica.verificacion.VerificicacionGeneral;
 
 import java.io.IOException;
@@ -375,7 +376,9 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
         String usuariosIndirectos = campoUsuariosIndirectos.getText();
         String estudiantesSolicitados = campoEstudiantesSolicitados.getText();
 
-        List<String> camposVacios = proyectoSeleccionado.camposVaciosProyecto(nombre, descripcionGeneral,
+        VerificadorDatosProyecto verificadorDatosProyecto = new VerificadorDatosProyecto();
+
+        List<String> camposVacios = verificadorDatosProyecto.camposVaciosProyecto(nombre, descripcionGeneral,
                 objetivoGeneral, objetivosInmediatos, objetivosMediatos, metodologia, recursos,
                 actividades, responsabilidades, usuariosDirectos, usuariosIndirectos, estudiantesSolicitados);
 
@@ -389,7 +392,7 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
             return;
         }
 
-        List<String> camposInvalidos = proyectoSeleccionado.validarCamposProyecto(nombre, descripcionGeneral,
+        List<String> camposInvalidos = verificadorDatosProyecto.validarCamposProyecto(nombre, descripcionGeneral,
                 objetivoGeneral, objetivosInmediatos, objetivosMediatos, metodologia, recursos,
                 actividades, responsabilidades, usuariosDirectos, usuariosIndirectos, estudiantesSolicitados);
 

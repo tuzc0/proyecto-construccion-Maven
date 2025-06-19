@@ -2,202 +2,395 @@ import accesoadatos.ConexionBaseDeDatos;
 import logica.DAOs.*;
 import logica.DTOs.*;
 import org.junit.jupiter.api.*;
-
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EvaluacionDAOTest {
 
-    private EvaluacionDAO evaluacionDAO;
-    private AcademicoEvaluadorDAO academicoEvaluadorDAO;
-    private EstudianteDAO estudianteDAO;
+    private PeriodoDAO periodoDAO;
     private UsuarioDAO usuarioDAO;
-    private Connection conexion;
+    private AcademicoDAO academicoDAO;
+    private GrupoDAO grupoDAO;
+    private EstudianteDAO estudianteDAO;
+    private AcademicoEvaluadorDAO academicoEvaluadorDAO;
+    private EvaluacionDAO evaluacionDAO;
+    private Connection conexionBaseDeDatos;
 
-    private final List<Integer> idsEvaluacionesInsertadas = new ArrayList<>();
-    private final List<Integer> numerosPersonalCreados      = new ArrayList<>();
-    private final List<String>  matriculasEstudiantesCreadas = new ArrayList<>();
-    private final List<Integer> idsUsuariosCreados           = new ArrayList<>();
+    private final List<Integer> IDS_USUARIOS_INSERTADOS = new ArrayList<>();
+    private final List<Integer> IDS_GRUPOS_INSERTADOS = new ArrayList<>();
+    private final List<String> MATRICULAS_INSERTADAS = new ArrayList<>();
+    private final List<Integer> IDS_EVALUACIONES_INSERTADAS = new ArrayList<>();
 
     @BeforeEach
     void prepararDatosDePrueba() {
-        evaluacionDAO             = new EvaluacionDAO();
-        academicoEvaluadorDAO     = new AcademicoEvaluadorDAO();
-        usuarioDAO                = new UsuarioDAO();
+
+        periodoDAO = new PeriodoDAO();
+        usuarioDAO = new UsuarioDAO();
+        academicoDAO = new AcademicoDAO();
+        grupoDAO = new GrupoDAO();
+        estudianteDAO = new EstudianteDAO();
+        academicoEvaluadorDAO = new AcademicoEvaluadorDAO();
+        evaluacionDAO = new EvaluacionDAO();
+
+        MATRICULAS_INSERTADAS.clear();
+        IDS_USUARIOS_INSERTADOS.clear();
+        IDS_GRUPOS_INSERTADOS.clear();
+        IDS_EVALUACIONES_INSERTADAS.clear();
 
         try {
-            estudianteDAO             = new EstudianteDAO();
-            // 1) Conexión y limpieza de evaluaciones
-            conexion = new ConexionBaseDeDatos().getConnection();
-            conexion
-                    .prepareStatement("DELETE FROM evaluacion WHERE idEvaluacion BETWEEN 2000 AND 3000")
-                    .executeUpdate();
 
-            // 2) Crear dependencia académica y del estudiante
-            crearDependencias(12345, "A001");
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
 
-            // 3) Insertar la evaluación de prueba
-            int idEval = evaluacionDAO.crearNuevaEvaluacion(
-                    new EvaluacionDTO(2999, "Primera evaluación", 9.5f, 12345, "A001", 1)
-            );
-            idsEvaluacionesInsertadas.add(idEval);
+            conexionBaseDeDatos.prepareStatement("DELETE FROM evaluacion").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM estudiante").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM grupo").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM academicoevaluador").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM academico").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM periodo").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM usuario").executeUpdate();
+
+            periodoDAO.crearNuevoPeriodo(new PeriodoDTO(1, "Periodo 2025", 1,
+                    Date.valueOf("2023-01-01"), Date.valueOf("2023-12-31")));
+
+            UsuarioDTO usuarioAcademicoDTO = new UsuarioDTO(0, "Nombre", "Prueba", 1);
+            UsuarioDTO usuarioEstudiante1DTO = new UsuarioDTO(0, "Usuario2", "Apellido2", 1);
+            UsuarioDTO usuarioEstudiante2DTO = new UsuarioDTO(0, "Usuario3", "Apellido3", 1);
+            UsuarioDTO usuarioEstudiante3DTO = new UsuarioDTO(0, "Usuario4", "Apellido4", 1);
+            UsuarioDTO usuarioAcademcioEvaluadorDTO = new UsuarioDTO(0, "Usuario Evaluador",
+                    "Apellido Evaluador", 1);
+
+            int idUsuarioAcademico = usuarioDAO.insertarUsuario(usuarioAcademicoDTO);
+            int idUsuarioEstudiante1 = usuarioDAO.insertarUsuario(usuarioEstudiante1DTO);
+            int idUsuarioEstudiante2 = usuarioDAO.insertarUsuario(usuarioEstudiante2DTO);
+            int idUsuarioEstudiante3 = usuarioDAO.insertarUsuario(usuarioEstudiante3DTO);
+            int idUsuarioAcademicoEvaluador = usuarioDAO.insertarUsuario(usuarioAcademcioEvaluadorDTO);
+
+            IDS_USUARIOS_INSERTADOS.add(idUsuarioAcademico);
+            IDS_USUARIOS_INSERTADOS.add(idUsuarioEstudiante1);
+            IDS_USUARIOS_INSERTADOS.add(idUsuarioEstudiante2);
+            IDS_USUARIOS_INSERTADOS.add(idUsuarioEstudiante3);
+            IDS_USUARIOS_INSERTADOS.add(idUsuarioAcademicoEvaluador);
+
+            academicoDAO.insertarAcademico(new AcademicoDTO(1001, idUsuarioAcademico,
+                    usuarioAcademicoDTO.getNombre(), usuarioAcademicoDTO.getApellido(),
+                    usuarioAcademicoDTO.getEstado()));
+
+            academicoEvaluadorDAO.insertarAcademicoEvaluador(new AcademicoEvaluadorDTO(1002, idUsuarioAcademicoEvaluador,
+                    usuarioAcademcioEvaluadorDTO.getNombre(), usuarioAcademcioEvaluadorDTO.getApellido(),
+                    usuarioAcademcioEvaluadorDTO.getEstado()));
+
+            grupoDAO.crearNuevoGrupo(new GrupoDTO(40776, "Grupo 1", 1001, 1, 1));
+            grupoDAO.crearNuevoGrupo(new GrupoDTO(40789, "Grupo 2", 1001, 1, 1));
+
+            IDS_GRUPOS_INSERTADOS.add(40776);
+            IDS_GRUPOS_INSERTADOS.add(40789);
+
+            EstudianteDTO estudiante1DTO = new EstudianteDTO(idUsuarioEstudiante1,
+                    usuarioEstudiante1DTO.getNombre(), usuarioEstudiante1DTO.getApellido(),
+                    "S23014102", usuarioEstudiante1DTO.getEstado(), 0, 40776, 10);
+
+            EstudianteDTO estudiante2DTO = new EstudianteDTO(idUsuarioEstudiante2,
+                    usuarioEstudiante2DTO.getNombre(), usuarioEstudiante2DTO.getApellido(),
+                    "S23014095", usuarioEstudiante2DTO.getEstado(), 0, 40789, 7.5F);
+
+            EstudianteDTO estudiante3DTO = new EstudianteDTO(idUsuarioEstudiante3,
+                    usuarioEstudiante3DTO.getNombre(), usuarioEstudiante3DTO.getApellido(),
+                    "S23014103", usuarioEstudiante3DTO.getEstado(), 0, 40776, 5.0F);
+
+            estudianteDAO.insertarEstudiante(estudiante1DTO);
+            estudianteDAO.insertarEstudiante(estudiante2DTO);
+            estudianteDAO.insertarEstudiante(estudiante3DTO);
+
+            MATRICULAS_INSERTADAS.add(estudiante1DTO.getMatricula());
+            MATRICULAS_INSERTADAS.add(estudiante2DTO.getMatricula());
+            MATRICULAS_INSERTADAS.add(estudiante3DTO.getMatricula());
+
+            int idEvaluacion1DTO = evaluacionDAO.crearNuevaEvaluacion( new EvaluacionDTO(0, "Buen desempeño",
+                    10.0F, 1002, estudiante1DTO.getMatricula(), 1));
+            int idEvaluacion2DTO = evaluacionDAO.crearNuevaEvaluacion( new EvaluacionDTO(0, "Excelente trabajo",
+                    9.5F, 1002, estudiante2DTO.getMatricula(), 1));
+
+            IDS_EVALUACIONES_INSERTADAS.add(idEvaluacion1DTO);
+            IDS_EVALUACIONES_INSERTADAS.add(idEvaluacion2DTO);
 
         } catch (SQLException | IOException e) {
-            fail("Error al preparar datos de prueba: " + e.getMessage());
+
+            fail("Error en @BeforeEach al preparar datos: " + e);
         }
-    }
-
-    /** Inserta usuario→académicoEvaluador y usuario→estudiante para las FK */
-    private void crearDependencias(int numeroPersonal, String matricula) throws SQLException, IOException {
-        // Académico evaluador
-        UsuarioDTO usuarioAca = new UsuarioDTO(0, "Acad" + numeroPersonal, "Test", 1);
-        int idUsuarioAca = usuarioDAO.insertarUsuario(usuarioAca);
-        idsUsuariosCreados.add(idUsuarioAca);
-
-        AcademicoEvaluadorDTO academico = new AcademicoEvaluadorDTO(
-                numeroPersonal, idUsuarioAca, usuarioAca.getNombre(), usuarioAca.getApellido(), 1
-        );
-        academicoEvaluadorDAO.insertarAcademicoEvaluador(academico);
-        numerosPersonalCreados.add(numeroPersonal);
-
-        // Estudiante
-        UsuarioDTO usuarioEst = new UsuarioDTO(0, "Est" + matricula, "Test", 1);
-        int idUsuarioEst = usuarioDAO.insertarUsuario(usuarioEst);
-        idsUsuariosCreados.add(idUsuarioEst);
-
-        EstudianteDTO estudiante = new EstudianteDTO(
-                idUsuarioEst, usuarioEst.getNombre(), usuarioEst.getApellido(),
-                matricula, 1,0
-        );
-        estudianteDAO.insertarEstudiante(estudiante);
-        matriculasEstudiantesCreadas.add(matricula);
     }
 
     @AfterEach
     void limpiarDatosDePrueba() {
+
         try {
-            // Eliminar evaluaciones
-            for (int id : idsEvaluacionesInsertadas) {
-                conexion
-                        .prepareStatement("DELETE FROM evaluacion WHERE idEvaluacion = " + id)
-                        .executeUpdate();
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+
+            conexionBaseDeDatos.prepareStatement("DELETE FROM evaluacion").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM estudiante").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM grupo").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM academicoevaluador").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM academico").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM periodo").executeUpdate();
+            conexionBaseDeDatos.prepareStatement("DELETE FROM usuario").executeUpdate();
+
+            conexionBaseDeDatos.close();
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error en @AfterEach al limpiar datos: " + e);
+        }
+    }
+
+    @Test
+    void testCrearNuevaEvaluacionConDatosValidos() {
+
+        try {
+
+            EvaluacionDTO nuevaEvaluacion = new EvaluacionDTO(0, "Evaluación de prueba", 8.5F,
+                    1002, "S23014103", 1);
+            int idEvaluacionInsertada = evaluacionDAO.crearNuevaEvaluacion(nuevaEvaluacion);
+
+            assertTrue(idEvaluacionInsertada > 0,
+                    "La evaluación se insertó correctamente en la base de datos.");
+            IDS_EVALUACIONES_INSERTADAS.add(idEvaluacionInsertada);
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al crear nueva evaluación: " + e);
+        }
+    }
+
+    @Test
+    void testCrearNuevaEvaluacionConEstudianteInvalido() {
+
+        EvaluacionDTO nuevaEvaluacion = new EvaluacionDTO(0, "Evaluación de prueba", 8.5F,
+                1002, "S23099999", 1);
+
+        assertThrows(SQLException.class, () -> {
+            evaluacionDAO.crearNuevaEvaluacion(nuevaEvaluacion);
+        }, "Se esperaba una excepción al intentar insertar una evaluación con un estudiante no existente.");
+    }
+
+    @Test
+    void testEliminarEvaluacionPorIDExistente() {
+
+        int idEvaluacionAEliminar = IDS_EVALUACIONES_INSERTADAS.get(0);
+
+        try {
+
+            boolean evaluacionEliminada = evaluacionDAO.eliminarEvaluacionPorID(0, idEvaluacionAEliminar);
+
+            assertTrue(evaluacionEliminada, "La evaluación se eliminó correctamente por ID.");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al eliminar evaluación por ID: " + e);
+        }
+    }
+
+    @Test
+    void testEliminarEvaluacionPorIDInexistente() {
+
+        int idEvaluacionInexistente = 9999;
+
+        try {
+
+            boolean evaluacionEliminada = evaluacionDAO.eliminarEvaluacionPorID(1, idEvaluacionInexistente);
+            assertFalse(evaluacionEliminada,
+                    "No se esperaba que se eliminara una evaluación con un ID inexistente.");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al eliminar evaluación por ID inexistente: " + e);
+        }
+    }
+
+    @Test
+    void testEliminarEvaluacionDefinitivamentePorIDValido() {
+
+        int idEvaluacionAEliminar = IDS_EVALUACIONES_INSERTADAS.get(0);
+
+        try {
+
+            boolean evaluacionEliminada = evaluacionDAO.eliminarEvaluacionDefinitivamente(idEvaluacionAEliminar);
+            assertTrue(evaluacionEliminada, "La evaluación se eliminó definitivamente por ID.");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al eliminar evaluación definitivamente por ID: " + e);
+        }
+    }
+
+    @Test
+    void testEliminarEvaluacionDefinitivamentePorIDInvalido() {
+
+        int idEvaluacionInvalido = 9999;
+
+        try {
+
+            boolean evaluacionEliminada = evaluacionDAO.eliminarEvaluacionDefinitivamente(idEvaluacionInvalido);
+            assertFalse(evaluacionEliminada,
+                    "No se esperaba que se eliminara una evaluación con un ID inexistente.");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al eliminar evaluación definitivamente por ID inválido: " + e);
+        }
+    }
+
+    @Test
+    void testModificarEvaluacionConDatosValidos() {
+
+        int idEvaluacionAModificar = IDS_EVALUACIONES_INSERTADAS.get(0);
+
+        try {
+
+            EvaluacionDTO evaluacionModificada = new EvaluacionDTO(idEvaluacionAModificar, "Evaluación modificada",
+                    9.0F, 1002, "S23014102", 1);
+            boolean modificacionExitosa = evaluacionDAO.modificarEvaluacion(evaluacionModificada);
+
+            assertTrue(modificacionExitosa, "La evaluación se modificó correctamente.");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al modificar evaluación: " + e);
+        }
+    }
+
+    @Test
+    void testModificarEvaluacionConIDInvalido() {
+
+        EvaluacionDTO evaluacionModificada = new EvaluacionDTO(9999, "Evaluación modificada",
+                9.0F, 1002, "S23014102", 1);
+
+        try {
+
+            boolean modificacionExitosa = evaluacionDAO.modificarEvaluacion(evaluacionModificada);
+            assertFalse(modificacionExitosa,
+                    "No se esperaba que se modificara una evaluación con un ID inexistente.");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al modificar evaluación con ID inválido: " + e);
+        }
+    }
+
+    @Test
+    void testModificarEvaluacionConAcademicoEvaluadorInvalido() {
+
+        int idEvaluacionAModificar = IDS_EVALUACIONES_INSERTADAS.get(0);
+
+        EvaluacionDTO evaluacionModificada = new EvaluacionDTO(idEvaluacionAModificar, "Evaluación modificada",
+                9.0F, 9999, "S23014102", 1);
+
+        assertThrows(SQLException.class, () -> {
+            evaluacionDAO.modificarEvaluacion(evaluacionModificada);
+        }, "Se esperaba una excepción al intentar modificar una evaluación con un académico evaluador no existente.");
+    }
+
+    @Test
+    void testBuscarEvaluacionPorIDValido() {
+
+        EvaluacionDTO evaluacionEsperada = new EvaluacionDTO(IDS_EVALUACIONES_INSERTADAS.get(0),
+                "Buen desempeño", 10.0F, 1002, "S23014102", 1);
+
+        try {
+
+            EvaluacionDTO evaluacionEncontrada = evaluacionDAO.buscarEvaluacionPorID(IDS_EVALUACIONES_INSERTADAS.get(0));
+            assertEquals(evaluacionEsperada, evaluacionEncontrada,
+                    "Se esperaba encontrar la evaluación con el ID proporcionado.");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al buscar evaluación por ID válido: " + e);
+        }
+    }
+
+    @Test
+    void testBuscarEvaluacionPorIDInvalido() {
+
+        EvaluacionDTO evaluacionEsperada = new EvaluacionDTO(-1, " ", 0, 0,
+                " ", 0);
+
+        try {
+
+            EvaluacionDTO evaluacionEncontrada = evaluacionDAO.buscarEvaluacionPorID(9999);
+            assertEquals(evaluacionEsperada, evaluacionEncontrada,
+                    "Se esperaba que no se encontrara una evaluación con un ID inexistente.");
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al buscar evaluación por ID inválido: " + e);
+        }
+    }
+
+    @Test
+    void listarEvaluacionesPorMatriculaEstudianteValida() {
+
+        List<EvaluacionDTO> evaluacionesEsperadas = List.of(
+
+                new EvaluacionDTO(IDS_EVALUACIONES_INSERTADAS.get(0), "Buen desempeño",
+                        10.0F, 1002, "S23014102", 1)
+        );
+
+        try {
+
+            List<EvaluacionDTO> evaluacionesEncontradas = evaluacionDAO.listarEvaluacionesPorIdEstudiante("S23014102");
+
+            for (int evaluacionDTO = 0; evaluacionDTO < evaluacionesEsperadas.size(); evaluacionDTO++) {
+
+                assertEquals(evaluacionesEsperadas.get(evaluacionDTO), evaluacionesEncontradas.get(evaluacionDTO),
+                        "Las evaluaciones deben coincidir en posición " + evaluacionDTO);
             }
-            // Eliminar estudiantes
-            for (String mat : matriculasEstudiantesCreadas) {
-                conexion
-                        .prepareStatement("DELETE FROM estudiante WHERE matricula = '" + mat + "'")
-                        .executeUpdate();
-            }
-            // Eliminar académicos evaluadores
-            for (int num : numerosPersonalCreados) {
-                conexion
-                        .prepareStatement("DELETE FROM academicoevaluador WHERE numeroDePersonal = " + num)
-                        .executeUpdate();
-            }
-            // Eliminar usuarios
-            for (int idUser : idsUsuariosCreados) {
-                conexion
-                        .prepareStatement("DELETE FROM usuario WHERE idUsuario = " + idUser)
-                        .executeUpdate();
-            }
-            conexion.close();
-        } catch (SQLException e) {
-            fail("Error al limpiar datos de prueba: " + e.getMessage());
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al listar evaluaciones por matrícula de estudiante válida: " + e);
         }
     }
 
     @Test
-    void insertarEvaluacion_DeberiaRetornarIdPositivo() {
-        try {
-            // Preparo nuevas dependencias para A002
-            crearDependencias(12346, "A002");
+    void listarEvaluacionesPorMatriculaEstudianteInvalida() {
 
-            EvaluacionDTO nuevaEval = new EvaluacionDTO(
-                    3000, "Evaluación válida", 10.0f, 12346, "A002", 1
-            );
-            int idInsert = evaluacionDAO.crearNuevaEvaluacion(nuevaEval);
-            boolean insercionExitosa = idInsert > 0;
-            assertTrue(insercionExitosa, "La evaluación debería insertarse correctamente.");
-            idsEvaluacionesInsertadas.add(idInsert);
+        String matriculaInvalida = "S99999999";
+
+        try {
+
+            List<EvaluacionDTO> evaluaciones = evaluacionDAO.listarEvaluacionesPorIdEstudiante(matriculaInvalida);
+            assertTrue(evaluaciones.isEmpty(),
+                    "Se esperaba que no se encontraran evaluaciones para una matrícula inexistente.");
+
         } catch (SQLException | IOException e) {
-            fail("No se esperaba excepción al insertar evaluación válida: " + e.getMessage());
+
+            fail("Error al listar evaluaciones por matrícula de estudiante inválida: " + e);
         }
     }
 
     @Test
-    void buscarEvaluacionPorId_DeberiaEncontrarLaEvaluacion() {
-        try {
-            EvaluacionDTO esperada = new EvaluacionDTO(2999, "Primera evaluación", 9.5f, 12345, "A001", 1
-            );
-            EvaluacionDTO obtenida = evaluacionDAO.buscarEvaluacionPorID(esperada.getIDEvaluacion());
-            assertEquals(esperada, obtenida, "La evaluación obtenida debería coincidir con la esperada.");
+    void listarEvaluacionesPorMatriculaSinEvaluacionesEnLaBase() {
+
+        try  (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection()) {
+
+            PreparedStatement eliminarEvaluaciones = conexionBaseDeDatos
+                    .prepareStatement("DELETE FROM evaluacion");
+            eliminarEvaluaciones.executeUpdate();
+
+            List<EvaluacionDTO> evaluaciones = evaluacionDAO.listarEvaluacionesPorIdEstudiante("S23014102");
+            assertTrue(evaluaciones.isEmpty(),
+                    "Se esperaba que no se encontraran evaluaciones para una matrícula inexistente.");
+
         } catch (SQLException | IOException e) {
-            fail("No se esperaba excepción al buscar evaluación válida: " + e.getMessage());
+
+            fail("Error al listar evaluaciones por matrícula de estudiante sin datos en la base: " + e);
+
         }
     }
 
-    @Test
-    void buscarEvaluacionPorId_Invalido_DeberiaRetornarIdNegativo() {
-        try {
-            EvaluacionDTO obtenida = evaluacionDAO.buscarEvaluacionPorID(6888);
-            assertEquals(-1, obtenida.getIDEvaluacion(),
-                    "No debería encontrarse una evaluación con ID inexistente.");
-        } catch (SQLException | IOException e) {
-            fail("No se esperaba excepción al buscar evaluación inválida: " + e.getMessage());
-        }
-    }
-
-    @Test
-    void modificarEvaluacion_ConDatosValidos_DeberiaRetornarTrue() {
-        try {
-            int id = idsEvaluacionesInsertadas.get(0);
-            EvaluacionDTO modificada = new EvaluacionDTO(
-                    id, "Evaluación actualizada", 8.0f, 12345, "A001", 1
-            );
-            boolean resultado = evaluacionDAO.modificarEvaluacion(modificada);
-            assertTrue(resultado, "La evaluación debería ser modificada correctamente.");
-        } catch (SQLException | IOException e) {
-            fail("No se esperaba excepción al modificar evaluación válida: " + e.getMessage());
-        }
-    }
-
-    @Test
-    void modificarEvaluacion_IdInvalido_DeberiaRetornarFalse() {
-        try {
-            EvaluacionDTO invalida = new EvaluacionDTO(
-                    6888, "No existe", 0.0f, 0, "X000", 0
-            );
-            boolean resultado = evaluacionDAO.modificarEvaluacion(invalida);
-            assertFalse(resultado, "No debería modificarse una evaluación con ID inválido.");
-        } catch (SQLException | IOException e) {
-            fail("No se esperaba excepción al modificar evaluación inválida: " + e.getMessage());
-        }
-    }
-
-    @Test
-    void eliminarEvaluacionDefinitivamente_ConIdValido_DeberiaRetornarTrue() {
-        try {
-            int id = idsEvaluacionesInsertadas.get(0);
-            boolean resultado = evaluacionDAO.eliminarEvaluacionDefinitivamente(id);
-            assertTrue(resultado, "La evaluación debería ser eliminada correctamente.");
-            idsEvaluacionesInsertadas.remove(Integer.valueOf(id));
-        } catch (SQLException | IOException e) {
-            fail("No se esperaba excepción al eliminar evaluación válida: " + e.getMessage());
-        }
-    }
-
-    @Test
-    void eliminarEvaluacionDefinitivamente_IdInvalido_DeberiaRetornarFalse() {
-        try {
-            boolean resultado = evaluacionDAO.eliminarEvaluacionDefinitivamente(6888);
-            assertFalse(resultado, "No debería eliminarse una evaluación inexistente.");
-        } catch (SQLException | IOException e) {
-            fail("No se esperaba excepción al eliminar evaluación inválida: " + e.getMessage());
-        }
-    }
 }

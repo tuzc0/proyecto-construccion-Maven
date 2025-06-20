@@ -21,7 +21,7 @@ import logica.DTOs.ProyectoDTO;
 import logica.DTOs.RepresentanteDTO;
 import logica.interfaces.ISeleccionRepresentante;
 import logica.utilidadesproyecto.SeleccionRepresentanteOrganizacion;
-import logica.verificacion.VerificadorDatosProyecto;
+import logica.verificacion.ValidadorDatosProyecto;
 import logica.verificacion.VerificicacionGeneral;
 
 import java.io.IOException;
@@ -259,8 +259,7 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
             }
 
             tablaHorarios.getItems().clear();
-            tablaHorarios.getItems().add(
-                    new ContenedorHorarioProyectoGUI(lunes, martes, miercoles, jueves, viernes));
+            tablaHorarios.getItems().add(new ContenedorHorarioProyectoGUI(lunes, martes, miercoles, jueves, viernes));
 
         } catch (SQLException e) {
 
@@ -362,27 +361,28 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
     @FXML
     private void actualizarProyecto() {
 
-        String nombre = textoNombre.getText();
-        String descripcionGeneral = textoDescripcionGeneral.getText();
-        String objetivoGeneral = textoObjetivoGeneral.getText();
-        String objetivosInmediatos = textoObjetivosInmediatos.getText();
-        String objetivosMediatos = textoObjetivosMediatos.getText();
-        String metodologia = textoMetodologia.getText();
-        String recursos = textoRecursos.getText();
-        String duracion = etiquetaDuracion.getText();
-        String actividades = textoActividades.getText();
-        String responsabilidades = textoResponsabilidades.getText();
-        String usuariosDirectos = campoUsuariosDirectos.getText();
-        String usuariosIndirectos = campoUsuariosIndirectos.getText();
-        String estudiantesSolicitados = campoEstudiantesSolicitados.getText();
+        String nombre = textoNombre.getText().trim();
+        String descripcionGeneral = textoDescripcionGeneral.getText().trim();
+        String objetivoGeneral = textoObjetivoGeneral.getText().trim();
+        String objetivosInmediatos = textoObjetivosInmediatos.getText().trim();
+        String objetivosMediatos = textoObjetivosMediatos.getText().trim();
+        String metodologia = textoMetodologia.getText().trim();
+        String recursos = textoRecursos.getText().trim();
+        String duracion = etiquetaDuracion.getText().trim();
+        String actividades = textoActividades.getText().trim();
+        String responsabilidades = textoResponsabilidades.getText().trim();
+        String usuariosDirectos = campoUsuariosDirectos.getText().trim();
+        String usuariosIndirectos = campoUsuariosIndirectos.getText().trim();
+        String estudiantesSolicitados = campoEstudiantesSolicitados.getText().trim();
 
-        VerificadorDatosProyecto verificadorDatosProyecto = new VerificadorDatosProyecto();
+        ValidadorDatosProyecto validadorDatosProyecto = new ValidadorDatosProyecto();
+        ProyectoDTO proyectoDTO = new ProyectoDTO(nombre, objetivoGeneral, objetivosInmediatos, objetivosMediatos,
+                metodologia, recursos, actividades, responsabilidades, descripcionGeneral);
 
-        List<String> camposVacios = verificadorDatosProyecto.camposVaciosProyecto(nombre, descripcionGeneral,
-                objetivoGeneral, objetivosInmediatos, objetivosMediatos, metodologia, recursos,
-                actividades, responsabilidades, usuariosDirectos, usuariosIndirectos, estudiantesSolicitados);
+        List<String> camposVacios = validadorDatosProyecto.camposVaciosProyecto(proyectoDTO);
 
         if (!camposVacios.isEmpty()) {
+
             String mensajeError = String.join("\n", camposVacios);
             UTILIDADES.mostrarAlerta(
                     "Campos vacíos",
@@ -392,24 +392,36 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
             return;
         }
 
-        List<String> camposInvalidos = verificadorDatosProyecto.validarCamposProyecto(nombre, descripcionGeneral,
-                objetivoGeneral, objetivosInmediatos, objetivosMediatos, metodologia, recursos,
-                actividades, responsabilidades, usuariosDirectos, usuariosIndirectos, estudiantesSolicitados);
+        List<String> camposInvalidos = validadorDatosProyecto.validarCamposProyecto(proyectoDTO);
 
         if (!camposInvalidos.isEmpty()) {
+
             String mensajeError = String.join("\n", camposInvalidos);
             UTILIDADES.mostrarAlerta(
                     "Campos inválidos",
-                    "Por favor, algunos campos contienen información inválida.",
+                    "Algunos campos contienen información inválida.",
                     mensajeError
             );
             return;
         }
 
-        if (representanteCambiado) {
+        List<String> usuariosInvalidos = validadorDatosProyecto.camposNumericosInvalidos(usuariosDirectos,
+                usuariosIndirectos, estudiantesSolicitados);
 
-            idRepresentante = representanteSeleccionadoTemporal.getIDRepresentante();
+        if (!usuariosInvalidos.isEmpty()) {
+
+            String mensajeError = String.join("\n", usuariosInvalidos);
+            UTILIDADES.mostrarAlerta(
+                    "Campos Invalidos",
+                    "Algunos campos contienen informacion invalida.",
+                    mensajeError
+            );
         }
+
+        int idRepresentanteFinal = representanteCambiado && representanteSeleccionadoTemporal != null
+                ? representanteSeleccionadoTemporal.getIDRepresentante()
+                : idRepresentante;
+
 
         int numeroUsuariosDirectos = Integer.parseInt(usuariosDirectos);
         int numeroUsuariosIndirectos = Integer.parseInt(usuariosIndirectos);
@@ -425,10 +437,10 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
         proyectoSeleccionado.setActividades(actividades);
         proyectoSeleccionado.setResponsabilidades(responsabilidades);
         proyectoSeleccionado.setDuracion(duracion);
-        proyectoSeleccionado.setIdRepresentante(idRepresentante);
+        proyectoSeleccionado.setIdRepresentante(idRepresentanteFinal);
         proyectoSeleccionado.setUsuariosDirectos(numeroUsuariosDirectos);
         proyectoSeleccionado.setUsuariosIndirectos(numeroUsuariosIndirectos);
-        proyectoSeleccionado.setestudiantesRequeridos(numeroEstudiantesSolicitados);
+        proyectoSeleccionado.setEstudiantesRequeridos(numeroEstudiantesSolicitados);
 
         ProyectoDAO proyectoDAO = new ProyectoDAO();
 
@@ -540,8 +552,7 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
 
             Platform.runLater(() -> {
 
-                etiquetaRepresentante.setText(
-                        representanteSeleccionadoTemporal.getNombre() + " " +
+                etiquetaRepresentante.setText(representanteSeleccionadoTemporal.getNombre() + " " +
                                 representanteSeleccionadoTemporal.getApellidos());
                 etiquetaOrganizacion.setText(organizacionVinculadaSeleccionadaTemporal.getNombre());
             });
@@ -590,9 +601,11 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
                 "¿Está seguro que desea regresar a la ventana anterior?",
                 "",
                 () -> {
+
                     if (controladorPadre != null) {
                         controladorPadre.cargarProyectoYOrganizacion();
                     }
+
                     Stage ventanaActual = (Stage) botonCancelar.getScene().getWindow();
                     ventanaActual.close();
                 },

@@ -139,7 +139,7 @@ public class GestorHorarios {
 
             case "checkMiercoles":
 
-                return "Miércoles";
+                return "Miercoles";
 
             case "checkJueves":
 

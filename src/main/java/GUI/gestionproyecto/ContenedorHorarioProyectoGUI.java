@@ -41,6 +41,7 @@ public class ContenedorHorarioProyectoGUI {
     }
 
     public String getViernes() {
+
         return viernes.get();
     }
 }

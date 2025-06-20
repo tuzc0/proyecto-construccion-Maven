@@ -99,4 +99,18 @@ public class EstudianteDTO extends UsuarioDTO {
         return Objects.hash(matricula, getIdUsuario(), getNombre(),
                 getApellido(), getEstado());
     }
+
+    @Override
+    public String toString() {
+        return "EstudianteDTO{" +
+                "matricula='" + matricula + '\'' +
+                ", idProyecto=" + idProyecto +
+                ", NRC=" + NRC +
+                ", calificacion=" + calificacion +
+                ", idUsuario=" + getIdUsuario() +
+                ", nombre='" + getNombre() + '\'' +
+                ", apellido='" + getApellido() + '\'' +
+                ", estadoActivo=" + getEstado() +
+                '}';
+    }
 }

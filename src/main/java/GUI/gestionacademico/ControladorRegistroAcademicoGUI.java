@@ -172,21 +172,18 @@ public class ControladorRegistroAcademicoGUI {
             return;
         }
 
+        int estadoActivo = 1;
+        int idUsuario = 0;
+
+        CuentaDAO cuentaDAO = new CuentaDAO();
+        AcademicoDAO academicoDAO = new AcademicoDAO();
+
         try {
 
             int numeroPersonal = Integer.parseInt(numeroDePersonalTexto);
-            int estadoActivo = 1;
-            int idUsuario = 0;
 
-            CuentaDAO cuentaDAO = new CuentaDAO();
-            AcademicoDAO academicoDAO = new AcademicoDAO();
-
-            AcademicoDTO academicoExistente =
-                    academicoDAO.buscarAcademicoPorNumeroDePersonal(
-                            numeroPersonal
-                    );
-            CuentaDTO cuentaEncontrada =
-                    cuentaDAO.buscarCuentaPorCorreo(correo);
+            AcademicoDTO academicoExistente = academicoDAO.buscarAcademicoPorNumeroDePersonal(numeroPersonal);
+            CuentaDTO cuentaEncontrada = cuentaDAO.buscarCuentaPorCorreo(correo);
             int academicoEncontrado = -1;
 
             if (academicoExistente.getNumeroDePersonal() != academicoEncontrado) {
@@ -210,12 +207,7 @@ public class ControladorRegistroAcademicoGUI {
                 return;
             }
 
-            UsuarioDTO usuarioDTO = new UsuarioDTO(
-                    idUsuario,
-                    nombre,
-                    apellidos,
-                    estadoActivo
-            );
+            UsuarioDTO usuarioDTO = new UsuarioDTO(idUsuario, nombre, apellidos, estadoActivo);
             idUsuario = new UsuarioDAO().insertarUsuario(usuarioDTO);
 
             contrasena = encriptadorContraseñas.encriptar(contrasena);
@@ -230,8 +222,7 @@ public class ControladorRegistroAcademicoGUI {
             );
 
             boolean creacionCuenta = cuentaDAO.crearNuevaCuenta(cuentaDTO);
-            boolean registroExito =
-                    academicoDAO.insertarAcademico(academicoDTO);
+            boolean registroExito = academicoDAO.insertarAcademico(academicoDTO);
 
             if (creacionCuenta && registroExito) {
 
@@ -244,10 +235,7 @@ public class ControladorRegistroAcademicoGUI {
 
             } else {
 
-                LOGGER.warn(
-                        "No se pudieron guardar todos los datos del"
-                                + " académico."
-                );
+                LOGGER.warn("No se pudieron guardar todos los datos del académico.");
                 UTILIDADES.mostrarAlerta(
                         "Registro incompleto",
                         "No se pudieron guardar todos los datos.",
@@ -258,11 +246,7 @@ public class ControladorRegistroAcademicoGUI {
 
         } catch (NumberFormatException e) {
 
-            LOGGER.error(
-                    "Error de formato numérico al registrar académico: "
-                            + e
-            );
-
+            LOGGER.error("Error de formato numérico al registrar académico: " + e);
             UTILIDADES.mostrarAlerta(
                     "Error de formato",
                     "El número de personal debe ser un valor numérico"
@@ -272,8 +256,7 @@ public class ControladorRegistroAcademicoGUI {
 
         } catch (SQLException e) {
 
-            LOGGER.error("Error de base de datos al registrar académico: "
-                    + e);
+            LOGGER.error("Error de base de datos al registrar académico: " + e);
             UTILIDADES.mostrarAlerta(
                     "Error del sistema",
                     "Ocurrió un error al registrar al académico.",
@@ -283,8 +266,7 @@ public class ControladorRegistroAcademicoGUI {
 
         } catch (IOException e) {
 
-            LOGGER.error("Error de I/O al registrar académico: "
-                    + e);
+            LOGGER.error("Error de I/O al registrar académico: " + e);
             UTILIDADES.mostrarAlerta(
                     "Error de sistema",
                     "No se pudo completar la operación debido"

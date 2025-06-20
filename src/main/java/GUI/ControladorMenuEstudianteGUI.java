@@ -1,5 +1,6 @@
 package GUI;
 
+import GUI.gestionproyecto.asignacionproyecto.ControladorDetallesAsignacionProyectoGUI;
 import GUI.utilidades.Utilidades;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,9 +11,12 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logica.DAOs.AutoevaluacionContieneDAO;
 import logica.DAOs.AutoevaluacionDAO;
+import logica.DAOs.EstudianteDAO;
+import logica.DAOs.ProyectoDAO;
 import logica.DTOs.AutoevaluacionDTO;
+import logica.DTOs.EstudianteDTO;
+import logica.DTOs.ProyectoDTO;
 import org.apache.logging.log4j.Logger;
-
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -39,6 +43,7 @@ public class ControladorMenuEstudianteGUI {
     }
 
     private void verificarAutoevaluacionRegistrada() {
+
         AutoevaluacionDAO autoevaluacionDAO = new AutoevaluacionDAO();
 
         try {
@@ -50,14 +55,25 @@ public class ControladorMenuEstudianteGUI {
                 botonRegistrarAutoevaluacion.setDisable(false);
                 botonConsultarAutoevaluacion.setDisable(true);
                 logger.info("No se encontró una autoevaluación vinculada a la matrícula: " + matricula);
+
             } else {
 
                 botonConsultarAutoevaluacion.setDisable(false);
                 botonRegistrarAutoevaluacion.setDisable(true);
                 logger.info("Se encontró una autoevaluación vinculada a la matrícula: " + matricula);
+
             }
+        } catch (SQLException e) {
+
+            logger.error("Error de SQL al verificar autoevaluación: " + e);
+
+        } catch (IOException e) {
+
+            logger.error("Error de IO al verificar autoevaluación: " + e);
+
         } catch (Exception e) {
-            logger.error("Error al verificar autoevaluación: " + e.getMessage());
+
+            logger.error("Error inesperado al verificar autoevaluación: " + e);
         }
     }
 
@@ -91,7 +107,7 @@ public class ControladorMenuEstudianteGUI {
 
         } catch (IOException e) {
 
-            logger.error("Error al abrir la ventana RegistrarAutoevaluacionGUI: " + e.getMessage());
+            logger.error("Error al abrir la ventana RegistrarAutoevaluacionGUI: " + e);
         }
     }
 
@@ -108,15 +124,15 @@ public class ControladorMenuEstudianteGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL al eliminar la evaluación: " + e.getMessage());
+            logger.error("Error de SQL al eliminar la evaluación: " + e);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO al eliminar la evaluación: " + e.getMessage());
+            logger.error("Error de IO al eliminar la evaluación: " + e);
 
         } catch (Exception e) {
 
-            logger.error("Error inesperado al eliminar la evaluación: " + e.getMessage());
+            logger.error("Error inesperado al eliminar la evaluación: " + e);
 
         }
     }
@@ -147,6 +163,51 @@ public class ControladorMenuEstudianteGUI {
     public void abrirRegistrarCronogramaActividades() {
 
         utilidades.mostrarVentana("/RegistroCronogramaActividadesGUI.fxml");
+    }
+
+    @FXML
+    public void abrirDetallesAsignacionComoEstudiante() {
+
+        EstudianteDAO estudianteDAO = new EstudianteDAO();
+        ProyectoDAO proyectoDAO = new ProyectoDAO();
+
+        try {
+
+            EstudianteDTO estudianteDTO = estudianteDAO.buscarEstudiantePorMatricula(matricula);
+            ProyectoDTO proyectoDTO = proyectoDAO.buscarProyectoPorID(estudianteDTO.getIdProyecto());
+
+            FXMLLoader cargarVentana =
+                    new FXMLLoader(getClass().getResource("/DetallesAsignacionProyectoGUI.fxml"));
+            Parent nodoRaiz = cargarVentana.load();
+
+            ControladorDetallesAsignacionProyectoGUI controlador = cargarVentana.getController();
+            controlador.inicializarDatos(proyectoDTO, estudianteDTO, null);
+            controlador.setEsVistaDeCoordinador(false);
+
+            Stage escenario = new Stage();
+            escenario.setTitle("Detalles Asignación");
+            escenario.setScene(new Scene(nodoRaiz));
+            escenario.initModality(Modality.APPLICATION_MODAL);
+            escenario.showAndWait();
+
+        } catch (SQLException e) {
+
+            logger.error("Error en la base de datos al buscar el proyecto del estudiante: " + e);
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "No se pudo abrir el proyecto.",
+                    "Contacta al administrador si el problema persiste."
+            );
+
+        } catch (IOException e) {
+
+            logger.error("Error al cargar la ventana de detalles del proyecto para el estudiante: " + e);
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "Ocurrio un error al cargar la ventana",
+                    "Contacte al administrador si el problema persiste"
+            );
+        }
     }
 
 }

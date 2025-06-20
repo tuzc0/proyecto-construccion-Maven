@@ -100,28 +100,26 @@ public class ControladorConsultarProyectosGUI {
 
         Callback<TableColumn<ContenedoraOrganizacionProyecto, Void>,
                 TableCell<ContenedoraOrganizacionProyecto, Void>>
-                cellFactory = param -> new TableCell<>() {
+                cellFactory = columnaProyecto -> new TableCell<>() {
 
             private final Button botonVerDetalles = new Button("Ver detalles");
             {
                 botonVerDetalles.setOnAction(evento -> {
-                    ContenedoraOrganizacionProyecto contenedor =
-                            getTableView().getItems().get(getIndex());
+
+                    ContenedoraOrganizacionProyecto contenedor = getTableView().getItems().get(getIndex());
                     ProyectoDTO proyectoDTO = contenedor.getProyecto();
                     abrirVentanaDetallesProyecto(proyectoDTO);
                 });
             }
 
             @Override
-            protected void updateItem(Void item, boolean empty) {
+            protected void updateItem(Void valorCelda, boolean vacio) {
 
-                super.updateItem(item, empty);
+                super.updateItem(valorCelda, vacio);
 
-                if (empty || tablaProyectos.getSelectionModel().getSelectedItem() == null || !tablaProyectos
-                        .getSelectionModel()
-                        .getSelectedItem()
-                        .equals(getTableView().getItems().get(getIndex()))
-                ) {
+                if (vacio || tablaProyectos.getSelectionModel().getSelectedItem() == null ||
+                        !tablaProyectos.getSelectionModel().getSelectedItem()
+                                .equals(getTableView().getItems().get(getIndex()))) {
 
                     setGraphic(null);
 
@@ -152,9 +150,9 @@ public class ControladorConsultarProyectosGUI {
             }
 
             @Override
-            protected void updateItem(Void valor, boolean vacio) {
+            protected void updateItem(Void valorCelda, boolean vacio) {
 
-                super.updateItem(valor, vacio);
+                super.updateItem(valorCelda, vacio);
 
                 if (vacio || tablaProyectos.getSelectionModel().getSelectedItem() == null || !tablaProyectos
                         .getSelectionModel()

@@ -12,8 +12,12 @@ import logica.DTOs.EstudianteDTO;
 import logica.DTOs.ProyectoDTO;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ControladorSeleccionProyectoGUI {
+
+    private static final Logger LOGGER =
+            Logger.getLogger(ControladorSeleccionProyectoGUI.class.getName());
 
     @FXML private Label campoNombreEstudiante;
     @FXML private Label campoMatricula;
@@ -23,9 +27,9 @@ public class ControladorSeleccionProyectoGUI {
 
     private EstudianteDTO estudianteSeleccionado;
     private ControladorAsignacionEstudianteAProyectoGUI controladorAsignacionPrincipal;
-    private final Utilidades UTILIDADES = new Utilidades();
+    private Utilidades utilidades = new Utilidades();
 
-    public void inicializarDatos(EstudianteDTO estudiante,
+    public void inicializarDatos(EstudianteDTO estudianteDTO,
                                  ControladorAsignacionEstudianteAProyectoGUI controladorPrincipal,
                                  List<ProyectoDTO> proyectos) {
 
@@ -33,15 +37,15 @@ public class ControladorSeleccionProyectoGUI {
             return;
         }
 
-        this.estudianteSeleccionado = estudiante;
+        this.estudianteSeleccionado = estudianteDTO;
         this.controladorAsignacionPrincipal = controladorPrincipal;
 
-        campoNombreEstudiante.setText(estudiante.getNombre() + " " + estudiante.getApellido());
-        campoMatricula.setText(estudiante.getMatricula());
+        campoNombreEstudiante.setText(estudianteDTO.getNombre() + " " + estudianteDTO.getApellido());
+        campoMatricula.setText(estudianteDTO.getMatricula());
 
         cargarProyectos(proyectos);
 
-        if (estudiante.getIdProyecto() == 0) {
+        if (estudianteDTO.getIdProyecto() == 0) {
 
             botonAsignar.setText("Asignar");
 
@@ -64,17 +68,17 @@ public class ControladorSeleccionProyectoGUI {
         botonAsignar.setCursor(Cursor.HAND);
         botonRegresar.setCursor(Cursor.HAND);
 
-        comboProyectos.setCellFactory(param -> new ListCell<>() {
+        comboProyectos.setCellFactory(listaProyectosDTO -> new ListCell<>() {
 
             @Override
-            protected void updateItem(ProyectoDTO proyecto, boolean empty) {
+            protected void updateItem(ProyectoDTO proyectoDTO, boolean empty) {
 
-                super.updateItem(proyecto, empty);
+                super.updateItem(proyectoDTO, empty);
 
-                if (empty || proyecto == null) {
+                if (empty || proyectoDTO == null) {
                     setText(null);
                 } else {
-                    setText(proyecto.getNombre());
+                    setText(proyectoDTO.getNombre());
                 }
             }
         });
@@ -82,14 +86,14 @@ public class ControladorSeleccionProyectoGUI {
         comboProyectos.setButtonCell(new ListCell<>() {
 
             @Override
-            protected void updateItem(ProyectoDTO proyecto, boolean empty) {
+            protected void updateItem(ProyectoDTO proyectoDTO, boolean empty) {
 
-                super.updateItem(proyecto, empty);
+                super.updateItem(proyectoDTO, empty);
 
-                if (empty || proyecto == null) {
+                if (empty || proyectoDTO == null) {
                     setText(null);
                 } else {
-                    setText(proyecto.getNombre());
+                    setText(proyectoDTO.getNombre());
                 }
             }
         });
@@ -102,7 +106,7 @@ public class ControladorSeleccionProyectoGUI {
 
         if (proyectoSeleccionado != null) {
 
-            UTILIDADES.mostrarAlertaConfirmacion(
+            utilidades.mostrarAlertaConfirmacion(
 
                     "Confirmar asignacion",
                     "¿Está seguro que desea asignar este proyecto al estudiante?",
@@ -122,15 +126,26 @@ public class ControladorSeleccionProyectoGUI {
 
         } else {
 
-            UTILIDADES.mostrarAlerta("Advertencia",
+            utilidades.mostrarAlerta(
+                    "Advertencia",
                     "No se ha seleccionado un proyecto",
-                    "Por favor, seleccione un proyecto para asignar.");
+                    "Por favor, seleccione un proyecto para asignar."
+            );
         }
     }
 
     @FXML
     private void regresar() {
-        cerrarVentana();
+
+        utilidades.mostrarAlertaConfirmacion(
+                "Confirmar acción",
+                "¿Está seguro que desea regresar?",
+                "Los cambios no guardados se perderán.",
+                () -> cerrarVentana(),
+                () -> {
+
+                }
+        );
     }
 
     private void cerrarVentana() {

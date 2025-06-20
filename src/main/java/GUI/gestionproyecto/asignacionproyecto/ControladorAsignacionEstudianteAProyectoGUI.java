@@ -26,8 +26,8 @@ public class ControladorAsignacionEstudianteAProyectoGUI {
     @FXML private Button botonBuscarEstudiante;
     @FXML private Button botonRegresar;
 
-    private final Utilidades UTILIDADES = new Utilidades();
     private final ManejadorDeAccionAsignacion MANEJADOR_NAVEGACION = new ManejadorDeAccionAsignacion();
+    private Utilidades utilidades = new Utilidades();
 
     @FXML
     public void initialize() {
@@ -102,20 +102,32 @@ public class ControladorAsignacionEstudianteAProyectoGUI {
             if (estudianteDTO.getIdProyecto() == 0) {
 
                 List<ProyectoDTO> proyectos = proyectoDAO.listarProyectosConCupo();
-                MANEJADOR_NAVEGACION.mostrarSeleccionProyecto(estudianteDTO, this, proyectos);
+                MANEJADOR_NAVEGACION.abrirVentanaSeleccionProyecto(estudianteDTO, this, proyectos);
 
             } else {
 
                 ProyectoDTO proyectoActual = proyectoDAO.buscarProyectoPorID(estudianteDTO.getIdProyecto());
-                MANEJADOR_NAVEGACION.mostrarDetallesAsignacion(proyectoActual, estudianteDTO, this);
+                MANEJADOR_NAVEGACION.abrirVentanaDetallesAsignacionProyecto(proyectoActual, estudianteDTO, this);
             }
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
-            UTILIDADES.mostrarAlerta(
+            LOGGER.severe("Error en la base de datos durante el metodo manejarAccionBoton: " + e);
+            utilidades.mostrarAlerta(
                     "Error",
-                    "No se pudo completar la acción",
-                    "Por favor, intentelo más tarde.");
-            LOGGER.severe("Error en acción de botón: " + e);
+                    "Acción no completada",
+                    "Ocurrió un problema al intentar realizar la acción. " +
+                            "Por favor, inténtelo nuevamente más tarde."
+            );
+
+        } catch (IOException e) {
+
+            LOGGER.severe("Error al manejarAccionBoton: " + e);
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un problema inesperado",
+                    "No se pudo completar la acción debido a un error interno. " +
+                            "Por favor, inténtelo nuevamente más tarde o contacte al administrador."
+            );
         }
     }
 
@@ -127,10 +139,25 @@ public class ControladorAsignacionEstudianteAProyectoGUI {
 
             tablaAsignacion.getItems().setAll(estudianteDAO.listarEstudiantes());
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
-            UTILIDADES.mostrarAlerta("Error", "No se pudieron cargar los estudiantes", "");
+            LOGGER.severe("Error en la base de datos al cargar estudiantes: " + e);
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "No se pudieron cargar los estudiantes",
+                    "Ocurrió un problema al intentar cargar la lista de estudiantes. " +
+                            "Por favor, inténtelo nuevamente más tarde o contacte al administrador."
+            );
+
+        } catch (IOException e) {
+
             LOGGER.severe("Error al cargar estudiantes: " + e);
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "No se pudieron cargar los estudiantes",
+                    "Ocurrió un problema al intentar cargar la lista de estudiantes. " +
+                            "Por favor, inténtelo nuevamente más tarde o contacte al administrador."
+            );
         }
     }
 
@@ -140,7 +167,7 @@ public class ControladorAsignacionEstudianteAProyectoGUI {
         botonBuscarEstudiante.setOnAction(event -> buscarEstudiante());
 
         botonRegresar.setCursor(Cursor.HAND);
-        botonRegresar.setOnAction(event -> regresar());
+        botonRegresar.setOnAction(evento -> regresar());
     }
 
     @FXML
@@ -155,21 +182,39 @@ public class ControladorAsignacionEstudianteAProyectoGUI {
 
                 List<EstudianteDTO> listaEstudiantes = estudianteDAO.listarEstudiantes();
                 List<EstudianteDTO> estudiantesFiltrados = listaEstudiantes.stream()
-                        .filter(estudiante -> estudiante.getMatricula().contains(textoBusqueda))
+                        .filter(estudianteDTO -> estudianteDTO.getMatricula().contains(textoBusqueda))
                         .toList();
 
                 tablaAsignacion.getItems().setAll(estudiantesFiltrados);
 
-            } catch (SQLException | IOException e) {
+            } catch (SQLException e) {
 
-                LOGGER.severe("No se pudo realizar la búsqueda: " + e);
-                UTILIDADES.mostrarAlerta("Error",
+                LOGGER.severe("Error dentro de la base de datos, no se pudo realizar la búsqueda: " + e);
+                utilidades.mostrarAlerta(
+                        "Error",
+                        "Búsqueda no completada",
+                        "Ocurrió un problema al intentar realizar la búsqueda. " +
+                                "Por favor, inténtelo nuevamente más tarde."
+                );
+
+            } catch (IOException e) {
+
+                LOGGER.severe("No se pudo realizar la accion de busqueda: " + e);
+                utilidades.mostrarAlerta(
+                        "Error",
                         "No se pudo realizar la búsqueda.",
-                        "Por favor, intente nuevamente.");
+                        "Ocurrió un problema al intentar buscar estudiantes. " +
+                                "Por favor, inténtelo nuevamente más tarde o contacte al administrador."
+                );
             }
 
         } else {
 
+            utilidades.mostrarAlerta(
+                    "Campo de busqueda vacio. ",
+                    "El campo de busqueda se encuentra vacio.",
+                    "Por favor, introduzca la matricula de un estudiante."
+            );
             cargarEstudiantes();
         }
     }
@@ -189,13 +234,13 @@ public class ControladorAsignacionEstudianteAProyectoGUI {
 
             if (estudianteDAO.asignarProyecto(idProyecto, estudianteDTO.getMatricula())) {
 
-                UTILIDADES.mostrarAlerta("Éxito",
+                utilidades.mostrarAlerta("Éxito",
                         "Proyecto reasignado correctamente",
                         "");
                 cargarEstudiantes();
 
             } else {
-                UTILIDADES.mostrarAlerta(
+                utilidades.mostrarAlerta(
                         "Error",
                         "No se pudo reasignar el proyecto",
                         "");
@@ -203,7 +248,7 @@ public class ControladorAsignacionEstudianteAProyectoGUI {
         } catch (SQLException | IOException e) {
             LOGGER.severe("No se pudo reasignar al estudiante: " + e);
 
-            UTILIDADES.mostrarAlerta("Error",
+            utilidades.mostrarAlerta("Error",
                     "No se pudo realizar la asignación.",
                     "Por favor, intente nuevamente.");
         }
@@ -212,6 +257,14 @@ public class ControladorAsignacionEstudianteAProyectoGUI {
     @FXML
     private void regresar() {
 
-        ((Stage) botonRegresar.getScene().getWindow()).close();
+        utilidades.mostrarAlertaConfirmacion(
+                "Confirmar acción",
+                "¿Está seguro que desea regresar?",
+                "Los cambios no guardados se perderán.",
+                () -> ((Stage) botonRegresar.getScene().getWindow()).close(),
+                () -> {
+
+                }
+        );
     }
 }

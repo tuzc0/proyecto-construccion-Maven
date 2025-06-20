@@ -530,17 +530,13 @@ public class ControladorGestorAcademicosGUI {
 
         try {
 
-            String contraseña =
-                    cuentaDAO.buscarCuentaPorCorreo(correoEncontrado)
-                            .getContrasena();
-            int idUsuario =
-                    cuentaDAO.buscarCuentaPorCorreo(correoEncontrado)
-                            .getIdUsuario();
+            String contraseña = cuentaDAO.buscarCuentaPorCorreo(correoEncontrado)
+                    .getContrasena();
+            int idUsuario = cuentaDAO.buscarCuentaPorCorreo(correoEncontrado)
+                    .getIdUsuario();
 
-            List<String> listaDeCamposVacios =
-                    VerificacionUsuario.camposVacios(
-                            nombreEditado, apellidosEditado, numeroDePersonalEditado,
-                            correoEditado, contraseña);
+            List<String> listaDeCamposVacios = VerificacionUsuario.camposVacios(nombreEditado,
+                    apellidosEditado, numeroDePersonalEditado, correoEditado, contraseña);
 
             if (!listaDeCamposVacios.isEmpty()) {
 
@@ -552,9 +548,7 @@ public class ControladorGestorAcademicosGUI {
                 return;
             }
 
-            List<String> errores =
-                    VerificacionUsuario.validarCampos(
-                            nombreEditado, apellidosEditado,
+            List<String> errores = VerificacionUsuario.validarCampos(nombreEditado, apellidosEditado,
                             numeroDePersonalEditado, correoEditado, contraseña);
 
             if (!errores.isEmpty()) {
@@ -599,19 +593,19 @@ public class ControladorGestorAcademicosGUI {
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             int estadoActivo = 1;
 
-            UsuarioDTO usuarioDTO =
-                    new UsuarioDTO(idUsuario, nombreEditado, apellidosEditado, estadoActivo);
-            AcademicoDTO academicoDTO =
-                    new AcademicoDTO(numeroPersonal, idUsuario, nombreEditado, apellidosEditado, estadoActivo);
-            CuentaDTO cuentaDTO =
-                    new CuentaDTO(correoEditado, contraseña, idUsuario);
+            UsuarioDTO usuarioDTO = new UsuarioDTO(idUsuario, nombreEditado, apellidosEditado, estadoActivo);
+            CuentaDTO cuentaDTO = new CuentaDTO(correoEditado, contraseña, idUsuario);
+            AcademicoDTO academicoDTO = new AcademicoDTO(
+                    numeroPersonal,
+                    idUsuario,
+                    nombreEditado,
+                    apellidosEditado,
+                    estadoActivo
+            );
 
-            boolean usuarioModificado =
-                    usuarioDAO.modificarUsuario(usuarioDTO);
-            boolean academicoModificado =
-                    academicoDAO.modificarAcademico(academicoDTO);
-            boolean cuentaModificada =
-                    cuentaDAO.modificarCuenta(cuentaDTO);
+            boolean usuarioModificado = usuarioDAO.modificarUsuario(usuarioDTO);
+            boolean academicoModificado = academicoDAO.modificarAcademico(academicoDTO);
+            boolean cuentaModificada = cuentaDAO.modificarCuenta(cuentaDTO);
 
             if (usuarioModificado && academicoModificado && cuentaModificada) {
 
@@ -619,17 +613,18 @@ public class ControladorGestorAcademicosGUI {
                 UTILIDADES.mostrarAlertaConfirmacion(
                         "Éxito",
                         "Los cambios se han guardado correctamente.",
-                        "");
+                        ""
+                );
 
             } else {
 
-                LOGGER.warn("No se pudieron guardar completamente los cambios " +
-                        "del académico.");
+                LOGGER.warn("No se pudieron guardar completamente los cambios del académico.");
                 UTILIDADES.mostrarAlerta(
                         "Advertencia",
                         "No se pudieron guardar todos los cambios.",
                         "Algunos datos no se modificaron correctamente. " +
-                                "Por favor, inténtelo nuevamente.");
+                                "Por favor, inténtelo nuevamente."
+                );
             }
 
             etiquetaNumeroDePersonalEncontrado.setText(numeroDePersonalEditado);

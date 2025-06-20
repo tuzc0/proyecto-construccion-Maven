@@ -272,4 +272,27 @@ public class ProyectoDTO {
                 idRepresentante, descripcion, usuariosDirectos, usuariosIndirectos,
                 estudiantesRequeridos, estudiantesAsignados);
     }
+
+    @Override
+    public String toString() {
+        return "ProyectoDTO{" +
+                "idProyecto=" + idProyecto +
+                ", nombre='" + nombre + '\'' +
+                ", objetivoGeneral='" + objetivoGeneral + '\'' +
+                ", objetivosInmediatos='" + objetivosInmediatos + '\'' +
+                ", objetivosMediatos='" + objetivosMediatos + '\'' +
+                ", metodologia='" + metodologia + '\'' +
+                ", recursos='" + recursos + '\'' +
+                ", actividades='" + actividades + '\'' +
+                ", responsabilidades='" + responsabilidades + '\'' +
+                ", duracion='" + duracion + '\'' +
+                ", estadoActivo=" + estadoActivo +
+                ", idRepresentante=" + idRepresentante +
+                ", descripcion='" + descripcion + '\'' +
+                ", usuariosDirectos=" + usuariosDirectos +
+                ", usuariosIndirectos=" + usuariosIndirectos +
+                ", estudiantesRequeridos=" + estudiantesRequeridos +
+                ", estudiantesAsignados=" + estudiantesAsignados +
+                '}';
+    }
 }

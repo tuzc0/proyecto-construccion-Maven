@@ -14,6 +14,8 @@ import logica.DAOs.PeriodoDAO;
 import logica.DTOs.AcademicoDTO;
 import logica.DTOs.GrupoDTO;
 import logica.DTOs.PeriodoDTO;
+import logica.VerificacionEntradas;
+import logica.verificacion.VerificicacionGeneral;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -36,10 +38,23 @@ public class ControladorCrearGrupoGUI {
     @FXML
     TextField textoNombreGrupo;
 
+    @FXML
+    Label etiquetaContadorNombre;
+
     private Map<String, Integer> academicoMap = new HashMap<>();
+
+    VerificicacionGeneral verificicacionGeneralUtilidad = new VerificicacionGeneral();
+
+    VerificacionEntradas verificacionEntradas = new VerificacionEntradas();
+
+    final int MAX_CARACTERES_NOMBRE = 100;
 
     @FXML
     public void initialize() {
+
+        verificicacionGeneralUtilidad.contadorCaracteresTextField(textoNombreGrupo,
+                etiquetaContadorNombre, MAX_CARACTERES_NOMBRE);
+
         cargarAcademicos();
         cargarPeriodo();
         cargarNRC();
@@ -81,6 +96,20 @@ public class ControladorCrearGrupoGUI {
             nuevoGrupo.setNumeroPersonal(numeroPersonal);
             nuevoGrupo.setIdPeriodo(new PeriodoDAO().mostrarPeriodoActual().getIDPeriodo());
             nuevoGrupo.setEstadoActivo(1);
+
+            if (nuevoGrupo.getNombre().isEmpty()) {
+                utilidades.mostrarAlerta("Error",
+                        "Nombre de grupo vacío",
+                        "El nombre del grupo no puede estar vacío.");
+                return;
+            }
+
+            if (!verificacionEntradas.validarTextoAlfanumerico(nuevoGrupo.getNombre())) {
+                utilidades.mostrarAlerta("Error",
+                        "Nombre de grupo inválido",
+                        "El nombre del grupo no puede estar vacío o exceder los 100 caracteres.");
+                return;
+            }
 
             grupoDAO.crearNuevoGrupo(nuevoGrupo);
 

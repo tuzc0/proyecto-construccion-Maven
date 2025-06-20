@@ -14,6 +14,8 @@ import logica.DAOs.EvaluacionDAO;
 import logica.DTOs.CriterioEvaluacionDTO;
 import logica.DTOs.EvaluacionContieneDTO;
 import logica.DTOs.EvaluacionDTO;
+import logica.VerificacionEntradas;
+import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -49,17 +51,29 @@ public class ControladorRegistrarEvaluacionGUI {
     @FXML
     Label etiquetaEstudianteEvaluado;
 
+    @FXML
+    Label etiquetaContadorComentarios;
+
     static int idEvaluacionGenerada = 0;
 
     float calificacionFinal = 0.0f;
 
     int numeroDePersonal = ControladorInicioDeSesionGUI.numeroDePersonal;
 
+    VerificicacionGeneral verificicacionGeneralUtilidad = new VerificicacionGeneral();
+
+    VerificacionEntradas verificacionEntradas = new VerificacionEntradas();
+
+    final int MAX_CARACTERES_COMENTARIOS = 255;
+
 
     public String matriculaEstudianteEvaluado = ControladorConsultarEstudiantesAEvaluarGUI.matriculaEstudianteSeleccionado;
 
     @FXML
     public void initialize() {
+
+        verificicacionGeneralUtilidad.contadorCaracteresTextArea(textoComentarios,
+                etiquetaContadorComentarios, MAX_CARACTERES_COMENTARIOS);
 
         columnaNumeroCriterio.setCellValueFactory(cellData ->
                 new SimpleStringProperty(String.valueOf(cellData.getValue().getCriterioEvaluacion().getNumeroCriterio())));
@@ -328,6 +342,24 @@ public class ControladorRegistrarEvaluacionGUI {
                 return;
             }
 
+            if (textoComentarios.getText().isEmpty()) {
+
+                utilidades.mostrarAlerta("Error",
+                        "El campo de comentarios no puede estar vacío.",
+                        "porfavor llene el campo de comentarios");
+                return;
+            }
+
+            if (!verificacionEntradas.validarTextoAlfanumerico(textoComentarios.getText())) {
+
+                utilidades.mostrarAlerta("Error",
+                        "Los comentarios no son válidos.",
+                        "porfavor llene el campo de comentarios");
+                return;
+            }
+
+
+
             if (actualizado) {
 
                 utilidades.mostrarAlerta("Éxito",
@@ -367,5 +399,6 @@ public class ControladorRegistrarEvaluacionGUI {
             logger.error("Error inesperado: " + e);
         }
     }
+
 
 }

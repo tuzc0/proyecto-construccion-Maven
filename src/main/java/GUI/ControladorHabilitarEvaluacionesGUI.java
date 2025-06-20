@@ -27,12 +27,6 @@ public class ControladorHabilitarEvaluacionesGUI {
     Logger logger = Logger.getLogger(ControladorHabilitarEvaluacionesGUI.class.getName());
 
     @FXML
-    DatePicker fechaInicio;
-
-    @FXML
-    DatePicker fechaTermino;
-
-    @FXML
     TableView<CriterioEvaluacionDTO> tablaCriterios;
 
     @FXML
@@ -44,11 +38,6 @@ public class ControladorHabilitarEvaluacionesGUI {
     @FXML
     Button botonEditarCriterios;
 
-    @FXML
-    Button botonCancelar;
-
-    @FXML
-    Button botonHabilitarEvaluaciones;
 
     @FXML
     Button botonAñadirCriterio;
@@ -166,8 +155,6 @@ public class ControladorHabilitarEvaluacionesGUI {
 
 
             botonAñadirCriterio.setDisable(false);
-            botonCancelar.setDisable(false);
-            botonHabilitarEvaluaciones.setDisable(false);
             botonEliminarCriterio.setDisable(false);
 
 
@@ -177,8 +164,6 @@ public class ControladorHabilitarEvaluacionesGUI {
         tablaCriterios.setEditable(true);
 
         botonAñadirCriterio.setDisable(true);
-        botonCancelar.setDisable(true);
-        botonHabilitarEvaluaciones.setDisable(true);
         botonEliminarCriterio.setDisable(true);
     }
 

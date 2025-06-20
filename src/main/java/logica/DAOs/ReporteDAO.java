@@ -134,4 +134,25 @@ public class ReporteDAO implements IReporteDAO {
 
         return false;
     }
+
+    public boolean eliminarReporte(int idReporte) throws SQLException, IOException {
+        String eliminarSQLReporte = "DELETE FROM reporte WHERE IDReporte = ?";
+        boolean reporteEliminado = false;
+
+        try {
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaReporte = conexionBaseDeDatos.prepareStatement(eliminarSQLReporte);
+            sentenciaReporte.setInt(1, idReporte);
+
+            if (sentenciaReporte.executeUpdate() > 0) {
+                reporteEliminado = true;
+            }
+        } finally {
+            if (sentenciaReporte != null) {
+                sentenciaReporte.close();
+            }
+        }
+
+        return reporteEliminado;
+    }
 }

@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="20" style="-fx-background-color: #f8f9fa; -fx-padding: 25;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="GUI.ControladorCrearGrupoGUI">
+<VBox alignment="CENTER" spacing="20" style="-fx-background-color: #f8f9fa; -fx-padding: 25;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorCrearGrupoGUI">
     <padding>
-        <Insets bottom="20" left="20" right="20" top="20"/>
+        <Insets bottom="20" left="20" right="20" top="20" />
     </padding>
 
     <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Crear Nuevo Grupo">
@@ -23,7 +23,8 @@
     <VBox alignment="CENTER_LEFT" spacing="15" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #e0e0e0;">
         <HBox alignment="CENTER_LEFT" spacing="10">
             <Label style="-fx-font-weight: bold; -fx-min-width: 120;" text="Nombre del grupo:" />
-            <TextField fx:id="textoNombreGrupo" style="-fx-background-color: #ffffff; -fx-border-color: #bdc3c7; -fx-border-radius: 4;" promptText="Ej. Grupo A" />
+            <TextField fx:id="textoNombreGrupo" promptText="Ej. Grupo A" style="-fx-background-color: #ffffff; -fx-border-color: #bdc3c7; -fx-border-radius: 4;" />
+         <Label fx:id="etiquetaContadorNombre" style="-fx-text-fill: #777; -fx-font-size: 11;" text="0/50" />
         </HBox>
 
         <HBox alignment="CENTER_LEFT" spacing="10">

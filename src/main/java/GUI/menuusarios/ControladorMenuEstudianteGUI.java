@@ -13,6 +13,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logica.DAOs.*;
 import logica.DTOs.AutoevaluacionDTO;
+import logica.DTOs.CronogramaActividadesDTO;
 import logica.DTOs.EstudianteDTO;
 import logica.DTOs.ProyectoDTO;
 import org.apache.logging.log4j.Logger;
@@ -21,6 +22,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import static GUI.ControladorRegistrarAutoevaluacionGUI.idAutoevaluacion;
+import static GUI.ControladorRegistrarReporteMensualGUI.idReporte;
+import static java.sql.Types.NULL;
 
 public class ControladorMenuEstudianteGUI {
 
@@ -44,6 +47,10 @@ public class ControladorMenuEstudianteGUI {
     }
 
     private void verificarAutoevaluacionRegistrada() {
+
+        if (!verificarAsignacionProyecto()) {
+            return;
+        }
 
         AutoevaluacionDAO autoevaluacionDAO = new AutoevaluacionDAO();
 
@@ -77,11 +84,20 @@ public class ControladorMenuEstudianteGUI {
 
     @FXML
     public void abrirEditarPerfilEstudiante() {
+
+        if (!verificarAsignacionProyecto()) {
+            return;
+        }
+
         utilidades.mostrarVentana("/EditarPerfilEstudianteGUI.fxml");
     }
 
     @FXML
     public void abrirRegistrarAutoevaluacion() {
+
+        if (!verificarAsignacionProyecto()) {
+            return;
+        }
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistrarAutoevaluacionGUI.fxml"));
@@ -135,8 +151,34 @@ public class ControladorMenuEstudianteGUI {
         }
     }
 
+    public void eliminarReporte() {
+
+        ReporteDAO reporteDAO = new ReporteDAO();
+
+        try {
+
+            reporteDAO.eliminarReporte(idReporte);
+
+        } catch (SQLException e) {
+
+            logger.error("Error de SQL al eliminar el reporte: " + e);
+
+        } catch (IOException e) {
+
+            logger.error("Error de IO al eliminar el reporte: " + e);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al eliminar el reporte: " + e);
+        }
+
+    }
     @FXML
     public void abrirConsultarAutoevaluacion() {
+
+        if (!verificarAsignacionProyecto()) {
+            return;
+        }
 
         utilidades.mostrarVentana("/ConsultarAutoevaluacionGUI.fxml");
 
@@ -146,24 +188,44 @@ public class ControladorMenuEstudianteGUI {
     @FXML
     public void abrirConsultarEvaluacionesEstudiante() {
 
+        if (!verificarAsignacionProyecto()) {
+            return;
+        }
+
         utilidades.mostrarVentana("/ConsultarEvaluacionesEstudianteGUI.fxml");
 
     }
 
     @FXML
     public void abrirRegistrarReporteMensual() {
+
+        if (!verificarAsignacionProyecto()) {
+            return;
+        }
+
         try {
             ReporteDAO reporteDAO = new ReporteDAO();
 
             int mesActual = java.time.LocalDate.now().getMonthValue();
             int añoActual = java.time.LocalDate.now().getYear();
 
-            if (reporteDAO.existeReporteEnMes(matricula,mesActual, añoActual)) {
-                utilidades.mostrarAlerta("Reporte Mensual", "Ya has registrado un reporte mensual este mes.", "No puedes registrar más de un reporte mensual por mes.");
+            if (reporteDAO.existeReporteEnMes(matricula, mesActual, añoActual)) {
+                utilidades.mostrarAlerta("Reporte Mensual", "Ya has registrado un reporte mensual este mes.",
+                        "No puedes registrar más de un reporte mensual por mes.");
                 return;
             }
 
-            utilidades.mostrarVentana("/RegistrarReporteMensualGUI.fxml");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistrarReporteMensualGUI.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Registrar Reporte Mensual");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            stage.setOnCloseRequest(event -> eliminarReporte());
+
+            stage.showAndWait();
         } catch (SQLException | IOException e) {
             logger.error("Error al verificar reporte mensual: " + e);
             utilidades.mostrarAlerta("Error", "No se pudo verificar el reporte mensual.", "Por favor, intenta nuevamente más tarde.");
@@ -173,8 +235,16 @@ public class ControladorMenuEstudianteGUI {
     @FXML
     public void abrirRegistrarCronogramaActividades() {
 
-        try {
+        if (!verificarAsignacionProyecto()) {
+            return;
+        }
 
+        if (!verificarCronogramaActividades()) {
+            return;
+        }
+
+
+        try {
             FXMLLoader cargarVentana = new FXMLLoader(getClass().getResource("/RegistroCronogramaActividadesGUI.fxml"));
             Parent root = cargarVentana.load();
 
@@ -186,9 +256,7 @@ public class ControladorMenuEstudianteGUI {
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
-
         } catch (IOException e) {
-
             logger.error("Error al abrir la ventana RegistrarCronogramaActividadesGUI: " + e);
             utilidades.mostrarAlerta(
                     "Error",
@@ -200,6 +268,10 @@ public class ControladorMenuEstudianteGUI {
 
     @FXML
     public void abrirDetallesAsignacionComoEstudiante() {
+
+        if (!verificarAsignacionProyecto()) {
+            return;
+        }
 
         EstudianteDAO estudianteDAO = new EstudianteDAO();
         ProyectoDAO proyectoDAO = new ProyectoDAO();
@@ -240,6 +312,76 @@ public class ControladorMenuEstudianteGUI {
                     "Ocurrio un error al cargar la ventana",
                     "Contacte al administrador si el problema persiste"
             );
+        }
+    }
+
+
+    private boolean verificarAsignacionProyecto() {
+
+        EstudianteDAO estudianteDAO = new EstudianteDAO();
+        try {
+
+            EstudianteDTO estudianteDTO = estudianteDAO.buscarEstudiantePorMatricula(matricula);
+            if (estudianteDTO.getIdProyecto() == NULL) {
+                utilidades.mostrarAlerta(
+                        "Error",
+                        "No estás asignado a un proyecto.",
+                        "Por favor, contacta al administrador para más información."
+                );
+                return false;
+            }
+            return true;
+        } catch (SQLException e) {
+            logger.error("Error de SQL al verificar asignación de proyecto: " + e);
+        } catch (IOException e) {
+            logger.error("Error de IO al verificar asignación de proyecto: " + e);
+        }
+        utilidades.mostrarAlerta(
+                "Error",
+                "Ocurrió un error al verificar tu asignación de proyecto.",
+                "Por favor, intenta nuevamente más tarde."
+        );
+        return false;
+    }
+
+    public boolean verificarCronogramaActividades() {
+        CronogramaActividadesDAO cronogramaActividadesDAO = new CronogramaActividadesDAO();
+        try {
+
+            CronogramaActividadesDTO cronograma = cronogramaActividadesDAO.buscarCronogramaPorMatricula(matricula);
+            if (cronograma != null && cronograma.getIDCronograma() != NULL) {
+                utilidades.mostrarAlerta(
+                        "Cronograma de Actividades",
+                        "Ya has registrado un cronograma de actividades.",
+                        "No puedes registrar más de un cronograma de actividades por proyecto."
+                );
+                return false;
+            }
+            return true;
+        } catch (SQLException e) {
+            logger.error("Error al verificar cronograma de actividades: " + e);
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "No se pudo verificar el cronograma de actividades.",
+                    "Por favor, intenta nuevamente más tarde."
+            );
+            return false;
+        } catch (IOException e) {
+            logger.error("Error de IO al verificar cronograma de actividades: " + e);
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "Error de entrada/salida al verificar el cronograma de actividades.",
+                    "Por favor, intenta nuevamente más tarde."
+            );
+            return false;
+        } catch (Exception e) {
+            logger.error("Error inesperado al verificar cronograma de actividades: " + e);
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error inesperado al verificar el cronograma de actividades.",
+                    "Por favor, contacta al administrador si el problema persiste."
+            );
+            return false;
         }
     }
 }

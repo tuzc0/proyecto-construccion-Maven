@@ -83,7 +83,7 @@ public class ControladorRegistrarReporteMensualGUI {
 
     int idCronograma = 0;
 
-    int idReporte = 0;
+    public static int idReporte = 0;
 
     private Map<String, String> urlsDrive = new HashMap<>();
 
@@ -542,10 +542,52 @@ public class ControladorRegistrarReporteMensualGUI {
     }
 
     @FXML
-    public void cancelarRegistro () {
+    public void confirmacionCancelarRegistro() {
+
+        utilidades.mostrarAlertaConfirmacion(
+                "Confirmar eliminación",
+                "¿Está seguro que desea cancelar el reporte mensual?",
+                "Se cancelara el registro, esta accion no se puede deshacer.",
+                () -> {
+                    cancelarRegistro();
+                },
+                () -> {
+                    utilidades.mostrarAlerta("Cancelado",
+                            "Eliminación cancelada",
+                            "No se ha cancelado ningun reporte.");
+                }
+        );
+
+
+    }
+
+    public void cancelarRegistro() {
+
+        ReporteDAO reporteDAO = new ReporteDAO();
+        try {
+
+            reporteDAO.eliminarReporte(idReporte);
+
+        } catch (SQLException e) {
+            logger.error("Error al eliminar el reporte: ", e);
+            utilidades.mostrarAlerta("Error",
+                    "No se pudo eliminar el reporte.",
+                    "Por favor, intente nuevamente más tarde.");
+        } catch (IOException e) {
+            logger.error("Error de IO al eliminar el reporte: ", e);
+            utilidades.mostrarAlerta("Error",
+                    "No se pudo eliminar el reporte.",
+                    "Por favor, intente nuevamente más tarde.");
+        } catch (Exception e) {
+            logger.error("Error inesperado al eliminar el reporte: ", e);
+            utilidades.mostrarAlerta("Error",
+                    "No se pudo eliminar el reporte.",
+                    "Por favor, intente nuevamente más tarde.");
+        }
 
         Stage stage = (Stage) campoMetodologia.getScene().getWindow();
         stage.close();
 
     }
+
 }

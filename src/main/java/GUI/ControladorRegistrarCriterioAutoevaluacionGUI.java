@@ -6,6 +6,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import logica.DAOs.CriterioAutoevaluacionDAO;
 import logica.DTOs.CriterioAutoevaluacionDTO;
+import logica.VerificacionEntradas;
+import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
@@ -21,14 +23,26 @@ public class ControladorRegistrarCriterioAutoevaluacionGUI {
     @FXML
     Label etiquetaNumeroCriterio;
 
+    @FXML
+    Label etiquetaContadorDescripcion;
+
     Utilidades utilidades = new Utilidades();
 
     int numeroCriterioMasAlto = 0;
 
     int nuevoNumeroCriterio = 0;
 
+    VerificicacionGeneral verificicacionGeneralUtilidad = new VerificicacionGeneral();
+
+    VerificacionEntradas verificacionEntradas = new VerificacionEntradas();
+
+    final int MAX_CARACTERES_DESCRIPCION = 255;
+
     @FXML
     public void initialize() {
+
+        verificicacionGeneralUtilidad.contadorCaracteresTextArea(textoDescripcionCriterio,
+                etiquetaContadorDescripcion, MAX_CARACTERES_DESCRIPCION);
 
         try {
 
@@ -67,6 +81,16 @@ public class ControladorRegistrarCriterioAutoevaluacionGUI {
                     "Por favor llene todos los campos.");
             return;
         }
+
+        if (!verificacionEntradas.validarTextoAlfanumerico(descripcion)) {
+
+            utilidades.mostrarAlerta("Error",
+                    "Descripción inválida.",
+                    "La descripción no puede contener caracteres especiales.");
+            return;
+        }
+
+
 
         try {
 

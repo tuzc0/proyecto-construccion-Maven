@@ -25,8 +25,6 @@ public class ControladorHabilitarAutoevaluacionGUI {
 
     Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorHabilitarAutoevaluacionGUI.class);
 
-    @FXML
-    DatePicker fechaInicio;
 
     @FXML
     TableView<CriterioAutoevaluacionDTO> tablaCriterios;
@@ -46,8 +44,6 @@ public class ControladorHabilitarAutoevaluacionGUI {
     @FXML
     Button botonEliminarCriterio;
 
-    @FXML
-    Button botonCancelar;
 
     Utilidades utilidades = new Utilidades();
 
@@ -163,7 +159,6 @@ public class ControladorHabilitarAutoevaluacionGUI {
             actualizarCriterioEnBaseDeDatos(criterio);
 
             botonAñadirCriterio.setDisable(false);
-            botonCancelar.setDisable(false);
             botonEditarCriterio.setDisable(false);
             botonEliminarCriterio.setDisable(false);
 
@@ -173,7 +168,6 @@ public class ControladorHabilitarAutoevaluacionGUI {
         tablaCriterios.setEditable(true);
 
         botonAñadirCriterio.setDisable(true);
-        botonCancelar.setDisable(true);
         botonEditarCriterio.setDisable(true);
         botonEliminarCriterio.setDisable(true);
     }

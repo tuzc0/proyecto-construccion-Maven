@@ -9,9 +9,10 @@
    <children>
       <TextArea fx:id="textoDescripcionCriterio" layoutX="22.0" layoutY="72.0" prefHeight="129.0" prefWidth="482.0" />
       <Label layoutX="22.0" layoutY="43.0" text="Descripcion del citerio de la autoevaluacion" />
-      <Label layoutX="22.0" layoutY="213.0" text="numero de criterio" />
-      <Label fx:id="etiquetaNumeroCriterio" layoutX="22.0" layoutY="240.0" />
+      <Label layoutX="22.0" layoutY="221.0" text="numero de criterio" />
+      <Label fx:id="etiquetaNumeroCriterio" layoutX="18.0" layoutY="247.0" prefHeight="17.0" prefWidth="30.0" />
       <Button layoutX="286.0" layoutY="280.0" mnemonicParsing="false" onAction="#guardarCriterio" prefHeight="32.0" prefWidth="86.0" text="guardar" />
       <Button layoutX="418.0" layoutY="280.0" mnemonicParsing="false" onAction="#cancelarCriterio" prefHeight="32.0" prefWidth="86.0" text="cancelar" />
+      <Label fx:id="etiquetaContadorDescripcion" layoutX="22.0" layoutY="205.0" style="-fx-text-fill: #777; -fx-font-size: 11;" text="0/50" />
    </children>
 </Pane>

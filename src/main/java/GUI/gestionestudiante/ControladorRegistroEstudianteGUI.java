@@ -160,8 +160,9 @@ public class ControladorRegistroEstudianteGUI {
 
             if (!UtilidadesContraseña.esContraseñaIgual(contraseñaIngresada, contraseñaConfirmada)) {
 
-                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml",
-                        "Las contraseñas ingresadas no coinciden.");
+                utilidades.mostrarAlerta("Contraseñas no coinciden",
+                        "Las contraseñas ingresadas no coinciden.",
+                        "Por favor, asegúrese de que ambas contraseñas sean idénticas.");
                 return;
             }
 

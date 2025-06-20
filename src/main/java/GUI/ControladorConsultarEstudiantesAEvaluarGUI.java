@@ -14,10 +14,14 @@ import javafx.util.Callback;
 import logica.DAOs.EstudianteDAO;
 import logica.DAOs.EvaluacionContieneDAO;
 import logica.DAOs.EvaluacionDAO;
+import logica.DAOs.GrupoDAO;
 import logica.DTOs.EstudianteDTO;
+import logica.DTOs.GrupoDTO;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import static GUI.ControladorRegistrarEvaluacionGUI.idEvaluacionGenerada;
@@ -50,6 +54,8 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
 
     private static int numeroPersonal = ControladorInicioDeSesionGUI.numeroDePersonal;
 
+    Utilidades utilidades = new Utilidades();
+
 
     @FXML
     public void initialize() {
@@ -72,6 +78,7 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
         });
     }
 
+
     private void cargarEstudiantes() {
         Utilidades utilidades = new Utilidades();
 
@@ -84,7 +91,8 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
 
         } catch (Exception e) {
             logger.severe("Error al cargar la lista de estudiantes: " + e);
-            utilidades.mostrarAlerta("Error", "Error de entrada/salida", "No se pudo cargar la lista de estudiantes.");
+            utilidades.mostrarAlerta("Error", "Ocurrio un error inesperado", "No se pudo cargar la lista de estudiantes.");
+            e.printStackTrace();
         }
     }
 

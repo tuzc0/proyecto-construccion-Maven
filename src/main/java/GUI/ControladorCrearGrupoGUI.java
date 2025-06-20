@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import logica.DAOs.AcademicoDAO;
 import logica.DAOs.GrupoDAO;
 import logica.DAOs.PeriodoDAO;
@@ -86,6 +87,8 @@ public class ControladorCrearGrupoGUI {
             utilidades.mostrarAlerta("Éxito",
                     "Grupo guardado",
                     "El grupo se ha guardado correctamente.");
+
+            ((Stage) comboAcademico.getScene().getWindow()).close();
 
         } catch (SQLException e) {
 

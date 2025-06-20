@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -10,8 +9,6 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="553.0" prefWidth="804.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorHabilitarEvaluacionesGUI">
    <children>
-      <Label layoutX="37.0" layoutY="107.0" text="fecha de inicio: " />
-      <Label layoutX="418.0" layoutY="107.0" text="fecha de termino: " />
       <Label layoutX="279.0" layoutY="41.0" text="Habilitar evaluaciones">
          <font>
             <Font name="System Bold" size="24.0" />
@@ -23,11 +20,7 @@
           <TableColumn fx:id="columnaDescripcion" prefWidth="616.7999877929688" text="descripcion" />
         </columns>
       </TableView>
-      <Button fx:id="botonHabilitarEvaluaciones" layoutX="37.0" layoutY="476.0" mnemonicParsing="false" text="habilitar evaluaciones" />
-      <Button fx:id="botonCancelar" layoutX="192.0" layoutY="476.0" mnemonicParsing="false" text="cancelar" />
       <Button fx:id="botonEditarCriterios" layoutX="669.0" layoutY="476.0" mnemonicParsing="false" onAction="#editarCriterios" text="editar criterios" />
-      <DatePicker fx:id="fechaInicio" layoutX="135.0" layoutY="103.0" />
-      <DatePicker fx:id="fechaTermino" layoutX="532.0" layoutY="103.0" />
       <Button fx:id="botonAñadirCriterio" layoutX="436.0" layoutY="476.0" mnemonicParsing="false" onAction="#abrirVentanaRegistrarNuevoCriterio" text="añadir Criterio" />
       <Button fx:id="botonEliminarCriterio" layoutX="552.0" layoutY="476.0" mnemonicParsing="false" onAction="#eliminarCriterio" text="eliminar criterio" />
    </children>

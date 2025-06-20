@@ -56,5 +56,12 @@ public class ControladorMenuAcademicoGUI {
         }
     }
 
+    @FXML
+    public void abrirVentanaCalificacionFinal() {
+
+        String ventana = "/RegistrarCalificacionFinalGUI.fxml";
+        mostrarVentana(ventana);
+    }
+
 
 }

@@ -214,7 +214,7 @@ public class VerificacionUsuario {
 
         if (correo.isEmpty()) {
             errores.add("El correo electrónico no puede estar vacío.");
-        } else if (!correoValido(correo)) {
+        } else if (!correoValidoUV(correo)) {
             errores.add("El correo electrónico no es válido.");
         }
 

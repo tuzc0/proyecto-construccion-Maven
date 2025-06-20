@@ -15,7 +15,7 @@ public class VerificacionEntradas {
 
 
     private static final Pattern PATRON_SOLO_NUMEROS = Pattern.compile("^[-+]?\\d+(\\.\\d+)?$");
-    private static final Pattern PATRON_TEXTO_SEGURO = Pattern.compile("^[\\p{L}]+$");
+    private static final Pattern PATRON_TEXTO_SEGURO = Pattern.compile("\"^[\\\\p{L}\\\\s.,:;¡!¿?()]+$\"");
     private static final Pattern PATRON_NUMERO_ENTERO_POSITIVO = Pattern.compile("^\\d+$");
     private static final Pattern PATRON_TEXTO_CON_ESPACIOS = Pattern.compile("^[\\p{L}\\s\\d.,:;¡!¿?()]+$");
 
@@ -31,7 +31,7 @@ public class VerificacionEntradas {
         return validar(texto, PATRON_TEXTO_SEGURO);
     }
 
-    public static boolean esTextoExtendidoSeguro(String texto) {
+    public static boolean validarTextoAlfanumerico(String texto) {
         return validar(texto, PATRON_TEXTO_CON_ESPACIOS);
     }
 

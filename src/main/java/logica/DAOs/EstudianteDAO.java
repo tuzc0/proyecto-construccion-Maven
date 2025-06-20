@@ -345,7 +345,7 @@ public class EstudianteDAO implements IEstudianteDAO {
 
         List<EstudianteDTO> estudiantes = new ArrayList<>();
 
-        String sql = """
+        String consultaSql = """
         SELECT ve.matricula, ve.nombre, ve.apellidos
         FROM vista_estudiante ve
         JOIN estudiante e ON ve.matricula = e.matricula
@@ -355,7 +355,7 @@ public class EstudianteDAO implements IEstudianteDAO {
         try {
 
             conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-            sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(sql);
+            sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(consultaSql);
             sentenciaEstudiante.setInt(1, nrc);
             resultadoConsultaEstudiante = sentenciaEstudiante.executeQuery();
 
@@ -381,27 +381,35 @@ public class EstudianteDAO implements IEstudianteDAO {
     }
 
     public List<EstudianteDTO> listarEstudiantesNoEvaluados(int numeroPersonal) throws SQLException, IOException {
-        String sql = "SELECT ve.matricula, ve.nombre, ve.apellidos " +
-                "FROM vista_estudiante ve " +
-                "LEFT JOIN evaluacion e ON ve.matricula = e.idEstudiante AND e.numeroPersonal = ? " +
-                "WHERE e.idEvaluacion IS NULL AND ve.estadoActivo = 1";
+        String ConsultaSql = """
+        SELECT DISTINCT ve.matricula, ve.nombre, ve.apellidos 
+        FROM vista_estudiante ve
+        JOIN estudiante e ON ve.matricula = e.matricula
+        JOIN grupo g ON e.NRC = g.NRC
+        JOIN periodo p ON g.idPeriodo = p.idPeriodo
+        LEFT JOIN evaluacion ev ON ve.matricula = ev.idEstudiante AND ev.numeroPersonal = ?
+        WHERE ve.estadoActivo = 1
+        AND g.estadoActivo = 1
+        AND p.estadoActivo = 1
+        AND ev.idEvaluacion IS NULL
+    """;
 
         List<EstudianteDTO> estudiantesNoEvaluados = new ArrayList<>();
 
-        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-             PreparedStatement sentencia = conexionBaseDeDatos.prepareStatement(sql)) {
+        try (Connection conexion = new ConexionBaseDeDatos().getConnection();
+             PreparedStatement sentencia = conexion.prepareStatement(ConsultaSql)) {
 
             sentencia.setInt(1, numeroPersonal);
 
             try (ResultSet resultado = sentencia.executeQuery()) {
                 while (resultado.next()) {
                     EstudianteDTO estudiante = new EstudianteDTO(
-                            -1,
+                            -1, // idUsuario (no necesario)
                             resultado.getString("nombre"),
                             resultado.getString("apellidos"),
                             resultado.getString("matricula"),
-                            1,
-                            0
+                            1,  // estadoActivo
+                            0   // idProyecto (no necesario)
                     );
                     estudiantesNoEvaluados.add(estudiante);
                 }
@@ -446,5 +454,41 @@ public class EstudianteDAO implements IEstudianteDAO {
 
         return estudiantesConEvaluaciones;
     }
+
+    public boolean eliminarEstudiantesPorGrupo( int nrc) throws SQLException, IOException {
+
+        boolean estudiantesModificados = false;
+
+        String modificarSQLEstudiante = """
+        UPDATE usuario 
+        SET estadoActivo = ? 
+        WHERE idUsuario IN (
+            SELECT idUsuario 
+            FROM estudiante 
+            WHERE NRC = ?
+        )
+    """;
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaEstudiante = conexionBaseDeDatos.prepareStatement(modificarSQLEstudiante);
+            sentenciaEstudiante.setInt(1, 0);
+            sentenciaEstudiante.setInt(2, nrc);
+
+            if (sentenciaEstudiante.executeUpdate() > 0) {
+                estudiantesModificados = true;
+            }
+
+        } finally {
+
+            if (sentenciaEstudiante != null) {
+                sentenciaEstudiante.close();
+            }
+        }
+
+        return estudiantesModificados;
+    }
+
 
 }

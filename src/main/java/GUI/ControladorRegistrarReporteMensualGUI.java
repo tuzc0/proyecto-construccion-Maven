@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import logica.*;
 import logica.DAOs.*;
 import logica.DTOs.*;
+import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.Logger;
 
 
@@ -67,6 +68,15 @@ public class ControladorRegistrarReporteMensualGUI {
     @FXML
     private Label etiquetaErrorArchivos;
 
+    @FXML
+    private Label etiquetaContadorMetodologia;
+
+    @FXML
+    private Label etiquetaContadorObservaciones;
+
+    @FXML
+    private Label etiquetaContadorHoras;
+
     String matricula = ControladorInicioDeSesionGUI.matricula;
 
     Utilidades utilidades = new Utilidades();
@@ -79,12 +89,37 @@ public class ControladorRegistrarReporteMensualGUI {
 
     private static final double TAMANO_MAXIMO_MB = 10.0;
 
+    final int MAX_CARACTERES_METODOLOGIA = 100;
+    final int MAX_CARACTERES_OBSERVACIONES = 255;
+    final int MAX_CARACTERES_HORAS = 2;
+
+    VerificicacionGeneral verificacionGeneral = new VerificicacionGeneral();
+
     private List<java.io.File> archivosLocales = new ArrayList<>();
 
-    VerificacionEntradas verificacionEntradas = new VerificacionEntradas();
+    public static VerificacionEntradas verificacionEntradas = new VerificacionEntradas();
 
     @FXML
     public void initialize() {
+
+        verificacionGeneral.contadorCaracteresTextField(
+                campoMetodologia,
+                etiquetaContadorMetodologia,
+                MAX_CARACTERES_METODOLOGIA
+        );
+
+        verificacionGeneral.contadorCaracteresTextField(
+                campoObservaciones,
+                etiquetaContadorObservaciones,
+                MAX_CARACTERES_OBSERVACIONES
+        );
+
+        verificacionGeneral.contadorCaracteresTextField(
+                campoHoras,
+                etiquetaContadorHoras,
+                MAX_CARACTERES_HORAS
+        );
+
 
         etiquetaMatricula.setText(matricula);
         etiquetaFecha.setText(LocalDate.now().toString());
@@ -129,56 +164,29 @@ public class ControladorRegistrarReporteMensualGUI {
     @FXML
     public void guardarReporte () {
 
-
-        if (tablaActividades.getItems().isEmpty()) {
-
-            utilidades.mostrarAlerta("Error",
-                    "No hay actividades",
-                    "Debe añadir al menos una actividad al reporte.");
-            return;
-        }
-
-        if (listaArchivos.getItems().isEmpty()) {
-
-            utilidades.mostrarAlerta("Error",
-                    "No hay archivos adjuntos",
-                    "Debe adjuntar al menos un archivo de evidencia.");
-            return;
-        }
-
         String metodologia = campoMetodologia.getText();
         String observaciones = campoObservaciones.getText();
         String horasTexto = campoHoras.getText();
 
-        if (metodologia.isEmpty() || observaciones.isEmpty() || horasTexto.isEmpty()) {
+        List<String> errores = validarReporte(metodologia, observaciones, horasTexto);
 
-            utilidades.mostrarAlerta("Error",
-                    "Campos incompletos",
-                    "Debe completar todos los campos antes de guardar el reporte.");
-            return;
+        if (tablaActividades.getItems().isEmpty()) {
+
+            errores.add("Debe añadir al menos una actividad al reporte.");
+
         }
 
-        if (!verificacionEntradas.esEnteroPositivo(horasTexto)) {
+        if (listaArchivos.getItems().isEmpty()) {
 
-            utilidades.mostrarAlerta("Error",
-                    "Número de horas inválido",
-                    "El número de horas debe ser un número entero positivo.");
-            return;
+            errores.add("Debe adjuntar al menos un archivo de evidencia.");
+
         }
 
-        if (!verificacionEntradas.esTextoSeguro(observaciones)) {
+        if (!errores.isEmpty()) {
 
-            utilidades.mostrarAlerta("Error",
-                    "Número de horas inválido",
-                    "El número de horas debe ser un número positivo.");
-            return;
-        }
-
-        if (!verificacionEntradas.esTextoSeguro(metodologia)) {
-
-            utilidades.mostrarAlerta("Error",
-                    "Metodología inválida",
-                    "La metodología debe ser un texto seguro.");
+            utilidades.mostrarAlerta("Errores de validación",
+                    "Por favor, corrija los siguientes errores:",
+                    String.join("\n", errores));
             return;
         }
 
@@ -222,6 +230,34 @@ public class ControladorRegistrarReporteMensualGUI {
                     "Ocurrió un error inesperado",
                     "Por favor, intente nuevamente más tarde.");
         }
+    }
+
+    private static List<String> validarReporte (String metodologia, String observaciones, String horas) {
+
+        List<String> errores = new ArrayList<>();
+
+        if (metodologia.isEmpty()) {
+            errores.add("El campo de metodología no puede estar vacío.");
+        } else if (!verificacionEntradas.validarTextoAlfanumerico(metodologia)) {
+            errores.add("La metodología contiene caracteres invalidos.");
+        }
+
+        if (observaciones.isEmpty()) {
+            errores.add("El campo de observaciones no puede estar vacío.");
+        } else if (!verificacionEntradas.validarTextoAlfanumerico(observaciones)) {
+            errores.add("Las observaciones contienen caracteres invalidos.");
+        }
+
+        if (horas.isEmpty()) {
+            errores.add("El campo de horas no puede estar vacío.");
+        } else if (!verificacionEntradas.esEnteroPositivo(horas)) {
+            errores.add("El número de horas debe ser un número entero positivo.");
+        }
+
+
+        return errores;
+
+
     }
 
     private void actualizarListaArchivos() {

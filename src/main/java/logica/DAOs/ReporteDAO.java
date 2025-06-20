@@ -107,4 +107,31 @@ public class ReporteDAO implements IReporteDAO {
 
         return reporteEncontrado;
     }
+
+    public boolean existeReporteEnMes(String matricula, int mes, int año) throws SQLException, IOException {
+        String sql = "SELECT COUNT(*) FROM reporte " +
+                "WHERE idEstudiante = ? " +
+                "AND MONTH(fecha) = ? " +
+                "AND YEAR(fecha) = ?";
+
+        try {
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaReporte = conexionBaseDeDatos.prepareStatement(sql);
+            sentenciaReporte.setString(1, matricula);
+            sentenciaReporte.setInt(2, mes);
+            sentenciaReporte.setInt(3, año);
+
+            resultadoReporte = sentenciaReporte.executeQuery();
+
+            if (resultadoReporte.next()) {
+                return resultadoReporte.getInt(1) > 0;
+            }
+        } finally {
+            if (sentenciaReporte != null) {
+                sentenciaReporte.close();
+            }
+        }
+
+        return false;
+    }
 }

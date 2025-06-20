@@ -1,13 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="616.0" prefWidth="898.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorMenuAcademicoGUI">
-   <children>
-      <Button layoutX="181.0" layoutY="129.0" mnemonicParsing="false" onAction="#abrirRegistroEstudiante" text="Registrar Estudiante" />
-      <Button layoutX="181.0" layoutY="185.0" mnemonicParsing="false" onAction="#abrirConsultarEstudiante" text="consultar estudiante" />
-      <Button layoutX="181.0" layoutY="249.0" mnemonicParsing="false" text="Registrar calificacion final" />
-      <Button layoutX="181.0" layoutY="308.0" mnemonicParsing="false" onAction="#abrirConsultarEvaluaciones" text="consultar evaluaciones" />
-   </children>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="616.0" prefWidth="898.0" style="-fx-background-color: #f5f7fa;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorMenuAcademicoGUI">
+
+   <!-- Panel de título -->
+   <Pane layoutX="0.0" layoutY="0.0" prefHeight="80.0" prefWidth="898.0" style="-fx-background-color: #2c3e50;">
+      <Label layoutX="20.0" layoutY="20.0" style="-fx-text-fill: white; -fx-font-weight: bold;" text="Menú Académico">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Label>
+   </Pane>
+
+   <!-- Contenedor principal de botones -->
+   <VBox alignment="CENTER" layoutX="250.0" layoutY="120.0" spacing="20">
+      <!-- Botón Registrar Estudiante -->
+      <Button fx:id="btnRegistrarEstudiante" mnemonicParsing="false" onAction="#abrirRegistroEstudiante" prefHeight="60.0" prefWidth="300.0" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;" text="Registrar Estudiante">
+         <padding>
+            <Insets bottom="10" left="20" right="20" top="10" />
+         </padding>
+         <effect>
+            <DropShadow color="rgba(0,0,0,0.3)" offsetX="3" offsetY="3" radius="5" />
+         </effect>
+      </Button>
+
+      <!-- Botón Consultar Estudiante -->
+      <Button fx:id="btnConsultarEstudiante" mnemonicParsing="false" onAction="#abrirConsultarEstudiante" prefHeight="60.0" prefWidth="300.0" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;" text="Consultar Estudiante">
+         <padding>
+            <Insets bottom="10" left="20" right="20" top="10" />
+         </padding>
+         <effect>
+            <DropShadow color="rgba(0,0,0,0.3)" offsetX="3" offsetY="3" radius="5" />
+         </effect>
+      </Button>
+
+      <!-- Botón Registrar Calificación -->
+      <Button fx:id="btnRegistrarCalificacion" mnemonicParsing="false" onAction="#abrirVentanaCalificacionFinal" prefHeight="60.0" prefWidth="300.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;" text="Registrar Calificación Final">
+         <padding>
+            <Insets bottom="10" left="20" right="20" top="10" />
+         </padding>
+         <effect>
+            <DropShadow color="rgba(0,0,0,0.3)" offsetX="3" offsetY="3" radius="5" />
+         </effect>
+      </Button>
+
+      <!-- Botón Consultar Evaluaciones -->
+      <Button fx:id="btnConsultarEvaluaciones" mnemonicParsing="false" onAction="#abrirConsultarEvaluaciones" prefHeight="60.0" prefWidth="300.0" style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;" text="Consultar Evaluaciones">
+         <padding>
+            <Insets bottom="10" left="20" right="20" top="10" />
+         </padding>
+         <effect>
+            <DropShadow color="rgba(0,0,0,0.3)" offsetX="3" offsetY="3" radius="5" />
+         </effect>
+      </Button>
+   </VBox>
+
+   <!-- Pie de página -->
+   <Pane layoutX="0.0" layoutY="576.0" prefHeight="40.0" prefWidth="898.0" style="-fx-background-color: #34495e;">
+      <Label layoutX="20.0" layoutY="10.0" style="-fx-text-fill: #ecf0f1; -fx-font-size: 12;" text="Sistema Académico v1.0" />
+   </Pane>
 </Pane>

@@ -142,8 +142,8 @@ public class ControladorInicioDeSesionGUI {
 
             if (estudiante.getIdUsuario() != -1) {
 
-                utilidades.mostrarVentana("/MenuEstudianteGUI.fxml");
                 matricula = estudiante.getMatricula();
+                utilidades.mostrarVentana("/MenuEstudianteGUI.fxml");
                 return;
             }
 

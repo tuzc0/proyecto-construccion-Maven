@@ -1,7 +1,6 @@
 import accesoadatos.ConexionBaseDeDatos;
 import logica.DAOs.*;
 import logica.DTOs.*;
-import logica.interfaces.IGrupoDAO;
 import org.junit.jupiter.api.*;
 import java.io.IOException;
 import java.sql.Connection;
@@ -10,8 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 

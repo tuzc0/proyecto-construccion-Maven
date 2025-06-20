@@ -11,10 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import logica.ContenedorGrupo;
-import logica.DAOs.AcademicoDAO;
-import logica.DAOs.GrupoDAO;
-import logica.DAOs.PeriodoDAO;
-import logica.DAOs.UsuarioDAO;
+import logica.DAOs.*;
 import logica.DTOs.AcademicoDTO;
 import logica.DTOs.GrupoDTO;
 import logica.DTOs.PeriodoDTO;
@@ -101,15 +98,16 @@ public class ControladorCrearGruposYPeriodoGUI {
     }
 
     private void restringirFechas(String periodo) {
+
         fechaInicio.setDayCellFactory(picker -> new DateCell() {
             @Override
             public void updateItem(java.time.LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
 
                 if (periodo.equals("febrero-julio")) {
-                    setDisable(empty || (date.getMonthValue() != 2 && date.getMonthValue() != 7));
+                    setDisable(empty || date.getMonthValue() != 2);
                 } else if (periodo.equals("agosto-enero")) {
-                    setDisable(empty || (date.getMonthValue() != 8 && date.getMonthValue() != 1));
+                    setDisable(empty || date.getMonthValue() != 8);
                 }
             }
         });
@@ -120,12 +118,15 @@ public class ControladorCrearGruposYPeriodoGUI {
                 super.updateItem(date, empty);
 
                 if (periodo.equals("febrero-julio")) {
-                    setDisable(empty || (date.getMonthValue() != 2 && date.getMonthValue() != 7));
+                    setDisable(empty || date.getMonthValue() != 7);
                 } else if (periodo.equals("agosto-enero")) {
-                    setDisable(empty || (date.getMonthValue() != 8 && date.getMonthValue() != 1));
+                    setDisable(empty || date.getMonthValue() != 1);
                 }
             }
         });
+
+        fechaInicio.setEditable(false);
+        fechaFinal.setEditable(false);
     }
 
 
@@ -189,7 +190,7 @@ public class ControladorCrearGruposYPeriodoGUI {
         utilidades.mostrarAlertaConfirmacion(
                 "Confirmar eliminación",
                 "¿Está seguro que desea eliminar el periodo activo?",
-                "Se eliminará el periodo activo. Esta acción no se puede deshacer.",
+                "Se eliminará el periodo, grupos y estduiantes activos. Esta acción no se puede deshacer.",
                 () -> {
                     eliminarPeriodoConfirmado();
                 },
@@ -206,16 +207,24 @@ public class ControladorCrearGruposYPeriodoGUI {
         try {
 
             PeriodoDAO periodoDAO = new PeriodoDAO();
+            EstudianteDAO estudianteDAO = new EstudianteDAO();
             int idPeriodo = periodoDAO.mostrarPeriodoActual().getIDPeriodo();
             GrupoDAO grupoDAO = new GrupoDAO();
+
+            List<GrupoDTO> gruposDelPeriodo = grupoDAO.mostrarGruposActivosEnPeriodoActivo();
+            for (GrupoDTO grupo : gruposDelPeriodo) {
+                estudianteDAO.eliminarEstudiantesPorGrupo(grupo.getNRC());
+            }
+
             grupoDAO.eliminarGruposPorPeriodo(idPeriodo);
             periodoDAO.eliminarPeriodoPorID(idPeriodo);
+
             cargarGruposActivos();
+            verificarPeriodoActivo();
 
             utilidades.mostrarAlerta("Éxito",
                     "Periodo eliminado",
                     "El periodo activo se ha eliminado correctamente.");
-            verificarPeriodoActivo();
 
         } catch (SQLException e) {
             utilidades.mostrarAlerta("Error de base de datos",
@@ -337,7 +346,10 @@ public class ControladorCrearGruposYPeriodoGUI {
 
     private void eliminarGrupoConfirmado(GrupoDTO grupoSeleccionado) {
         try {
+
             GrupoDAO grupoDAO = new GrupoDAO();
+            EstudianteDAO estudianteDAO = new EstudianteDAO();
+            estudianteDAO.eliminarEstudiantesPorGrupo(grupoSeleccionado.getNRC());
             grupoDAO.eliminarGrupoPorNRC(grupoSeleccionado.getNRC());
             cargarGruposActivos();
             utilidades.mostrarAlerta("Éxito",

@@ -84,13 +84,9 @@ public class ControladorConsultarAutoevaluacionGUI {
 
             EvidenciaAutoevaluacionDAO evidenciaDAO = new EvidenciaAutoevaluacionDAO();
 
-            System.out.println("Cargando autoevaluación para la matrícula: " + idAutoevaluacion);
-
             EvidenciaAutoevaluacionDTO evidencias = evidenciaDAO.mostrarEvidenciaAutoevaluacionPorID(idAutoevaluacion);
 
-            System.out.println("Evidencia encontrada: " + evidencias);
             if (evidencias != null && evidencias.getURL() != null && !evidencias.getURL().isEmpty()) {
-                System.out.println("URL de evidencia: " + evidencias.getURL());
                 listaArchivos.getItems().add(evidencias.getURL());
             } else {
                 listaArchivos.getItems().add("No hay evidencias disponibles.");

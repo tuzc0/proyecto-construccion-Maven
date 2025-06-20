@@ -14,7 +14,9 @@ import logica.DTOs.CuentaDTO;
 import logica.DTOs.EstudianteDTO;
 import logica.VerificacionUsuario;
 import logica.utilidadesproyecto.EncriptadorContraseñas;
+import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.Logger;
+
 
 
 import java.io.IOException;
@@ -55,6 +57,13 @@ public class ControladorEditarPerfilEstudianteGUI {
     @FXML
     Button botonCancelar;
 
+    @FXML
+    Label etiquetaContadorContraseña;
+
+    final int MAX_CARACTERES_CONTRASEÑA = 64;
+
+    VerificicacionGeneral verificacionGeneral = new VerificicacionGeneral();
+
     UtilidadesContraseña utilidadesContraseña = new UtilidadesContraseña();
 
     EncriptadorContraseñas encriptadorContraseñas = new EncriptadorContraseñas();
@@ -68,8 +77,22 @@ public class ControladorEditarPerfilEstudianteGUI {
     @FXML
     public void initialize() {
 
+        verificacionGeneral.contadorCaracteresTextField(
+                campoContraseña,
+                etiquetaContadorContraseña,
+                MAX_CARACTERES_CONTRASEÑA
+        );
+
+        verificacionGeneral.contadorCaracteresTextField(
+                campoContraseñaDescifrada,
+                etiquetaContadorContraseña,
+                MAX_CARACTERES_CONTRASEÑA
+        );
+
         cargarDatosPerfil();
         utilidadesContraseña.inicializarIcono(iconoOjo);
+
+
 
     }
 
@@ -98,6 +121,7 @@ public class ControladorEditarPerfilEstudianteGUI {
             etiquetaMatricula.setText(estudianteDTO.getMatricula());
             etiquetaCorreo.setText(cuentaDTO.getCorreoElectronico());
             campoContraseña.setText(encriptadorContraseñas.desencriptar(cuentaDTO.getContrasena()));
+            campoContraseñaDescifrada.setText(encriptadorContraseñas.desencriptar(cuentaDTO.getContrasena()));
 
 
         } catch (SQLException e) {
@@ -122,6 +146,7 @@ public class ControladorEditarPerfilEstudianteGUI {
         botonGuardar.setVisible(true);
         botonCancelar.setVisible(true);
         botonEditar.setVisible(false);
+        etiquetaContadorContraseña.setVisible(true);
 
         campoContraseña.setDisable(false);
         campoContraseñaDescifrada.setDisable(false);
@@ -180,12 +205,7 @@ public class ControladorEditarPerfilEstudianteGUI {
 
         }
 
-        botonGuardar.setVisible(false);
-        botonCancelar.setVisible(false);
-        botonEditar.setVisible(true);
-
-        campoContraseña.setDisable(true);
-        campoContraseñaDescifrada.setDisable(true);
+        cancelarEdicion();
     }
 
     @FXML
@@ -194,6 +214,7 @@ public class ControladorEditarPerfilEstudianteGUI {
         botonGuardar.setVisible(false);
         botonCancelar.setVisible(false);
         botonEditar.setVisible(true);
+        etiquetaContadorContraseña.setVisible(false);
 
         campoContraseña.setDisable(true);
         campoContraseñaDescifrada.setDisable(true);

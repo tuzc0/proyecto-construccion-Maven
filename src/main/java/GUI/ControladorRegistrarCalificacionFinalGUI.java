@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 import logica.DAOs.EstudianteDAO;
 import logica.DTOs.EstudianteDTO;
@@ -14,177 +15,167 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class ControladorRegistrarCalificacionFinalGUI {
 
     private static final Logger LOGGER = LogManager.getLogger(ControladorRegistrarCalificacionFinalGUI.class);
 
-    @FXML TableView<EstudianteDTO> tablaAsignacion;
-    @FXML TableColumn<EstudianteDTO, String> columnaMatricula;
-    @FXML TableColumn<EstudianteDTO, String> columnaNombre;
-    @FXML TableColumn<EstudianteDTO, String> columnaCalificacion;
+    @FXML private TableView<EstudianteDTO> tablaAsignacion;
+    @FXML private TableColumn<EstudianteDTO, String> columnaMatricula;
+    @FXML private TableColumn<EstudianteDTO, String> columnaNombre;
+    @FXML private TableColumn<EstudianteDTO, Double> columnaCalificacion;
+    @FXML private TableColumn<EstudianteDTO, Void> columnaAccion;  // Nueva columna de acción
 
-    private EstudianteDTO estudianteSeleccionado;
     private Utilidades utilidades = new Utilidades();
+    private int nrcGrupo;
 
     @FXML
     private void initialize() {
-
-        columnaMatricula.setCellValueFactory(cellData ->
-                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getMatricula()));
-        columnaNombre.setCellValueFactory(cellData ->
-                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNombre() + " " + cellData.getValue().getApellido()));
-
+        configurarTabla();
         cargarEstudiantes();
-        añadirBotonAsignarCalificacionATabla();
-
         tablaAsignacion.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-
-        tablaAsignacion.getSelectionModel().selectedItemProperty().addListener((valorObservado, antiguoValor, nuevoValor) -> {
-
-            estudianteSeleccionado = nuevoValor;
-            tablaAsignacion.refresh();
-        });
     }
 
-    private void añadirBotonAsignarCalificacionATabla() {
+    private void configurarTabla() {
+        // Configurar columnas de datos
+        columnaMatricula.setCellValueFactory(new PropertyValueFactory<>("matricula"));
+        columnaNombre.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(
+                        cellData.getValue().getNombre() + " " + cellData.getValue().getApellido()
+                ));
 
-        Callback<TableColumn<EstudianteDTO, String>, TableCell<EstudianteDTO, String>> cellFactory = param -> new TableCell<>() {
+        // Mostrar calificación existente
+        columnaCalificacion.setCellValueFactory(new PropertyValueFactory<>("calificacionFinal"));
+        columnaCalificacion.setCellFactory(column -> new TableCell<EstudianteDTO, Double>() {
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? "" : String.format("%.2f", item));
+            }
+        });
 
-            private final Button botonAsignar = new Button("Asignar Calificación");
+        // Configurar columna de acción con botón
+        columnaAccion.setCellFactory(crearBotonAsignarCalificacion());
+    }
+
+    private Callback<TableColumn<EstudianteDTO, Void>, TableCell<EstudianteDTO, Void>> crearBotonAsignarCalificacion() {
+        return param -> new TableCell<>() {
+            private final Button btnAsignar = new Button("Asignar/Editar");
+
             {
-
-                botonAsignar.setOnAction(evento -> {
-                    EstudianteDTO contenedorEstudianteDTO = getTableView().getItems().get(getIndex());
-                    asignarCalificacion();
+                btnAsignar.setOnAction(event -> {
+                    EstudianteDTO estudiante = getTableView().getItems().get(getIndex());
+                    mostrarDialogoCalificacion(estudiante);
                 });
+
+                // Estilo opcional para el botón
+                btnAsignar.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
             }
 
             @Override
-            protected void updateItem(String item, boolean empty) {
-
+            protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-
-                if (empty || getIndex() < 0 || getIndex() >= getTableView().getItems().size()) {
-
+                if (empty) {
                     setGraphic(null);
-
                 } else {
-
-                    setGraphic(botonAsignar);
+                    setGraphic(btnAsignar);
                 }
             }
         };
-
-        columnaCalificacion.setCellFactory(cellFactory);
     }
 
     private void cargarEstudiantes() {
-
         try {
+            // Obtener NRC del grupo actual
+            nrcGrupo = new AuxiliarGestionEstudiante().obtenerNRC();
 
             EstudianteDAO estudianteDAO = new EstudianteDAO();
-            ObservableList<EstudianteDTO> estudiantes = FXCollections.observableArrayList(estudianteDAO.listarEstudiantes());
+            ObservableList<EstudianteDTO> estudiantes = FXCollections.observableArrayList(
+                    estudianteDAO.obtenerEstudiantesActivosPorNRC(nrcGrupo)
+            );
+
             tablaAsignacion.setItems(estudiantes);
 
         } catch (Exception e) {
-
-            LOGGER.error("Error al cargar la lista de estudiantes: ", e);
+            LOGGER.error("Error al cargar estudiantes: ", e);
             utilidades.mostrarAlerta(
-                    "Error al cargar estudiantes",
-                    "No se pudieron cargar los estudiantes.",
-                    "Por favor, intente nuevamente más tarde."
+                    "Error",
+                    "No se pudieron cargar los estudiantes",
+                    "Detalle: " + e.getMessage()
             );
         }
     }
 
-    private void asignarCalificacion() {
+    private void mostrarDialogoCalificacion(EstudianteDTO estudiante) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Asignar Calificación");
+        dialog.setHeaderText(String.format(
+                "Estudiante: %s %s (%s)\nIngrese la calificación final:",
+                estudiante.getNombre(),
+                estudiante.getApellido(),
+                estudiante.getMatricula()
+        ));
+        dialog.setContentText("Calificación (0-10):");
 
-        if (estudianteSeleccionado == null) {
+        // Validar entrada
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(calificacionStr -> {
+            try {
+                float calificacion = Float.parseFloat(calificacionStr);
 
-            utilidades.mostrarAlerta(
-                    "Error",
-                    "Primero necesita escoger un estudiante.",
-                    "Por favor, seleccione un estudiante."
-            );
-            return;
-        }
+                if (calificacion < 0 || calificacion > 10) {
+                    utilidades.mostrarAlerta(
+                            "Error",
+                            "Valor inválido",
+                            "La calificación debe estar entre 0 y 10"
+                    );
+                    return;
+                }
 
-        try {
+                // Asignar calificación
+                asignarCalificacion(estudiante, calificacion);
 
-            EstudianteDAO estudianteDAO = new EstudianteDAO();
-            EstudianteDTO estudiante = estudianteDAO.buscarEstudiantePorMatricula(estudianteSeleccionado.getMatricula());
-
-            if (estudiante.getCalificacion() > 0) {
-
-                utilidades.mostrarAlerta(
-                        "Advertencia",
-                        "El estudiante ya tiene una calificación asignada.",
-                        "La calificación actual es: " + estudiante.getCalificacion()
-                );
-                return;
-            }
-
-            TextInputDialog dialogoDeEntrada = new TextInputDialog();
-
-            dialogoDeEntrada.setTitle("Asignar Calificación");
-            dialogoDeEntrada.setHeaderText("Ingrese la calificación final para el estudiante:");
-            dialogoDeEntrada.setContentText("Calificación:");
-
-            String calificacionIngresada = dialogoDeEntrada.showAndWait().orElse("");
-
-            double calificacion = Double.parseDouble(calificacionIngresada);
-
-            if (calificacion < 0 || calificacion > 10) {
-
+            } catch (NumberFormatException e) {
                 utilidades.mostrarAlerta(
                         "Error",
-                        "Calificación inválida.",
-                        "La calificación debe estar entre 0 y 10."
+                        "Entrada inválida",
+                        "Debe ingresar un número válido"
                 );
-                return;
             }
+        });
+    }
 
-            boolean calificacionAsignada = estudianteDAO.asignarCalificacion(calificacion, estudianteSeleccionado.getMatricula());
+    private void asignarCalificacion(EstudianteDTO estudiante, float calificacion) {
+        try {
+            EstudianteDAO estudianteDAO = new EstudianteDAO();
+            boolean exito = estudianteDAO.asignarCalificacion(calificacion, estudiante.getMatricula());
 
-            if (calificacionAsignada) {
+            if (exito) {
+                // Actualizar la tabla
+                estudiante.setCalificacion(calificacion);
+                tablaAsignacion.refresh();
 
                 utilidades.mostrarAlerta(
                         "Éxito",
-                        "Calificación asignada correctamente.",
-                        "La calificación ha sido registrada."
+                        "Calificación asignada",
+                        String.format("Se asignó %.2f a %s", calificacion, estudiante.getNombre())
                 );
-                LOGGER.info("Calificación asignada correctamente al estudiante con matrícula: {}", estudianteSeleccionado.getMatricula());
-
+                LOGGER.info("Calificación asignada: {} -> {}", estudiante.getMatricula(), calificacion);
             } else {
-
                 utilidades.mostrarAlerta(
                         "Error",
-                        "No fue posible asignar la calificación al estudiante.",
-                        "Por favor, intentelo más tarde o contacte al administrador."
+                        "No se pudo guardar",
+                        "La calificación no se pudo guardar en la base de datos"
                 );
-                LOGGER.error("No se pudo asignar la calificación al estudiante con matrícula: {}", estudianteSeleccionado.getMatricula());
             }
-
-            tablaAsignacion.refresh();
-
-        } catch (NumberFormatException e) {
-
-            utilidades.mostrarAlerta(
-                    "Error",
-                    "Entrada inválida.",
-                    "Por favor, ingrese un número válido."
-            );
-            LOGGER.warn("Entrada inválida al intentar asignar calificación: {}", e);
-
         } catch (SQLException | IOException e) {
-
+            LOGGER.error("Error al asignar calificación: ", e);
             utilidades.mostrarAlerta(
                     "Error",
-                    "Error inesperado.",
-                    "Por favor, contacte al administrador."
+                    "Error de sistema",
+                    "No se pudo completar la operación: " + e.getMessage()
             );
-            LOGGER.error("Error al asignar calificación al estudiante: ", e);
         }
     }
 }

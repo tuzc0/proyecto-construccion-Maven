@@ -10,6 +10,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logica.DAOs.AutoevaluacionContieneDAO;
 import logica.DAOs.AutoevaluacionDAO;
+import logica.DAOs.ReporteDAO;
 import logica.DTOs.AutoevaluacionDTO;
 import org.apache.logging.log4j.Logger;
 
@@ -35,6 +36,7 @@ public class ControladorMenuEstudianteGUI {
 
     @FXML
     public void initialize() {
+
         verificarAutoevaluacionRegistrada();
     }
 
@@ -138,9 +140,22 @@ public class ControladorMenuEstudianteGUI {
 
     @FXML
     public void abrirRegistrarReporteMensual() {
+        try {
+            ReporteDAO reporteDAO = new ReporteDAO();
 
-        utilidades.mostrarVentana("/RegistrarReporteMensualGUI.fxml");
+            int mesActual = java.time.LocalDate.now().getMonthValue();
+            int añoActual = java.time.LocalDate.now().getYear();
 
+            if (reporteDAO.existeReporteEnMes(matricula,mesActual, añoActual)) {
+                utilidades.mostrarAlerta("Reporte Mensual", "Ya has registrado un reporte mensual este mes.", "No puedes registrar más de un reporte mensual por mes.");
+                return;
+            }
+
+            utilidades.mostrarVentana("/RegistrarReporteMensualGUI.fxml");
+        } catch (SQLException | IOException e) {
+            logger.error("Error al verificar reporte mensual: " + e.getMessage());
+            utilidades.mostrarAlerta("Error", "No se pudo verificar el reporte mensual.", "Por favor, intenta nuevamente más tarde.");
+        }
     }
 
     @FXML

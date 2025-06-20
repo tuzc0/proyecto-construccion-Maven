@@ -140,6 +140,8 @@ public class ControladorRegistroEstudianteGUI {
         String matricula = campoMatricula.getText();
         String correo = campoCorreo.getText();
         String contraseña = contraseñaIngresada.getText();
+        String confirmarContraseña = contraseñaConfirmada.getText();
+
         int estadoActivo = 1;
         int idUsuario = 0;
 
@@ -149,7 +151,7 @@ public class ControladorRegistroEstudianteGUI {
         try {
 
 
-            List<String> errores = verificacionUsuario.camposVacios(nombre, apellidos, matricula, correo, contraseña);
+            List<String> errores = verificacionUsuario.validarCamposRegistroEstudiante(nombre, apellidos, matricula, correo, contraseña, confirmarContraseña);
 
             if (!errores.isEmpty()) {
                 utilidades.mostrarAlerta("Campos incompletos",

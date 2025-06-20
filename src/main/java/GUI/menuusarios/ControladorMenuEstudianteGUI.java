@@ -1,6 +1,6 @@
-package GUI;
+package GUI.menuusarios;
 
-import GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividadesGUI;
+import GUI.ControladorInicioDeSesionGUI;
 import GUI.gestionproyecto.asignacionproyecto.ControladorDetallesAsignacionProyectoGUI;
 import GUI.utilidades.Utilidades;
 import javafx.fxml.FXML;
@@ -54,13 +54,11 @@ public class ControladorMenuEstudianteGUI {
 
                 botonRegistrarAutoevaluacion.setDisable(false);
                 botonConsultarAutoevaluacion.setDisable(true);
-                logger.info("No se encontró una autoevaluación vinculada a la matrícula: " + matricula);
 
             } else {
 
                 botonConsultarAutoevaluacion.setDisable(false);
                 botonRegistrarAutoevaluacion.setDisable(true);
-                logger.info("Se encontró una autoevaluación vinculada a la matrícula: " + matricula);
             }
         } catch (SQLException e) {
 
@@ -174,29 +172,7 @@ public class ControladorMenuEstudianteGUI {
     @FXML
     public void abrirRegistrarCronogramaActividades() {
 
-        try {
-
-            FXMLLoader cargarVentana = new FXMLLoader(getClass().getResource("/RegistroCronogramaActividadesGUI.fxml"));
-            Parent root = cargarVentana.load();
-
-            ControladorRegistroCronogramaActividadesGUI controlador = cargarVentana.getController();
-            controlador.setDatosIniciales(matricula);
-
-            Stage stage = new Stage();
-            stage.setTitle("Registrar Cronograma de Actividades");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-
-        } catch (IOException e) {
-
-            logger.error("Error al abrir la ventana RegistrarCronogramaActividadesGUI: " + e);
-            utilidades.mostrarAlerta(
-                    "Error",
-                    "Ocurrió un error al intentar abrir la ventana",
-                    "Por favor, inténtelo de nuevo más tarde."
-            );
-        }
+        utilidades.mostrarVentana("/RegistroCronogramaActividadesGUI.fxml");
     }
 
     @FXML

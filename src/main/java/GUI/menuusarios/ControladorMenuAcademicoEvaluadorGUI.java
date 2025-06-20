@@ -1,4 +1,4 @@
-package GUI;
+package GUI.menuusarios;
 
 import GUI.utilidades.Utilidades;
 import javafx.fxml.FXML;

@@ -1,5 +1,6 @@
-package GUI;
+package GUI.menuusarios;
 
+import GUI.ControladorInicioDeSesionGUI;
 import GUI.gestionestudiante.AuxiliarGestionEstudiante;
 import GUI.utilidades.Utilidades;
 import javafx.fxml.FXML;

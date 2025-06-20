@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Text?>
 
 <VBox xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="GUI.ControladorMenuAcademicoEvaluadorGUI"
+      fx:controller="GUI.menuusarios.ControladorMenuAcademicoEvaluadorGUI"
       alignment="CENTER" spacing="20"
       style="-fx-background-color: linear-gradient(to bottom, #e6f7ff, #ffffff); -fx-padding: 40;">
 

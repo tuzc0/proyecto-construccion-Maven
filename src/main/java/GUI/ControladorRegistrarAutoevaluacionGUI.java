@@ -81,7 +81,7 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
     private List<java.io.File> archivosLocales = new ArrayList<>();
 
-    static int idAutoevaluacion = 0;
+    public static int idAutoevaluacion = 0;
 
     String idEstudiante = ControladorInicioDeSesionGUI.matricula;
 

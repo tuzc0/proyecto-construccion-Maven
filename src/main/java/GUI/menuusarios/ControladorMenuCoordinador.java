@@ -1,5 +1,6 @@
-package GUI;
+package GUI.menuusarios;
 
+import GUI.ControladorInicioDeSesionGUI;
 import GUI.utilidades.Utilidades;
 import javafx.fxml.FXML;
 
@@ -43,6 +44,11 @@ public class ControladorMenuCoordinador {
 
     @FXML
     public void abrirHabilitarEvaluaciones() {utilidades.mostrarVentana(("/HabilitarEvaluacionesGUI.fxml"));}
+
+    @FXML
+    public void abrirHabilitarAutoevaluaciones() {
+        utilidades.mostrarVentana("/HabilitarAutoevaluacionesGUI.fxml");
+    }
 
     @FXML
     public void abrirGestionPeriodo() {

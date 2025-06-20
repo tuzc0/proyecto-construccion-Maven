@@ -1,5 +1,6 @@
-package GUI;
+package GUI.menuusarios;
 
+import GUI.ControladorInicioDeSesionGUI;
 import GUI.gestionproyecto.asignacionproyecto.ControladorDetallesAsignacionProyectoGUI;
 import GUI.utilidades.Utilidades;
 import javafx.fxml.FXML;
@@ -53,13 +54,11 @@ public class ControladorMenuEstudianteGUI {
 
                 botonRegistrarAutoevaluacion.setDisable(false);
                 botonConsultarAutoevaluacion.setDisable(true);
-                logger.info("No se encontró una autoevaluación vinculada a la matrícula: " + matricula);
 
             } else {
 
                 botonConsultarAutoevaluacion.setDisable(false);
                 botonRegistrarAutoevaluacion.setDisable(true);
-                logger.info("Se encontró una autoevaluación vinculada a la matrícula: " + matricula);
             }
         } catch (SQLException e) {
 

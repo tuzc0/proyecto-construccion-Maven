@@ -17,6 +17,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import GUI.utilidades.Utilidades;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDate;
@@ -100,6 +101,8 @@ public class ControladorRegistroCronogramaActividadesGUI {
     private Label etiquetaContadorDuracionActividad;
     @FXML
     private Label etiquetaContadorHitosActividad;
+    @FXML
+    private Label etiquetaContadorActividades;
 
     private String matriculaEstudiante;
     private final Utilidades UTILIDADES = new Utilidades();
@@ -168,7 +171,8 @@ public class ControladorRegistroCronogramaActividadesGUI {
                 UTILIDADES.mostrarAlerta(
                         "Fechas vacías",
                         "Se necesitan ambas fechas para la actividad.",
-                        "Por favor, seleccione la fecha de inicio y la fecha de fin para la actividad.");
+                        "Por favor, seleccione la fecha de inicio y la fecha de fin para la actividad."
+                );
                 return;
             }
 
@@ -177,7 +181,8 @@ public class ControladorRegistroCronogramaActividadesGUI {
                 UTILIDADES.mostrarAlerta(
                         "Error en fechas",
                         "La fecha inicio debe ser anterior a la fecha fin",
-                        "Por favor, corriga las fechas.");
+                        "Por favor, corriga las fechas."
+                );
                 return;
             }
 
@@ -186,7 +191,8 @@ public class ControladorRegistroCronogramaActividadesGUI {
                 UTILIDADES.mostrarAlerta(
                         "Días no seleccionados",
                         "Seleccione al menos un día",
-                        "Marque al menos un día en el panel derecho");
+                        "Marque al menos un día en el panel derecho"
+                );
                 return;
             }
 
@@ -197,7 +203,8 @@ public class ControladorRegistroCronogramaActividadesGUI {
                 UTILIDADES.mostrarAlerta(
                         "Error en horarios",
                         "La hora de entrada debe ser menor a salida",
-                        String.join("\n", erroresEnHorarios));
+                        String.join("\n", erroresEnHorarios)
+                );
                 return;
             }
 
@@ -237,13 +244,37 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
                 UTILIDADES.mostrarAlerta(
                         "Error",
-                        "No se pudieron insertar el horarios",
-                        "Por favor, intentelo de nuevo más tarde o contacte al administrador.");
+                        "No se pudo insertar el horarios",
+                        "Por favor, intentelo de nuevo más tarde o contacte al administrador."
+                );
+                return;
+            }
+
+            ActividadDAO actividadDAO = new ActividadDAO();
+            ActividadDTO actividadPrincipal = new ActividadDTO(
+                    0,
+                    campoNombreActividad.getText(),
+                    campoDuracionActividad.getText(),
+                    campoHitosActividad.getText(),
+                    Date.valueOf(fechaInicioActividad.getValue()),
+                    Date.valueOf(fechaFinActividad.getValue()),
+                    estadoActivo
+            );
+
+            int idActividadPrincipal = actividadDAO.crearNuevaActividad(actividadPrincipal);
+            int actividadNoInsertada = -1;
+
+            if (idActividadPrincipal == actividadNoInsertada) {
+
+                UTILIDADES.mostrarAlerta(
+                        "Error",
+                        "No se pudo crear la actividad",
+                        "Por favor, inténtelo de nuevo o contacte al administrador."
+                );
                 return;
             }
 
             CronogramaActividadesDAO cronogramaDAO = new CronogramaActividadesDAO();
-            ActividadDAO actividadDAO = new ActividadDAO();
             CronogramaContieneDAO cronogramaContieneDAO = new CronogramaContieneDAO();
 
             int idCronogramaCreado = cronogramaDAO.crearNuevoCronogramaDeActividades(cronogramaDTO);
@@ -442,10 +473,13 @@ public class ControladorRegistroCronogramaActividadesGUI {
     }
 
     public void agregarActividadSecundaria(ActividadDTO actividad) {
+
         this.actividadesSecundarias.add(actividad);
+        etiquetaContadorActividades.setText("Actividades: " + actividadesSecundarias.size());
     }
 
     private String obtenerMes(LocalDate fecha) {
+
         return fecha.getMonth().toString();
     }
 
@@ -455,6 +489,7 @@ public class ControladorRegistroCronogramaActividadesGUI {
     }
 
     public void setDatosIniciales(String matriculaEstudiante) {
+
         this.matriculaEstudiante = matriculaEstudiante;
     }
 }

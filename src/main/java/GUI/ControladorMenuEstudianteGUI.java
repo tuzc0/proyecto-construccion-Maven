@@ -1,5 +1,6 @@
 package GUI;
 
+import GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividadesGUI;
 import GUI.gestionproyecto.asignacionproyecto.ControladorDetallesAsignacionProyectoGUI;
 import GUI.utilidades.Utilidades;
 import javafx.fxml.FXML;
@@ -173,7 +174,29 @@ public class ControladorMenuEstudianteGUI {
     @FXML
     public void abrirRegistrarCronogramaActividades() {
 
-        utilidades.mostrarVentana("/RegistroCronogramaActividadesGUI.fxml");
+        try {
+
+            FXMLLoader cargarVentana = new FXMLLoader(getClass().getResource("/RegistroCronogramaActividadesGUI.fxml"));
+            Parent root = cargarVentana.load();
+
+            ControladorRegistroCronogramaActividadesGUI controlador = cargarVentana.getController();
+            controlador.setDatosIniciales(matricula);
+
+            Stage stage = new Stage();
+            stage.setTitle("Registrar Cronograma de Actividades");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+        } catch (IOException e) {
+
+            logger.error("Error al abrir la ventana RegistrarCronogramaActividadesGUI: " + e);
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error al intentar abrir la ventana",
+                    "Por favor, inténtelo de nuevo más tarde."
+            );
+        }
     }
 
     @FXML

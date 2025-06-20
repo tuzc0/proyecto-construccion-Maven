@@ -380,6 +380,42 @@ public class EstudianteDAO implements IEstudianteDAO {
         return estudiantes;
     }
 
+    public List<EstudianteDTO> obtenerEstudiantesActivosConCalificacionPorNRC(int nrc) throws SQLException, IOException {
+        List<EstudianteDTO> estudiantesActivos = new ArrayList<>();
+
+        String consultaSql = """
+        SELECT e.matricula, ve.nombre, ve.apellidos, e.idUsuario, e.idProyecto, e.calificacionFinal, e.NRC
+        FROM estudiante e
+        JOIN vista_estudiante ve ON e.matricula = ve.matricula
+        WHERE e.NRC = ? AND ve.estadoActivo = 1
+    """;
+
+        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+             PreparedStatement sentencia = conexionBaseDeDatos.prepareStatement(consultaSql)) {
+
+            sentencia.setInt(1, nrc);
+
+            try (ResultSet resultado = sentencia.executeQuery()) {
+                while (resultado.next()) {
+                    EstudianteDTO estudiante = new EstudianteDTO(
+                            resultado.getInt("idUsuario"),
+                            resultado.getString("nombre"),
+                            resultado.getString("apellidos"),
+                            resultado.getString("matricula"),
+                            1, // estadoActivo
+                            resultado.getInt("idProyecto"),
+                            resultado.getInt("NRC"),
+                            resultado.getFloat("calificacionFinal")
+
+                    );
+                    estudiantesActivos.add(estudiante);
+                }
+            }
+        }
+
+        return estudiantesActivos;
+    }
+
     public List<EstudianteDTO> listarEstudiantesNoEvaluados(int numeroPersonal) throws SQLException, IOException {
         String ConsultaSql = """
         SELECT DISTINCT ve.matricula, ve.nombre, ve.apellidos 

@@ -2,6 +2,7 @@ package GUI;
 
 import GUI.gestionestudiante.AuxiliarGestionEstudiante;
 import GUI.utilidades.Utilidades;
+import javafx.beans.property.SimpleFloatProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 public class ControladorRegistrarCalificacionFinalGUI {
@@ -24,7 +26,7 @@ public class ControladorRegistrarCalificacionFinalGUI {
     @FXML private TableView<EstudianteDTO> tablaAsignacion;
     @FXML private TableColumn<EstudianteDTO, String> columnaMatricula;
     @FXML private TableColumn<EstudianteDTO, String> columnaNombre;
-    @FXML private TableColumn<EstudianteDTO, Double> columnaCalificacion;
+    @FXML private TableColumn<EstudianteDTO, Float> columnaCalificacion;
     @FXML private TableColumn<EstudianteDTO, Void> columnaAccion;  // Nueva columna de acción
 
     private Utilidades utilidades = new Utilidades();
@@ -45,15 +47,8 @@ public class ControladorRegistrarCalificacionFinalGUI {
                         cellData.getValue().getNombre() + " " + cellData.getValue().getApellido()
                 ));
 
-        // Mostrar calificación existente
-        columnaCalificacion.setCellValueFactory(new PropertyValueFactory<>("calificacionFinal"));
-        columnaCalificacion.setCellFactory(column -> new TableCell<EstudianteDTO, Double>() {
-            @Override
-            protected void updateItem(Double item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty || item == null ? "" : String.format("%.2f", item));
-            }
-        });
+        columnaCalificacion.setCellValueFactory(cellData ->
+                new SimpleFloatProperty(cellData.getValue().getCalificacion()).asObject());
 
         // Configurar columna de acción con botón
         columnaAccion.setCellFactory(crearBotonAsignarCalificacion());
@@ -87,23 +82,35 @@ public class ControladorRegistrarCalificacionFinalGUI {
 
     private void cargarEstudiantes() {
         try {
-            // Obtener NRC del grupo actual
+            // 1. Obtener NRC
             nrcGrupo = new AuxiliarGestionEstudiante().obtenerNRC();
+            LOGGER.info("Intentando cargar estudiantes para NRC: {}", nrcGrupo);
 
+            // 2. Obtener estudiantes
             EstudianteDAO estudianteDAO = new EstudianteDAO();
-            ObservableList<EstudianteDTO> estudiantes = FXCollections.observableArrayList(
-                    estudianteDAO.obtenerEstudiantesActivosPorNRC(nrcGrupo)
-            );
+            List<EstudianteDTO> estudiantesBD = estudianteDAO.obtenerEstudiantesActivosConCalificacionPorNRC(nrcGrupo);
+            LOGGER.info("Estudiantes obtenidos de BD: {}", estudiantesBD.size());
 
+            // 3. Convertir a ObservableList
+            ObservableList<EstudianteDTO> estudiantes = FXCollections.observableArrayList();
+            estudiantes.addAll(estudiantesBD);
+
+            // 4. Asignar a tabla
             tablaAsignacion.setItems(estudiantes);
+            LOGGER.info("Items en tabla: {}", tablaAsignacion.getItems().size());
 
+            // 5. Forzar actualización de la tabla
+            tablaAsignacion.refresh();
+
+        } catch (SQLException e) {
+            LOGGER.error("Error de SQL al cargar estudiantes: ", e);
+            utilidades.mostrarAlerta("Error BD", "Error de base de datos", e.getMessage());
+        } catch (IOException e) {
+            LOGGER.error("Error de IO al cargar estudiantes: ", e);
+            utilidades.mostrarAlerta("Error IO", "Error de archivos", e.getMessage());
         } catch (Exception e) {
-            LOGGER.error("Error al cargar estudiantes: ", e);
-            utilidades.mostrarAlerta(
-                    "Error",
-                    "No se pudieron cargar los estudiantes",
-                    "Detalle: " + e.getMessage()
-            );
+            LOGGER.error("Error inesperado al cargar estudiantes: ", e);
+            utilidades.mostrarAlerta("Error", "Error inesperado", e.getMessage());
         }
     }
 

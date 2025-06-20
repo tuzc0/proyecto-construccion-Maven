@@ -9495,3 +9495,36 @@ javafx.fxml.LoadException: Error resolving onAction='#abrirDetallesAsignacionCom
 	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
 	at java.lang.Thread.run(Thread.java:1570) [?:?]
 2025-06-20 03:39:37 [JavaFX Application Thread] INFO  GUI.ControladorMenuEstudianteGUI - No se encontró una autoevaluación vinculada a la matrícula: S20010005
+2025-06-20 03:49:14 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error inesperado: javax.crypto.IllegalBlockSizeException: Input length must be multiple of 16 when decrypting with padded cipher
+2025-06-20 03:49:47 [JavaFX Application Thread] INFO  GUI.ControladorMenuEstudianteGUI - Se encontró una autoevaluación vinculada a la matrícula: S23014091
+2025-06-20 03:54:07 [JavaFX Application Thread] INFO  GUI.gestionproyecto.ControladorRegistroProyectoGUI - Registro de proyecto exitoso.
+2025-06-20 04:05:02 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error inesperado: javax.crypto.IllegalBlockSizeException: Input length must be multiple of 16 when decrypting with padded cipher
+2025-06-20 04:05:31 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Intentando cargar estudiantes para NRC: 130
+2025-06-20 04:05:31 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Estudiantes obtenidos de BD: 0
+2025-06-20 04:05:31 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Items en tabla: 0
+2025-06-20 04:07:31 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Intentando cargar estudiantes para NRC: 130
+2025-06-20 04:07:31 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Estudiantes obtenidos de BD: 0
+2025-06-20 04:07:31 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Items en tabla: 0
+2025-06-20 04:15:56 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Intentando cargar estudiantes para NRC: 130
+2025-06-20 04:15:56 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Estudiantes obtenidos de BD: 0
+2025-06-20 04:15:56 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Items en tabla: 0
+2025-06-20 04:18:20 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error inesperado: javax.crypto.IllegalBlockSizeException: Input length must be multiple of 16 when decrypting with padded cipher
+2025-06-20 04:18:30 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Intentando cargar estudiantes para NRC: 130
+2025-06-20 04:18:30 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Estudiantes obtenidos de BD: 0
+2025-06-20 04:18:30 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Items en tabla: 0
+2025-06-20 04:20:33 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Intentando cargar estudiantes para NRC: 130
+2025-06-20 04:20:33 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Estudiantes obtenidos de BD: 1
+2025-06-20 04:20:33 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Items en tabla: 1
+2025-06-20 04:20:53 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Calificación asignada: S12343333 -> 1.0
+2025-06-20 04:21:30 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Intentando cargar estudiantes para NRC: 130
+2025-06-20 04:21:30 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Estudiantes obtenidos de BD: 1
+2025-06-20 04:21:30 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Items en tabla: 1
+2025-06-20 05:32:44 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Intentando cargar estudiantes para NRC: 130
+2025-06-20 05:32:44 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Estudiantes obtenidos de BD: 1
+2025-06-20 05:32:44 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Items en tabla: 1
+2025-06-20 05:37:49 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Intentando cargar estudiantes para NRC: 130
+2025-06-20 05:37:49 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Estudiantes obtenidos de BD: 1
+2025-06-20 05:37:49 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Items en tabla: 1
+2025-06-20 05:40:38 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Intentando cargar estudiantes para NRC: 130
+2025-06-20 05:40:38 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Estudiantes obtenidos de BD: 1
+2025-06-20 05:40:38 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Items en tabla: 1

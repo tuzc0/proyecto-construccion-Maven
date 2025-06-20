@@ -12,7 +12,7 @@ public class ValidadorDatosProyecto {
     private static final Pattern PATRON_USUARIOS_DIRECTOS_INDIRECTOS_ESTUDIANTES_REQUERIDOS =
             Pattern.compile("^[0-9]+$");
 
-    private static final Pattern PATRON_NOMBRE_PROYECTO = Pattern.compile("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$");
+    private static final Pattern PATRON_NOMBRE_PROYECTO = Pattern.compile("^[\\w\\s\\p{Punct}áéíóúÁÉÍÓÚñÑ]+$");
 
     private static boolean usuarioValido(String numeroUsuarios) {
 
@@ -25,8 +25,8 @@ public class ValidadorDatosProyecto {
 
     private boolean validarTextoCamposProyecto(String texto) {
 
-        String[] caracteres = texto.trim().split("\\s+");
-        return caracteres.length >= 3 && texto.length() <= 255;
+        String[] palabras = texto.trim().split("\\s+");
+        return palabras.length >= 3 && texto.length() <= 255;
     }
 
     public List<String> camposNumericosInvalidos(String usuariosDirectos, String usuariosIndirectos,

@@ -5,10 +5,12 @@ import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import logica.DTOs.ActividadDTO;
 import logica.verificacion.VerificacionDeActividad;
+import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.Logger;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -26,6 +28,9 @@ public class ControladorRegistroActividadGUI {
     @FXML private DatePicker fechaFinActividad;
     @FXML private Button botonAñadir;
     @FXML private Button botonCancelar;
+    @FXML private Label etiquetaContadorNombreActividad;
+    @FXML private Label etiquetaContadorDuracion;
+    @FXML private Label etiquetaContadorHitos;
 
     private ControladorRegistroCronogramaActividadesGUI controladorCronogramaActividadesGUI;
     private String matriculaEstudiante;
@@ -33,6 +38,19 @@ public class ControladorRegistroActividadGUI {
 
     @FXML
     private void initialize() {
+
+        final int MAX_CARACTERES_NOMBRE_ACTIVIDAD = 255;
+        final int MAX_CARACTERES_DURACION_ACTIVIDAD = 50;
+        final int MAX_CARACTERES_HITOS_ACTIVIDAD = 100;
+
+        VerificicacionGeneral verificacionGeneralUtilidad = new VerificicacionGeneral();
+
+        verificacionGeneralUtilidad.contadorCaracteresTextField(campoNombreActividad,
+                etiquetaContadorNombreActividad, MAX_CARACTERES_NOMBRE_ACTIVIDAD);
+        verificacionGeneralUtilidad.contadorCaracteresTextField(campoDuracion,
+                etiquetaContadorDuracion, MAX_CARACTERES_DURACION_ACTIVIDAD);
+        verificacionGeneralUtilidad.contadorCaracteresTextField(campoHitos,
+                etiquetaContadorHitos, MAX_CARACTERES_HITOS_ACTIVIDAD);
 
         botonAñadir.setCursor(Cursor.HAND);
         botonCancelar.setCursor(Cursor.HAND);

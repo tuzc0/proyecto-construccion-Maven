@@ -7,36 +7,58 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="489.0" prefWidth="788.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorConsultarEstudiantesAEvaluarGUI">
-   <children>
-      <Label layoutX="254.0" layoutY="24.0" text="Estudiantes a evaluar">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-      </Label>
-      <TableView fx:id="tablaEstudiantes" layoutX="34.0" layoutY="115.0" prefHeight="334.0" prefWidth="745.0">
+<BorderPane style="-fx-background-color: #f5f7fa; -fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorConsultarEstudiantesAEvaluarGUI">
+
+   <!-- Encabezado -->
+   <top>
+      <VBox alignment="CENTER" spacing="10">
+         <Label style="-fx-text-fill: #2c3e50; -fx-font-weight: bold;" text="Estudiantes a Evaluar">
+            <font>
+               <Font name="System Bold" size="28.0" />
+            </font>
+         </Label>
+
+         <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);">
+            <TextField fx:id="campoMatricula" promptText="Ingrese matrícula (Ej. S12345678)" style="-fx-background-radius: 4; -fx-border-color: #d6d6d6; -fx-border-radius: 4; -fx-pref-width: 400;">
+               <font>
+                  <Font fx:id="normalFont0" name="System" size="14.0" />
+               </font></TextField>
+
+            <Button fx:id="botonBuscar" onAction="#buscarEstudiante" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4; -fx-pref-width: 120; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);" text="Buscar">
+               <graphic>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" preserveRatio="true">
+                     <image>
+                        <Image url="@/lupa.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+         </HBox>
+      </VBox>
+   </top>
+
+   <!-- Contenido principal -->
+   <center>
+      <TableView fx:id="tablaEstudiantes" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);">
          <columns>
-            <TableColumn fx:id="columnaMatricula" prefWidth="158.39996719360352" text="matricula" />
-            <TableColumn fx:id="columnaNombres" prefWidth="216.7999725341797" text="nombres" />
-            <TableColumn fx:id="columnaApellidos" prefWidth="241.60006713867188" text="apellidos" />
-            <TableColumn fx:id="columnaEvaluar" prefWidth="126.4000244140625" />
+            <TableColumn fx:id="columnaMatricula" prefWidth="150" style="-fx-alignment: CENTER; -fx-font-weight: bold;" text="Matrícula" />
+            <TableColumn fx:id="columnaNombres" prefWidth="200" text="Nombres" />
+            <TableColumn fx:id="columnaApellidos" prefWidth="200" text="Apellidos" />
+            <TableColumn fx:id="columnaEvaluar" prefWidth="150" style="-fx-alignment: CENTER;" text="Acción" />
          </columns>
       </TableView>
-      <TextField fx:id="campoMatricula" layoutX="34.0" layoutY="72.0" prefHeight="26.0" prefWidth="585.0" promptText="Ej. S12345678" />
-      <Button fx:id="botonBuscar" layoutX="632.0" layoutY="71.0" mnemonicParsing="false" onAction="#buscarEstudiante" prefHeight="28.0" prefWidth="142.0" text="Buscar">
-         <graphic>
-            <ImageView fitHeight="20.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@/lupa.png" />
-               </image>
-            </ImageView>
-         </graphic>
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Button>
-   </children>
-</Pane>
+   </center>
+
+   <!-- Definición de fuentes -->
+   <stylesheets>
+      <Font fx:id="normalFont" name="System" size="14.0" />
+   </stylesheets>
+</BorderPane>

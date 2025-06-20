@@ -9528,3 +9528,16 @@ javafx.fxml.LoadException: Error resolving onAction='#abrirDetallesAsignacionCom
 2025-06-20 05:40:38 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Intentando cargar estudiantes para NRC: 130
 2025-06-20 05:40:38 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Estudiantes obtenidos de BD: 1
 2025-06-20 05:40:38 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Items en tabla: 1
+2025-06-20 05:43:59 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Intentando cargar estudiantes para NRC: 130
+2025-06-20 05:43:59 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Estudiantes obtenidos de BD: 1
+2025-06-20 05:43:59 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Items en tabla: 1
+2025-06-20 05:44:53 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Intentando cargar estudiantes para NRC: 130
+2025-06-20 05:44:54 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Estudiantes obtenidos de BD: 2
+2025-06-20 05:44:54 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Items en tabla: 2
+2025-06-20 05:45:01 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Intentando cargar estudiantes para NRC: 130
+2025-06-20 05:45:01 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Estudiantes obtenidos de BD: 2
+2025-06-20 05:45:01 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Items en tabla: 2
+2025-06-20 05:45:10 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Calificación asignada: S12343333 -> 10.0
+2025-06-20 05:50:48 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Intentando cargar estudiantes para NRC: 130
+2025-06-20 05:50:48 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Estudiantes obtenidos de BD: 2
+2025-06-20 05:50:48 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Items en tabla: 2

@@ -1,8 +1,7 @@
 package GUI.gestionproyecto;
 
+import GUI.GestorHorarios;
 import GUI.utilidades.Utilidades;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
@@ -16,15 +15,13 @@ import logica.DTOs.ProyectoDTO;
 import logica.DTOs.RepresentanteDTO;
 import logica.interfaces.ISeleccionRepresentante;
 import logica.utilidadesproyecto.SeleccionRepresentanteOrganizacion;
-import logica.verificacion.VerificadorDatosProyecto;
+import logica.verificacion.ValidadorDatosProyecto;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Time;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -110,23 +107,23 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
     @FXML
     private Label etiquetaDuracion;
     @FXML
-    private Label contadorNombre;
+    private Label etiquetaContadorNombre;
     @FXML
-    private Label contadorDescripcionGeneral;
+    private Label etiquetaContadorDescripcionGeneral;
     @FXML
-    private Label contadorObjetivosGenerales;
+    private Label etiquetaContadorObjetivosGenerales;
     @FXML
-    private Label contadorObjetivosInmediatos;
+    private Label etiquetaContadorObjetivosInmediatos;
     @FXML
-    private Label contadorObjetivosMediatos;
+    private Label etiquetaContadorObjetivosMediatos;
     @FXML
-    private Label contadorMetodologia;
+    private Label etiquetaContadorMetodologia;
     @FXML
-    private Label contadorRecursos;
+    private Label etiquetaContadorRecursos;
     @FXML
-    private Label contadorActividades;
+    private Label etiquetaContadorActividades;
     @FXML
-    private Label contadorResponsabilidades;
+    private Label etiquetaContadorResponsabilidades;
     @FXML
     private Button botonRegistrar;
     @FXML
@@ -134,8 +131,7 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
     @FXML
     private Button botonSeleccionarRepresentante;
 
-
-
+    GestorHorarios gestorHorarios;
     private final Utilidades UTILIDADES = new Utilidades();
 
     @FXML
@@ -147,122 +143,73 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
         VerificicacionGeneral verificacionGeneralUtilidad = new VerificicacionGeneral();
 
         verificacionGeneralUtilidad.contadorCaracteresTextField(campoNombre,
-                contadorNombre, MAX_CARACTERES_NOMBRE);
+                etiquetaContadorNombre, MAX_CARACTERES_NOMBRE);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoDescripcionGeneral,
-                contadorDescripcionGeneral, MAX_CARACTERES_CAMPOS_TEXTO);
+                etiquetaContadorDescripcionGeneral, MAX_CARACTERES_CAMPOS_TEXTO);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoObjetivosGenerales,
-                contadorObjetivosGenerales, MAX_CARACTERES_CAMPOS_TEXTO);
+                etiquetaContadorObjetivosGenerales, MAX_CARACTERES_CAMPOS_TEXTO);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoObjetivosInmediatos,
-                contadorObjetivosInmediatos, MAX_CARACTERES_CAMPOS_TEXTO);
+                etiquetaContadorObjetivosInmediatos, MAX_CARACTERES_CAMPOS_TEXTO);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoObjetivosMediatos,
-                contadorObjetivosMediatos, MAX_CARACTERES_CAMPOS_TEXTO);
+                etiquetaContadorObjetivosMediatos, MAX_CARACTERES_CAMPOS_TEXTO);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoMetodologia,
-                contadorMetodologia, MAX_CARACTERES_CAMPOS_TEXTO);
+                etiquetaContadorMetodologia, MAX_CARACTERES_CAMPOS_TEXTO);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoRecursos,
-                contadorRecursos, MAX_CARACTERES_CAMPOS_TEXTO);
+                etiquetaContadorRecursos, MAX_CARACTERES_CAMPOS_TEXTO);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoActividades,
-                contadorActividades, MAX_CARACTERES_CAMPOS_TEXTO);
+                etiquetaContadorActividades, MAX_CARACTERES_CAMPOS_TEXTO);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoResponsabilidades,
-                contadorResponsabilidades, MAX_CARACTERES_CAMPOS_TEXTO);
+                etiquetaContadorResponsabilidades, MAX_CARACTERES_CAMPOS_TEXTO);
 
-        ObservableList<String> listaHoras = FXCollections.observableArrayList();
-        ObservableList<String> listaMinutos = FXCollections.observableArrayList();
+        gestorHorarios = new GestorHorarios();
 
-        final int HORAS_POR_DIA = 24;
-        final int MINUTOS_POR_HORA = 60;
+        gestorHorarios.agregarDia(checkLunes, comboHoraLunesInicio, comboMinutosLunesInicio,
+                comboHoraLunesFin, comboMinutosLunesFin);
+        gestorHorarios.agregarDia(checkMartes, comboHoraMartesInicio, comboMinutosMartesInicio,
+                comboHoraMartesFin, comboMinutosMartesFin);
+        gestorHorarios.agregarDia(checkMiercoles, comboHoraMiercolesInicio, comboMinutosMiercolesInicio,
+                comboHoraMiercolesFin, comboMinutosMiercolesFin);
+        gestorHorarios.agregarDia(checkJueves, comboHoraJuevesInicio, comboMinutosJuevesInicio,
+                comboHoraJuevesFin, comboMinutosJuevesFin);
+        gestorHorarios.agregarDia(checkViernes, comboHoraViernesInicio, comboMinutosViernesInicio,
+                comboHoraViernesFin, comboMinutosViernesFin);
 
-        for (int hora = 0; hora < HORAS_POR_DIA; hora++) {
-            listaHoras.add(String.format("%02d", hora));
-        }
-
-        for (int minuto = 0; minuto < MINUTOS_POR_HORA; minuto++) {
-            listaMinutos.add(String.format("%02d", minuto));
-        }
-
-        comboHoraLunesInicio.setItems(listaHoras);
-        comboHoraLunesFin.setItems(listaHoras);
-        comboMinutosLunesInicio.setItems(listaMinutos);
-        comboMinutosLunesFin.setItems(listaMinutos);
-
-        comboHoraMartesInicio.setItems(listaHoras);
-        comboHoraMartesFin.setItems(listaHoras);
-        comboMinutosMartesInicio.setItems(listaMinutos);
-        comboMinutosMartesFin.setItems(listaMinutos);
-
-        comboHoraMiercolesInicio.setItems(listaHoras);
-        comboHoraMiercolesFin.setItems(listaHoras);
-        comboMinutosMiercolesInicio.setItems(listaMinutos);
-        comboMinutosMiercolesFin.setItems(listaMinutos);
-
-        comboHoraJuevesInicio.setItems(listaHoras);
-        comboHoraJuevesFin.setItems(listaHoras);
-        comboMinutosJuevesInicio.setItems(listaMinutos);
-        comboMinutosJuevesFin.setItems(listaMinutos);
-
-        comboHoraViernesInicio.setItems(listaHoras);
-        comboHoraViernesFin.setItems(listaHoras);
-        comboMinutosViernesInicio.setItems(listaMinutos);
-        comboMinutosViernesFin.setItems(listaMinutos);
+        gestorHorarios.inicializarCombosHorarios();
+        gestorHorarios.configurarHabilitacionPorDia();
 
         botonRegistrar.setCursor(Cursor.HAND);
         botonCancelar.setCursor(Cursor.HAND);
         botonSeleccionarRepresentante.setCursor(Cursor.HAND);
-
-        configurarHabilitacionDeHorariosPorDia();
-    }
-
-    private void configurarHabilitacionDeHorariosPorDia() {
-
-        Map<CheckBox, List<ComboBox<String>>> diasConSusHorarios = Map.of(
-                checkLunes, List.of(comboHoraLunesInicio, comboMinutosLunesInicio,
-                        comboHoraLunesFin, comboMinutosLunesFin),
-                checkMartes, List.of(comboHoraMartesInicio, comboMinutosMartesInicio,
-                        comboHoraMartesFin, comboMinutosMartesFin),
-                checkMiercoles, List.of(comboHoraMiercolesInicio, comboMinutosMiercolesInicio,
-                        comboHoraMiercolesFin, comboMinutosMiercolesFin),
-                checkJueves, List.of(comboHoraJuevesInicio, comboMinutosJuevesInicio,
-                        comboHoraJuevesFin, comboMinutosJuevesFin),
-                checkViernes, List.of(comboHoraViernesInicio, comboMinutosViernesInicio,
-                        comboHoraViernesFin, comboMinutosViernesFin)
-        );
-
-        diasConSusHorarios.forEach((diaCheckBox, listaDeCombosHorario) -> {
-            diaCheckBox.selectedProperty().addListener((observable, valorAnterior,
-                                                        valorActual) -> {
-                listaDeCombosHorario.forEach(comboHorario ->
-                        comboHorario.setDisable(!valorActual));
-            });
-        });
     }
 
     @FXML
     private void registrarProyecto() {
 
-        String nombreProyecto = campoNombre.getText();
-        String descripcionProyecto = textoDescripcionGeneral.getText();
-        String objetivosGeneralesProyecto = textoObjetivosGenerales.getText();
-        String objetivosInmediatosProyecto = textoObjetivosInmediatos.getText();
-        String objetivosMediatosProyecto = textoObjetivosMediatos.getText();
-        String metodologiaProyecto = textoMetodologia.getText();
-        String recursosProyecto = textoRecursos.getText();
-        String actividadesProyecto = textoActividades.getText();
-        String responsabilidadesProyecto = textoResponsabilidades.getText();
-        String duracionProyecto = etiquetaDuracion.getText();
-        String textoUsuariosDirectos = campoUsuariosDirectos.getText();
-        String textoUsuariosIndirectos = campoUsuariosIndirectos.getText();
-        String textoEstudiantesRequeridos = campoEstudianteRequeridos.getText();
+        String nombreProyecto = campoNombre.getText().trim();
+        String descripcionProyecto = textoDescripcionGeneral.getText().trim();
+        String objetivosGeneralesProyecto = textoObjetivosGenerales.getText().trim();
+        String objetivosInmediatosProyecto = textoObjetivosInmediatos.getText().trim();
+        String objetivosMediatosProyecto = textoObjetivosMediatos.getText().trim();
+        String metodologiaProyecto = textoMetodologia.getText().trim();
+        String recursosProyecto = textoRecursos.getText().trim();
+        String actividadesProyecto = textoActividades.getText().trim();
+        String responsabilidadesProyecto = textoResponsabilidades.getText().trim();
+        String duracionProyecto = etiquetaDuracion.getText().trim();
+        String textoUsuariosDirectos = campoUsuariosDirectos.getText().trim();
+        String textoUsuariosIndirectos = campoUsuariosIndirectos.getText().trim();
+        String textoEstudiantesRequeridos = campoEstudianteRequeridos.getText().trim();
 
-        VerificadorDatosProyecto verificadorDatosProyecto = new VerificadorDatosProyecto();
+        ValidadorDatosProyecto validadorDatosProyecto = new ValidadorDatosProyecto();
 
-        List<String> camposFaltantes = verificadorDatosProyecto.camposVaciosProyecto(
-                nombreProyecto, descripcionProyecto, objetivosGeneralesProyecto,
+        ProyectoDTO proyectoDTO = new ProyectoDTO(nombreProyecto, objetivosGeneralesProyecto,
                 objetivosInmediatosProyecto, objetivosMediatosProyecto, metodologiaProyecto,
-                recursosProyecto, actividadesProyecto, responsabilidadesProyecto,
-                textoUsuariosDirectos, textoUsuariosIndirectos, textoEstudiantesRequeridos);
+                recursosProyecto, actividadesProyecto, responsabilidadesProyecto, descripcionProyecto);
 
-        if (!camposFaltantes.isEmpty()) {
+        List<String> camposVacios = validadorDatosProyecto.camposVaciosProyecto(proyectoDTO);
 
-            String mensajeError = String.join("\n", camposFaltantes);
+        if (!camposVacios.isEmpty()) {
+
+            String mensajeError = String.join("\n", camposVacios);
             UTILIDADES.mostrarAlerta(
                     "Campos vacíos",
                     "Por favor, complete todos los campos requeridos.",
@@ -271,18 +218,28 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
             return;
         }
 
-        List<String> erroresDeValidacion = verificadorDatosProyecto.validarCamposProyecto(
-                nombreProyecto, descripcionProyecto, objetivosGeneralesProyecto,
-                objetivosInmediatosProyecto, objetivosMediatosProyecto, metodologiaProyecto,
-                recursosProyecto, actividadesProyecto, responsabilidadesProyecto,
-                textoUsuariosDirectos, textoUsuariosIndirectos, textoEstudiantesRequeridos);
+        List<String> camposErroneos = validadorDatosProyecto.validarCamposProyecto(proyectoDTO);
 
-        if (!erroresDeValidacion.isEmpty()) {
+        if (!camposErroneos.isEmpty()) {
 
-            String mensajeError = String.join("\n", erroresDeValidacion);
+            String mensajeError = String.join("\n", camposErroneos);
             UTILIDADES.mostrarAlerta(
                     "Errores de validación",
                     "Por favor, ingrese información válida en los campos.",
+                    mensajeError
+            );
+            return;
+        }
+
+        List<String> usuariosInvalidos = validadorDatosProyecto.camposNumericosInvalidos(textoUsuariosDirectos,
+                textoUsuariosIndirectos, textoEstudiantesRequeridos);
+
+        if (!usuariosInvalidos.isEmpty()) {
+
+            String mensajeError = String.join("\n", usuariosInvalidos);
+            UTILIDADES.mostrarAlerta(
+                    "Campos vacíos",
+                    "Por favor, complete todos los campos requeridos.",
                     mensajeError
             );
             return;
@@ -323,8 +280,6 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
             );
             return;
         }
-
-        ProyectoDTO proyectoDTO;
 
         int idRepresentante = representanteSeleccionado.getIDRepresentante();
         int usuariosDirectos = Integer.parseInt(textoUsuariosDirectos);
@@ -460,6 +415,47 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
         );
     }
 
+    private boolean validarDiasSeleccionados() {
+        return gestorHorarios.validarDiasSeleccionados();
+    }
+
+    private List<String> validarHorarios() {
+        return gestorHorarios.validarHorarios();
+    }
+
+    private boolean insertarHorarios(int idProyecto) throws SQLException, IOException {
+
+        HorarioProyectoDAO horarioDAO = new HorarioProyectoDAO();
+
+        Map<CheckBox, List<ComboBox<String>>> diasConHorarios = gestorHorarios.obtenerDiasConHorarios();
+        boolean horariosInsertados = false;
+
+        for (Map.Entry<CheckBox, List<ComboBox<String>>> entrada : diasConHorarios.entrySet()) {
+
+            CheckBox diaSeleccionado = entrada.getKey();
+            List<ComboBox<String>> horarios = entrada.getValue();
+
+            if (diaSeleccionado.isSelected() && gestorHorarios.verificarHorarioDia(horarios)) {
+
+                String diaSemana = gestorHorarios.obtenerNombreDia(diaSeleccionado);
+                int horaInicio = Integer.parseInt(horarios.get(0).getValue());
+                int minutoInicio = Integer.parseInt(horarios.get(1).getValue());
+                int horaFin = Integer.parseInt(horarios.get(2).getValue());
+                int minutoFin = Integer.parseInt(horarios.get(3).getValue());
+                Time horaInicioSQL = Time.valueOf(String.format("%02d:%02d:00", horaInicio, minutoInicio));
+                Time horaFinSQL = Time.valueOf(String.format("%02d:%02d:00", horaFin, minutoFin));
+
+                HorarioProyectoDTO horarioDTO = new HorarioProyectoDTO(
+                        0, idProyecto, diaSemana, horaInicioSQL, horaFinSQL, null
+                );
+
+                horariosInsertados = horarioDAO.crearNuevoHorarioProyecto(horarioDTO);
+            }
+        }
+
+        return horariosInsertados;
+    }
+
     @Override
     public void actualizarRepresentanteYOrganizacion() {
 
@@ -485,151 +481,5 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
         if (controlador != null) {
             controlador.setControladorPadre(this);
         }
-    }
-
-    private Map<CheckBox, List<ComboBox<String>>> obtenerDiasConSusHorarios() {
-
-        return Map.of(
-
-                checkLunes, List.of(
-                        comboHoraLunesInicio, comboMinutosLunesInicio,
-                        comboHoraLunesFin, comboMinutosLunesFin
-                ),
-                checkMartes, List.of(
-                        comboHoraMartesInicio, comboMinutosMartesInicio,
-                        comboHoraMartesFin, comboMinutosMartesFin
-                ),
-                checkMiercoles, List.of(
-                        comboHoraMiercolesInicio, comboMinutosMiercolesInicio,
-                        comboHoraMiercolesFin, comboMinutosMiercolesFin
-                ),
-                checkJueves, List.of(
-                        comboHoraJuevesInicio, comboMinutosJuevesInicio,
-                        comboHoraJuevesFin, comboMinutosJuevesFin
-                ),
-                checkViernes, List.of(
-                        comboHoraViernesInicio, comboMinutosViernesInicio,
-                        comboHoraViernesFin, comboMinutosViernesFin
-                )
-        );
-    }
-
-    private boolean insertarHorarios(int idProyecto) throws SQLException, IOException {
-
-        Map<CheckBox, List<ComboBox<String>>> diasConHorarios = obtenerDiasConSusHorarios();
-        HorarioProyectoDAO horarioDAO = new HorarioProyectoDAO();
-        boolean horariosInsertados = false;
-
-        for (Map.Entry<CheckBox, List<ComboBox<String>>> entrada : diasConHorarios.entrySet()) {
-
-            CheckBox diaSeleccionado = entrada.getKey();
-            List<ComboBox<String>> horarios = entrada.getValue();
-
-            if (diaSeleccionado.isSelected() && verificarHorarioDia(horarios)) {
-
-                String diaSemana = String.valueOf(obtenerNombreDia(diaSeleccionado));
-                int horaInicio = Integer.parseInt(horarios.get(0).getValue());
-                int minutoInicio = Integer.parseInt(horarios.get(1).getValue());
-                int horaFin = Integer.parseInt(horarios.get(2).getValue());
-                int minutoFin = Integer.parseInt(horarios.get(3).getValue());
-                int idHorario = 0;
-                String idEstudiante = null;
-
-                Time horaInicioSQL = Time.valueOf(String.format("%02d:%02d:00", horaInicio, minutoInicio));
-                Time horaFinSQL = Time.valueOf(String.format("%02d:%02d:00", horaFin, minutoFin));
-
-                HorarioProyectoDTO horarioDTO = new HorarioProyectoDTO(
-                        idHorario,
-                        idProyecto,
-                        diaSemana,
-                        horaInicioSQL,
-                        horaFinSQL,
-                        idEstudiante
-                );
-
-                horariosInsertados = horarioDAO.crearNuevoHorarioProyecto(horarioDTO);
-            }
-        }
-
-        return horariosInsertados;
-    }
-
-    private boolean validarDiasSeleccionados() {
-
-        return checkLunes.isSelected() ||
-                checkMartes.isSelected() ||
-                checkMiercoles.isSelected() ||
-                checkJueves.isSelected() ||
-                checkViernes.isSelected();
-    }
-
-    private List<String> validarHorarios() {
-
-        Map<CheckBox, List<ComboBox<String>>> diasConHorarios = obtenerDiasConSusHorarios();
-        List<String> listaErrores = new ArrayList<>();
-
-        diasConHorarios.forEach((diaSeleccionado, horarios) -> {
-
-            if (diaSeleccionado.isSelected() && !verificarHorarioDia(horarios)) {
-                listaErrores.add("Horario inválido para " + obtenerNombreDia(diaSeleccionado));
-            }
-        });
-
-        return listaErrores;
-    }
-
-    private List<String> obtenerNombreDia(CheckBox checkBox) {
-
-        List<String> diasSeleccionados = new ArrayList<>();
-
-        if (checkBox == checkLunes) {
-            diasSeleccionados.add("Lunes");
-        }
-
-        if (checkBox == checkMartes) {
-            diasSeleccionados.add("Martes");
-        }
-
-        if (checkBox == checkMiercoles) {
-            diasSeleccionados.add("Miercoles");
-        }
-
-        if (checkBox == checkJueves) {
-            diasSeleccionados.add("Jueves");
-        }
-
-        if (checkBox == checkViernes) {
-            diasSeleccionados.add("Viernes");
-        }
-
-        return diasSeleccionados;
-    }
-
-    private boolean verificarHorarioDia(List<ComboBox<String>> horarios) {
-
-        if (!todosLosCombosTienenValor(horarios)) {
-            return false;
-        }
-
-        int horaInicio = Integer.parseInt(horarios.get(0).getValue());
-        int minutoInicio = Integer.parseInt(horarios.get(1).getValue());
-        int horaFin = Integer.parseInt(horarios.get(2).getValue());
-        int minutoFin = Integer.parseInt(horarios.get(3).getValue());
-
-        return esHorarioCorrecto(horaInicio, minutoInicio, horaFin, minutoFin);
-    }
-
-    private boolean todosLosCombosTienenValor(List<ComboBox<String>> horarios) {
-
-        return horarios.stream().allMatch(combo -> combo.getValue() != null);
-    }
-
-    private boolean esHorarioCorrecto(int horaInicio, int minutoInicio, int horaFin, int minutoFin) {
-
-        if (horaInicio > horaFin) {
-            return false;
-        }
-
-        return horaInicio != horaFin || minutoInicio < minutoFin;
     }
 }

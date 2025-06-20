@@ -1,10 +1,6 @@
 package logica.DTOs;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.regex.Pattern;
-import static logica.verificacion.VerificicacionGeneral.validar;
 
 public class ProyectoDTO {
 
@@ -26,10 +22,25 @@ public class ProyectoDTO {
     private int estudiantesRequeridos;
     private int estudiantesAsignados;
 
-    public ProyectoDTO() {
+    public ProyectoDTO () {
     }
 
-    public ProyectoDTO(int idProyecto, String nombre, String objetivoGeneral,
+    public ProyectoDTO(String nombre, String objetivoGeneral, String objetivosInmediatos, String objetivosMediatos,
+                       String metodologia, String recursos, String actividades, String responsabilidades,
+                       String descripcion) {
+
+        this.nombre = nombre;
+        this.objetivoGeneral = objetivoGeneral;
+        this.objetivosInmediatos = objetivosInmediatos;
+        this.objetivosMediatos = objetivosMediatos;
+        this.metodologia = metodologia;
+        this.recursos = recursos;
+        this.actividades = actividades;
+        this.responsabilidades = responsabilidades;
+        this.descripcion = descripcion;
+    }
+
+    public ProyectoDTO (int idProyecto, String nombre, String objetivoGeneral,
                        String objetivosInmediatos, String objetivosMediatos, String metodologia,
                        String recursos, String actividades, String responsabilidades, String duracion,
                        int estadoActivo, int idRepresentante, String descripcion,
@@ -206,7 +217,7 @@ public class ProyectoDTO {
         return estudiantesRequeridos;
     }
 
-    public void setestudiantesRequeridos(int estudiantesRequeridos) {
+    public void setEstudiantesRequeridos(int estudiantesRequeridos) {
 
         this.estudiantesRequeridos = estudiantesRequeridos;
     }
@@ -260,5 +271,28 @@ public class ProyectoDTO {
                 metodologia, recursos, actividades, responsabilidades, duracion, estadoActivo,
                 idRepresentante, descripcion, usuariosDirectos, usuariosIndirectos,
                 estudiantesRequeridos, estudiantesAsignados);
+    }
+
+    @Override
+    public String toString() {
+        return "ProyectoDTO{" +
+                "idProyecto=" + idProyecto +
+                ", nombre='" + nombre + '\'' +
+                ", objetivoGeneral='" + objetivoGeneral + '\'' +
+                ", objetivosInmediatos='" + objetivosInmediatos + '\'' +
+                ", objetivosMediatos='" + objetivosMediatos + '\'' +
+                ", metodologia='" + metodologia + '\'' +
+                ", recursos='" + recursos + '\'' +
+                ", actividades='" + actividades + '\'' +
+                ", responsabilidades='" + responsabilidades + '\'' +
+                ", duracion='" + duracion + '\'' +
+                ", estadoActivo=" + estadoActivo +
+                ", idRepresentante=" + idRepresentante +
+                ", descripcion='" + descripcion + '\'' +
+                ", usuariosDirectos=" + usuariosDirectos +
+                ", usuariosIndirectos=" + usuariosIndirectos +
+                ", estudiantesRequeridos=" + estudiantesRequeridos +
+                ", estudiantesAsignados=" + estudiantesAsignados +
+                '}';
     }
 }

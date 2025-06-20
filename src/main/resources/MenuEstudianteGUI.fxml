@@ -1,67 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.geometry.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox xmlns="http://javafx.com/javafx/17"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="GUI.ControladorMenuEstudianteGUI"
-      spacing="20" style="-fx-background-color: #f8fafc; -fx-padding: 30;"
-      alignment="TOP_CENTER" prefWidth="800" prefHeight="600">
+<VBox alignment="TOP_CENTER" prefHeight="600" prefWidth="800" spacing="20" style="-fx-background-color: #f8fafc; -fx-padding: 30;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorMenuEstudianteGUI">
 
    <!-- Encabezado -->
-   <Label text="Menú del Estudiante" style="-fx-text-fill: #1e3a8a; -fx-font-weight: bold;">
+   <Label style="-fx-text-fill: #1e3a8a; -fx-font-weight: bold;" text="Menú del Estudiante">
       <font>
          <Font name="System Bold" size="28" />
       </font>
       <effect>
-         <DropShadow color="rgba(0,0,0,0.1)" radius="3" spread="0.3"/>
+         <DropShadow color="rgba(0,0,0,0.1)" radius="3" spread="0.3" />
       </effect>
    </Label>
 
    <!-- Contenedor principal -->
-   <GridPane alignment="CENTER" hgap="20" vgap="15" style="-fx-padding: 20;">
+   <GridPane alignment="CENTER" hgap="20" style="-fx-padding: 20;" vgap="15">
       <columnConstraints>
          <ColumnConstraints prefWidth="350" />
          <ColumnConstraints prefWidth="350" />
       </columnConstraints>
 
       <!-- Primera columna -->
-      <Button text="Ver Perfil" onAction="#abrirEditarPerfilEstudiante"
-              style="-fx-background-color: #e0f2fe; -fx-text-fill: #0369a1; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;"
-              GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+      <Button onAction="#abrirEditarPerfilEstudiante" style="-fx-background-color: #e0f2fe; -fx-text-fill: #0369a1; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;" text="Ver Perfil" GridPane.columnIndex="0" GridPane.rowIndex="0" />
 
-      <Button text="Consultar Proyecto"
-              style="-fx-background-color: #e0f2fe; -fx-text-fill: #0369a1; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;"
-              GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+      <Button onAction="#abrirDetallesAsignacionComoEstudiante" style="-fx-background-color: #e0f2fe; -fx-text-fill: #0369a1; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;" text="Consultar Proyecto" GridPane.columnIndex="0" GridPane.rowIndex="1" />
 
-      <Button text="Registrar Cronograma" onAction="#abrirRegistrarCronogramaActividades"
-              style="-fx-background-color: #dcfce7; -fx-text-fill: #166534; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;"
-              GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+      <Button onAction="#abrirRegistrarCronogramaActividades" style="-fx-background-color: #dcfce7; -fx-text-fill: #166534; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;" text="Registrar Cronograma" GridPane.columnIndex="0" GridPane.rowIndex="2" />
 
-      <Button text="Registrar Reporte Mensual" onAction="#abrirRegistrarReporteMensual"
-              style="-fx-background-color: #dcfce7; -fx-text-fill: #166534; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;"
-              GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+      <Button onAction="#abrirRegistrarReporteMensual" style="-fx-background-color: #dcfce7; -fx-text-fill: #166534; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;" text="Registrar Reporte Mensual" GridPane.columnIndex="0" GridPane.rowIndex="3" />
 
       <!-- Segunda columna -->
-      <Button text="Consultar Evaluaciones" onAction="#abrirConsultarEvaluacionesEstudiante"
-              style="-fx-background-color: #fef3c7; -fx-text-fill: #92400e; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;"
-              GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+      <Button onAction="#abrirConsultarEvaluacionesEstudiante" style="-fx-background-color: #fef3c7; -fx-text-fill: #92400e; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;" text="Consultar Evaluaciones" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-      <Button fx:id="botonRegistrarAutoevaluacion" text="Registrar Autoevaluación" onAction="#abrirRegistrarAutoevaluacion"
-              style="-fx-background-color: #fee2e2; -fx-text-fill: #991b1b; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;"
-              GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+      <Button fx:id="botonRegistrarAutoevaluacion" onAction="#abrirRegistrarAutoevaluacion" style="-fx-background-color: #fee2e2; -fx-text-fill: #991b1b; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;" text="Registrar Autoevaluación" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-      <Button fx:id="botonConsultarAutoevaluacion" text="Consultar Autoevaluación" onAction="#abrirConsultarAutoevaluacion"
-              style="-fx-background-color: #fee2e2; -fx-text-fill: #991b1b; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;"
-              GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+      <Button fx:id="botonConsultarAutoevaluacion" onAction="#abrirConsultarAutoevaluacion" style="-fx-background-color: #fee2e2; -fx-text-fill: #991b1b; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;" text="Consultar Autoevaluación" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
    </GridPane>
 
    <!-- Pie de página -->
-   <Label text="Sistema de Prácticas Profesionales" style="-fx-text-fill: #64748b; -fx-font-style: italic;">
+   <Label style="-fx-text-fill: #64748b; -fx-font-style: italic;" text="Sistema de Prácticas Profesionales">
       <font>
          <Font size="12" />
       </font>

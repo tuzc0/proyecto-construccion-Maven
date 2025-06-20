@@ -12,43 +12,43 @@ import java.util.List;
 
 public class ManejadorDeAccionAsignacion {
 
-    public void mostrarSeleccionProyecto(EstudianteDTO estudiante,
-                                         ControladorAsignacionEstudianteAProyectoGUI controladorPadre,
-                                         List<ProyectoDTO> proyectos) throws IOException {
+    public void abrirVentanaSeleccionProyecto(EstudianteDTO estudiante,
+                                              ControladorAsignacionEstudianteAProyectoGUI controladorPadre,
+                                              List<ProyectoDTO> proyectos) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/SeleccionarProyectoGUI.fxml"));
-        Stage stage = new Stage();
-        stage.setScene(new Scene(loader.load()));
+        Stage escenario = new Stage();
+        escenario.setScene(new Scene(loader.load()));
 
         ControladorSeleccionProyectoGUI controlador = loader.getController();
         controlador.inicializarDatos(estudiante, controladorPadre, proyectos);
 
         if (estudiante.getIdProyecto() == 0) {
-
-            stage.setTitle("Asignar Proyecto");
-
+            escenario.setTitle("Asignar Proyecto");
         } else {
-
-            stage.setTitle("Reasignar Proyecto");
+            escenario.setTitle("Reasignar Proyecto");
         }
 
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
+        escenario.initModality(Modality.APPLICATION_MODAL);
+        escenario.showAndWait();
     }
 
-    public void mostrarDetallesAsignacion(ProyectoDTO proyecto, EstudianteDTO estudiante,
-                                          ControladorAsignacionEstudianteAProyectoGUI controladorPadre) throws IOException {
+    public void abrirVentanaDetallesAsignacionProyecto(ProyectoDTO proyecto, EstudianteDTO estudiante,
+                                                       ControladorAsignacionEstudianteAProyectoGUI controladorPadre)
+            throws IOException {
 
         FXMLLoader cargarVentana = new FXMLLoader(getClass().getResource("/DetallesAsignacionProyectoGUI.fxml"));
         Parent root = cargarVentana.load();
 
         ControladorDetallesAsignacionProyectoGUI controlador = cargarVentana.getController();
+        controlador.setEsVistaDeCoordinador(true);
         controlador.inicializarDatos(proyecto, estudiante, controladorPadre);
+        controlador.configurarVista();
 
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.setTitle("Detalles Asignación");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
+        Stage escenario = new Stage();
+        escenario.setScene(new Scene(root));
+        escenario.setTitle("Detalles Asignación");
+        escenario.initModality(Modality.APPLICATION_MODAL);
+        escenario.showAndWait();
     }
 }

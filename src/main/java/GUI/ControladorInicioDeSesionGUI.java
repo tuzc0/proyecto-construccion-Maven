@@ -160,8 +160,8 @@ public class ControladorInicioDeSesionGUI {
 
             if (academicoEvaluador.getIdUsuario() != -1) {
 
-                utilidades.mostrarVentana("/MenuAcademicoEvaluadorGUI.fxml");
                 numeroDePersonal = academicoEvaluador.getNumeroDePersonal();
+                utilidades.mostrarVentana("/MenuAcademicoEvaluadorGUI.fxml");
                 return;
             }
 
@@ -169,8 +169,8 @@ public class ControladorInicioDeSesionGUI {
 
             if (coordinador.getIdUsuario() != -1) {
 
-                utilidades.mostrarVentana("/MenuCoordinadorGUI.fxml");
                 numeroDePersonal = coordinador.getNumeroDePersonal();
+                utilidades.mostrarVentana("/MenuCoordinadorGUI.fxml");
                 return;
             }
 

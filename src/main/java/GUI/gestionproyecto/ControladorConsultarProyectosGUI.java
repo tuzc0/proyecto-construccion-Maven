@@ -60,36 +60,25 @@ public class ControladorConsultarProyectosGUI {
 
         columnaNombreProyecto.setCellValueFactory(cellData ->
 
-                new SimpleStringProperty(
-                        cellData.getValue()
-                                .getProyecto()
-                                .getNombre()
-                )
+                new SimpleStringProperty(cellData.getValue().getProyecto().getNombre())
         );
 
         columnaNombreRepresentante.setCellValueFactory(cellData ->
 
-                new SimpleStringProperty(
-                        cellData.getValue()
-                                .getRepresentante()
-                                .getNombre() + " " +
-                                cellData.getValue()
-                                        .getRepresentante()
-                                        .getApellidos()
+                new SimpleStringProperty(cellData.getValue().getRepresentante().getNombre() + " " +
+                                cellData.getValue().getRepresentante().getApellidos()
                 )
         );
 
         tablaProyectos.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        tablaProyectos
-                .getSelectionModel()
-                .selectedItemProperty()
-                .addListener((valorObservado,
-                              valorAnterior, nuevoValor) -> {
+        tablaProyectos.getSelectionModel().selectedItemProperty()
+                .addListener((proyectoObservado,
+                              proyectoAnterior, nuevoProyecto) -> {
 
-                    if (nuevoValor != null) {
+                    if (nuevoProyecto != null) {
 
-                        proyectoSeleccionado = nuevoValor.getProyecto();
+                        proyectoSeleccionado = nuevoProyecto.getProyecto();
 
                     } else {
 
@@ -111,28 +100,26 @@ public class ControladorConsultarProyectosGUI {
 
         Callback<TableColumn<ContenedoraOrganizacionProyecto, Void>,
                 TableCell<ContenedoraOrganizacionProyecto, Void>>
-                cellFactory = param -> new TableCell<>() {
+                cellFactory = columnaProyecto -> new TableCell<>() {
 
             private final Button botonVerDetalles = new Button("Ver detalles");
             {
                 botonVerDetalles.setOnAction(evento -> {
-                    ContenedoraOrganizacionProyecto contenedor =
-                            getTableView().getItems().get(getIndex());
+
+                    ContenedoraOrganizacionProyecto contenedor = getTableView().getItems().get(getIndex());
                     ProyectoDTO proyectoDTO = contenedor.getProyecto();
                     abrirVentanaDetallesProyecto(proyectoDTO);
                 });
             }
 
             @Override
-            protected void updateItem(Void item, boolean empty) {
+            protected void updateItem(Void valorCelda, boolean vacio) {
 
-                super.updateItem(item, empty);
+                super.updateItem(valorCelda, vacio);
 
-                if (empty || tablaProyectos.getSelectionModel().getSelectedItem() == null || !tablaProyectos
-                        .getSelectionModel()
-                        .getSelectedItem()
-                        .equals(getTableView().getItems().get(getIndex()))
-                ) {
+                if (vacio || tablaProyectos.getSelectionModel().getSelectedItem() == null ||
+                        !tablaProyectos.getSelectionModel().getSelectedItem()
+                                .equals(getTableView().getItems().get(getIndex()))) {
 
                     setGraphic(null);
 
@@ -144,6 +131,45 @@ public class ControladorConsultarProyectosGUI {
         };
 
         columnaVerDetalles.setCellFactory(cellFactory);
+    }
+
+    private void añadirBotonEliminarATabla() {
+
+        Callback<TableColumn<ContenedoraOrganizacionProyecto, Void>,
+                TableCell<ContenedoraOrganizacionProyecto, Void>>
+                cellFactory = param -> new TableCell<>() {
+
+            private final Button botonEliminar = new Button("Eliminar");
+            {
+                botonEliminar.setOnAction(evento -> {
+                    ContenedoraOrganizacionProyecto contenedor =
+                            getTableView().getItems().get(getIndex());
+                    ProyectoDTO proyectoDTO = contenedor.getProyecto();
+                    confirmarEliminacion(proyectoDTO);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void valorCelda, boolean vacio) {
+
+                super.updateItem(valorCelda, vacio);
+
+                if (vacio || tablaProyectos.getSelectionModel().getSelectedItem() == null || !tablaProyectos
+                        .getSelectionModel()
+                        .getSelectedItem()
+                        .equals(getTableView().getItems().get(getIndex()))
+                ) {
+
+                    setGraphic(null);
+
+                } else {
+
+                    setGraphic(botonEliminar);
+                }
+            }
+        };
+
+        columnaEliminarProyecto.setCellFactory(cellFactory);
     }
 
     private void abrirVentanaDetallesProyecto(ProyectoDTO proyectoSeleccionado) {
@@ -169,45 +195,6 @@ public class ControladorConsultarProyectosGUI {
                     "Error al abrir la ventana de detalles de proyecto",
                     "Por favor, intentelo de nuevo más tarde");
         }
-    }
-
-    private void añadirBotonEliminarATabla() {
-
-        Callback<TableColumn<ContenedoraOrganizacionProyecto, Void>,
-                TableCell<ContenedoraOrganizacionProyecto, Void>>
-                cellFactory = param -> new TableCell<>() {
-
-            private final Button botonEliminar = new Button("Eliminar");
-            {
-                botonEliminar.setOnAction(evento -> {
-                    ContenedoraOrganizacionProyecto contenedor =
-                            getTableView().getItems().get(getIndex());
-                    ProyectoDTO proyectoDTO = contenedor.getProyecto();
-                    confirmarEliminacion(proyectoDTO);
-                });
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-
-                super.updateItem(item, empty);
-
-                if (empty || tablaProyectos.getSelectionModel().getSelectedItem() == null || !tablaProyectos
-                        .getSelectionModel()
-                        .getSelectedItem()
-                        .equals(getTableView().getItems().get(getIndex()))
-                ) {
-
-                    setGraphic(null);
-
-                } else {
-
-                    setGraphic(botonEliminar);
-                }
-            }
-        };
-
-        columnaEliminarProyecto.setCellFactory(cellFactory);
     }
 
     public void cargarProyectoYOrganizacion() {
@@ -278,6 +265,7 @@ public class ControladorConsultarProyectosGUI {
                     "El campo de busqueda se encuentra vacio",
                     "Por favor, ingrese el nombre del proyecto a buscar"
             );
+            cargarProyectoYOrganizacion();
             return;
         }
 
@@ -302,6 +290,7 @@ public class ControladorConsultarProyectosGUI {
                     "No se ha encontrado ningun proyecto activo con ese nombre",
                     "Por favor, verifique que haya ingresado bien el nombre o registre el proyecto"
             );
+            cargarProyectoYOrganizacion();
             return;
         }
 

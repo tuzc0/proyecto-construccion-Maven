@@ -3,8 +3,6 @@ package logica.DAOs;
 import accesoadatos.ConexionBaseDeDatos;
 import logica.DTOs.ProyectoDTO;
 import logica.interfaces.IProyectoDAO;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.*;
@@ -173,7 +171,7 @@ public class ProyectoDAO implements IProyectoDAO {
                 proyecto.setDescripcion(resultadoProyecto.getString("descripciongeneral"));
                 proyecto.setUsuariosDirectos(resultadoProyecto.getInt("usuariosDirectos"));
                 proyecto.setUsuariosIndirectos(resultadoProyecto.getInt("usuariosIndirectos"));
-                proyecto.setestudiantesRequeridos(resultadoProyecto.getInt("estudiantesrequeridos"));
+                proyecto.setEstudiantesRequeridos(resultadoProyecto.getInt("estudiantesrequeridos"));
             }
 
         } finally {
@@ -219,7 +217,7 @@ public class ProyectoDAO implements IProyectoDAO {
                 proyecto.setDescripcion(resultadoProyecto.getString("descripciongeneral"));
                 proyecto.setUsuariosDirectos(resultadoProyecto.getInt("usuariosDirectos"));
                 proyecto.setUsuariosIndirectos(resultadoProyecto.getInt("usuariosIndirectos"));
-                proyecto.setestudiantesRequeridos(resultadoProyecto.getInt("estudiantesrequeridos"));
+                proyecto.setEstudiantesRequeridos(resultadoProyecto.getInt("estudiantesrequeridos"));
             }
 
         } finally {
@@ -331,7 +329,7 @@ public class ProyectoDAO implements IProyectoDAO {
                 proyecto.setDescripcion(resultadoProyecto.getString("descripcionProyecto"));
                 proyecto.setUsuariosDirectos(resultadoProyecto.getInt("cantidadUsuariosDirectosProyecto"));
                 proyecto.setUsuariosIndirectos(resultadoProyecto.getInt("cantidadUsuariosIndirectosProyecto"));
-                proyecto.setestudiantesRequeridos(resultadoProyecto.getInt("estudiantesrequeridosProyecto"));
+                proyecto.setEstudiantesRequeridos(resultadoProyecto.getInt("estudiantesrequeridosProyecto"));
                 proyecto.setEstudiantesAsignados(resultadoProyecto.getInt("estudiantesAsignadosProyecto"));
                 proyectos.add(proyecto);
             }

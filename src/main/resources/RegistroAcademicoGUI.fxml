@@ -10,110 +10,111 @@
       prefHeight="500.0" prefWidth="600.0" spacing="20" alignment="CENTER"
       style="-fx-padding: 20;">
 
-   <Label text="Registrar Academico" style="-fx-font-weight: bold;">
-      <font>
-         <Font size="30.0"/>
-      </font>
-   </Label>
+    <Label text="Registrar Academico" style="-fx-font-weight: bold;">
+        <font>
+            <Font size="30.0"/>
+        </font>
+    </Label>
 
-   <VBox prefWidth="500.0" spacing="15" style="-fx-padding: 0 50;">
+    <VBox prefWidth="500.0" spacing="15" style="-fx-padding: 0 50;">
 
-      <VBox spacing="5">
-         <Label text="Nombre">
-            <font>
-               <Font size="13.0"/>
-            </font>
-         </Label>
-         <TextField fx:id="campoNombre" prefWidth="400.0"/>
-         <Label fx:id="contadorNombre" text="0/255"/>
-      </VBox>
+        <VBox spacing="5">
+            <Label text="Nombre">
+                <font>
+                    <Font size="13.0"/>
+                </font>
+            </Label>
+            <TextField fx:id="campoNombre" prefWidth="400.0"/>
+            <Label fx:id="etiquetaContadorNombre" text="0/255"/>
+        </VBox>
 
-      <VBox spacing="5">
-         <Label text="Apellido">
-            <font>
-               <Font size="13.0"/>
-            </font>
-         </Label>
-         <TextField fx:id="campoApellidos" prefWidth="400.0"/>
-         <Label fx:id="contadorApellidos" text="0/255"/>
-      </VBox>
+        <VBox spacing="5">
+            <Label text="Apellido">
+                <font>
+                    <Font size="13.0"/>
+                </font>
+            </Label>
+            <TextField fx:id="campoApellidos" prefWidth="400.0"/>
+            <Label fx:id="etiquetaContadorApellidos" text="0/255"/>
+        </VBox>
 
-      <VBox spacing="5">
-         <Label text="Numero de Personal:">
-            <font>
-               <Font size="13.0"/>
-            </font>
-         </Label>
-         <TextField fx:id="campoNumeroPersonal" promptText="Ej.12345" prefWidth="400.0"/>
-         <Label fx:id="contadorNumeroPersonal" text="0/255"/>
-      </VBox>
+        <VBox spacing="5">
+            <Label text="Numero de Personal:">
+                <font>
+                    <Font size="13.0"/>
+                </font>
+            </Label>
+            <TextField fx:id="campoNumeroPersonal" promptText="Ej.12345" prefWidth="400.0"/>
+            <Label fx:id="etiquetaContadorNumeroPersonal" text="0/255"/>
+        </VBox>
 
-      <VBox spacing="5">
-         <Label text="Correo Electronico:">
-            <font>
-               <Font size="13.0"/>
-            </font>
-         </Label>
-         <TextField fx:id="campoCorreo" promptText="Ej. ejemplo@gmail.com" prefWidth="400.0"/>
-         <Label fx:id="contadorCorreo" text="0/255"/>
-      </VBox>
+        <VBox spacing="5">
+            <Label text="Correo Electronico:">
+                <font>
+                    <Font size="13.0"/>
+                </font>
+            </Label>
+            <TextField fx:id="campoCorreo" promptText="Ej. ejemplo@gmail.com" prefWidth="400.0"/>
+            <Label fx:id="etiquetaContadorCorreo" text="0/255"/>
+        </VBox>
 
-      <VBox spacing="10">
-         <HBox spacing="30">
-            <VBox spacing="5" prefWidth="200">
-               <Label text="Contraseña:">
-                  <font>
-                     <Font size="13.0"/>
-                  </font>
-               </Label>
-               <StackPane>
-                  <children>
-                     <TextField fx:id="campoContraseñaVisible" visible="false" prefWidth="180"/>
-                     <PasswordField fx:id="contraseñaIngresada" prefWidth="180"/>
-                  </children>
-               </StackPane>
-               <Label fx:id="contadorContraseña" text="0/255"/>
-            </VBox>
+        <VBox spacing="10">
+            <HBox spacing="30">
+                <VBox spacing="5" prefWidth="200">
+                    <Label text="Contraseña:">
+                        <font>
+                            <Font size="13.0"/>
+                        </font>
+                    </Label>
+                    <StackPane>
+                        <children>
+                            <TextField fx:id="campoContraseñaVisible" visible="false" prefWidth="180"/>
+                            <PasswordField fx:id="contraseñaIngresada" prefWidth="180"/>
+                        </children>
+                    </StackPane>
+                    <Label fx:id="etiquetaContadorContraseña" text="0/255"/>
+                </VBox>
 
-            <VBox spacing="5" prefWidth="200">
-               <Label text="Confirmar Contraseña">
-                  <font>
-                     <Font size="13.0"/>
-                  </font>
-               </Label>
-               <StackPane>
-                  <children>
-                     <TextField fx:id="campoConfirmarContraseñaVisible" visible="false" prefWidth="180"/>
-                     <PasswordField fx:id="contraseñaConfirmada" prefWidth="180"/>
-                  </children>
-               </StackPane>
-               <Label fx:id="contadorConfirmarContraseña" text="0/255"/>
-            </VBox>
-         </HBox>
+                <VBox spacing="5" prefWidth="200">
+                    <Label text="Confirmar Contraseña">
+                        <font>
+                            <Font size="13.0"/>
+                        </font>
+                    </Label>
+                    <StackPane>
+                        <children>
+                            <TextField fx:id="campoConfirmarContraseñaVisible" visible="false" prefWidth="180"/>
+                            <PasswordField fx:id="contraseñaConfirmada" prefWidth="180"/>
+                        </children>
+                    </StackPane>
+                    <Label fx:id="etiquetaContadorConfirmarContraseña" text="0/255"/>
+                </VBox>
+            </HBox>
 
-         <Button fx:id="botonOjo" onAction="#alternarVisibilidadContrasena"
-                 contentDisplay="GRAPHIC_ONLY" maxWidth="30">
-            <graphic>
-               <ImageView fx:id="imagenOjo" fitHeight="25.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true"/>
-            </graphic>
-         </Button>
-      </VBox>
+            <Button fx:id="botonOjo" onAction="#alternarVisibilidadContrasena"
+                    contentDisplay="GRAPHIC_ONLY" maxWidth="30">
+                <graphic>
+                    <ImageView fx:id="imagenOjo" fitHeight="25.0" fitWidth="23.0" pickOnBounds="true"
+                               preserveRatio="true"/>
+                </graphic>
+            </Button>
+        </VBox>
 
-      <HBox spacing="20" alignment="CENTER_RIGHT" style="-fx-padding: 20 0 0 0;">
-         <Button fx:id="botonCancelar" onAction="#cancelarRegistroAcademico"
-                 text="Cancelar" prefHeight="31.0" prefWidth="100.0">
-            <font>
-               <Font size="14.0"/>
-            </font>
-         </Button>
+        <HBox spacing="20" alignment="CENTER_RIGHT" style="-fx-padding: 20 0 0 0;">
+            <Button fx:id="botonCancelar" onAction="#cancelarRegistroAcademico"
+                    text="Cancelar" prefHeight="31.0" prefWidth="100.0">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Button>
 
-         <Button fx:id="botonRegistrar" onAction="#guardarAcademico"
-                 text="Registrar" prefHeight="31.0" prefWidth="100.0">
-            <font>
-               <Font size="14.0"/>
-            </font>
-         </Button>
-      </HBox>
+            <Button fx:id="botonRegistrar" onAction="#guardarAcademico"
+                    text="Registrar" prefHeight="31.0" prefWidth="100.0">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Button>
+        </HBox>
 
-   </VBox>
+    </VBox>
 </VBox>

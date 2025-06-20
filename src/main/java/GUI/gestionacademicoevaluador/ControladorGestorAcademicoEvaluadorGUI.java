@@ -44,10 +44,10 @@ public class ControladorGestorAcademicoEvaluadorGUI {
     @FXML private TextField campoApellidoEditable;
     @FXML private TextField campoNumeroDePersonalEditable;
     @FXML private TextField campoCorreoEditable;
-    @FXML private Label contadorNombre;
-    @FXML private Label contadorApellidos;
-    @FXML private Label contadorNumeroPersonal;
-    @FXML private Label contadorCorreo;
+    @FXML private Label etiquetaContadorNombre;
+    @FXML private Label etiquetaContadorApellidos;
+    @FXML private Label etiquetaContadorNumeroPersonal;
+    @FXML private Label etiquetaContadorCorreo;
     @FXML private Button botonEditar;
     @FXML private Button botonGuardar;
     @FXML private Button botonCancelar;
@@ -68,13 +68,13 @@ public class ControladorGestorAcademicoEvaluadorGUI {
         final int MAX_CARACTERES_CORREO = 100;
 
         verficacionGeneral.contadorCaracteresTextField(
-                campoNombreEditable, contadorNombre, MAX_CARACTERES_NOMBRE);
+                campoNombreEditable, etiquetaContadorNombre, MAX_CARACTERES_NOMBRE);
         verficacionGeneral.contadorCaracteresTextField(
-                campoApellidoEditable, contadorApellidos, MAX_CARACTERES_NOMBRE);
+                campoApellidoEditable, etiquetaContadorApellidos, MAX_CARACTERES_NOMBRE);
         verficacionGeneral.contadorCaracteresTextField(
-                campoNumeroDePersonalEditable, contadorNumeroPersonal, MAX_CARACTERES_NUMERO_PERSONAL);
+                campoNumeroDePersonalEditable, etiquetaContadorNumeroPersonal, MAX_CARACTERES_NUMERO_PERSONAL);
         verficacionGeneral.contadorCaracteresTextField(
-                campoCorreoEditable, contadorCorreo, MAX_CARACTERES_CORREO);
+                campoCorreoEditable, etiquetaContadorCorreo, MAX_CARACTERES_CORREO);
 
         botonBuscar.setCursor(Cursor.HAND);
         botonEliminarSeleccionado.setCursor(Cursor.HAND);
@@ -400,10 +400,10 @@ public class ControladorGestorAcademicoEvaluadorGUI {
         botonEliminarAcademico.setDisable(false);
         botonRegistrarAcademico.setDisable(false);
 
-        contadorNombre.setDisable(false);
-        contadorApellidos.setDisable(false);
-        contadorNumeroPersonal.setDisable(false);
-        contadorCorreo.setDisable(false);
+        etiquetaContadorNombre.setDisable(false);
+        etiquetaContadorApellidos.setDisable(false);
+        etiquetaContadorNumeroPersonal.setDisable(false);
+        etiquetaContadorCorreo.setDisable(false);
 
         tablaAcademicos.getSelectionModel().clearSelection();
     }
@@ -441,10 +441,10 @@ public class ControladorGestorAcademicoEvaluadorGUI {
         etiquetaNumeroDePersonalEncontrado.setVisible(false);
         etiquetaCorreoEncontrado.setVisible(false);
 
-        contadorNombre.setVisible(true);
-        contadorApellidos.setVisible(true);
-        contadorNumeroPersonal.setVisible(true);
-        contadorCorreo.setVisible(true);
+        etiquetaContadorNombre.setVisible(true);
+        etiquetaContadorApellidos.setVisible(true);
+        etiquetaContadorNumeroPersonal.setVisible(true);
+        etiquetaContadorCorreo.setVisible(true);
 
         botonGuardar.setVisible(true);
         botonCancelar.setVisible(true);
@@ -469,10 +469,10 @@ public class ControladorGestorAcademicoEvaluadorGUI {
         etiquetaNumeroDePersonalEncontrado.setVisible(true);
         etiquetaCorreoEncontrado.setVisible(true);
 
-        contadorNombre.setVisible(false);
-        contadorApellidos.setVisible(false);
-        contadorNumeroPersonal.setVisible(false);
-        contadorCorreo.setVisible(false);
+        etiquetaContadorNombre.setVisible(false);
+        etiquetaContadorApellidos.setVisible(false);
+        etiquetaContadorNumeroPersonal.setVisible(false);
+        etiquetaContadorCorreo.setVisible(false);
 
         botonGuardar.setVisible(false);
         botonCancelar.setVisible(false);
@@ -629,9 +629,9 @@ public class ControladorGestorAcademicoEvaluadorGUI {
         tablaAcademicos.setDisable(false);
         botonRegistrarAcademico.setDisable(false);
 
-        contadorNombre.setVisible(false);
-        contadorApellidos.setVisible(false);
-        contadorNumeroPersonal.setVisible(false);
-        contadorCorreo.setVisible(false);
+        etiquetaContadorNombre.setVisible(false);
+        etiquetaContadorApellidos.setVisible(false);
+        etiquetaContadorNumeroPersonal.setVisible(false);
+        etiquetaContadorCorreo.setVisible(false);
     }
 }

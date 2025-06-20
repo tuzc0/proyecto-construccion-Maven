@@ -46,12 +46,12 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
     @FXML private PasswordField contraseñaConfirmada;
     @FXML private TextField campoContraseñaVisible;
     @FXML private TextField campoConfirmarContraseñaVisible;
-    @FXML private Label contadorNombre;
-    @FXML private Label contadorApellidos;
-    @FXML private Label contadorNumeroPersonal;
-    @FXML private Label contadorCorreo;
-    @FXML private Label contadorContraseña;
-    @FXML private Label contadorConfirmarContraseña;
+    @FXML private Label etiquetaContadorNombre;
+    @FXML private Label etiquetaContadorApellidos;
+    @FXML private Label etiquetaContadorNumeroPersonal;
+    @FXML private Label etiquetaContadorCorreo;
+    @FXML private Label etiquetaContadorContraseña;
+    @FXML private Label etiquetaContadorConfirmarContraseña;
     @FXML private Button botonRegistrar;
     @FXML private Button botonCancelar;
     @FXML private Button botonOjo;
@@ -66,18 +66,18 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
         final int MAX_CARACTERES_CONTRASEÑA = 64;
 
         verifGen.contadorCaracteresTextField(
-                campoNombre, contadorNombre, MAX_CARACTERES_NOMBRE);
+                campoNombre, etiquetaContadorNombre, MAX_CARACTERES_NOMBRE);
         verifGen.contadorCaracteresTextField(
-                campoApellidos, contadorApellidos, MAX_CARACTERES_NOMBRE);
+                campoApellidos, etiquetaContadorApellidos, MAX_CARACTERES_NOMBRE);
         verifGen.contadorCaracteresTextField(
-                campoNumeroPersonal, contadorNumeroPersonal, MAX_CARACTERES_NUMERO_PERSONAL);
+                campoNumeroPersonal, etiquetaContadorNumeroPersonal, MAX_CARACTERES_NUMERO_PERSONAL);
         verifGen.contadorCaracteresTextField(
-                campoCorreo, contadorCorreo, MAX_CARACTERES_CORREO);
+                campoCorreo, etiquetaContadorCorreo, MAX_CARACTERES_CORREO);
         verifGen.contadorCaracteresTextField(
-                contraseñaIngresada, contadorContraseña, MAX_CARACTERES_CONTRASEÑA);
+                contraseñaIngresada, etiquetaContadorContraseña, MAX_CARACTERES_CONTRASEÑA);
         verifGen.contadorCaracteresTextField(
                 contraseñaConfirmada,
-                contadorConfirmarContraseña, MAX_CARACTERES_CONTRASEÑA);
+                etiquetaContadorConfirmarContraseña, MAX_CARACTERES_CONTRASEÑA);
 
         botonRegistrar.setCursor(Cursor.HAND);
         botonCancelar.setCursor(Cursor.HAND);

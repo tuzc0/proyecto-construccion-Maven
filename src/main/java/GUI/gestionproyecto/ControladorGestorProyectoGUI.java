@@ -93,23 +93,23 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
     @FXML
     private Label etiquetaRepresentante;
     @FXML
-    private Label contadorNombre;
+    private Label etiquetaContadorNombre;
     @FXML
-    private Label contadorDescripcion;
+    private Label etiquetaContadorDescripcion;
     @FXML
-    private Label contadorObjetivoGeneral;
+    private Label etiquetaContadorObjetivoGeneral;
     @FXML
-    private Label contadorObjetivosInmediatos;
+    private Label etiquetaContadorObjetivosInmediatos;
     @FXML
-    private Label contadorObjetivosMediatos;
+    private Label etiquetaContadorObjetivosMediatos;
     @FXML
-    private Label contadorMetodologia;
+    private Label etiquetaContadorMetodologia;
     @FXML
-    private Label contadorRecursos;
+    private Label etiquetaContadorRecursos;
     @FXML
-    private Label contadorActividades;
+    private Label etiquetaContadorActividades;
     @FXML
-    private Label contadorResponsabilidades;
+    private Label etiquetaContadorResponsabilidades;
 
     private final Utilidades UTILIDADES = new Utilidades();
     private ProyectoDTO proyectoSeleccionado;
@@ -124,23 +124,23 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
         VerificicacionGeneral verificacionGeneralUtilidad = new VerificicacionGeneral();
 
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoNombre,
-                contadorNombre, MAX_CARACTERES_NOMBRE);
+                etiquetaContadorNombre, MAX_CARACTERES_NOMBRE);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoDescripcionGeneral,
-                contadorDescripcion, MAX_CARACTERES_CAMPOS_TEXTO);
+                etiquetaContadorDescripcion, MAX_CARACTERES_CAMPOS_TEXTO);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoObjetivoGeneral,
-                contadorObjetivoGeneral, MAX_CARACTERES_CAMPOS_TEXTO);
+                etiquetaContadorObjetivoGeneral, MAX_CARACTERES_CAMPOS_TEXTO);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoObjetivosInmediatos,
-                contadorObjetivosInmediatos, MAX_CARACTERES_CAMPOS_TEXTO);
+                etiquetaContadorObjetivosInmediatos, MAX_CARACTERES_CAMPOS_TEXTO);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoObjetivosMediatos,
-                contadorObjetivosMediatos, MAX_CARACTERES_CAMPOS_TEXTO);
+                etiquetaContadorObjetivosMediatos, MAX_CARACTERES_CAMPOS_TEXTO);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoMetodologia,
-                contadorMetodologia, MAX_CARACTERES_CAMPOS_TEXTO);
+                etiquetaContadorMetodologia, MAX_CARACTERES_CAMPOS_TEXTO);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoRecursos,
-                contadorRecursos, MAX_CARACTERES_CAMPOS_TEXTO);
+                etiquetaContadorRecursos, MAX_CARACTERES_CAMPOS_TEXTO);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoActividades,
-                contadorActividades, MAX_CARACTERES_CAMPOS_TEXTO);
+                etiquetaContadorActividades, MAX_CARACTERES_CAMPOS_TEXTO);
         verificacionGeneralUtilidad.contadorCaracteresTextArea(textoResponsabilidades,
-                contadorResponsabilidades, MAX_CARACTERES_CAMPOS_TEXTO);
+                etiquetaContadorResponsabilidades, MAX_CARACTERES_CAMPOS_TEXTO);
 
         columnaLunes.setCellValueFactory(new PropertyValueFactory<>("lunes"));
         columnaMartes.setCellValueFactory(new PropertyValueFactory<>("martes"));
@@ -294,15 +294,15 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
         textoActividades.setEditable(true);
         textoResponsabilidades.setEditable(true);
 
-        contadorNombre.setVisible(true);
-        contadorDescripcion.setVisible(true);
-        contadorObjetivoGeneral.setVisible(true);
-        contadorObjetivosInmediatos.setVisible(true);
-        contadorObjetivosMediatos.setVisible(true);
-        contadorMetodologia.setVisible(true);
-        contadorRecursos.setVisible(true);
-        contadorActividades.setVisible(true);
-        contadorResponsabilidades.setVisible(true);
+        etiquetaContadorNombre.setVisible(true);
+        etiquetaContadorDescripcion.setVisible(true);
+        etiquetaContadorObjetivoGeneral.setVisible(true);
+        etiquetaContadorObjetivosInmediatos.setVisible(true);
+        etiquetaContadorObjetivosMediatos.setVisible(true);
+        etiquetaContadorMetodologia.setVisible(true);
+        etiquetaContadorRecursos.setVisible(true);
+        etiquetaContadorActividades.setVisible(true);
+        etiquetaContadorResponsabilidades.setVisible(true);
 
         campoUsuariosDirectos.setText(etiquetaUsuariosDirectos.getText());
         campoUsuariosIndirectos.setText(etiquetaUsuariosIndirectos.getText());
@@ -340,15 +340,15 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
         campoUsuariosIndirectos.setVisible(false);
         campoEstudiantesSolicitados.setVisible(false);
 
-        contadorNombre.setVisible(false);
-        contadorDescripcion.setVisible(false);
-        contadorObjetivoGeneral.setVisible(false);
-        contadorObjetivosInmediatos.setVisible(false);
-        contadorObjetivosMediatos.setVisible(false);
-        contadorMetodologia.setVisible(false);
-        contadorRecursos.setVisible(false);
-        contadorActividades.setVisible(false);
-        contadorResponsabilidades.setVisible(false);
+        etiquetaContadorNombre.setVisible(false);
+        etiquetaContadorDescripcion.setVisible(false);
+        etiquetaContadorObjetivoGeneral.setVisible(false);
+        etiquetaContadorObjetivosInmediatos.setVisible(false);
+        etiquetaContadorObjetivosMediatos.setVisible(false);
+        etiquetaContadorMetodologia.setVisible(false);
+        etiquetaContadorRecursos.setVisible(false);
+        etiquetaContadorActividades.setVisible(false);
+        etiquetaContadorResponsabilidades.setVisible(false);
 
         botonEditar.setVisible(true);
         botonRegresar.setVisible(true);

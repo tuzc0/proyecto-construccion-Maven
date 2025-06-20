@@ -13,12 +13,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="684.0" prefWidth="1037.0" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.gestionproyecto.ControladorRegistroProyectoGUI">
+<BorderPane prefHeight="684.0" prefWidth="1037.0" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.gestionproyecto.ControladorRegistroProyectoGUI">
 
     <top>
         <VBox spacing="10">
-            <Label style="-fx-font-size: 24; -fx-font-weight: bold;" text="Registrar Solicitud de Proyecto" />
-            <Separator />
+            <Label style="-fx-font-size: 24; -fx-font-weight: bold;" text="Registrar Solicitud de Proyecto"/>
+            <Separator/>
         </VBox>
     </top>
 
@@ -28,46 +29,46 @@
 
                 <Label style="-fx-font-weight: bold; -fx-font-size: 16;" text="Datos Generales">
                     <font>
-                        <Font name="System Bold" size="16" />
+                        <Font name="System Bold" size="16"/>
                     </font>
                 </Label>
                 <VBox spacing="10" style="-fx-padding: 0 0 0 20;">
                     <VBox spacing="5">
                         <Label text="Nombre:">
                             <font>
-                                <Font name="System Bold" size="14" />
+                                <Font name="System Bold" size="14"/>
                             </font>
                         </Label>
-                        <TextField fx:id="campoNombre" prefWidth="600" />
+                        <TextField fx:id="campoNombre" prefWidth="600"/>
                         <Label fx:id="etiquetaContadorNombre" style="-fx-text-fill: gray;" text="0/255">
                             <font>
-                                <Font size="12" />
+                                <Font size="12"/>
                             </font>
                         </Label>
                     </VBox>
                     <VBox spacing="5">
                         <Label text="Descripción general:">
                             <font>
-                                <Font name="System Bold" size="14" />
+                                <Font name="System Bold" size="14"/>
                             </font>
                         </Label>
-                        <TextArea fx:id="textoDescripcionGeneral" prefHeight="70.0" prefWidth="546.0" wrapText="true" />
+                        <TextArea fx:id="textoDescripcionGeneral" prefHeight="70.0" prefWidth="546.0" wrapText="true"/>
                         <Label fx:id="etiquetaContadorDescripcionGeneral" style="-fx-text-fill: gray;" text="0/255">
                             <font>
-                                <Font size="12" />
+                                <Font size="12"/>
                             </font>
                         </Label>
                     </VBox>
                     <VBox spacing="5">
                         <Label text="Objetivo General:">
                             <font>
-                                <Font name="System Bold" size="14" />
+                                <Font name="System Bold" size="14"/>
                             </font>
                         </Label>
-                        <TextArea fx:id="textoObjetivosGenerales" prefHeight="78.0" prefWidth="532.0" wrapText="true" />
+                        <TextArea fx:id="textoObjetivosGenerales" prefHeight="78.0" prefWidth="532.0" wrapText="true"/>
                         <Label fx:id="etiquetaContadorObjetivosGenerales" style="-fx-text-fill: gray;" text="0/255">
                             <font>
-                                <Font size="12" />
+                                <Font size="12"/>
                             </font>
                         </Label>
                     </VBox>
@@ -78,134 +79,134 @@
                     <VBox prefHeight="82.0" prefWidth="538.0" spacing="10">
                         <Label style="-fx-font-weight: bold;" text="Población Atendida:">
                             <font>
-                                <Font name="System Bold" size="14" />
+                                <Font name="System Bold" size="14"/>
                             </font>
                         </Label>
                         <HBox alignment="CENTER_LEFT" spacing="20">
                             <VBox spacing="5">
                                 <Label text="Usuarios Directos:">
                                     <font>
-                                        <Font name="System Bold" size="14" />
+                                        <Font name="System Bold" size="14"/>
                                     </font>
                                 </Label>
-                                <TextField fx:id="campoUsuariosDirectos" prefWidth="150" />
+                                <TextField fx:id="campoUsuariosDirectos" prefWidth="150"/>
                             </VBox>
                             <VBox spacing="5">
                                 <Label text="Usuarios Indirectos:">
                                     <font>
-                                        <Font name="System Bold" size="14" />
+                                        <Font name="System Bold" size="14"/>
                                     </font>
                                 </Label>
-                                <TextField fx:id="campoUsuariosIndirectos" prefWidth="150" />
+                                <TextField fx:id="campoUsuariosIndirectos" prefWidth="150"/>
                             </VBox>
-                     <VBox layoutX="180.0" layoutY="10.0" spacing="5">
-                        <children>
-                           <Label text="Estudiantes requeridos:">
-                              <font>
-                                 <Font name="System Bold" size="14" />
-                              </font>
-                           </Label>
-                           <TextField fx:id="campoEstudianteRequeridos" prefWidth="150" />
-                        </children>
-                     </VBox>
+                            <VBox layoutX="180.0" layoutY="10.0" spacing="5">
+                                <children>
+                                    <Label text="Estudiantes requeridos:">
+                                        <font>
+                                            <Font name="System Bold" size="14"/>
+                                        </font>
+                                    </Label>
+                                    <TextField fx:id="campoEstudianteRequeridos" prefWidth="150"/>
+                                </children>
+                            </VBox>
                         </HBox>
                     </VBox>
                 </HBox>
 
-                 <VBox prefHeight="45.0" prefWidth="542.0" spacing="5">
-                     <Label text="Duración (horas):">
-                         <font>
-                             <Font name="System Bold" size="14" />
-                         </font>
-                     </Label>
-                     <Label fx:id="etiquetaDuracion" style="-fx-font-weight: bold;" text="420">
-                         <font>
-                             <Font name="System Bold" size="14" />
-                         </font>
-                     </Label>
-                 </VBox>
+                <VBox prefHeight="45.0" prefWidth="542.0" spacing="5">
+                    <Label text="Duración (horas):">
+                        <font>
+                            <Font name="System Bold" size="14"/>
+                        </font>
+                    </Label>
+                    <Label fx:id="etiquetaDuracion" style="-fx-font-weight: bold;" text="420">
+                        <font>
+                            <Font name="System Bold" size="14"/>
+                        </font>
+                    </Label>
+                </VBox>
 
                 <Label style="-fx-font-weight: bold; -fx-font-size: 16;" text="Detalles del Proyecto">
                     <font>
-                        <Font name="System Bold" size="16" />
+                        <Font name="System Bold" size="16"/>
                     </font>
                 </Label>
                 <VBox spacing="10" style="-fx-padding: 0 0 0 20;">
                     <VBox spacing="5">
                         <Label text="Objetivos Inmediatos:">
                             <font>
-                                <Font name="System Bold" size="14" />
+                                <Font name="System Bold" size="14"/>
                             </font>
                         </Label>
-                        <TextArea fx:id="textoObjetivosInmediatos" prefHeight="80" prefWidth="600" wrapText="true" />
+                        <TextArea fx:id="textoObjetivosInmediatos" prefHeight="80" prefWidth="600" wrapText="true"/>
                         <Label fx:id="etiquetaContadorObjetivosInmediatos" style="-fx-text-fill: gray;" text="0/255">
                             <font>
-                                <Font size="12" />
+                                <Font size="12"/>
                             </font>
                         </Label>
                     </VBox>
                     <VBox spacing="5">
                         <Label text="Objetivos Mediatos:">
                             <font>
-                                <Font name="System Bold" size="14" />
+                                <Font name="System Bold" size="14"/>
                             </font>
                         </Label>
-                        <TextArea fx:id="textoObjetivosMediatos" prefHeight="60" prefWidth="600" wrapText="true" />
+                        <TextArea fx:id="textoObjetivosMediatos" prefHeight="60" prefWidth="600" wrapText="true"/>
                         <Label fx:id="etiquetaContadorObjetivosMediatos" style="-fx-text-fill: gray;" text="0/255">
                             <font>
-                                <Font size="12" />
+                                <Font size="12"/>
                             </font>
                         </Label>
                     </VBox>
                     <VBox spacing="5">
                         <Label text="Metodología:">
                             <font>
-                                <Font name="System Bold" size="14" />
+                                <Font name="System Bold" size="14"/>
                             </font>
                         </Label>
-                        <TextArea fx:id="textoMetodologia" prefHeight="60" prefWidth="600" wrapText="true" />
+                        <TextArea fx:id="textoMetodologia" prefHeight="60" prefWidth="600" wrapText="true"/>
                         <Label fx:id="etiquetaContadorMetodologia" style="-fx-text-fill: gray;" text="0/255">
                             <font>
-                                <Font size="12" />
+                                <Font size="12"/>
                             </font>
                         </Label>
                     </VBox>
                     <VBox spacing="5">
                         <Label text="Recursos humanos económicos y materiales:">
                             <font>
-                                <Font name="System Bold" size="14" />
+                                <Font name="System Bold" size="14"/>
                             </font>
                         </Label>
-                        <TextArea fx:id="textoRecursos" prefHeight="81.0" prefWidth="532.0" wrapText="true" />
+                        <TextArea fx:id="textoRecursos" prefHeight="81.0" prefWidth="532.0" wrapText="true"/>
                         <Label fx:id="etiquetaContadorRecursos" style="-fx-text-fill: gray;" text="0/255">
                             <font>
-                                <Font size="12" />
+                                <Font size="12"/>
                             </font>
                         </Label>
                     </VBox>
                     <VBox spacing="5">
                         <Label text="Actividades y funciones:">
                             <font>
-                                <Font name="System Bold" size="14" />
+                                <Font name="System Bold" size="14"/>
                             </font>
                         </Label>
-                        <TextArea fx:id="textoActividades" prefHeight="60" prefWidth="600" wrapText="true" />
+                        <TextArea fx:id="textoActividades" prefHeight="60" prefWidth="600" wrapText="true"/>
                         <Label fx:id="etiquetaContadorActividades" style="-fx-text-fill: gray;" text="0/255">
                             <font>
-                                <Font size="12" />
+                                <Font size="12"/>
                             </font>
                         </Label>
                     </VBox>
                     <VBox spacing="5">
                         <Label text="Responsabilidades:">
                             <font>
-                                <Font name="System Bold" size="14" />
+                                <Font name="System Bold" size="14"/>
                             </font>
                         </Label>
-                        <TextArea fx:id="textoResponsabilidades" prefHeight="60" prefWidth="600" wrapText="true" />
+                        <TextArea fx:id="textoResponsabilidades" prefHeight="60" prefWidth="600" wrapText="true"/>
                         <Label fx:id="etiquetaContadorResponsabilidades" style="-fx-text-fill: gray;" text="0/255">
                             <font>
-                                <Font size="12" />
+                                <Font size="12"/>
                             </font>
                         </Label>
                     </VBox>
@@ -219,111 +220,132 @@
             <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10;">
                 <Label style="-fx-font-weight: bold; -fx-font-size: 16;" text="Días de la semana">
                     <font>
-                        <Font name="System Bold" size="16" />
+                        <Font name="System Bold" size="16"/>
                     </font>
                 </Label>
                 <Label style="-fx-padding: 0 0 0 60;" text="Horario:">
                     <font>
-                        <Font name="System Bold" size="14" />
+                        <Font name="System Bold" size="14"/>
                     </font>
                 </Label>
             </HBox>
-            <Separator />
+            <Separator/>
 
             <VBox spacing="10">
                 <HBox alignment="CENTER_LEFT" spacing="5">
                     <CheckBox fx:id="checkLunes" text="Lun">
                         <font>
-                            <Font name="System Bold" size="14" />
+                            <Font name="System Bold" size="14"/>
                         </font>
                     </CheckBox>
-                    <ComboBox fx:id="comboHoraLunesInicio" prefHeight="26.0" prefWidth="66.0" promptText="HH" disable="true" />
-                    <Label text=":" />
-                    <ComboBox fx:id="comboMinutosLunesInicio" prefHeight="26.0" prefWidth="66.0" promptText="MM" disable="true" />
-                    <Label text="-" />
-                    <ComboBox fx:id="comboHoraLunesFin" prefHeight="26.0" prefWidth="66.0" promptText="HH" disable="true" />
-                    <Label text=":" />
-                    <ComboBox fx:id="comboMinutosLunesFin" prefHeight="26.0" prefWidth="66.0" promptText="MM" disable="true" />
+                    <ComboBox fx:id="comboHoraLunesInicio" prefHeight="26.0" prefWidth="66.0" promptText="HH"
+                              disable="true"/>
+                    <Label text=":"/>
+                    <ComboBox fx:id="comboMinutosLunesInicio" prefHeight="26.0" prefWidth="66.0" promptText="MM"
+                              disable="true"/>
+                    <Label text="-"/>
+                    <ComboBox fx:id="comboHoraLunesFin" prefHeight="26.0" prefWidth="66.0" promptText="HH"
+                              disable="true"/>
+                    <Label text=":"/>
+                    <ComboBox fx:id="comboMinutosLunesFin" prefHeight="26.0" prefWidth="66.0" promptText="MM"
+                              disable="true"/>
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="5">
                     <CheckBox fx:id="checkMartes" text="Mar">
                         <font>
-                            <Font name="System Bold" size="14" />
+                            <Font name="System Bold" size="14"/>
                         </font>
                     </CheckBox>
-                    <ComboBox fx:id="comboHoraMartesInicio" prefHeight="26.0" prefWidth="66.0" promptText="HH" disable="true" />
-                    <Label text=":" />
-                    <ComboBox fx:id="comboMinutosMartesInicio" prefHeight="26.0" prefWidth="66.0" promptText="MM" disable="true" />
-                    <Label text="-" />
-                    <ComboBox fx:id="comboHoraMartesFin" prefHeight="26.0" prefWidth="66.0" promptText="HH" disable="true" />
-                    <Label text=":" />
-                    <ComboBox fx:id="comboMinutosMartesFin" prefHeight="26.0" prefWidth="66.0" promptText="MM" disable="true" />
+                    <ComboBox fx:id="comboHoraMartesInicio" prefHeight="26.0" prefWidth="66.0" promptText="HH"
+                              disable="true"/>
+                    <Label text=":"/>
+                    <ComboBox fx:id="comboMinutosMartesInicio" prefHeight="26.0" prefWidth="66.0" promptText="MM"
+                              disable="true"/>
+                    <Label text="-"/>
+                    <ComboBox fx:id="comboHoraMartesFin" prefHeight="26.0" prefWidth="66.0" promptText="HH"
+                              disable="true"/>
+                    <Label text=":"/>
+                    <ComboBox fx:id="comboMinutosMartesFin" prefHeight="26.0" prefWidth="66.0" promptText="MM"
+                              disable="true"/>
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="5">
                     <CheckBox fx:id="checkMiercoles" text="Mié">
                         <font>
-                            <Font name="System Bold" size="14" />
+                            <Font name="System Bold" size="14"/>
                         </font>
                     </CheckBox>
-                    <ComboBox fx:id="comboHoraMiercolesInicio" prefHeight="26.0" prefWidth="66.0" promptText="HH" disable="true" />
-                    <Label text=":" />
-                    <ComboBox fx:id="comboMinutosMiercolesInicio" prefHeight="26.0" prefWidth="66.0" promptText="MM" disable="true" />
-                    <Label text="-" />
-                    <ComboBox fx:id="comboHoraMiercolesFin" prefHeight="26.0" prefWidth="66.0" promptText="HH" disable="true" />
-                    <Label text=":" />
-                    <ComboBox fx:id="comboMinutosMiercolesFin" prefHeight="26.0" prefWidth="66.0" promptText="MM" disable="true" />
+                    <ComboBox fx:id="comboHoraMiercolesInicio" prefHeight="26.0" prefWidth="66.0" promptText="HH"
+                              disable="true"/>
+                    <Label text=":"/>
+                    <ComboBox fx:id="comboMinutosMiercolesInicio" prefHeight="26.0" prefWidth="66.0" promptText="MM"
+                              disable="true"/>
+                    <Label text="-"/>
+                    <ComboBox fx:id="comboHoraMiercolesFin" prefHeight="26.0" prefWidth="66.0" promptText="HH"
+                              disable="true"/>
+                    <Label text=":"/>
+                    <ComboBox fx:id="comboMinutosMiercolesFin" prefHeight="26.0" prefWidth="66.0" promptText="MM"
+                              disable="true"/>
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="5">
                     <CheckBox fx:id="checkJueves" text="Jue">
                         <font>
-                            <Font name="System Bold" size="14" />
+                            <Font name="System Bold" size="14"/>
                         </font>
                     </CheckBox>
-                    <ComboBox fx:id="comboHoraJuevesInicio" prefHeight="26.0" prefWidth="66.0" promptText="HH" disable="true" />
-                    <Label text=":" />
-                    <ComboBox fx:id="comboMinutosJuevesInicio" prefHeight="26.0" prefWidth="66.0" promptText="MM" disable="true" />
-                    <Label text="-" />
-                    <ComboBox fx:id="comboHoraJuevesFin" prefHeight="26.0" prefWidth="66.0" promptText="HH" disable="true" />
-                    <Label text=":" />
-                    <ComboBox fx:id="comboMinutosJuevesFin" prefHeight="26.0" prefWidth="66.0" promptText="MM" disable="true" />
+                    <ComboBox fx:id="comboHoraJuevesInicio" prefHeight="26.0" prefWidth="66.0" promptText="HH"
+                              disable="true"/>
+                    <Label text=":"/>
+                    <ComboBox fx:id="comboMinutosJuevesInicio" prefHeight="26.0" prefWidth="66.0" promptText="MM"
+                              disable="true"/>
+                    <Label text="-"/>
+                    <ComboBox fx:id="comboHoraJuevesFin" prefHeight="26.0" prefWidth="66.0" promptText="HH"
+                              disable="true"/>
+                    <Label text=":"/>
+                    <ComboBox fx:id="comboMinutosJuevesFin" prefHeight="26.0" prefWidth="66.0" promptText="MM"
+                              disable="true"/>
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="5">
                     <CheckBox fx:id="checkViernes" text="Vie">
                         <font>
-                            <Font name="System Bold" size="14" />
+                            <Font name="System Bold" size="14"/>
                         </font>
                     </CheckBox>
-                    <ComboBox fx:id="comboHoraViernesInicio" prefHeight="26.0" prefWidth="66.0" promptText="HH" disable="true" />
-                    <Label text=":" />
-                    <ComboBox fx:id="comboMinutosViernesInicio" prefHeight="26.0" prefWidth="66.0" promptText="MM" disable="true" />
-                    <Label text="-" />
-                    <ComboBox fx:id="comboHoraViernesFin" prefHeight="26.0" prefWidth="66.0" promptText="HH" disable="true" />
-                    <Label text=":" />
-                    <ComboBox fx:id="comboMinutosViernesFin" prefHeight="26.0" prefWidth="66.0" promptText="MM" disable="true" />
+                    <ComboBox fx:id="comboHoraViernesInicio" prefHeight="26.0" prefWidth="66.0" promptText="HH"
+                              disable="true"/>
+                    <Label text=":"/>
+                    <ComboBox fx:id="comboMinutosViernesInicio" prefHeight="26.0" prefWidth="66.0" promptText="MM"
+                              disable="true"/>
+                    <Label text="-"/>
+                    <ComboBox fx:id="comboHoraViernesFin" prefHeight="26.0" prefWidth="66.0" promptText="HH"
+                              disable="true"/>
+                    <Label text=":"/>
+                    <ComboBox fx:id="comboMinutosViernesFin" prefHeight="26.0" prefWidth="66.0" promptText="MM"
+                              disable="true"/>
                 </HBox>
             </VBox>
 
-            <Button fx:id="botonSeleccionarRepresentante" onAction="#abrirVentanaSeleccionRepresentante" text="Seleccionar Representante">
+            <Button fx:id="botonSeleccionarRepresentante" onAction="#abrirVentanaSeleccionRepresentante"
+                    text="Seleccionar Representante">
                 <font>
-                    <Font name="System Bold" size="12" />
+                    <Font name="System Bold" size="12"/>
                 </font>
             </Button>
 
-            <Separator />
+            <Separator/>
 
             <HBox alignment="CENTER_RIGHT" spacing="15" style="-fx-padding: 20 0 0 0;">
                 <Button fx:id="botonCancelar" onAction="#cancelarRegistroProyecto" text="Cancelar">
                     <font>
-                        <Font name="System Bold" size="14" />
+                        <Font name="System Bold" size="14"/>
                     </font>
                 </Button>
                 <Button fx:id="botonRegistrar" onAction="#registrarProyecto" text="Registrar Solicitud">
                     <font>
-                        <Font name="System Bold" size="14" />
+                        <Font name="System Bold" size="14"/>
                     </font>
                 </Button>
             </HBox>

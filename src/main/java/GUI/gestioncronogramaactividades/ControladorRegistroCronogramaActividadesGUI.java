@@ -95,11 +95,11 @@ public class ControladorRegistroCronogramaActividadesGUI {
     @FXML
     private Button botonGuardar;
     @FXML
-    private Label contadorNombreActividad;
+    private Label etiquetaContadorNombreActividad;
     @FXML
-    private Label contadorDuracionActividad;
+    private Label etiquetaContadorDuracionActividad;
     @FXML
-    private Label contadorHitosActividad;
+    private Label etiquetaContadorHitosActividad;
 
     private String matriculaEstudiante;
     private final Utilidades UTILIDADES = new Utilidades();
@@ -115,11 +115,11 @@ public class ControladorRegistroCronogramaActividadesGUI {
         VerificicacionGeneral verificacionGeneralUtilidad = new VerificicacionGeneral();
 
         verificacionGeneralUtilidad.contadorCaracteresTextField(campoNombreActividad,
-                contadorNombreActividad, MAX_CARACTERES_NOMBRE_ACTIVIDAD);
+                etiquetaContadorNombreActividad, MAX_CARACTERES_NOMBRE_ACTIVIDAD);
         verificacionGeneralUtilidad.contadorCaracteresTextField(campoDuracionActividad,
-                contadorDuracionActividad, MAX_CARACTERES_DURACION_ACTIVIDAD);
+                etiquetaContadorDuracionActividad, MAX_CARACTERES_DURACION_ACTIVIDAD);
         verificacionGeneralUtilidad.contadorCaracteresTextField(campoHitosActividad,
-                contadorHitosActividad, MAX_CARACTERES_HITOS_ACTIVIDAD);
+                etiquetaContadorHitosActividad, MAX_CARACTERES_HITOS_ACTIVIDAD);
 
         gestorHorarios = new GestorHorarios();
         gestorHorarios.agregarDia(checkLunes, comboHoraInicioLunesHorario, comboMinutosInicioLunesHorario,

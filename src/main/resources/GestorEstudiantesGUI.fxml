@@ -13,181 +13,169 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="971.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.gestionestudiante.ControladorGestorEstudiantesGUI">
-   <children>
-      <VBox layoutX="37.0" layoutY="80.0" prefHeight="437.0" prefWidth="910.0">
-         <children>
-            <HBox prefHeight="47.0" prefWidth="910.0">
-               <children>
-                  <HBox prefHeight="47.0" prefWidth="822.0">
-                     <children>
-                        <TextField fx:id="campoMatricula" prefHeight="26.0" prefWidth="651.0" promptText="Ej. S12345678" />
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="46.0" prefWidth="395.0">
-                     <children>
-                        <Button fx:id="botonBuscar" mnemonicParsing="false" onAction="#buscarEstudiante" prefHeight="28.0" prefWidth="200.0" text="Buscar">
-                           <graphic>
-                              <ImageView fitHeight="20.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                 <Image url="@/lupa.png" />
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="664.0" prefWidth="971.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.gestionestudiante.ControladorGestorEstudiantesGUI">
 
-                              </ImageView>
-                           </graphic>
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Button>
-                     </children>
+   <!-- Título principal -->
+   <Label layoutX="351.0" layoutY="23.0" prefHeight="45.0" prefWidth="283.0" style="-fx-text-fill: #2a5885;" text="Lista de estudiantes">
+      <font>
+         <Font name="System Bold" size="30.0" />
+      </font>
+   </Label>
+
+   <!-- Contenedor principal -->
+   <VBox layoutX="37.0" layoutY="67.0" prefHeight="571.0" prefWidth="910.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2); -fx-padding: 15;">
+      <children>
+         <!-- Barra de búsqueda -->
+         <HBox alignment="CENTER_LEFT" prefHeight="47.0" prefWidth="910.0" spacing="10">
+            <TextField fx:id="campoMatricula" prefHeight="35.0" prefWidth="651.0" promptText="Ej. S12345678" style="-fx-font-size: 14; -fx-prompt-text-fill: #999;" />
+            <Button fx:id="botonBuscar" mnemonicParsing="false" onAction="#buscarEstudiante" prefHeight="35.0" prefWidth="200.0" style="-fx-background-color: #2a5885; -fx-text-fill: white; -fx-font-weight: bold;" text="Buscar">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                     <Image url="@/lupa.png" />
+                  </ImageView>
+               </graphic>
+            </Button>
+         </HBox>
+
+         <!-- Contenido principal -->
+         <HBox prefHeight="495.0" prefWidth="880.0" spacing="20" style="-fx-padding: 10 0 0 0;">
+            <!-- Tabla de estudiantes -->
+            <VBox prefHeight="386.0" prefWidth="622.0">
+               <TableView fx:id="tablaEstudiantes" prefHeight="386.0" prefWidth="591.0" style="-fx-base: #f5f5f5; -fx-table-cell-border-color: transparent;">
+                  <columns>
+                     <TableColumn fx:id="columnaMatricula" prefWidth="127.0" style="-fx-font-weight: bold; -fx-alignment: CENTER_LEFT;" text="Matrícula" />
+                     <TableColumn fx:id="columnaNombres" prefWidth="207.0" style="-fx-font-weight: bold; -fx-alignment: CENTER_LEFT;" text="Nombres" />
+                     <TableColumn fx:id="columnaApellidos" prefWidth="267.0" style="-fx-font-weight: bold; -fx-alignment: CENTER_LEFT;" text="Apellidos" />
+                  </columns>
+               </TableView>
+            
+               <!-- Botones inferiores -->
+               <Button fx:id="botonRegistrarEstudiante" mnemonicParsing="false" onAction="#abrirVentanaRegistrarEstudiante" prefHeight="34.0" prefWidth="178.0" style="-fx-background-color: #2a5885; -fx-text-fill: white; -fx-font-weight: bold;" text="Registrar Estudiante">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Button>
+            </VBox>
+
+            <!-- Espaciador -->
+            <VBox prefHeight="394.0" prefWidth="35.0" />
+
+            <!-- Panel de detalles del estudiante -->
+            <VBox prefHeight="394.0" prefWidth="309.0" spacing="10">
+               <Label prefHeight="23.0" prefWidth="178.0" style="-fx-text-fill: #2a5885; -fx-font-weight: bold;" text="Detalles estudiante:">
+                  <font>
+                     <Font size="16.0" />
+                  </font>
+               </Label>
+
+               <!-- Nombres -->
+               <Label prefHeight="42.0" prefWidth="66.0" style="-fx-text-fill: #555; -fx-font-weight: bold;" text="Nombres:">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               <StackPane prefHeight="34.0" prefWidth="254.0">
+                  <TextField fx:id="campoNombreEditable" style="-fx-font-size: 14; -fx-prompt-text-fill: #999;" visible="false" />
+                  <Label fx:id="etiquetaNombreEncontrado" style="-fx-font-size: 14; -fx-text-fill: #333;" />
+               </StackPane>
+               <Label fx:id="etiquetaContadorNombre" style="-fx-text-fill: #777; -fx-font-size: 11;" text="0/50" visible="false" />
+
+               <!-- Apellidos -->
+               <Label prefHeight="41.0" prefWidth="66.0" style="-fx-text-fill: #555; -fx-font-weight: bold;" text="Apellidos:">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               <StackPane prefHeight="34.0" prefWidth="254.0">
+                  <TextField fx:id="campoApellidoEditable" style="-fx-font-size: 14; -fx-prompt-text-fill: #999;" visible="false" />
+                  <Label fx:id="etiquetaApellidoEncontrado" style="-fx-font-size: 14; -fx-text-fill: #333;" />
+               </StackPane>
+               <Label fx:id="etiquetaContadorApellido" style="-fx-text-fill: #777; -fx-font-size: 11;" text="0/50" visible="false" />
+
+               <!-- Matrícula -->
+               <Label prefHeight="44.0" prefWidth="84.0" style="-fx-text-fill: #555; -fx-font-weight: bold;" text="Matricula:">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               <StackPane prefHeight="34.0" prefWidth="254.0">
+                  <TextField fx:id="campoMatriculaEditable" style="-fx-font-size: 14; -fx-prompt-text-fill: #999;" visible="false" />
+                  <Label fx:id="etiquetaMatriculaEncontrada" style="-fx-font-size: 14; -fx-text-fill: #333;" />
+               </StackPane>
+               <Label fx:id="etiquetaContadorMatricula" style="-fx-text-fill: #777; -fx-font-size: 11;" text="0/50" visible="false" />
+
+               <!-- Correo -->
+               <Label prefHeight="38.0" prefWidth="146.0" style="-fx-text-fill: #555; -fx-font-weight: bold;" text="Correo Electronico:">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               <StackPane prefHeight="43.0" prefWidth="291.0">
+                  <TextField fx:id="campoCorreoEditable" style="-fx-font-size: 14; -fx-prompt-text-fill: #999;" visible="false" />
+                  <Label fx:id="etiquetaCorreoEncontrado" style="-fx-font-size: 14; -fx-text-fill: #333;" />
+               </StackPane>
+               <Label fx:id="etiquetaContadorCorreo" style="-fx-text-fill: #777; -fx-font-size: 11;" text="0/50" visible="false" />
+               <HBox prefHeight="100.0" prefWidth="200.0">
+                  <children>
+                  
+                                                                                                                     <Button fx:id="botonGuardar" mnemonicParsing="false" onAction="#guardarCambios" prefHeight="26.0" prefWidth="79.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" text="Guardar" visible="false">
+                        <font>
+                           <Font size="14.0" />
+                        </font>
+                     </Button>
+                     <HBox prefHeight="30.0" prefWidth="36.0" />
+                  
+                                                                                                                                                                     <Button fx:id="botonCancelar" mnemonicParsing="false" onAction="#cancelarEdicion" prefHeight="26.0" prefWidth="79.0" style="-fx-background-color: #f0f0f0; -fx-text-fill: #555; -fx-font-weight: bold;" text="Cancelar" visible="false">
+                        <font>
+                           <Font size="14.0" />
+                        </font>
+                     </Button>
+                  </children>
+               </HBox>
+
+               <!-- Botones de acción -->
+               <VBox prefHeight="74.0" prefWidth="264.0" style="-fx-padding: 10 0 0 0;">
+                  <HBox alignment="CENTER_RIGHT" prefHeight="48.0" prefWidth="277.0" spacing="15">
+                     <Button fx:id="botonEditar" mnemonicParsing="false" onAction="#editarEstudiante" prefHeight="33.0" prefWidth="86.0" style="-fx-background-color: #e5e7eb; -fx-text-fill: #555; -fx-font-weight: bold;" text="Editar">
+                        <font>
+                           <Font size="14.0" />
+                        </font>
+                     </Button>
+                     <Button fx:id="botonEliminarEstudiante" mnemonicParsing="false" onAction="#confirmarEliminacionEstudiante" prefHeight="30.0" prefWidth="79.0" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold;" text="Eliminar">
+                        <font>
+                           <Font size="14.0" />
+                        </font>
+                     </Button>
                   </HBox>
-               </children>
-            </HBox>
-            <HBox prefHeight="398.0" prefWidth="910.0">
-               <children>
-                  <VBox prefHeight="386.0" prefWidth="622.0">
-                     <children>
-                        <TableView fx:id="tablaEstudiantes" prefHeight="386.0" prefWidth="591.0">
-                          <columns>
-                            <TableColumn fx:id="columnaMatricula" prefWidth="127.19997787475586" text="matricula" />
-                            <TableColumn fx:id="columnaNombres" prefWidth="207.2000274658203" text="nombres" />
-                              <TableColumn fx:id="columnaApellidos" prefWidth="267.20000000000005" text="apellidos" />
-                          </columns>
-                        </TableView>
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="394.0" prefWidth="35.0" />
-                  <VBox prefHeight="394.0" prefWidth="309.0">
-                     <children>
-                        <Label prefHeight="23.0" prefWidth="178.0" text="Detalles estudiante:">
-                           <font>
-                              <Font name="System Bold" size="16.0" />
-                           </font>
-                        </Label>
-                        <Label prefHeight="42.0" prefWidth="66.0" text="Nombres:">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Label>
-                        <StackPane prefHeight="34.0" prefWidth="254.0">
-                           <children>
-                              <TextField fx:id="campoNombreEditable" visible="false" />
-                              <Label fx:id="etiquetaNombreEncontrado" prefHeight="34.0" prefWidth="254.0">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </StackPane>
-                        <Label prefHeight="41.0" prefWidth="66.0" text="Apellidos:">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Label>
-                        <StackPane prefHeight="34.0" prefWidth="254.0">
-                           <children>
-                              <Label fx:id="etiquetaApellidoEncontrado" prefHeight="34.0" prefWidth="254.0">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="campoApellidoEditable" visible="false" />
-                           </children>
-                        </StackPane>
-                        <Label prefHeight="44.0" prefWidth="84.0" text="Matricula:">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Label>
-                        <StackPane prefHeight="34.0" prefWidth="254.0">
-                           <children>
-                              <Label fx:id="etiquetaMatriculaEncontrada" prefHeight="34.0" prefWidth="254.0">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="campoMatriculaEditable" visible="false" />
-                           </children>
-                        </StackPane>
-                        <Label prefHeight="38.0" prefWidth="146.0" text="Correo Electronico:">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Label>
-                        <StackPane prefHeight="51.0" prefWidth="291.0">
-                           <children>
-                              <TextField fx:id="campoCorreoEditable" visible="false" />
-                              <Label fx:id="etiquetaCorreoEncontrado" prefHeight="34.0" prefWidth="254.0">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </StackPane>
-                        <VBox prefHeight="53.0" prefWidth="277.0">
-                           <children>
-                              <HBox prefHeight="48.0" prefWidth="277.0">
-                                 <children>
-                                    <Button fx:id="botonEditar" mnemonicParsing="false" onAction="#editarEstudiante" prefHeight="33.0" prefWidth="86.0" text="Editar">
-                                       <font>
-                                          <Font name="System Bold" size="14.0" />
-                                       </font>
-                                    </Button>
-                                    <HBox prefHeight="48.0" prefWidth="29.0" />
-                                    <Button fx:id="botonEliminarEstudiante" mnemonicParsing="false" onAction="#eliminarEstudiante" prefHeight="30.0" prefWidth="79.0" text="Eliminar">
-                                       <font>
-                                          <Font name="System Bold" size="14.0" />
-                                       </font>
-                                    </Button>
-                                 </children>
-                              </HBox>
-                           </children>
-                        </VBox>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-      <Label layoutX="351.0" layoutY="23.0" prefHeight="45.0" prefWidth="283.0" text="Lista de estudiantes">
-         <font>
-            <Font name="System Bold" size="30.0" />
-         </font>
-      </Label>
-      <Button fx:id="botonRegistrarEstudiante" layoutX="37.0" layoutY="533.0" mnemonicParsing="false" onAction="#abrirVentanaRegistrarEstudiante" prefHeight="34.0" prefWidth="178.0" text="Registrar Estudiante">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Button>
-      <Button fx:id="botonSeleccionarEstudiantes" layoutX="402.0" layoutY="533.0" mnemonicParsing="false" onAction="#activarModoSeleccion" prefHeight="34.0" prefWidth="218.0" text="Seleccionar estudiantes">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Button>
-      <Button fx:id="botonEliminarSeleccionado" disable="true" layoutX="690.0" layoutY="527.0" mnemonicParsing="false" onAction="#eliminarEstudianteSeleccionado" prefHeight="34.0" prefWidth="54.0" visible="false">
-         <graphic>
-            <ImageView fitHeight="37.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@/bote-basura.png" />
-            </ImageView>
-         </graphic>
-      </Button>
-      <Button fx:id="botonGuardar" layoutX="855.0" layoutY="518.0" mnemonicParsing="false" onAction="#guardarCambios" prefHeight="26.0" prefWidth="79.0" text="Guardar" visible="false">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Button>
-      <Button fx:id="botonCancelar" layoutX="754.0" layoutY="518.0" mnemonicParsing="false" onAction="#cancelarEdicion" prefHeight="26.0" prefWidth="79.0" text="Cancelar" visible="false">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Button>
-      <Button fx:id="botonCancelarSeleccion" layoutX="776.0" layoutY="533.0" mnemonicParsing="false" onAction="#cancelarSeleccionEstudiante" prefHeight="34.0" prefWidth="136.0" text="Cancelar seleccion" visible="false">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Button>
-      <Label fx:id="etiquetaNumeroEstudiantesSeleccionados" layoutX="406.0" layoutY="580.0" prefHeight="20.0" prefWidth="211.0">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-   </children>
+               </VBox>
+            </VBox>
+         </HBox>
+      </children>
+   </VBox>
+
+   <Button fx:id="botonSeleccionarEstudiantes" layoutX="402.0" layoutY="533.0" mnemonicParsing="false" onAction="#activarModoSeleccion" prefHeight="34.0" prefWidth="218.0" style="-fx-background-color: #e5e7eb; -fx-text-fill: #555; -fx-font-weight: bold;" text="Seleccionar estudiantes">
+      <font>
+         <Font size="14.0" />
+      </font>
+   </Button>
+
+   <Button fx:id="botonEliminarSeleccionado" disable="true" layoutX="690.0" layoutY="527.0" mnemonicParsing="false" onAction="#confirmacionEliminarEstudianteSeleccionado" prefHeight="34.0" prefWidth="54.0" style="-fx-background-color: #f44336; -fx-text-fill: white;" visible="false">
+      <graphic>
+         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@/bote-basura.png" />
+         </ImageView>
+      </graphic>
+   </Button>
+
+   <Button fx:id="botonCancelarSeleccion" layoutX="776.0" layoutY="533.0" mnemonicParsing="false" onAction="#cancelarSeleccionEstudiante" prefHeight="34.0" prefWidth="136.0" style="-fx-background-color: #f0f0f0; -fx-text-fill: #555; -fx-font-weight: bold;" text="Cancelar seleccion" visible="false">
+      <font>
+         <Font size="12.0" />
+      </font>
+   </Button>
+
+   <Label fx:id="etiquetaNumeroEstudiantesSeleccionados" layoutX="406.0" layoutY="580.0" prefHeight="20.0" prefWidth="211.0" style="-fx-text-fill: #777; -fx-font-size: 14;">
+      <font>
+         <Font size="14.0" />
+      </font>
+   </Label>
 </Pane>

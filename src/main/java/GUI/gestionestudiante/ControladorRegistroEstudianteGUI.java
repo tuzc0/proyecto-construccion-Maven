@@ -5,6 +5,7 @@ import GUI.utilidades.Utilidades;
 import GUI.utilidades.UtilidadesContraseña;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
@@ -16,6 +17,8 @@ import logica.DTOs.EstudianteDTO;
 import logica.DTOs.UsuarioDTO;
 import javafx.scene.image.ImageView;
 import logica.VerificacionUsuario;
+import logica.utilidadesproyecto.EncriptadorContraseñas;
+import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
@@ -50,21 +53,58 @@ public class ControladorRegistroEstudianteGUI {
     @FXML
     private TextField campoConfirmarContraseñaVisible;
 
-    @FXML
-    private Button botonVerContraseña;
 
     @FXML
     private ImageView imagenOjo;
 
-    private boolean contraseñaVisible = false;
+    @FXML
+    private Label etiquetaContadorNombre;
+
+    @FXML
+    private Label etiquetaContadorApellido;
+
+    @FXML
+    private Label etiquetaContadorMatricula;
+
+    @FXML
+    private Label etiquetaContadorCorreo;
+
+    @FXML
+    private Label etiquetaContadorContraseña;
+
+    @FXML
+    private Label etiquetaContadorConfirmarContraseña;
+
 
     private final UtilidadesContraseña utilidadesContraseña = new UtilidadesContraseña();
 
     AuxiliarGestionEstudiante auxiliarGestionEstudiante = new AuxiliarGestionEstudiante();
+
     int NRC = auxiliarGestionEstudiante.obtenerNRC();
+
+    Utilidades utilidades = new Utilidades();
+
+    VerificacionUsuario verificacionUsuario = new VerificacionUsuario();
+
+    VerificicacionGeneral verificicacionGeneral = new VerificicacionGeneral();
+
+    final int MAX_CARACTERES_NOMBRE_Y_APELLIDOS = 50;
+
+    final int MAX_CARACTERES_CORREO = 100;
+
+    final int MAX_CARACTERES_MATRICULA= 9;
+
+    final int MAX_CARACTERES_CONTRASEÑA = 64;
 
     @FXML
     private void initialize() {
+
+        verificicacionGeneral.contadorCaracteresTextField(campoNombre, etiquetaContadorNombre, MAX_CARACTERES_NOMBRE_Y_APELLIDOS);
+        verificicacionGeneral.contadorCaracteresTextField(campoApellidos, etiquetaContadorApellido, MAX_CARACTERES_NOMBRE_Y_APELLIDOS);
+        verificicacionGeneral.contadorCaracteresTextField(campoMatricula, etiquetaContadorMatricula, MAX_CARACTERES_MATRICULA);
+        verificicacionGeneral.contadorCaracteresTextField(campoCorreo, etiquetaContadorCorreo, MAX_CARACTERES_CORREO);
+        verificicacionGeneral.contadorCaracteresTextField(contraseñaIngresada, etiquetaContadorContraseña, MAX_CARACTERES_CONTRASEÑA);
+        verificicacionGeneral.contadorCaracteresTextField(contraseñaConfirmada, etiquetaContadorConfirmarContraseña, MAX_CARACTERES_CONTRASEÑA);
 
         campoContraseñaVisible.textProperty().bindBidirectional(contraseñaIngresada.textProperty());
         campoConfirmarContraseñaVisible.textProperty().bindBidirectional(contraseñaConfirmada.textProperty());
@@ -93,6 +133,8 @@ public class ControladorRegistroEstudianteGUI {
     @FXML
     private void guardarEstudiante(ActionEvent event) {
 
+        EncriptadorContraseñas encriptadorContraseñas = new EncriptadorContraseñas();
+
         String nombre = campoNombre.getText();
         String apellidos = campoApellidos.getText();
         String matricula = campoMatricula.getText();
@@ -101,59 +143,18 @@ public class ControladorRegistroEstudianteGUI {
         int estadoActivo = 1;
         int idUsuario = 0;
 
-        Utilidades utilidades = new Utilidades();
-        VerificacionUsuario verificacionUsuario = new VerificacionUsuario();
+
 
 
         try {
 
 
-            List<String> listaDeCamposVacios =
-                    VerificacionUsuario.camposVacios(nombre, apellidos, correo, correo, contraseña);
+            List<String> errores = verificacionUsuario.camposVacios(nombre, apellidos, matricula, correo, contraseña);
 
-            if (!listaDeCamposVacios.isEmpty()) {
-
-                String camposVacios = String.join("\n", listaDeCamposVacios);
-                utilidades.mostrarAlerta(
-                        "Campos vacíos",
+            if (!errores.isEmpty()) {
+                utilidades.mostrarAlerta("Campos incompletos",
                         "Por favor, complete todos los campos requeridos.",
-                        camposVacios
-                );
-                return;
-            }
-
-            if (!verificacionUsuario.correoValido(correo)) {
-
-                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml",
-                        "Correo electronico ingresado inválido.");
-                return;
-            }
-
-            if (!verificacionUsuario.matriculaValida(matricula)) {
-
-                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml",
-                        "Matrícula ingresada inválida.");
-                return;
-            }
-
-            if (!verificacionUsuario.contrasenaValida(contraseña)) {
-
-                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml",
-                        "Contraseña ingresada inválida,.");
-                return;
-            }
-
-            if (!verificacionUsuario.nombreValido(nombre)) {
-
-                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml",
-                        "Nombre ingresado inválido.");
-                return;
-            }
-
-            if (!verificacionUsuario.apellidosValidos(apellidos)) {
-
-                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml",
-                        "Apellidos ingresados inválidos.");
+                        String.join("\n", errores));
                 return;
             }
 
@@ -164,7 +165,6 @@ public class ControladorRegistroEstudianteGUI {
                 return;
             }
 
-            UsuarioDAO usuarioDAO = new UsuarioDAO();
             CuentaDAO cuentaDAO = new CuentaDAO();
             EstudianteDAO estudianteDAO = new EstudianteDAO();
 
@@ -173,7 +173,9 @@ public class ControladorRegistroEstudianteGUI {
 
             if (estudianteExistente.getMatricula() != "N/A"){
 
-                utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "La matrícula ya existe.");
+                utilidades.mostrarAlerta("Matrícula ya registrada",
+                        "La matrícula ingresada ya está asociada a una cuenta.",
+                        "Por favor, utilice otra matrícula o inicie sesión si ya tiene una cuenta.");
                 return;
 
             }
@@ -187,10 +189,14 @@ public class ControladorRegistroEstudianteGUI {
 
             }
 
+            String contrasena = encriptadorContraseñas.encriptar(contraseña);
+
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
+
             UsuarioDTO usuarioDTO = new UsuarioDTO(idUsuario, nombre, apellidos, estadoActivo);
             idUsuario = usuarioDAO.insertarUsuario(usuarioDTO);
 
-            CuentaDTO cuentaDTO = new CuentaDTO(correo, contraseña, idUsuario);
+            CuentaDTO cuentaDTO = new CuentaDTO(correo, contrasena, idUsuario);
             cuentaDAO.crearNuevaCuenta(cuentaDTO);
 
             EstudianteDTO estudianteDTO = new EstudianteDTO(idUsuario, nombre, apellidos, matricula, estadoActivo, 0, NRC, 0);

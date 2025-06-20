@@ -129,14 +129,6 @@ public class ControladorRegistrarReporteMensualGUI {
     @FXML
     public void guardarReporte () {
 
-        if (campoMetodologia.getText().isEmpty() || campoObservaciones.getText().isEmpty() ||
-                campoHoras.getText().isEmpty()) {
-
-            utilidades.mostrarAlerta("Error",
-                    "Campos incompletos",
-                    "Debe completar todos los campos antes de guardar el reporte.");
-            return;
-        }
 
         if (tablaActividades.getItems().isEmpty()) {
 

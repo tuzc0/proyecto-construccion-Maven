@@ -19,7 +19,7 @@ public class VerificacionUsuario {
     private static final Pattern PATRON_CORREO = Pattern.compile("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$");
     private static final Pattern PATRON_NUMERO_PERSONAL = Pattern.compile("^\\d{5}$");
     private static final Pattern PATRON_MATRICULA = Pattern.compile("^S\\d{8}$");
-    private static final Pattern PATRON_CONTRASENA = Pattern.compile("^[a-zA-Z0-9]{6,64}$");
+    private static final Pattern PATRON_CONTRASENA = Pattern.compile("^[^'\"]{6,64}$");
     private static final Pattern PATRON_NOMBRE = Pattern.compile("^[\\p{L}\\s]+$");
     private static final Pattern PATRON_CONTACTO = Pattern.compile("^\\d{10}$");
     private static final Pattern PATRON_NOMBRE_ORGANIZACION = Pattern.compile("^[^'\"]+$");
@@ -185,6 +185,49 @@ public class VerificacionUsuario {
             errores.add("El correo electrónico del representante no puede estar vacío.");
         } else if (!correoValido(correo)) {
             errores.add("El correo electrónico del representante no es válido.");
+        }
+
+        return errores;
+    }
+
+    public static List<String> validarCamposRegistroEstudiante(String nombre, String apellidos, String matricula, String correo, String contrasena, String contrasenaConfirmada) {
+
+        List<String> errores = new ArrayList<>();
+
+        if (nombre.isEmpty()) {
+            errores.add("El nombre no puede estar vacío.");
+        } else if (!nombreValido(nombre)) {
+            errores.add("El nombre no es válido.");
+        }
+
+        if (apellidos.isEmpty()) {
+            errores.add("Los apellidos no pueden estar vacíos.");
+        } else if (!apellidosValidos(apellidos)) {
+            errores.add("Los apellidos no son válidos.");
+        }
+
+        if (matricula.isEmpty()) {
+            errores.add("La matrícula no puede estar vacía.");
+        } else if (!matriculaValida(matricula)) {
+            errores.add("La matrícula no es válida.");
+        }
+
+        if (correo.isEmpty()) {
+            errores.add("El correo electrónico no puede estar vacío.");
+        } else if (!correoValido(correo)) {
+            errores.add("El correo electrónico no es válido.");
+        }
+
+        if (contrasena.isEmpty()) {
+            errores.add("La contraseña no puede estar vacía.");
+        } else if (!contrasenaValida(contrasena)) {
+            errores.add("La contraseña no es válida. Verifique que contenga entre 6 y 64 caracteres alfanuméricos.");
+        }
+
+        if (contrasenaConfirmada.isEmpty()) {
+            errores.add("La confirmación de contraseña no puede estar vacía.");
+        } else if (!contrasena.equals(contrasenaConfirmada)) {
+            errores.add("Las contraseñas no coinciden.");
         }
 
         return errores;

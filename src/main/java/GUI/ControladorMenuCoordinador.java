@@ -46,6 +46,6 @@ public class ControladorMenuCoordinador {
 
     @FXML
     public void abrirGestionPeriodo() {
-        utilidades.mostrarVentana("/CreaeGruposYPeriodoGUI.fxml");
+        utilidades.mostrarVentana("/CrearGruposYPeriodoGUI.fxml");
     }
 }

@@ -19,13 +19,13 @@ public class ControladorRegistrarCriterioAutoevaluacionGUI {
     TextArea textoDescripcionCriterio;
 
     @FXML
-    Label numeroCriterio;
+    Label etiquetaNumeroCriterio;
 
     Utilidades utilidades = new Utilidades();
 
-    int numeroCriterioMasAlto;
+    int numeroCriterioMasAlto = 0;
 
-    int nuevoNumeroCriterio;
+    int nuevoNumeroCriterio = 0;
 
     @FXML
     public void initialize() {
@@ -35,11 +35,12 @@ public class ControladorRegistrarCriterioAutoevaluacionGUI {
             CriterioAutoevaluacionDAO criterioAutoevaluacionDAO = new CriterioAutoevaluacionDAO();
             numeroCriterioMasAlto = criterioAutoevaluacionDAO.obtenerNumeroCriterioMasAlto();
             nuevoNumeroCriterio = numeroCriterioMasAlto + 1;
-            numeroCriterio.setText(String.valueOf(nuevoNumeroCriterio));
+            etiquetaNumeroCriterio.setText(String.valueOf(nuevoNumeroCriterio));
 
         } catch (SQLException e) {
 
             logger.error("Error al obtener el número de criterio más alto: " + e);
+            e.printStackTrace();
 
         } catch (IOException e) {
 
@@ -48,6 +49,7 @@ public class ControladorRegistrarCriterioAutoevaluacionGUI {
         } catch (Exception e) {
 
             logger.error("Error inesperado: " + e);
+            e.printStackTrace();
 
         }
     }
@@ -81,7 +83,7 @@ public class ControladorRegistrarCriterioAutoevaluacionGUI {
                         "Se ha registrado el criterio de forma exitosa.");
                 nuevoNumeroCriterio++;
                 textoDescripcionCriterio.clear();
-                numeroCriterio.setText(String.valueOf(nuevoNumeroCriterio));
+                etiquetaNumeroCriterio.setText(String.valueOf(nuevoNumeroCriterio));
 
             } else {
 

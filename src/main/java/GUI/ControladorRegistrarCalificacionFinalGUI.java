@@ -27,7 +27,7 @@ public class ControladorRegistrarCalificacionFinalGUI {
     @FXML private TableColumn<EstudianteDTO, String> columnaMatricula;
     @FXML private TableColumn<EstudianteDTO, String> columnaNombre;
     @FXML private TableColumn<EstudianteDTO, Float> columnaCalificacion;
-    @FXML private TableColumn<EstudianteDTO, Void> columnaAccion;  // Nueva columna de acción
+    @FXML private TableColumn<EstudianteDTO, Void> columnaAccion;
 
     private Utilidades utilidades = new Utilidades();
     private int nrcGrupo;
@@ -40,7 +40,7 @@ public class ControladorRegistrarCalificacionFinalGUI {
     }
 
     private void configurarTabla() {
-        // Configurar columnas de datos
+
         columnaMatricula.setCellValueFactory(new PropertyValueFactory<>("matricula"));
         columnaNombre.setCellValueFactory(cellData ->
                 new javafx.beans.property.SimpleStringProperty(
@@ -50,22 +50,21 @@ public class ControladorRegistrarCalificacionFinalGUI {
         columnaCalificacion.setCellValueFactory(cellData ->
                 new SimpleFloatProperty(cellData.getValue().getCalificacion()).asObject());
 
-        // Configurar columna de acción con botón
+
         columnaAccion.setCellFactory(crearBotonAsignarCalificacion());
     }
 
     private Callback<TableColumn<EstudianteDTO, Void>, TableCell<EstudianteDTO, Void>> crearBotonAsignarCalificacion() {
         return param -> new TableCell<>() {
-            private final Button btnAsignar = new Button("Asignar/Editar");
+            private final Button botonAsignar = new Button("Asignar/Editar");
 
             {
-                btnAsignar.setOnAction(event -> {
+                botonAsignar.setOnAction(event -> {
                     EstudianteDTO estudiante = getTableView().getItems().get(getIndex());
                     mostrarDialogoCalificacion(estudiante);
                 });
 
-                // Estilo opcional para el botón
-                btnAsignar.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+                botonAsignar.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
             }
 
             @Override
@@ -74,7 +73,7 @@ public class ControladorRegistrarCalificacionFinalGUI {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    setGraphic(btnAsignar);
+                    setGraphic(botonAsignar);
                 }
             }
         };
@@ -82,24 +81,15 @@ public class ControladorRegistrarCalificacionFinalGUI {
 
     private void cargarEstudiantes() {
         try {
-            // 1. Obtener NRC
-            nrcGrupo = new AuxiliarGestionEstudiante().obtenerNRC();
-            LOGGER.info("Intentando cargar estudiantes para NRC: {}", nrcGrupo);
 
-            // 2. Obtener estudiantes
+            nrcGrupo = new AuxiliarGestionEstudiante().obtenerNRC();
             EstudianteDAO estudianteDAO = new EstudianteDAO();
             List<EstudianteDTO> estudiantesBD = estudianteDAO.obtenerEstudiantesActivosConCalificacionPorNRC(nrcGrupo);
-            LOGGER.info("Estudiantes obtenidos de BD: {}", estudiantesBD.size());
-
-            // 3. Convertir a ObservableList
             ObservableList<EstudianteDTO> estudiantes = FXCollections.observableArrayList();
             estudiantes.addAll(estudiantesBD);
 
-            // 4. Asignar a tabla
             tablaAsignacion.setItems(estudiantes);
-            LOGGER.info("Items en tabla: {}", tablaAsignacion.getItems().size());
 
-            // 5. Forzar actualización de la tabla
             tablaAsignacion.refresh();
 
         } catch (SQLException e) {
@@ -125,7 +115,6 @@ public class ControladorRegistrarCalificacionFinalGUI {
         ));
         dialog.setContentText("Calificación (0-10):");
 
-        // Validar entrada
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(calificacionStr -> {
             try {
@@ -140,7 +129,6 @@ public class ControladorRegistrarCalificacionFinalGUI {
                     return;
                 }
 
-                // Asignar calificación
                 asignarCalificacion(estudiante, calificacion);
 
             } catch (NumberFormatException e) {
@@ -159,7 +147,7 @@ public class ControladorRegistrarCalificacionFinalGUI {
             boolean exito = estudianteDAO.asignarCalificacion(calificacion, estudiante.getMatricula());
 
             if (exito) {
-                // Actualizar la tabla
+
                 estudiante.setCalificacion(calificacion);
                 tablaAsignacion.refresh();
 

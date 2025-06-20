@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorCrearGruposYPeriodoGUI">
+<BorderPane prefHeight="500.0" prefWidth="952.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorCrearGruposYPeriodoGUI">
     <padding>
         <Insets bottom="10.0" left="15.0" right="15.0" top="15.0" />
     </padding>
@@ -22,7 +22,7 @@
         <VBox spacing="15" style="-fx-background-color: #f5f5f5; -fx-padding: 15; -fx-border-radius: 5; -fx-background-radius: 5;">
             <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Gestión de Grupos" />
 
-            <VBox spacing="8" style="-fx-padding: 10; -fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-radius: 5; -fx-background-radius: 5;">
+            <VBox prefHeight="75.0" prefWidth="938.0" spacing="8" style="-fx-padding: 10; -fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-radius: 5; -fx-background-radius: 5;">
                 <HBox alignment="CENTER_LEFT" spacing="15">
                     <Label style="-fx-font-weight: bold;" text="Experiencia Educativa:" />
                     <Label fx:id="etiquetaExperienciaEducativa" style="-fx-text-fill: #3498db;" text="Practicas Profesionales" />
@@ -30,7 +30,7 @@
 
                 <HBox alignment="CENTER_LEFT" spacing="15">
                     <StackPane>
-                        <Button fx:id="botonCrearNuevoPeriodo" onAction="#crearNuevoPeriodo" prefHeight="26.0" prefWidth="142.0" style="-fx-background-color: #27ae60; -fx-text-fill: white;" text="Crear nuevo período" />
+                        <Button fx:id="botonCrearNuevoPeriodo" onAction="#crearNuevoPeriodo" prefHeight="26.0" prefWidth="142.0" style="-fx-background-color: #27ae60; -fx-text-fill: white;" text="Crear  período" />
                         <Label fx:id="etiquetaPeriodoActivo" text="Periodo activo:" visible="false" />
                     </StackPane>
 
@@ -39,10 +39,10 @@
                         <Label fx:id="etiquetaPeriodo" text="periodo" visible="false" />
                     </StackPane>
 
-                    <Label fx:id="etiquetaInicio" prefHeight="18.0" prefWidth="46.0" text="Inicio:" />
+                    <Label fx:id="etiquetaInicio" focusTraversable="false" prefHeight="18.0" prefWidth="185.0" text="Inicio:" />
                     <DatePicker fx:id="fechaInicio" prefHeight="27.0" prefWidth="148.0" style="-fx-background-color: white; -fx-border-color: #bdc3c7;" />
 
-                    <Label fx:id="etiquetaFinal" prefHeight="18.0" prefWidth="38.0" text="Final:" />
+                    <Label fx:id="etiquetaFinal" prefHeight="18.0" prefWidth="160.0" text="Final:" />
                     <DatePicker fx:id="fechaFinal" prefHeight="27.0" prefWidth="135.0" style="-fx-background-color: white; -fx-border-color: #bdc3c7;" />
                 </HBox>
             </VBox>

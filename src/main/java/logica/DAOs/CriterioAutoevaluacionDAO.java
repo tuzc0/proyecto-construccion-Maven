@@ -193,6 +193,7 @@ public class CriterioAutoevaluacionDAO implements ICriterioAutoevaluacionDAO {
 
         try {
 
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
             sentenciaCriterio = conexionBaseDeDatos.prepareStatement(consultaSQL);
             resultadoConsultaCriterio = sentenciaCriterio.executeQuery();
 

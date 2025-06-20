@@ -9541,3 +9541,20 @@ javafx.fxml.LoadException: Error resolving onAction='#abrirDetallesAsignacionCom
 2025-06-20 05:50:48 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Intentando cargar estudiantes para NRC: 130
 2025-06-20 05:50:48 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Estudiantes obtenidos de BD: 2
 2025-06-20 05:50:48 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarCalificacionFinalGUI - Items en tabla: 2
+2025-06-20 09:09:43 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarCriterioAutoevaluacionGUI - Error inesperado: java.lang.NullPointerException: Cannot invoke "java.sql.Connection.prepareStatement(String)" because "this.conexionBaseDeDatos" is null
+2025-06-20 09:09:52 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarCriterioAutoevaluacionGUI - Error inesperado: java.lang.NullPointerException: Cannot invoke "java.sql.Connection.prepareStatement(String)" because "this.conexionBaseDeDatos" is null
+2025-06-20 09:09:56 [JavaFX Application Thread] WARN  GUI.ControladorHabilitarAutoevaluacionGUI - No se ha seleccionado ningún criterio para eliminar.
+2025-06-20 09:09:59 [JavaFX Application Thread] INFO  GUI.ControladorHabilitarAutoevaluacionGUI - Criterio de autoevaluación eliminado correctamente.
+2025-06-20 09:10:01 [JavaFX Application Thread] INFO  GUI.ControladorHabilitarAutoevaluacionGUI - Criterio de autoevaluación eliminado correctamente.
+2025-06-20 09:10:03 [JavaFX Application Thread] INFO  GUI.ControladorHabilitarAutoevaluacionGUI - Criterio de autoevaluación eliminado correctamente.
+2025-06-20 09:10:04 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarCriterioAutoevaluacionGUI - Error inesperado: java.lang.NullPointerException: Cannot invoke "java.sql.Connection.prepareStatement(String)" because "this.conexionBaseDeDatos" is null
+2025-06-20 09:11:14 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarCriterioAutoevaluacionGUI - Error inesperado: java.lang.NullPointerException: Cannot invoke "java.sql.Connection.prepareStatement(String)" because "this.conexionBaseDeDatos" is null
+2025-06-20 09:11:31 [JavaFX Application Thread] INFO  GUI.ControladorHabilitarAutoevaluacionGUI - Criterio de autoevaluación eliminado correctamente.
+2025-06-20 09:11:34 [JavaFX Application Thread] INFO  GUI.ControladorHabilitarAutoevaluacionGUI - Criterio de autoevaluación eliminado correctamente.
+2025-06-20 09:12:28 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarCriterioAutoevaluacionGUI - Error inesperado: java.lang.NullPointerException: Cannot invoke "java.sql.Connection.prepareStatement(String)" because "this.conexionBaseDeDatos" is null
+2025-06-20 09:12:41 [JavaFX Application Thread] INFO  GUI.ControladorHabilitarAutoevaluacionGUI - Criterio de autoevaluación eliminado correctamente.
+2025-06-20 09:12:43 [JavaFX Application Thread] INFO  GUI.ControladorHabilitarAutoevaluacionGUI - Criterio de autoevaluación eliminado correctamente.
+2025-06-20 09:14:18 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarCriterioAutoevaluacionGUI - Error inesperado: java.lang.NullPointerException: Cannot invoke "java.sql.Connection.prepareStatement(String)" because "this.conexionBaseDeDatos" is null
+2025-06-20 09:15:14 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarCriterioAutoevaluacionGUI - Error inesperado: java.lang.NullPointerException: Cannot invoke "java.sql.Connection.prepareStatement(String)" because "this.conexionBaseDeDatos" is null
+2025-06-20 09:15:22 [JavaFX Application Thread] INFO  GUI.ControladorHabilitarAutoevaluacionGUI - Criterio de autoevaluación eliminado correctamente.
+2025-06-20 09:15:24 [JavaFX Application Thread] INFO  GUI.ControladorHabilitarAutoevaluacionGUI - Criterio de autoevaluación eliminado correctamente.

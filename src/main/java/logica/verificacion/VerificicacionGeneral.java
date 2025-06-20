@@ -11,14 +11,15 @@ public class VerificicacionGeneral {
 
     public void contadorCaracteresTextArea(TextArea textoArea, Label contadorCaracteres, int numeroMaximoDeCaracteres) {
 
-        int numeroDeCaracteresMaximos = numeroMaximoDeCaracteres;
-
         textoArea.textProperty().addListener((textoObservado, textoAnterior, textoActual) -> {
-            int cantidadCaracteresActuales = textoActual.length();
-            contadorCaracteres.setText(cantidadCaracteresActuales + "/" + numeroDeCaracteresMaximos);
+            if (textoActual.length() > numeroMaximoDeCaracteres) {
+                textoArea.setText(textoAnterior);
+            } else {
+                contadorCaracteres.setText(textoActual.length() + "/" + numeroMaximoDeCaracteres);
+            }
         });
 
-        contadorCaracteres.setText("0/" + numeroDeCaracteresMaximos);
+        contadorCaracteres.setText("0/" + numeroMaximoDeCaracteres);
     }
 
     public void contadorCaracteresTextField(TextField campoDeTexto, Label contadorCaracteres, int numeroMaximoDeCaracteres) {

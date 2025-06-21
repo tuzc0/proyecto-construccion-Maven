@@ -203,18 +203,26 @@ public class ControladorRegistrarReporteMensualGUI {
             reporteDTO.setIDReporte(idReporte);
 
             reporteDAO.modificarReporte(reporteDTO);
+            guardarEvidenciaReporte();
 
             utilidades.mostrarAlerta("Éxito",
                     "Reporte guardado",
                     "El reporte se ha guardado correctamente.");
 
-            guardarEvidenciaReporte();
+
+            Stage stage = (Stage) campoMetodologia.getScene().getWindow();
+            stage.close();
 
         } catch (SQLException e) {
             logger.error("Error al guardar el reporte: ", e);
-            utilidades.mostrarAlerta("Error",
-                    "No se pudo guardar el reporte",
-                    "Por favor, intente nuevamente más tarde.");
+
+            if (e.getMessage().contains("The driver has not received any packets from the server.")){
+
+                utilidades.mostrarAlerta("Error",
+                        "No se pudo guardar el reporte, porque no hay conexion con la base de datos",
+                        "Por favor, intente nuevamente más tarde.");
+                return;
+            }
 
         } catch (IOException e) {
 

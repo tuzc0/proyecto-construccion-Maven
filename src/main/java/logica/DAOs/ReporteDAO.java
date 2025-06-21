@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReporteDAO implements IReporteDAO {
 
@@ -154,5 +156,31 @@ public class ReporteDAO implements IReporteDAO {
         }
 
         return reporteEliminado;
+    }
+
+
+    public List<ReporteDTO> buscarReportesPorMatricula(String matricula) throws SQLException, IOException {
+        List<ReporteDTO> reportes = new ArrayList<>();
+        String buscarSQLReportes = "SELECT * FROM reporte WHERE idEstudiante = ?";
+
+        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+             PreparedStatement sentenciaReporte = conexionBaseDeDatos.prepareStatement(buscarSQLReportes)) {
+
+            sentenciaReporte.setString(1, matricula);
+            try (ResultSet resultadoReporte = sentenciaReporte.executeQuery()) {
+                while (resultadoReporte.next()) {
+                    ReporteDTO reporte = new ReporteDTO();
+                    reporte.setIDReporte(resultadoReporte.getInt("IdReporte"));
+                    reporte.setNumeroHoras(resultadoReporte.getInt("numeroHoras"));
+                    reporte.setMetodologia(resultadoReporte.getString("metodologia"));
+                    reporte.setObservaciones(resultadoReporte.getString("observaciones"));
+                    reporte.setFecha(resultadoReporte.getTimestamp("fecha"));
+                    reporte.setMatricula(resultadoReporte.getString("IdEstudiante"));
+                    reportes.add(reporte);
+                }
+            }
+        }
+
+        return reportes;
     }
 }

@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EvidenciaReporteDAO implements IEvidenciaReporteDAO {
 
@@ -70,6 +72,28 @@ public class EvidenciaReporteDAO implements IEvidenciaReporteDAO {
         }
 
         return evidenciaEncontrada;
+    }
+
+    public List<EvidenciaReporteDTO> mostrarEvidenciasPorIdReporte(int idReporte) throws SQLException, IOException {
+        List<EvidenciaReporteDTO> listaEvidencias = new ArrayList<>();
+        String consultaSQL = "SELECT * FROM evidenciareporte WHERE idReporte = ?";
+
+        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+             PreparedStatement sentenciaEvidenciaReporte = conexionBaseDeDatos.prepareStatement(consultaSQL)) {
+
+            sentenciaEvidenciaReporte.setInt(1, idReporte);
+            try (ResultSet resultadoEvidenciaReporte = sentenciaEvidenciaReporte.executeQuery()) {
+                while (resultadoEvidenciaReporte.next()) {
+                    EvidenciaReporteDTO evidencia = new EvidenciaReporteDTO();
+                    evidencia.setIdEvidencia(resultadoEvidenciaReporte.getInt("idEvidencia"));
+                    evidencia.setURL(resultadoEvidenciaReporte.getString("URL"));
+                    evidencia.setIdReporte(resultadoEvidenciaReporte.getInt("idReporte"));
+                    listaEvidencias.add(evidencia);
+                }
+            }
+        }
+
+        return listaEvidencias;
     }
 }
 

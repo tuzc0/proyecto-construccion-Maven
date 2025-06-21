@@ -29,5 +29,13 @@ public class ContenedorActividadesReporte {
         this.reporteContiene = reporteContiene;
     }
 
+    public ActividadDTO getActividad() {
+        return actividad;
+    }
+
+    public ReporteContieneDTO getReporteContiene() {
+        return reporteContiene;
+    }
+
 
 }

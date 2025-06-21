@@ -526,5 +526,79 @@ public class EstudianteDAO implements IEstudianteDAO {
         return estudiantesModificados;
     }
 
+    public List<EstudianteDTO> listarEstudiantesConReporteMensualPorGrupo(int nrc) throws SQLException, IOException {
+        List<EstudianteDTO> estudiantesConReporte = new ArrayList<>();
+
+        String consultaSql = """
+    SELECT e.matricula, ve.nombre, ve.apellidos, e.NRC
+    FROM estudiante e
+    JOIN vista_estudiante ve ON e.matricula = ve.matricula
+    JOIN reporte rm ON e.matricula = rm.idEstudiante
+    WHERE ve.estadoActivo = 1 AND e.NRC = ?
+    GROUP BY e.NRC, e.matricula, ve.nombre, ve.apellidos
+    """;
+
+        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+             PreparedStatement sentencia = conexionBaseDeDatos.prepareStatement(consultaSql)) {
+
+            sentencia.setInt(1, nrc);
+
+            try (ResultSet resultado = sentencia.executeQuery()) {
+                while (resultado.next()) {
+                    EstudianteDTO estudiante = new EstudianteDTO(
+                            0,
+                            resultado.getString("nombre"),
+                            resultado.getString("apellidos"),
+                            resultado.getString("matricula"),
+                            1,
+                            0,
+                            resultado.getInt("NRC"),
+                            0
+                    );
+                    estudiantesConReporte.add(estudiante);
+                }
+            }
+        }
+
+        return estudiantesConReporte;
+    }
+
+    public List<EstudianteDTO> listarEstudiantesConAutoevaluacion(int nrc) throws SQLException, IOException {
+        List<EstudianteDTO> estudiantesConAutoevaluacion = new ArrayList<>();
+
+        String consultaSql = """
+        SELECT e.matricula, ve.nombre, ve.apellidos, e.NRC
+        FROM estudiante e
+        JOIN vista_estudiante ve ON e.matricula = ve.matricula
+        JOIN autoevaluacion a ON e.matricula = a.idEstudiante
+        WHERE ve.estadoActivo = 1 AND e.NRC = ?
+        GROUP BY e.matricula, ve.nombre, ve.apellidos, e.NRC
+    """;
+
+        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+             PreparedStatement sentencia = conexionBaseDeDatos.prepareStatement(consultaSql)) {
+
+            sentencia.setInt(1, nrc);
+
+            try (ResultSet resultado = sentencia.executeQuery()) {
+                while (resultado.next()) {
+                    EstudianteDTO estudiante = new EstudianteDTO(
+                            0,
+                            resultado.getString("nombre"),
+                            resultado.getString("apellidos"),
+                            resultado.getString("matricula"),
+                            1,
+                            0,
+                            resultado.getInt("NRC"),
+                            0
+                    );
+                    estudiantesConAutoevaluacion.add(estudiante);
+                }
+            }
+        }
+
+        return estudiantesConAutoevaluacion;
+    }
+
 
 }

@@ -108,9 +108,20 @@ public class ControladorInicioDeSesionGUI {
         } catch (SQLException e) {
 
             logger.error("Error al iniciar sesión: " + e);
-            utilidades.mostrarAlerta("Error de inicio de sesión",
+
+            if (e.getMessage().contains("The driver has not received any packets from the server.")){
+
+                utilidades.mostrarAlerta("Error de conexion con la base de datos",
+                        "No se pudo iniciar sesión, porque no hay conexion con la base de datos",
+                        "Por favor, intente nuevamente más tarde.");
+                return;
+
+            }
+
+            utilidades.mostrarAlerta("Error con la base de datos",
                     "No se pudo iniciar sesión",
-                    "Por favor, intente nuevamente más tarde.");
+                    "Por favor, verifique su correo y contraseña e intente nuevamente.");
+
 
         } catch (IOException e) {
 

@@ -20,7 +20,7 @@
    </Pane>
 
    <!-- Contenedor principal de botones -->
-   <VBox alignment="CENTER" layoutX="250.0" layoutY="120.0" spacing="20">
+   <VBox alignment="CENTER" layoutX="253.0" layoutY="98.0" spacing="20">
       <!-- Botón Registrar Estudiante -->
       <Button fx:id="btnRegistrarEstudiante" mnemonicParsing="false" onAction="#abrirRegistroEstudiante" prefHeight="60.0" prefWidth="300.0" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;" text="Registrar Estudiante">
          <padding>
@@ -53,6 +53,22 @@
 
       <!-- Botón Consultar Evaluaciones -->
       <Button fx:id="btnConsultarEvaluaciones" mnemonicParsing="false" onAction="#abrirConsultarEvaluaciones" prefHeight="60.0" prefWidth="300.0" style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;" text="Consultar Evaluaciones">
+         <padding>
+            <Insets bottom="10" left="20" right="20" top="10" />
+         </padding>
+         <effect>
+            <DropShadow color="rgba(0,0,0,0.3)" offsetX="3" offsetY="3" radius="5" />
+         </effect>
+      </Button>
+      <Button mnemonicParsing="false" onAction="#abrirConsultarReporteMensual" prefHeight="60.0" prefWidth="300.0" style="-fx-background-color: #d3be2c; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;" text="Consultar Reporte ">
+         <padding>
+            <Insets bottom="10" left="20" right="20" top="10" />
+         </padding>
+         <effect>
+            <DropShadow color="rgba(0,0,0,0.3)" offsetX="3" offsetY="3" radius="5" />
+         </effect>
+      </Button>
+      <Button mnemonicParsing="false" onAction="#abrirConsultarAutoevaluacion" prefHeight="60.0" prefWidth="300.0" style="-fx-background-color: #2cd3c5; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;" text="Consultar Autoevaluacion">
          <padding>
             <Insets bottom="10" left="20" right="20" top="10" />
          </padding>

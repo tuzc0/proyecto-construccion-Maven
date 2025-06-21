@@ -17,6 +17,7 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 public class ControladorConsultarAutoevaluacionGUI {
@@ -52,6 +53,11 @@ public class ControladorConsultarAutoevaluacionGUI {
 
     public void cargarCriterios(){
         try{
+
+            if(matricula == null || matricula.isEmpty() || matricula.equals(" ")) {
+                matricula = ControladorListarEstudiantesConAutoevaluacionGUI.matriculaEstudiante;
+            }
+
             AutoevaluacionDAO autoevaluacionDAO = new AutoevaluacionDAO();
             AutoevaluacionContieneDAO contieneDAO = new AutoevaluacionContieneDAO();
             CriterioAutoevaluacionDAO criterioDAO = new CriterioAutoevaluacionDAO();
@@ -61,6 +67,9 @@ public class ControladorConsultarAutoevaluacionGUI {
             idAutoevaluacion = auto.getIDAutoevaluacion();
             etiquetaFecha.setText(auto.getFecha().toString());
             etiquetaPromedio.setText(String.valueOf(auto.getCalificacionFinal()));
+
+            Timestamp fecha = auto.getFecha();
+            String fechaString = (fecha != null) ? fecha.toString() : "Fecha no disponible";
 
             List<AutoEvaluacionContieneDTO> listaContiene = contieneDAO.listarAutoevaluacionesPorIdAutoevaluacion(idAutoevaluacion);
             List<CriterioAutoevaluacionDTO> listaCriterios = criterioDAO.listarCriteriosAutoevaluacionActivos();

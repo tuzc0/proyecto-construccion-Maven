@@ -32,7 +32,6 @@ public class ControladorMenuAcademicoGUI {
     public void abrirConsultarEstudiante() {
 
         String ventana = "/GestorEstudiantesGUI.fxml";
-        System.out.println("NRC: " + NRC);
         mostrarVentana(ventana);
     }
 
@@ -61,6 +60,20 @@ public class ControladorMenuAcademicoGUI {
     public void abrirVentanaCalificacionFinal() {
 
         String ventana = "/RegistrarCalificacionFinalGUI.fxml";
+        mostrarVentana(ventana);
+    }
+
+    @FXML
+    public void abrirConsultarReporteMensual() {
+
+        String ventana = "/ListarEstudiantesConReporteMensual.fxml";
+        mostrarVentana(ventana);
+    }
+
+    @FXML
+    public void abrirConsultarAutoevaluacion() {
+
+        String ventana = "/ListarEstudiantesConAutoevaluacionesGUI.fxml";
         mostrarVentana(ventana);
     }
 

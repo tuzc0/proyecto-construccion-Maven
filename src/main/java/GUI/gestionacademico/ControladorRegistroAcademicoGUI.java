@@ -256,6 +256,16 @@ public class ControladorRegistroAcademicoGUI {
 
         } catch (SQLException e) {
 
+            if (e.getMessage().contains("Unknown database")){
+
+                UTILIDADES.mostrarAlerta("Error de conexion con la base de datos",
+                        "Base de datos desconocida",
+                        "Por favor, intente nuevamente más tarde.");
+                return;
+
+            }
+
+
             LOGGER.error("Error de base de datos al registrar académico: " + e);
             UTILIDADES.mostrarAlerta(
                     "Error del sistema",

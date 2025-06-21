@@ -199,7 +199,8 @@ public class ControladorMenuEstudianteGUI {
     @FXML
     public void abrirRegistrarReporteMensual() {
 
-        if (!verificarAsignacionProyecto()) {
+        if (!verificarAsignacionProyecto() || !verificarExistenciaCronogramaActividades()) {
+
             return;
         }
 
@@ -231,6 +232,48 @@ public class ControladorMenuEstudianteGUI {
             utilidades.mostrarAlerta("Error", "No se pudo verificar el reporte mensual.", "Por favor, intenta nuevamente más tarde.");
         }
     }
+
+    private boolean verificarExistenciaCronogramaActividades() {
+
+        CronogramaActividadesDAO cronogramaActividadesDAO = new CronogramaActividadesDAO();
+        try {
+            CronogramaActividadesDTO cronograma = cronogramaActividadesDAO.buscarCronogramaPorMatricula(matricula);
+            if (cronograma == null || cronograma.getIDCronograma() == NULL) {
+                utilidades.mostrarAlerta(
+                        "Cronograma de Actividades",
+                        "No tienes un cronograma de actividades registrado.",
+                        "Debes registrar un cronograma de actividades antes de poder registrar un reporte mensual."
+                );
+                return false;
+            }
+            return true;
+        } catch (SQLException e) {
+            logger.error("Error al verificar cronograma de actividades: " + e);
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "No se pudo verificar el cronograma de actividades.",
+                    "Por favor, intenta nuevamente más tarde."
+            );
+            return false;
+        } catch (IOException e) {
+            logger.error("Error de IO al verificar cronograma de actividades: " + e);
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "Error de entrada/salida al verificar el cronograma de actividades.",
+                    "Por favor, intenta nuevamente más tarde."
+            );
+            return false;
+        } catch (Exception e) {
+            logger.error("Error inesperado al verificar cronograma de actividades: " + e);
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error inesperado al verificar el cronograma de actividades.",
+                    "Por favor, contacta al administrador si el problema persiste."
+            );
+            return false;
+        }
+    }
+
 
     @FXML
     public void abrirRegistrarCronogramaActividades() {

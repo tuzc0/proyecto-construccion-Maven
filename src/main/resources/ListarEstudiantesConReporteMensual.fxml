@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ControladorListarEstudiantesConReporteMensualGUI">
+   <children>
+      <Label layoutX="165.0" layoutY="36.0" text="Lista de estudiantes con reporte mensual">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tablaEstudiantes" layoutX="32.0" layoutY="94.0" prefHeight="252.0" prefWidth="546.0">
+        <columns>
+          <TableColumn fx:id="columnaMatricula" prefWidth="75.0" text="Matricula" />
+          <TableColumn fx:id="columnaNombre" prefWidth="191.20001220703125" text="Nombre" />
+            <TableColumn fx:id="columnaApellidos" prefWidth="119.20001220703125" text="apellidos" />
+            <TableColumn fx:id="columnaVerReporte" prefWidth="160.79998779296875" text=" ver reporte" />
+        </columns>
+      </TableView>
+   </children>
+</Pane>

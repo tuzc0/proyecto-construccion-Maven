@@ -45,6 +45,12 @@ class CuentaDAOTest {
 
         } catch (SQLException | IOException e) {
 
+            if (e.getMessage().contains("The driver has not received any packets from the server.")){
+
+                fail("Error de conexión a la base de datos: " + e);
+                return;
+            }
+
             fail("Error al preparar los datos de prueba: " + e);
         }
     }
@@ -237,6 +243,12 @@ class CuentaDAOTest {
             assertEquals(cuenta, cuentaEncontrada, "La cuenta encontrada debería coincidir con la esperada.");
 
         } catch (SQLException | IOException e) {
+
+            if (e.getMessage().contains("The driver has not received any packets from the server.")){
+
+                fail("Error de conexión a la base de datos: " + e);
+                return;
+            }
 
             fail("No se esperaba excepción: " + e);
         }

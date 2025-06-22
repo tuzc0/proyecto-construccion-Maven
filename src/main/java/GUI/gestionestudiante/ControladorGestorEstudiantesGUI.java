@@ -1,7 +1,7 @@
 package GUI.gestionestudiante;
 
-import GUI.ControladorInicioDeSesionGUI;
 import GUI.ControladorObjetoEvaluacion;
+import GUI.ManejadorExepciones;
 import GUI.utilidades.Utilidades;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -126,6 +126,8 @@ public class ControladorGestorEstudiantesGUI {
 
     Utilidades utilidades = new Utilidades();
 
+    ManejadorExepciones manejadorExepciones = new ManejadorExepciones();
+
     @FXML
     public void initialize() {
 
@@ -167,16 +169,22 @@ public class ControladorGestorEstudiantesGUI {
             ObservableList<EstudianteDTO> estudiantes = FXCollections.observableArrayList(estudianteDAO.obtenerEstudiantesActivosPorNRC(NRC));
             tablaEstudiantes.setItems(estudiantes);
 
+        } catch (SQLException e) {
+
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+
+        } catch (IOException e) {
+
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
+
         } catch (Exception e) {
 
-            logger.error("Error al cargar la lista de estudiantes: " + e);
+            logger.error("Error inesperado al cargar los estudiantes: " + e);
             utilidades.mostrarAlerta(
-                    "Error al cargar estudiantes",
-                    "No se pudieron cargar los estudiantes",
+                    "Error inesperado",
+                    "No se pudieron cargar los estudiantes.",
                     "Por favor, intente nuevamente más tarde."
             );
-
-
         }
     }
 
@@ -218,10 +226,22 @@ public class ControladorGestorEstudiantesGUI {
                 etiquetaCorreoEncontrado.setText("");
             }
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e){
 
-            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al buscar el estudiante.");
-            logger.error("Error al buscar el estudiante: " + e);
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+
+        } catch (IOException e) {
+
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al buscar el estudiante: " + e);
+            utilidades.mostrarAlerta(
+                    "Error inesperado",
+                    "No se pudo buscar el estudiante.",
+                    "Por favor, intente nuevamente más tarde."
+            );
         }
     }
 
@@ -246,10 +266,22 @@ public class ControladorGestorEstudiantesGUI {
                 etiquetaCorreoEncontrado.setText(cuenta.getCorreoElectronico());
             }
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
-            logger.error("Error al mostrar detalles del estudiante: " + e);
-            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al mostrar detalles del estudiante.");
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+
+        } catch (IOException e) {
+
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al mostrar los detalles del estudiante: " + e);
+            utilidades.mostrarAlerta(
+                    "Error inesperado",
+                    "No se pudieron mostrar los detalles del estudiante.",
+                    "Por favor, intente nuevamente más tarde."
+            );
         }
     }
 
@@ -281,8 +313,7 @@ public class ControladorGestorEstudiantesGUI {
 
         } catch (IOException e) {
 
-            logger.error("Error al abrir la ventana de registro: " + e);
-            utilidades.mostrarVentanaAviso("/AvisoGUI.fxml", "Error al abrir la ventana de registro.");
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
         }
     }
 
@@ -318,11 +349,19 @@ public class ControladorGestorEstudiantesGUI {
 
             }
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
-            logger.error("Error al eliminar el estudiante: " + e);
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+
+        } catch (IOException e) {
+
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al eliminar el estudiante: " + e);
             utilidades.mostrarAlerta(
-                    "Error al eliminar estudiante",
+                    "Error inesperado",
                     "No se pudo eliminar el estudiante.",
                     "Por favor, intente nuevamente más tarde."
             );
@@ -421,9 +460,24 @@ public class ControladorGestorEstudiantesGUI {
                 }
 
             }
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
-            logger.error("Error al eliminar el estudiante: " + e);
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            error = true;
+
+        } catch (IOException e) {
+
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            error = true;
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al eliminar estudiantes: " + e);
+            utilidades.mostrarAlerta(
+                    "Error inesperado",
+                    "No se pudieron eliminar los estudiantes seleccionados.",
+                    "Por favor, intente nuevamente más tarde."
+            );
             error = true;
         }
 
@@ -616,12 +670,22 @@ public class ControladorGestorEstudiantesGUI {
             cancelarEdicion();
             cargarEstudiantes();
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
-        utilidades.mostrarAlerta("Error al guardar cambios",
-                "No se pudieron guardar los cambios.",
-                "Por favor, intente nuevamente más tarde.");
-            logger.error("Error al guardar los cambios: " + e);
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+
+        } catch (IOException e) {
+
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al guardar los cambios del estudiante: " + e);
+            utilidades.mostrarAlerta(
+                    "Error inesperado",
+                    "No se pudieron guardar los cambios del estudiante.",
+                    "Por favor, intente nuevamente más tarde."
+            );
         }
 
         botonSeleccionarEstudiantes.setDisable(false);

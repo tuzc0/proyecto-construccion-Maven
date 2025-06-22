@@ -12033,3 +12033,9 @@ The last packet sent successfully to the server was 0 milliseconds ago. The driv
 2025-06-21 21:03:56 [JavaFX Application Thread] INFO  GUI.gestionacademico.ControladorRegistroAcademicoGUI - Registro de académico exitoso.
 2025-06-21 21:14:52 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error al iniciar sesión: java.sql.SQLException: The url cannot be null
 2025-06-21 21:14:57 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error al iniciar sesión: java.sql.SQLException: The url cannot be null
+2025-06-22 15:23:46 [JavaFX Application Thread] ERROR GUI.gestionestudiante.AuxiliarGestionEstudiante - Error al obtener el NRC: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 15:23:48 [JavaFX Application Thread] ERROR GUI.ControladorObjetoEvaluacion - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.

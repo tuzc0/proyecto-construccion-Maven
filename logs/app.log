@@ -11954,3 +11954,82 @@ Caused by: java.lang.NullPointerException: Cannot invoke "java.sql.Timestamp.toS
 2025-06-20 23:24:22 [JavaFX Application Thread] ERROR GUI.gestionestudiante.AuxiliarGestionEstudiante - No se encontró un grupo activo para el número de personal: 22031
 2025-06-20 23:28:17 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - Criterios de autoevaluación actualizados correctamente.
 2025-06-20 23:28:19 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error inesperado al guardar la autoevaluación: java.lang.NullPointerException: Location is required.
+2025-06-21 20:15:02 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error al iniciar sesión: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-21 20:28:17 [JavaFX Application Thread] ERROR GUI.gestionacademicoevaluador.ControladorRegistroAcademicoEvaluadorGUI - Error BD: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-21 20:31:00 [JavaFX Application Thread] INFO  GUI.gestionacademico.ControladorRegistroAcademicoGUI - Registro de académico exitoso.
+2025-06-21 20:31:34 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error inesperado: javax.crypto.IllegalBlockSizeException: Input length must be multiple of 16 when decrypting with padded cipher
+2025-06-21 20:32:24 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de conexión con la base datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-21 20:32:33 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de conexión con la base datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-21 20:38:37 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error inesperado: javax.crypto.IllegalBlockSizeException: Input length must be multiple of 16 when decrypting with padded cipher
+2025-06-21 20:39:31 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de SQL: java.sql.SQLSyntaxErrorException: Unknown database 'sistemapracticas'
+2025-06-21 20:39:32 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de SQL: java.sql.SQLSyntaxErrorException: Unknown database 'sistemapracticas'
+2025-06-21 20:39:32 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de SQL: java.sql.SQLSyntaxErrorException: Unknown database 'sistemapracticas'
+2025-06-21 20:39:32 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de SQL: java.sql.SQLSyntaxErrorException: Unknown database 'sistemapracticas'
+2025-06-21 20:39:33 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de SQL: java.sql.SQLSyntaxErrorException: Unknown database 'sistemapracticas'
+2025-06-21 20:46:12 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de SQL: java.sql.SQLSyntaxErrorException: Unknown database 'sistemapracticas'
+2025-06-21 20:46:12 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - La base de datos no existe: java.sql.SQLSyntaxErrorException: Unknown database 'sistemapracticas'
+2025-06-21 20:47:29 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de SQL: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-21 20:47:29 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de conexión con la base datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-21 20:47:36 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - La base de datos no existe: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-21 20:47:46 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de SQL: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-21 20:47:46 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de conexión con la base datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-21 20:47:47 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - La base de datos no existe: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-21 20:47:57 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de SQL: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-21 20:47:57 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de conexión con la base datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-21 20:47:59 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - La base de datos no existe: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-21 20:48:12 [JavaFX Application Thread] INFO  GUI.gestionacademico.ControladorRegistroAcademicoGUI - Registro de académico exitoso.
+2025-06-21 20:53:17 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de SQL: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 20:53:17 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - La base de datos no existe: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 20:53:23 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de SQL: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 20:53:23 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - La base de datos no existe: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 20:53:32 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de SQL: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 20:53:32 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - La base de datos no existe: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 21:00:11 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de SQL: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 21:00:11 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - La base de datos no existe: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 21:00:16 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de SQL: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 21:00:16 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - La base de datos no existe: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 21:00:31 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de SQL: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 21:00:31 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - La base de datos no existe: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 21:00:36 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de SQL: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 21:00:36 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - La base de datos no existe: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 21:01:08 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de SQL: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 21:01:08 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - La base de datos no existe: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 21:01:32 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de SQL: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 21:01:32 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - La base de datos no existe: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 21:01:37 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de SQL: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 21:01:37 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - La base de datos no existe: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 21:01:41 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de SQL: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 21:01:41 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - La base de datos no existe: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 21:02:10 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de SQL: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 21:02:10 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - La base de datos no existe: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 21:02:22 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - Error de SQL: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 21:02:22 [JavaFX Application Thread] ERROR GUI.gestionacademico.ControladorRegistroAcademicoGUI - La base de datos no existe: java.sql.SQLSyntaxErrorException: Access denied for user 'claudio_test'@'localhost' to database 'construccion'
+2025-06-21 21:03:56 [JavaFX Application Thread] INFO  GUI.gestionacademico.ControladorRegistroAcademicoGUI - Registro de académico exitoso.
+2025-06-21 21:14:52 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error al iniciar sesión: java.sql.SQLException: The url cannot be null
+2025-06-21 21:14:57 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error al iniciar sesión: java.sql.SQLException: The url cannot be null

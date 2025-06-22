@@ -29,9 +29,6 @@ public class ControladorRegistroAcademicoGUI {
 
     private static final Logger LOGGER =
             LogManager.getLogger(ControladorRegistroAcademicoGUI.class);
-    private final UtilidadesContraseña UTILIDADES_CONTRASEÑA =
-            new UtilidadesContraseña();
-    private final Utilidades UTILIDADES = new Utilidades();
 
     @FXML private TextField campoNombre;
     @FXML private TextField campoApellidos;
@@ -52,42 +49,42 @@ public class ControladorRegistroAcademicoGUI {
     @FXML private Button botonCancelar;
     @FXML private Button botonOjo;
 
-    private boolean contraseñaVisible = false;
-
     EncriptadorContraseñas encriptadorContraseñas = new EncriptadorContraseñas();
+    private UtilidadesContraseña utilidadesConstraña = new UtilidadesContraseña();
+    private Utilidades utilidades = new Utilidades();
+
+    private boolean contraseñaVisible = false;
 
     @FXML
     private void initialize() {
 
-        VerificicacionGeneral verifGen = new VerificicacionGeneral();
+        VerificicacionGeneral verificacionGeneral = new VerificicacionGeneral();
+
         final int MAX_CARACTERES_NOMBRE = 50;
         final int MAX_CARACTERES_NUMERO_PERSONAL = 5;
         final int MAX_CARACTERES_CORREO = 100;
         final int MAX_CARACTERES_CONTRASEÑA = 64;
 
-        verifGen.contadorCaracteresTextField(
+        verificacionGeneral.contadorCaracteresTextField(
                 campoNombre, etiquetaContadorNombre, MAX_CARACTERES_NOMBRE);
-        verifGen.contadorCaracteresTextField(
+        verificacionGeneral.contadorCaracteresTextField(
                 campoApellidos, etiquetaContadorApellidos, MAX_CARACTERES_NOMBRE);
-        verifGen.contadorCaracteresTextField(
+        verificacionGeneral.contadorCaracteresTextField(
                 campoNumeroPersonal, etiquetaContadorNumeroPersonal, MAX_CARACTERES_NUMERO_PERSONAL);
-        verifGen.contadorCaracteresTextField(
+        verificacionGeneral.contadorCaracteresTextField(
                 campoCorreo, etiquetaContadorCorreo, MAX_CARACTERES_CORREO);
-        verifGen.contadorCaracteresTextField(
+        verificacionGeneral.contadorCaracteresTextField(
                 contraseñaIngresada, etiquetaContadorContraseña, MAX_CARACTERES_CONTRASEÑA);
-        verifGen.contadorCaracteresTextField(
+        verificacionGeneral.contadorCaracteresTextField(
                 contraseñaConfirmada,
                 etiquetaContadorConfirmarContraseña, MAX_CARACTERES_CONTRASEÑA);
 
-        campoContraseñaVisible
-                .textProperty()
+        campoContraseñaVisible.textProperty()
                 .bindBidirectional(contraseñaIngresada.textProperty());
-        campoConfirmarContraseñaVisible
-                .textProperty()
-                .bindBidirectional(
-                        contraseñaConfirmada.textProperty());
+        campoConfirmarContraseñaVisible.textProperty()
+                .bindBidirectional(contraseñaConfirmada.textProperty());
 
-        UTILIDADES_CONTRASEÑA.inicializarIcono(imagenOjo);
+        utilidadesConstraña.inicializarIcono(imagenOjo);
         botonRegistrar.setCursor(Cursor.HAND);
         botonCancelar.setCursor(Cursor.HAND);
         botonOjo.setCursor(Cursor.HAND);
@@ -101,7 +98,7 @@ public class ControladorRegistroAcademicoGUI {
     @FXML
     private void alternarVisibilidadContrasena() {
 
-        UTILIDADES_CONTRASEÑA.alternarVisibilidadContrasena(
+        utilidadesConstraña.alternarVisibilidadContrasena(
                 contraseñaIngresada,
                 campoContraseñaVisible,
                 contraseñaConfirmada,
@@ -130,11 +127,11 @@ public class ControladorRegistroAcademicoGUI {
 
         if (!camposVacios.isEmpty()) {
 
-            String msg = String.join("\n", camposVacios);
-            UTILIDADES.mostrarAlerta(
+            String mensajeError = String.join("\n", camposVacios);
+            utilidades.mostrarAlerta(
                     "Campos vacíos",
                     "Por favor, complete todos los campos requeridos.",
-                    msg
+                    mensajeError
             );
             return;
         }
@@ -149,25 +146,21 @@ public class ControladorRegistroAcademicoGUI {
 
         if (!errores.isEmpty()) {
 
-            String msg = String.join("\n", errores);
-            UTILIDADES.mostrarAlerta(
+            String mensajeError = String.join("\n", errores);
+            utilidades.mostrarAlerta(
                     "Datos inválidos",
                     "Algunos campos contienen datos no válidos.",
-                    msg
+                    mensajeError
             );
             return;
         }
 
-        if (!UtilidadesContraseña.esContraseñaIgual(
-                contraseñaIngresada,
-                contraseñaConfirmada
-        )) {
+        if (!UtilidadesContraseña.esContraseñaIgual(contraseñaIngresada, contraseñaConfirmada)) {
 
-            UTILIDADES.mostrarAlerta(
-                    "Contraseñas no coinciden",
+            utilidades.mostrarAlerta(
+                    "Contraseñas distintas",
                     "Las contraseñas ingresadas no son iguales.",
-                    "Asegúrese de que la contraseña y su confirmación"
-                            + " coincidan exactamente."
+                    "Asegúrese de que la contraseña y su confirmación coincidan."
             );
             return;
         }
@@ -183,12 +176,13 @@ public class ControladorRegistroAcademicoGUI {
             int numeroPersonal = Integer.parseInt(numeroDePersonalTexto);
 
             AcademicoDTO academicoExistente = academicoDAO.buscarAcademicoPorNumeroDePersonal(numeroPersonal);
-            CuentaDTO cuentaEncontrada = cuentaDAO.buscarCuentaPorCorreo(correo);
+            CuentaDTO cuentaExistente = cuentaDAO.buscarCuentaPorCorreo(correo);
             int academicoEncontrado = -1;
+            String cuentaEncontrada = "N/A";
 
             if (academicoExistente.getNumeroDePersonal() != academicoEncontrado) {
 
-                UTILIDADES.mostrarAlerta(
+                utilidades.mostrarAlerta(
                         "Número de personal duplicado",
                         "Ya existe un académico con este número de"
                                 + " personal.",
@@ -197,22 +191,23 @@ public class ControladorRegistroAcademicoGUI {
                 return;
             }
 
-            if (!"N/A".equals(cuentaEncontrada.getCorreoElectronico())) {
+            if (!cuentaEncontrada.equals(cuentaExistente.getCorreoElectronico())) {
 
-                UTILIDADES.mostrarAlerta(
+                utilidades.mostrarAlerta(
                         "Correo electrónico duplicado",
-                        "Ya existe una cuenta con este correo.",
+                        "Ya existe una cuenta con ese correo.",
                         "Por favor, utilice un correo diferente."
                 );
                 return;
             }
 
             UsuarioDTO usuarioDTO = new UsuarioDTO(idUsuario, nombre, apellidos, estadoActivo);
-            idUsuario = new UsuarioDAO().insertarUsuario(usuarioDTO);
 
+            idUsuario = new UsuarioDAO().insertarUsuario(usuarioDTO);
             contrasena = encriptadorContraseñas.encriptar(contrasena);
 
             CuentaDTO cuentaDTO = new CuentaDTO(correo, contrasena, idUsuario);
+
             AcademicoDTO academicoDTO = new AcademicoDTO(
                     numeroPersonal,
                     idUsuario,
@@ -227,7 +222,7 @@ public class ControladorRegistroAcademicoGUI {
             if (creacionCuenta && registroExito) {
 
                 LOGGER.info("Registro de académico exitoso.");
-                UTILIDADES.mostrarAlerta(
+                utilidades.mostrarAlerta(
                         "Registro exitoso",
                         "El académico ha sido registrado correctamente.",
                         ""
@@ -236,7 +231,7 @@ public class ControladorRegistroAcademicoGUI {
             } else {
 
                 LOGGER.warn("No se pudieron guardar todos los datos del académico.");
-                UTILIDADES.mostrarAlerta(
+                utilidades.mostrarAlerta(
                         "Registro incompleto",
                         "No se pudieron guardar todos los datos.",
                         "Por favor, verifique la información e intente"
@@ -247,7 +242,7 @@ public class ControladorRegistroAcademicoGUI {
         } catch (NumberFormatException e) {
 
             LOGGER.error("Error de formato numérico al registrar académico: " + e);
-            UTILIDADES.mostrarAlerta(
+            utilidades.mostrarAlerta(
                     "Error de formato",
                     "El número de personal debe ser un valor numérico"
                             + " de 5 dígitos.",
@@ -256,28 +251,46 @@ public class ControladorRegistroAcademicoGUI {
 
         } catch (SQLException e) {
 
-            if (e.getMessage().contains("Unknown database")){
+            String estadoSQL = e.getSQLState();
+            LOGGER.error("Error de SQL: " + e);
 
-                UTILIDADES.mostrarAlerta("Error de conexion con la base de datos",
-                        "Base de datos desconocida",
-                        "Por favor, intente nuevamente más tarde.");
-                return;
+            switch (estadoSQL) {
 
+                case "08S01":
+
+                    LOGGER.error("Error de conexión con la base datos: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer una conexión con la base de datos.",
+                            "La base de datos se encuentra desactivada."
+                    );
+                    break;
+
+                case "42000":
+
+                    LOGGER.error("La base de datos no existe: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establer conexión con la base de datos.",
+                            "La base de datos actualmente no existe."
+                    );
+                    break;
+
+                default:
+
+                    LOGGER.error("Error de SQL no manejado: " + estadoSQL + "-" + e);
+                    utilidades.mostrarAlerta(
+                            "Error del sistema.",
+                            "Se produjo un error inesperado al acceder a la base de datos.",
+                            "Por favor, contacte al soporte técnico."
+                    );
+                    break;
             }
-
-
-            LOGGER.error("Error de base de datos al registrar académico: " + e);
-            UTILIDADES.mostrarAlerta(
-                    "Error del sistema",
-                    "Ocurrió un error al registrar al académico.",
-                    "Por favor, inténtelo nuevamente más tarde"
-                            + " o contacte al soporte técnico."
-            );
 
         } catch (IOException e) {
 
             LOGGER.error("Error de I/O al registrar académico: " + e);
-            UTILIDADES.mostrarAlerta(
+            utilidades.mostrarAlerta(
                     "Error de sistema",
                     "No se pudo completar la operación debido"
                             + " a un error interno.",
@@ -287,7 +300,7 @@ public class ControladorRegistroAcademicoGUI {
         } catch (Exception e) {
 
             LOGGER.error("Error inesperado al registrar académico: " + e);
-            UTILIDADES.mostrarAlerta(
+            utilidades.mostrarAlerta(
                     "Error desconocido",
                     "Ocurrió un error inesperado al registrar"
                             + " al académico.",
@@ -305,7 +318,7 @@ public class ControladorRegistroAcademicoGUI {
         String numeroPersonalOriginal = campoNumeroPersonal.getText();
         String correoOriginal = campoCorreo.getText();
 
-        UTILIDADES.mostrarAlertaConfirmacion(
+        utilidades.mostrarAlertaConfirmacion(
                 "Confirmar cancelación",
                 "¿Está seguro que desea cancelar?",
                 "Los cambios no guardados se perderán",
@@ -321,7 +334,7 @@ public class ControladorRegistroAcademicoGUI {
                     campoNumeroPersonal.setText(numeroPersonalOriginal);
                     campoCorreo.setText(correoOriginal);
 
-                    UTILIDADES.mostrarAlerta(
+                    utilidades.mostrarAlerta(
                             "Operación cancelada",
                             "Los cambios no han sido descartados",
                             "Puede continuar editando el registro"

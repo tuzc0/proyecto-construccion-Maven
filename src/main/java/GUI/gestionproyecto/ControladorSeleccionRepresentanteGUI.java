@@ -12,7 +12,7 @@ import logica.DAOs.OrganizacionVinculadaDAO;
 import logica.DAOs.RepresentanteDAO;
 import logica.DTOs.OrganizacionVinculadaDTO;
 import logica.DTOs.RepresentanteDTO;
-import logica.utilidadesproyecto.ContenedoraOrganizacionProyecto;
+import logica.utilidadesproyecto.AsociacionRepresentanteOrganizacionProyecto;
 import logica.utilidadesproyecto.SeleccionRepresentanteOrganizacion;
 import logica.interfaces.ISeleccionRepresentante;
 import org.apache.logging.log4j.LogManager;
@@ -24,15 +24,15 @@ import java.util.List;
 
 public class ControladorSeleccionRepresentanteGUI {
 
-    private static final Logger LOGGER = LogManager.getLogger(ControladorSeleccionRepresentanteGUI.class);
-    private final Utilidades UTILIDADES = new Utilidades();
+    private static final Logger LOGGER =
+            LogManager.getLogger(ControladorSeleccionRepresentanteGUI.class);
 
     @FXML
-    private TableView<ContenedoraOrganizacionProyecto> tablaRepresentantes;
+    private TableView<AsociacionRepresentanteOrganizacionProyecto> tablaRepresentantes;
     @FXML
-    private TableColumn<ContenedoraOrganizacionProyecto, String> columnaRepresentante;
+    private TableColumn<AsociacionRepresentanteOrganizacionProyecto, String> columnaRepresentante;
     @FXML
-    private TableColumn<ContenedoraOrganizacionProyecto, String> columnaOrganizacion;
+    private TableColumn<AsociacionRepresentanteOrganizacionProyecto, String> columnaOrganizacion;
     @FXML
     private TextField campoBusqueda;
     @FXML
@@ -41,6 +41,8 @@ public class ControladorSeleccionRepresentanteGUI {
     private Button botonCancelarSeleccion;
     @FXML
     private Button botonSeleccionarRepresentante;
+
+    private Utilidades utilidades = new Utilidades();
 
     @FXML
     private void initialize() {
@@ -70,15 +72,16 @@ public class ControladorSeleccionRepresentanteGUI {
 
     private void cargarRepresentantesYOrganizaciones() {
 
-        try {
+        RepresentanteDAO representanteDAO = new RepresentanteDAO();
+        OrganizacionVinculadaDAO organizacionDAO = new OrganizacionVinculadaDAO();
 
-            RepresentanteDAO representanteDAO = new RepresentanteDAO();
-            OrganizacionVinculadaDAO organizacionDAO = new OrganizacionVinculadaDAO();
+        try {
 
             List<RepresentanteDTO> representantes = representanteDAO.obtenerTodosLosRepresentantes();
             List<OrganizacionVinculadaDTO> organizaciones = organizacionDAO.obtenerTodasLasOrganizaciones();
 
-            ObservableList<ContenedoraOrganizacionProyecto> listaCombinada = FXCollections.observableArrayList();
+            ObservableList<AsociacionRepresentanteOrganizacionProyecto> listaRepresentantesYOrganizaciones =
+                    FXCollections.observableArrayList();
 
             for (RepresentanteDTO representante : representantes) {
 
@@ -86,57 +89,102 @@ public class ControladorSeleccionRepresentanteGUI {
 
                     if (representante.getIdOrganizacion() == organizacion.getIdOrganizacion()) {
 
-                        listaCombinada.add(new ContenedoraOrganizacionProyecto(
+                        listaRepresentantesYOrganizaciones.add(new AsociacionRepresentanteOrganizacionProyecto(
                                 representante, organizacion, null));
                     }
                 }
             }
 
-            tablaRepresentantes.setItems(listaCombinada);
+            tablaRepresentantes.setItems(listaRepresentantesYOrganizaciones);
 
         } catch (SQLException e) {
 
-            LOGGER.error("Error SQL al cargar representantes y organizaciones: ", e);
-            UTILIDADES.mostrarAlerta("Error",
-                    "Error al cargar los datos",
-                    "No se pudo cargar la lista de representantes y organizaciones");
+            String estadoSQL = e.getSQLState();
+
+            switch (estadoSQL) {
+
+                case "08S01":
+
+                    LOGGER.error("El servicio de SQL se encuentra desactivado: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer una conexión con la base de datos.",
+                            "La conexión con la base de datos se encuentra interrumpida."
+                    );
+                    break;
+
+                case "42000":
+
+                    LOGGER.error("La base de datos no existe: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer conexión con la base de datos.",
+                            "La base de datos actualmente no existe."
+                    );
+                    break;
+
+                case "28000":
+
+                    LOGGER.error("Credenciales invalidas para el acceso: " + e);
+                    utilidades.mostrarAlerta(
+                            "Credenciales inválidas",
+                            "Usuario o contraseña incorrectos.",
+                            "Por favor, verifique los datos de acceso a la base" +
+                                    "de datos"
+                    );
+                    break;
+
+                default:
+
+                    LOGGER.error("Error de SQL no manejado: " + estadoSQL + "-" + e);
+                    utilidades.mostrarAlerta(
+                            "Error del sistema.",
+                            "Se produjo un error al acceder a la base de datos.",
+                            "Por favor, contacte al soporte técnico."
+                    );
+                    break;
+            }
 
         } catch (IOException e) {
 
-            LOGGER.error("Error de IO al cargar representantes y organizaciones: ", e);
-            UTILIDADES.mostrarAlerta("Error",
-                    "Error al cargar datos",
-                    "No se pudo cargar la lista de representantes y organizaciones.");
+            LOGGER.error("Error de IOException: " + e);
+            utilidades.mostrarAlerta(
+                    "Error interno del sistema",
+                    "No se pudo completar la operación.",
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                            "o contacte al administrador."
+            );
         }
     }
 
     @FXML
-    private void buscarRepresentante() {
+    private void filtrarRepresentantesPorBusqueda() {
 
-        String textoBusqueda = campoBusqueda.getText().toLowerCase();
+        String criterioBusqueda = campoBusqueda.getText().toLowerCase();
 
-        if (textoBusqueda.isEmpty()) {
+        if (criterioBusqueda.isEmpty()) {
 
-            UTILIDADES.mostrarAlerta(
-                    "Error",
+            utilidades.mostrarAlerta(
+                    "Error de búsqueda",
                     "El campo de búsqueda se encuentra vacío",
-                    "Por favor, ingrese el nombre del representante o nombre de la organización a buscar"
+                    "Por favor, ingrese el nombre de la organización a buscar"
             );
             return;
         }
 
-        ObservableList<ContenedoraOrganizacionProyecto> listaFiltrada = FXCollections.observableArrayList();
+        ObservableList<AsociacionRepresentanteOrganizacionProyecto> listaFiltrada =
+                FXCollections.observableArrayList();
 
-        for (ContenedoraOrganizacionProyecto contenedor : tablaRepresentantes.getItems()) {
+        for (AsociacionRepresentanteOrganizacionProyecto asociacion : tablaRepresentantes.getItems()) {
 
-            String nombreCompleto = contenedor.getRepresentante().getNombre() + " " +
-                    contenedor.getRepresentante().getApellidos();
-            String orgNombre = contenedor.getOrganizacion().getNombre();
+            String nombreRepresentante = asociacion.getRepresentante().getNombre() + " " +
+                    asociacion.getRepresentante().getApellidos();
+            String nombreOrganizacion = asociacion.getOrganizacion().getNombre();
 
-            if (orgNombre.toLowerCase().contains(textoBusqueda) ||
-                    nombreCompleto.toLowerCase().contains(textoBusqueda)) {
+            if (nombreOrganizacion.toLowerCase().contains(criterioBusqueda) ||
+                    nombreRepresentante.toLowerCase().contains(criterioBusqueda)) {
 
-                listaFiltrada.add(contenedor);
+                listaFiltrada.add(asociacion);
             }
         }
 
@@ -144,7 +192,7 @@ public class ControladorSeleccionRepresentanteGUI {
 
         if (listaFiltrada.isEmpty()) {
 
-            UTILIDADES.mostrarAlerta(
+            utilidades.mostrarAlerta(
                     "Representante u Organización no encontrados",
                     "No se ha encontrado ningún representante u organización activo con ese nombre",
                     "Por favor, verifique que haya ingresado bien el nombre o registre la organización"
@@ -154,25 +202,19 @@ public class ControladorSeleccionRepresentanteGUI {
         }
     }
 
-    private ISeleccionRepresentante controladorPadre;
-
-    public void setControladorPadre(ISeleccionRepresentante controladorPadre) {
-
-        this.controladorPadre = controladorPadre;
-    }
-
     @FXML
-    private void seleccionarRepresentante() {
+    private void confirmarSeleccionRepresentante() {
 
-        ContenedoraOrganizacionProyecto seleccion =
+        AsociacionRepresentanteOrganizacionProyecto asociacionSeleccionada =
                 tablaRepresentantes.getSelectionModel().getSelectedItem();
 
-        if (seleccion != null) {
+        if (asociacionSeleccionada != null) {
 
-            SeleccionRepresentanteOrganizacion.setRepresentanteSeleccionado(seleccion.getRepresentante());
-            SeleccionRepresentanteOrganizacion.setOrganizacionSeleccionada(seleccion.getOrganizacion());
+            SeleccionRepresentanteOrganizacion.setRepresentanteSeleccionado(asociacionSeleccionada.getRepresentante());
+            SeleccionRepresentanteOrganizacion.setOrganizacionSeleccionada(asociacionSeleccionada.getOrganizacion());
 
-            UTILIDADES.mostrarAlerta("Representante seleccionado. ",
+            utilidades.mostrarAlerta(
+                    "Representante seleccionado. ",
                     "Se ha seleccionado un representante y organizacion para el proyecto",
                     "");
 
@@ -188,10 +230,17 @@ public class ControladorSeleccionRepresentanteGUI {
         } else {
 
             LOGGER.warn("Intento de selección sin elemento seleccionado");
-            UTILIDADES.mostrarAlerta("Error",
+            utilidades.mostrarAlerta("Error",
                     "Selección inválida",
                     "Por favor, seleccione un representante y una organización.");
         }
+    }
+
+    private ISeleccionRepresentante controladorPadre;
+
+    public void setControladorPadre(ISeleccionRepresentante controladorPadre) {
+
+        this.controladorPadre = controladorPadre;
     }
 
     @FXML

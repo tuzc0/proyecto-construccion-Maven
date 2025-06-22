@@ -27,7 +27,6 @@ public class ControladorGestorAcademicosGUI {
 
     private static final Logger LOGGER =
             LogManager.getLogger(ControladorRegistroAcademicoGUI.class);
-    private Utilidades UTILIDADES = new Utilidades();
 
     @FXML private TextField campoNumeroDePersonal;
     @FXML private Button botonBuscar;
@@ -57,7 +56,9 @@ public class ControladorGestorAcademicosGUI {
     @FXML private Button botonSeleccionarAcademicos;
     @FXML private Button botonRegistrarAcademico;
 
-    private int idAcademico = 0;
+    private Utilidades utilidades = new Utilidades();
+
+    private int idUsuario = 0;
 
     @FXML
     public void initialize() {
@@ -89,10 +90,10 @@ public class ControladorGestorAcademicosGUI {
                 new javafx.beans.property.SimpleStringProperty(
                         cellData.getValue().getApellido()));
 
-        cargarAcademicos();
-
         tablaAcademicos.getSelectionModel().setSelectionMode(
                 SelectionMode.MULTIPLE);
+
+        cargarAcademicos();
 
         tablaAcademicos.getSelectionModel().selectedItemProperty()
                 .addListener((academicoObservado, academicoAnterior,
@@ -120,18 +121,76 @@ public class ControladorGestorAcademicosGUI {
 
         try {
 
-            ObservableList<AcademicoDTO> academicos =
-                    FXCollections.observableArrayList(
-                            academicoDAO.listarAcademicos());
+            ObservableList<AcademicoDTO> academicos = FXCollections.observableArrayList(
+                    academicoDAO.listarAcademicos());
             tablaAcademicos.setItems(academicos);
+
+        } catch (SQLException e) {
+
+            String estadoSQL = e.getSQLState();
+
+            switch (estadoSQL) {
+
+                case "08S01":
+
+                    LOGGER.error("Error de conexión con la base datos: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer una conexión con la base de datos.",
+                            "La base de datos se encuentra desactivada."
+                    );
+                    break;
+
+                case "42000":
+
+                    LOGGER.error("La base de datos no existe: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer conexión con la base de datos.",
+                            "La base de datos actualmente no existe."
+                    );
+                    break;
+
+                case "28000":
+
+                    LOGGER.error("Credenciales invalidas para el acceso: " + e);
+                    utilidades.mostrarAlerta(
+                            "Credenciales inválidas",
+                            "Usuario o contraseña incorrectos.",
+                            "Por favor, verifique los datos de acceso a la base" +
+                                    "de datos"
+                    );
+                    break;
+
+                default:
+
+                    LOGGER.error("Error de SQL no manejado: " + estadoSQL + "-" + e);
+                    utilidades.mostrarAlerta(
+                            "Error del sistema.",
+                            "Se produjo un error al acceder a la base de datos.",
+                            "Por favor, contacte al soporte técnico."
+                    );
+                    break;
+            }
+
+        } catch (IOException e) {
+
+            LOGGER.error("Error de IOException al listar académicos: " + e);
+            utilidades.mostrarAlerta(
+                    "Error interno del sistema",
+                    "No se pudo realizar la carga de académicos.",
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo " +
+                            "o contacte al administrador."
+            );
 
         } catch (Exception e) {
 
-            LOGGER.error("Error al cargar la lista de academicos: " + e);
-            UTILIDADES.mostrarAlerta(
-                    "Error al cargar académicos",
-                    "No se pudo obtener la lista de académicos.",
-                    "Por favor, contacte al administrador."
+            LOGGER.error("Error inesperado al cargar académico: " + e);
+            utilidades.mostrarAlerta(
+                    "Error interno del sistema",
+                    "Ocurrió un error al cargar los datos.",
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                            "o contacte al administrador."
             );
         }
     }
@@ -143,8 +202,8 @@ public class ControladorGestorAcademicosGUI {
 
         if (numeroDePersonal.isEmpty()) {
 
-            UTILIDADES.mostrarAlerta(
-                    "Búsqueda incompleta",
+            utilidades.mostrarAlerta(
+                    "Búsqueda invalida",
                     "No se ingresó un número de personal.",
                     "Por favor, escribe el número de personal en el campo " +
                             "de búsqueda e intenta nuevamente."
@@ -158,7 +217,6 @@ public class ControladorGestorAcademicosGUI {
         try {
 
             int numeroDePersonalABuscar = Integer.parseInt(numeroDePersonal);
-
             AcademicoDTO academicoDTO =
                     academicoDAO.buscarAcademicoPorNumeroDePersonal(numeroDePersonalABuscar);
             int academicoEncontrado = -1;
@@ -172,16 +230,9 @@ public class ControladorGestorAcademicosGUI {
                     etiquetaApellidoEncontrado.setText(academicoDTO.getApellido());
                     etiquetaNumeroDePersonalEncontrado.setText(numeroDePersonal);
 
-                    idAcademico = academicoDTO.getIdUsuario();
-                    CuentaDTO cuenta = cuentaDAO.buscarCuentaPorID(idAcademico);
+                    idUsuario = academicoDTO.getIdUsuario();
+                    CuentaDTO cuenta = cuentaDAO.buscarCuentaPorID(idUsuario);
                     etiquetaCorreoEncontrado.setText(cuenta.getCorreoElectronico());
-
-                } else {
-                    
-                    UTILIDADES.mostrarAlerta(
-                            "Académico no activo",
-                            "El académico no se encuentra activo en estos momentos.",
-                            "Verifique el estado del académico dentro del sistema.");
                 }
 
             } else {
@@ -191,7 +242,7 @@ public class ControladorGestorAcademicosGUI {
                 etiquetaNumeroDePersonalEncontrado.setText("");
                 etiquetaCorreoEncontrado.setText("");
 
-                UTILIDADES.mostrarAlerta(
+                utilidades.mostrarAlerta(
                         "Académico no encontrado",
                         "No hay registros que coincidan con el número ingresado.",
                         "Verifica que el número de personal sea correcto o " +
@@ -200,31 +251,68 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (NumberFormatException e) {
 
-            UTILIDADES.mostrarAlerta("Error de busqueda",
-            "El número de personal tiene que ser un número",
-            "Verifique que el número introducido en el campo de busqueda sea un número Ej.12345."
+            utilidades.mostrarAlerta(
+                    "Error de busqueda",
+                    "El número de personal tiene que ser un número",
+                    "Verifique que el número introducido en el campo de busqueda sea un número Ej.12345."
             );
-        }
 
-        catch (SQLException e) {
+        } catch (SQLException e) {
 
-            LOGGER.error("Error SQL al buscar al académico: " + e);
-            UTILIDADES.mostrarAlerta(
-                    "Error del sistema.",
-                    "Ocurrió un problema al acceder a los datos del académico.",
-                    "Intenta más tarde o contacte al administrador."
-            );
+            String estadoSQL = e.getSQLState();
+
+            switch (estadoSQL) {
+
+                case "08S01":
+
+                    LOGGER.error("Error de conexión con la base datos: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer una conexión con la base de datos.",
+                            "La base de datos se encuentra desactivada."
+                    );
+                    break;
+
+                case "42000":
+
+                    LOGGER.error("La base de datos no existe: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer conexión con la base de datos.",
+                            "La base de datos actualmente no existe."
+                    );
+                    break;
+
+                case "28000":
+
+                    LOGGER.error("Credenciales invalidas para el acceso: " + e);
+                    utilidades.mostrarAlerta(
+                            "Credenciales inválidas",
+                            "Usuario o contraseña incorrectos.",
+                            "Por favor, verifique los datos de acceso a la base" +
+                                    "de datos"
+                    );
+                    break;
+
+                default:
+
+                    LOGGER.error("Error de SQL no manejado: " + estadoSQL + "-" + e);
+                    utilidades.mostrarAlerta(
+                            "Error del sistema.",
+                            "Se produjo un error al acceder a la base de datos.",
+                            "Por favor, contacte al soporte técnico."
+                    );
+                    break;
+            }
 
         } catch (IOException e) {
 
             LOGGER.error("Error de entrada/salida al buscar al académico: " + e);
-            UTILIDADES.mostrarAlerta(
+            utilidades.mostrarAlerta(
                     "Error de conexión",
-                    "No se pudo establecer conexión para completar la búsqueda.",
-                    "Verifique su conexión a Internet o inténtelo nuevamente " +
-                            "más tarde."
+                    "Ocurrió un error antes de completar la búsqueda.",
+                    "Por favor, inténtelo nuevamente o contacte al administrador."
             );
-
         }
     }
 
@@ -239,44 +327,78 @@ public class ControladorGestorAcademicosGUI {
 
         try {
 
-            AcademicoDTO academicoDTO =
-                    academicoDAO.buscarAcademicoPorNumeroDePersonal(
-                            academicoSeleccionado.getNumeroDePersonal());
+            AcademicoDTO academicoDTO = academicoDAO.buscarAcademicoPorNumeroDePersonal(
+                    academicoSeleccionado.getNumeroDePersonal());
             int academicoNoEncontrado = -1;
 
             if (academicoDTO.getIdUsuario() != academicoNoEncontrado) {
 
                 etiquetaNombreEncontrado.setText(academicoDTO.getNombre());
                 etiquetaApellidoEncontrado.setText(academicoDTO.getApellido());
-                etiquetaNumeroDePersonalEncontrado.setText(
-                        String.valueOf(academicoDTO.getNumeroDePersonal()));
+                etiquetaNumeroDePersonalEncontrado.
+                        setText(String.valueOf(academicoDTO.getNumeroDePersonal()));
 
-                idAcademico = academicoDTO.getIdUsuario();
-                CuentaDTO cuenta = cuentaDAO.buscarCuentaPorID(idAcademico);
-                etiquetaCorreoEncontrado.setText(
-                        cuenta.getCorreoElectronico());
+                idUsuario = academicoDTO.getIdUsuario();
+                CuentaDTO cuenta = cuentaDAO.buscarCuentaPorID(idUsuario);
+                etiquetaCorreoEncontrado.setText(cuenta.getCorreoElectronico());
             }
 
         } catch (SQLException e) {
 
-            LOGGER.error("Error SQL al mostrar detalles del académico: " + e);
-            UTILIDADES.mostrarAlerta(
-                    "Error del sistema",
-                    "No se pudieron cargar los datos del académico.",
-                    "Es posible que haya un problema con el sistema. Intenta " +
-                            "nuevamente más tarde o contacta al administrador."
-            );
+            String estadoSQL = e.getSQLState();
+
+            switch (estadoSQL) {
+
+                case "08S01":
+
+                    LOGGER.error("Error de conexión con la base datos: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer una conexión con la base de datos.",
+                            "La base de datos se encuentra desactivada."
+                    );
+                    break;
+
+                case "42000":
+
+                    LOGGER.error("La base de datos no existe: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer conexión con la base de datos.",
+                            "La base de datos actualmente no existe."
+                    );
+                    break;
+
+                case "28000":
+
+                    LOGGER.error("Credenciales invalidas para el acceso: " + e);
+                    utilidades.mostrarAlerta(
+                            "Credenciales inválidas",
+                            "Usuario o contraseña incorrectos.",
+                            "Por favor, verifique los datos de acceso a la base" +
+                                    "de datos"
+                    );
+                    break;
+
+                default:
+
+                    LOGGER.error("Error de SQL no manejado: " + estadoSQL + "-" + e);
+                    utilidades.mostrarAlerta(
+                            "Error del sistema.",
+                            "Se produjo un error al acceder a la base de datos.",
+                            "Por favor, contacte al soporte técnico."
+                    );
+                    break;
+            }
 
         } catch (IOException e) {
 
-            LOGGER.error("Error de entrada/salida al mostrar detalles " +
-                    "del académico: " + e
-            );
-            UTILIDADES.mostrarAlerta(
+            LOGGER.error("Error de entrada/salida al mostrar detalles del académico: " + e);
+            utilidades.mostrarAlerta(
                     "Error de conexión",
                     "No fue posible recuperar los detalles del académico.",
-                    "Verifique su conexión a Internet o vuelva a intentarlo " +
-                            "en unos minutos."
+                    "Por favor, vuelva a intentarlo en unos minutos o" +
+                            "contacte al administrador."
             );
         }
     }
@@ -284,7 +406,7 @@ public class ControladorGestorAcademicosGUI {
     @FXML
     private void abrirVentanaRegistrarAcademico() {
 
-        UTILIDADES.abrirVentana(
+        utilidades.abrirVentana(
                 "/RegistroAcademicoGUI.fxml",
                 "Registro de Académico",
                 (Stage) botonRegistrarAcademico.getScene().getWindow()
@@ -300,21 +422,74 @@ public class ControladorGestorAcademicosGUI {
 
         try {
 
-            boolean academicoEliminado = academicoDAO.eliminarAcademicoPorNumeroDePersonal(numeroDePersonal);
+            boolean academicoEliminado =
+                    academicoDAO.eliminarAcademicoPorNumeroDePersonal(numeroDePersonal);
 
             if (academicoEliminado) {
                 estadoEliminacion = true;
             } else {
-                LOGGER.warn("No se pudo eliminar al académico con número de personal: " + numeroDePersonal);
+                LOGGER.warn("No se pudo eliminar al académico con número de personal: " +
+                        numeroDePersonal);
             }
 
         } catch (SQLException e) {
 
-            LOGGER.error("Error SQL al eliminar al académico: " + e);
+            String estadoSQL = e.getSQLState();
+
+            switch (estadoSQL) {
+
+                case "08S01":
+
+                    LOGGER.error("Error de conexión con la base datos: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer una conexión con la base de datos.",
+                            "La base de datos se encuentra desactivada."
+                    );
+                    break;
+
+                case "42000":
+
+                    LOGGER.error("La base de datos no existe: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer conexión con la base de datos.",
+                            "La base de datos actualmente no existe."
+                    );
+                    break;
+
+                case "28000":
+
+                    LOGGER.error("Credenciales invalidas para el acceso: " + e);
+                    utilidades.mostrarAlerta(
+                            "Credenciales inválidas",
+                            "Usuario o contraseña incorrectos.",
+                            "Por favor, verifique los datos de acceso a la base" +
+                                    "de datos"
+                    );
+                    break;
+
+                default:
+
+                    LOGGER.error("Error de SQL no manejado: " + estadoSQL + "-" + e);
+                    utilidades.mostrarAlerta(
+                            "Error del sistema.",
+                            "Se produjo un error al acceder a la base de datos.",
+                            "Por favor, contacte al soporte técnico."
+                    );
+                    break;
+            }
 
         } catch (IOException e) {
 
-            LOGGER.error("Error de entrada/salida al eliminar al académico: " + e);
+            LOGGER.error("Error de entrada/salida al eliminar académico: " + e);
+            utilidades.mostrarAlerta(
+                    "Error de conexión",
+                    "No fue posible la eliminación.",
+                    "Error, no fue posible la eliminación debido a un error interno" +
+                            "dentro del sistema, por favor inténtelo de nuevo más tarde o contacte" +
+                            "al administrador."
+            );
         }
 
         return estadoEliminacion;
@@ -335,12 +510,13 @@ public class ControladorGestorAcademicosGUI {
                 .addListener((ListChangeListener<AcademicoDTO>)
                         cambioSeleccion -> {
 
-                            int cantidadSeleccionados = tablaAcademicos.getSelectionModel().getSelectedItems().size();
+                            int cantidadSeleccionados = tablaAcademicos.getSelectionModel()
+                                    .getSelectedItems().size();
                             int sinAcademicosSeleccionados = 0;
 
                             if (cantidadSeleccionados > sinAcademicosSeleccionados) {
-                                etiquetaNumeroAcademicosSeleccionados.setText("Academicos seleccionados: " +
-                                        cantidadSeleccionados);
+                                etiquetaNumeroAcademicosSeleccionados
+                                        .setText("Academicos seleccionados: " + cantidadSeleccionados);
                             } else {
                                 etiquetaNumeroAcademicosSeleccionados.setText(" ");
                             }
@@ -355,17 +531,18 @@ public class ControladorGestorAcademicosGUI {
 
         if (academicosSeleccionados == null || academicosSeleccionados.isEmpty()) {
 
-            UTILIDADES.mostrarAlerta(
+            utilidades.mostrarAlerta(
                     "Error",
                     "No se han seleccionado académicos para eliminar.",
-                    "Por favor, seleccione uno o más académicos en la tabla antes de intentar eliminar."
+                    "Por favor, seleccione uno o más académicos en la tabla " +
+                            "antes de intentar eliminar."
             );
             return;
         }
 
         List<AcademicoDTO> copiaAcademicos = new ArrayList<>(academicosSeleccionados);
 
-        UTILIDADES.mostrarAlertaConfirmacion(
+        utilidades.mostrarAlertaConfirmacion(
                 "Confirmar eliminación",
                 "¿Está seguro que desea eliminar los académicos seleccionados?",
                 "Se eliminarán " + academicosSeleccionados.size() +
@@ -383,15 +560,15 @@ public class ControladorGestorAcademicosGUI {
 
                     if (errorAlEliminar) {
 
-                        UTILIDADES.mostrarAlerta(
+                        utilidades.mostrarAlerta(
                                 "Error",
                                 "No fue posible eliminar algunos de los académicos seleccionados.",
-                                "Intentelo más tarde o contacte al administrador."
+                                "Inténtelo más tarde o contacte al administrador."
                         );
 
                     } else {
 
-                        UTILIDADES.mostrarAlerta(
+                        utilidades.mostrarAlerta(
                                 "Éxito",
                                 "Los académicos seleccionados han sido eliminados correctamente.",
                                 ""
@@ -399,7 +576,7 @@ public class ControladorGestorAcademicosGUI {
                     }
 
                     cargarAcademicos();
-                    eliminarAcademicosSeleccionadosConcluidos();
+                    eliminarAcademicosSeleccionadosConcluido();
                 },
                 () -> {
 
@@ -409,7 +586,7 @@ public class ControladorGestorAcademicosGUI {
                         tablaAcademicos.getSelectionModel().select(academico);
                     }
 
-                    UTILIDADES.mostrarAlerta(
+                    utilidades.mostrarAlerta(
                             "Operación cancelada",
                             "La eliminación fue cancelada",
                             "Los académicos no han sido eliminados."
@@ -418,7 +595,7 @@ public class ControladorGestorAcademicosGUI {
         );
     }
 
-    private void eliminarAcademicosSeleccionadosConcluidos() {
+    private void eliminarAcademicosSeleccionadosConcluido() {
 
         botonEliminarSeleccionado.setDisable(true);
         botonEliminarSeleccionado.setManaged(false);
@@ -456,8 +633,7 @@ public class ControladorGestorAcademicosGUI {
 
         campoNombreEditable.setText(etiquetaNombreEncontrado.getText());
         campoApellidoEditable.setText(etiquetaApellidoEncontrado.getText());
-        campoNumeroDePersonalEditable.setText(
-                etiquetaNumeroDePersonalEncontrado.getText());
+        campoNumeroDePersonalEditable.setText(etiquetaNumeroDePersonalEncontrado.getText());
         campoCorreoEditable.setText(etiquetaCorreoEncontrado.getText());
 
         campoNombreEditable.setVisible(true);
@@ -530,31 +706,42 @@ public class ControladorGestorAcademicosGUI {
 
         try {
 
-            String contraseña = cuentaDAO.buscarCuentaPorCorreo(correoEncontrado)
-                    .getContrasena();
-            int idUsuario = cuentaDAO.buscarCuentaPorCorreo(correoEncontrado)
-                    .getIdUsuario();
+            String contraseña = cuentaDAO.buscarCuentaPorCorreo(correoEncontrado).getContrasena();
+            int idUsuario = cuentaDAO.buscarCuentaPorCorreo(correoEncontrado).getIdUsuario();
 
-            List<String> listaDeCamposVacios = VerificacionUsuario.camposVacios(nombreEditado,
-                    apellidosEditado, numeroDePersonalEditado, correoEditado, contraseña);
+            List<String> listaDeCamposVacios =
+                    VerificacionUsuario.camposVacios(
+                            nombreEditado,
+                            apellidosEditado,
+                            numeroDePersonalEditado,
+                            correoEditado,
+                            contraseña
+                    );
 
             if (!listaDeCamposVacios.isEmpty()) {
 
-                String camposVacios = String.join("\n", listaDeCamposVacios);
-                UTILIDADES.mostrarAlerta(
+                String mensajeDelCampoVacio = String.join("\n", listaDeCamposVacios);
+                utilidades.mostrarAlerta(
                         "Campos vacíos",
                         "Por favor, complete todos los campos requeridos.",
-                        camposVacios);
+                        mensajeDelCampoVacio
+                );
                 return;
             }
 
-            List<String> errores = VerificacionUsuario.validarCampos(nombreEditado, apellidosEditado,
-                            numeroDePersonalEditado, correoEditado, contraseña);
+            List<String> errores =
+                    VerificacionUsuario.validarCampos(
+                            nombreEditado,
+                            apellidosEditado,
+                            numeroDePersonalEditado,
+                            correoEditado,
+                            contraseña
+                    );
 
             if (!errores.isEmpty()) {
 
                 String mensajeError = String.join("\n", errores);
-                UTILIDADES.mostrarAlerta(
+                utilidades.mostrarAlerta(
                         "Datos inválidos",
                         "Algunos campos contienen datos no válidos.",
                         mensajeError);
@@ -563,14 +750,15 @@ public class ControladorGestorAcademicosGUI {
 
             int numeroPersonal = Integer.parseInt(numeroDePersonalEditado);
             int academicoNoEncontrado = -1;
+            String correoNoEncontrado = "N/A";
 
             if (!numeroDePersonalEncontrado.equals(numeroDePersonalEditado)) {
 
                 if (academicoDAO.buscarAcademicoPorNumeroDePersonal(numeroPersonal).
                         getIdUsuario() != academicoNoEncontrado) {
 
-                    UTILIDADES.mostrarAlerta(
-                            "Número de personal duplicado",
+                    utilidades.mostrarAlerta(
+                            "Número de personal invalido",
                             "El número de personal ya está registrado en el sistema.",
                             "Por favor, ingrese un número de personal diferente.");
                     return;
@@ -579,12 +767,12 @@ public class ControladorGestorAcademicosGUI {
 
             if(!correoEditado.equals(correoEncontrado)) {
 
-                if (!"N/A".equals(cuentaDAO.buscarCuentaPorCorreo(correoEditado)
+                if (!correoNoEncontrado.equals(cuentaDAO.buscarCuentaPorCorreo(correoEditado)
                         .getCorreoElectronico())) {
 
-                    UTILIDADES.mostrarAlerta(
-                            "Correo electrónico duplicado",
-                            "El correo electrónico ya está registrado en el sistema.",
+                    utilidades.mostrarAlerta(
+                            "Correo electrónico invalido",
+                            "El correo electrónico ya se encuentra registrado en el sistema.",
                             "Por favor, utilice un correo electrónico diferente.");
                     return;
                 }
@@ -593,8 +781,17 @@ public class ControladorGestorAcademicosGUI {
             UsuarioDAO usuarioDAO = new UsuarioDAO();
             int estadoActivo = 1;
 
-            UsuarioDTO usuarioDTO = new UsuarioDTO(idUsuario, nombreEditado, apellidosEditado, estadoActivo);
-            CuentaDTO cuentaDTO = new CuentaDTO(correoEditado, contraseña, idUsuario);
+            UsuarioDTO usuarioDTO = new UsuarioDTO(
+                    idUsuario,
+                    nombreEditado,
+                    apellidosEditado,
+                    estadoActivo
+            );
+            CuentaDTO cuentaDTO = new CuentaDTO(
+                    correoEditado,
+                    contraseña,
+                    idUsuario
+            );
             AcademicoDTO academicoDTO = new AcademicoDTO(
                     numeroPersonal,
                     idUsuario,
@@ -610,17 +807,17 @@ public class ControladorGestorAcademicosGUI {
             if (usuarioModificado && academicoModificado && cuentaModificada) {
 
                 LOGGER.info("El académico ha sido modificado correctamente.");
-                UTILIDADES.mostrarAlertaConfirmacion(
+                utilidades.mostrarAlertaConfirmacion(
                         "Éxito",
-                        "Los cambios se han guardado correctamente.",
+                        "Los cambios se han realizado correctamente.",
                         ""
                 );
 
             } else {
 
                 LOGGER.warn("No se pudieron guardar completamente los cambios del académico.");
-                UTILIDADES.mostrarAlerta(
-                        "Advertencia",
+                utilidades.mostrarAlerta(
+                        "Error",
                         "No se pudieron guardar todos los cambios.",
                         "Algunos datos no se modificaron correctamente. " +
                                 "Por favor, inténtelo nuevamente."
@@ -639,7 +836,7 @@ public class ControladorGestorAcademicosGUI {
         } catch (NumberFormatException e) {
 
             LOGGER.error("Error en formato numérico: " + e);
-            UTILIDADES.mostrarAlerta(
+            utilidades.mostrarAlerta(
                     "Error de formato",
                     "El número de personal debe ser un valor numérico válido.",
                     "Por favor, revise el número de personal e intente de nuevo."
@@ -647,21 +844,70 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (SQLException e) {
 
-            LOGGER.error("Error de base de datos al guardar cambios: " + e);
-            UTILIDADES.mostrarAlerta(
-                    "Error del sistema",
-                    "Ocurrió un problema al guardar los cambios en el sistema.",
-                    "Por favor, inténtelo nuevamente más tarde o contacte " +
-                            "al soporte técnico."
-            );
+            String estadoSQL = e.getSQLState();
+
+            switch (estadoSQL) {
+
+                case "08S01":
+
+                    LOGGER.error("Error de conexión con la base datos: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer una conexión con la base de datos.",
+                            "La base de datos se encuentra desactivada."
+                    );
+                    break;
+
+                case "42000":
+
+                    LOGGER.error("La base de datos no existe: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer conexión con la base de datos.",
+                            "La base de datos actualmente no existe."
+                    );
+                    break;
+
+                case "28000":
+
+                    LOGGER.error("Credenciales invalidas para el acceso: " + e);
+                    utilidades.mostrarAlerta(
+                            "Credenciales inválidas",
+                            "Usuario o contraseña incorrectos.",
+                            "Por favor, verifique los datos de acceso a la base" +
+                                    "de datos"
+                    );
+                    break;
+
+                default:
+
+                    LOGGER.error("Error de SQL no manejado: " + estadoSQL + "-" + e);
+                    utilidades.mostrarAlerta(
+                            "Error del sistema.",
+                            "Se produjo un error al acceder a la base de datos.",
+                            "Por favor, contacte al soporte técnico."
+                    );
+                    break;
+            }
 
         } catch (IOException e) {
 
-            LOGGER.error("Error de entrada/salida al guardar cambios: " + e);
-            UTILIDADES.mostrarAlerta(
-                    "Error de Sistema",
-                    "No se pudo completar la operación debido a un error interno.",
-                    "Por favor, inténtelo nuevamente más tarde."
+            LOGGER.error("Error de IOException al listar académicos: " + e);
+            utilidades.mostrarAlerta(
+                    "Error interno del sistema",
+                    "No se pudo completar la operación.",
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                            "o contacte al administrador."
+            );
+
+        } catch (Exception e) {
+
+            LOGGER.error("Error inesperado al registrar académico: " + e);
+            utilidades.mostrarAlerta(
+                    "Error interno del sistema",
+                    "Ocurrió un error al guardar los datos.",
+                    "Ocurrió un error dentro del sistema al editar al académico, por favor inténtelo " +
+                            "de nuevo más tarde o contacte al administrador."
             );
         }
     }

@@ -137,7 +137,7 @@ public class ControladorRegistroCronogramaActividadesGUI {
                 comboHoraFinViernesHorario, comboMinutosFinViernesHorario);
 
         gestorHorarios.inicializarCombosHorarios();
-        gestorHorarios.configurarHabilitacionPorDia();
+        gestorHorarios.habilitarHorariosPorDiaSeleccionado();
 
         fechaInicioActividad.setEditable(false);
         fechaFinActividad.setEditable(false);

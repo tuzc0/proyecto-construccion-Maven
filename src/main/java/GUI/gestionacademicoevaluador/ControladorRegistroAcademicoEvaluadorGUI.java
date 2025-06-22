@@ -27,15 +27,8 @@ import java.util.List;
 
 public class ControladorRegistroAcademicoEvaluadorGUI {
 
-    private static final Logger LOGGER =
-            LogManager.getLogger(
-                    ControladorRegistroAcademicoEvaluadorGUI.class
-            );
-    private final UtilidadesContraseña utilContraseña =
-            new UtilidadesContraseña();
-    private final Utilidades UTILIDADES = new Utilidades();
-
-    EncriptadorContraseñas encriptadorContraseñas = new EncriptadorContraseñas();
+    private static final Logger LOGGER = LogManager.
+            getLogger(ControladorRegistroAcademicoEvaluadorGUI.class);
 
     @FXML private TextField campoNombre;
     @FXML private TextField campoApellidos;
@@ -56,10 +49,15 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
     @FXML private Button botonCancelar;
     @FXML private Button botonOjo;
 
+    private UtilidadesContraseña utilContraseña = new UtilidadesContraseña();
+    private Utilidades utilidades = new Utilidades();
+    private EncriptadorContraseñas encriptadorContraseñas = new EncriptadorContraseñas();
+
     @FXML
     private void initialize() {
 
         VerificicacionGeneral verifGen = new VerificicacionGeneral();
+
         final int MAX_CARACTERES_NOMBRE = 50;
         final int MAX_CARACTERES_NUMERO_PERSONAL = 5;
         final int MAX_CARACTERES_CORREO = 100;
@@ -83,16 +81,8 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
         botonCancelar.setCursor(Cursor.HAND);
         botonOjo.setCursor(Cursor.HAND);
 
-        campoContraseñaVisible
-                .textProperty()
-                .bindBidirectional(
-                        contraseñaIngresada.textProperty()
-                );
-        campoConfirmarContraseñaVisible
-                .textProperty()
-                .bindBidirectional(
-                        contraseñaConfirmada.textProperty()
-                );
+        campoContraseñaVisible.textProperty().bindBidirectional(contraseñaIngresada.textProperty());
+        campoConfirmarContraseñaVisible.textProperty().bindBidirectional(contraseñaConfirmada.textProperty());
 
         utilContraseña.inicializarIcono(imagenOjo);
 
@@ -119,47 +109,53 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
 
         String nombre = campoNombre.getText().trim();
         String apellidos = campoApellidos.getText().trim();
-        String numPersTxt = campoNumeroPersonal.getText().trim();
+        String numeroDePersonalTexto = campoNumeroPersonal.getText().trim();
         String correo = campoCorreo.getText().trim();
         String contrasena = contraseñaIngresada.getText().trim();
 
         List<String> vacios =
                 VerificacionUsuario.camposVacios(
-                        nombre, apellidos, numPersTxt, correo, contrasena
+                        nombre,
+                        apellidos,
+                        numeroDePersonalTexto,
+                        correo,
+                        contrasena
                 );
 
         if (!vacios.isEmpty()) {
 
-            String msg = String.join("\n", vacios);
-            UTILIDADES.mostrarAlerta(
+            String mensajeCampoVacio = String.join("\n", vacios);
+            utilidades.mostrarAlerta(
                     "Campos vacíos",
                     "Complete todos los campos requeridos.",
-                    msg
+                    mensajeCampoVacio
             );
             return;
         }
 
         List<String> errores =
                 VerificacionUsuario.validarCampos(
-                        nombre, apellidos, numPersTxt, correo, contrasena
+                        nombre,
+                        apellidos,
+                        numeroDePersonalTexto,
+                        correo,
+                        contrasena
                 );
+
         if (!errores.isEmpty()) {
 
-            String msg = String.join("\n", errores);
-            UTILIDADES.mostrarAlerta(
+            String mensajeDeError = String.join("\n", errores);
+            utilidades.mostrarAlerta(
                     "Datos inválidos",
                     "Algunos campos no son válidos.",
-                    msg
+                    mensajeDeError
             );
             return;
         }
 
-        if (!UtilidadesContraseña.esContraseñaIgual(
-                contraseñaIngresada,
-                contraseñaConfirmada
-        )) {
+        if (!UtilidadesContraseña.esContraseñaIgual(contraseñaIngresada, contraseñaConfirmada)) {
 
-            UTILIDADES.mostrarAlerta(
+            utilidades.mostrarAlerta(
                     "Contraseñas no coinciden",
                     "Las contraseñas ingresadas no son iguales.",
                     "Revise la contraseña y su confirmación."
@@ -169,22 +165,21 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
 
         try {
 
-            int numeroPersonal = Integer.parseInt(numPersTxt);
+            int numeroPersonal = Integer.parseInt(numeroDePersonalTexto);
             int estadoActivo = 1;
             int idUsuario = 0;
-            int encontrado = -1;
 
             CuentaDAO cuentaDAO = new CuentaDAO();
-            AcademicoEvaluadorDAO evalDAO = new AcademicoEvaluadorDAO();
+            AcademicoEvaluadorDAO academicoEvaluadorDAO = new AcademicoEvaluadorDAO();
 
-            AcademicoEvaluadorDTO existeAcademicoEvaludor =
-                    evalDAO.buscarAcademicoEvaluadorPorNumeroDePersonal(
-                            numeroPersonal
-                    );
+            AcademicoEvaluadorDTO academicoEvaluadorExistente =
+                    academicoEvaluadorDAO.buscarAcademicoEvaluadorPorNumeroDePersonal(numeroPersonal);
+            int numeroDePersonalEncontrado = -1;
+            String correoNoEncontrado = "N/A";
 
-            if (existeAcademicoEvaludor.getNumeroDePersonal() != encontrado) {
+            if (academicoEvaluadorExistente.getNumeroDePersonal() != numeroDePersonalEncontrado) {
 
-                UTILIDADES.mostrarAlerta(
+                utilidades.mostrarAlerta(
                         "Número duplicado",
                         "Ya existe un académico con ese número.",
                         "Verifique que no esté registrado."
@@ -192,12 +187,10 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
                 return;
             }
 
-            if (!"N/A".equals(
-                    new CuentaDAO().buscarCuentaPorCorreo(correo)
-                            .getCorreoElectronico()
-            )) {
+            if (!correoNoEncontrado.equals(new CuentaDAO().buscarCuentaPorCorreo(correo)
+                            .getCorreoElectronico())) {
 
-                UTILIDADES.mostrarAlerta(
+                utilidades.mostrarAlerta(
                         "Correo duplicado",
                         "Ya existe una cuenta con este correo.",
                         "Use un correo diferente."
@@ -206,36 +199,46 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
             }
 
             UsuarioDTO usuarioDTO = new UsuarioDTO(
-                    idUsuario, nombre, apellidos, estadoActivo
+                    idUsuario,
+                    nombre,
+                    apellidos,
+                    estadoActivo
             );
+
             idUsuario = new UsuarioDAO().insertarUsuario(usuarioDTO);
 
             contrasena = encriptadorContraseñas.encriptar(contrasena);
 
             CuentaDTO cuentaDTO = new CuentaDTO(
-                    correo, contrasena, idUsuario
+                    correo,
+                    contrasena,
+                    idUsuario
             );
-            AcademicoEvaluadorDTO dtoEval = new AcademicoEvaluadorDTO(
-                    numeroPersonal, idUsuario, nombre, apellidos, estadoActivo
+            AcademicoEvaluadorDTO academicoEvaluadorDTO = new AcademicoEvaluadorDTO(
+                    numeroPersonal,
+                    idUsuario,
+                    nombre,
+                    apellidos,
+                    estadoActivo
             );
 
             boolean cuentaCreada = cuentaDAO.crearNuevaCuenta(cuentaDTO);
-            boolean academicoInsertado = evalDAO.insertarAcademicoEvaluador(dtoEval);
+            boolean academicoInsertado =
+                    academicoEvaluadorDAO.insertarAcademicoEvaluador(academicoEvaluadorDTO);
 
             if (cuentaCreada && academicoInsertado) {
 
                 LOGGER.info("Registro exitoso.");
-                UTILIDADES.mostrarAlerta(
+                utilidades.mostrarAlerta(
                         "Registro exitoso",
                         "El académico fue registrado correctamente.",
                         ""
                 );
+
             } else {
 
-                LOGGER.warn(
-                        "Fallo al guardar datos del académico evaluador."
-                );
-                UTILIDADES.mostrarAlerta(
+                LOGGER.warn("Fallo al guardar datos del académico evaluador.");
+                utilidades.mostrarAlerta(
                         "Registro incompleto",
                         "No se guardaron todos los datos.",
                         "Revise la información e intente de nuevo."
@@ -246,36 +249,78 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
 
             LOGGER.error(
                     "Formato numérico inválido: " + e);
-            UTILIDADES.mostrarAlerta(
+            utilidades.mostrarAlerta(
                     "Error de formato",
                     "El número debe ser numérico de 5 dígitos.",
                     "Revise el campo e intente de nuevo."
             );
 
         } catch (SQLException e) {
-            LOGGER.error("Error BD: " + e);
-            UTILIDADES.mostrarAlerta(
-                    "Error del sistema",
-                    "Ocurrió un error al registrar.",
-                    "Intente más tarde o contacte soporte."
-            );
+
+            String estadoSQL = e.getSQLState();
+
+            switch (estadoSQL) {
+
+                case "08S01":
+
+                    LOGGER.error("El servicio de SQL se encuentra desactivado: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer una conexión con la base de datos.",
+                            "La base de datos se encuentra desactivada."
+                    );
+                    break;
+
+                case "42000":
+
+                    LOGGER.error("La base de datos no existe: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer conexión con la base de datos.",
+                            "La base de datos actualmente no existe."
+                    );
+                    break;
+
+                case "28000":
+
+                    LOGGER.error("Credenciales invalidas para el acceso: " + e);
+                    utilidades.mostrarAlerta(
+                            "Credenciales inválidas",
+                            "Usuario o contraseña incorrectos.",
+                            "Por favor, verifique los datos de acceso a la base" +
+                                    "de datos"
+                    );
+                    break;
+
+                default:
+
+                    LOGGER.error("Error de SQL no manejado: " + estadoSQL + "-" + e);
+                    utilidades.mostrarAlerta(
+                            "Error del sistema.",
+                            "Se produjo un error al acceder a la base de datos.",
+                            "Por favor, contacte al soporte técnico."
+                    );
+                    break;
+            }
 
         } catch (IOException e) {
 
-            LOGGER.error("Error I/O: " + e);
-            UTILIDADES.mostrarAlerta(
-                    "Error interno",
+            LOGGER.error("Error de IOException: " + e);
+            utilidades.mostrarAlerta(
+                    "Error interno del sistema",
                     "No se pudo completar la operación.",
-                    "Intente de nuevo más tarde."
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                            "o contacte al administrador."
             );
 
         } catch (Exception e) {
 
             LOGGER.error("Error inesperado: " + e);
-            UTILIDADES.mostrarAlerta(
-                    "Error desconocido",
-                    "Ocurrió un error inesperado.",
-                    "Contacte al administrador."
+            utilidades.mostrarAlerta(
+                    "Error interno del sistema",
+                    "Ocurrió un error al completar la operación.",
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                            "o contacte al administrador."
             );
         }
     }
@@ -288,7 +333,7 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
         String numeroPersonalOriginal = campoNumeroPersonal.getText();
         String correoOriginal = campoCorreo.getText();
 
-        UTILIDADES.mostrarAlertaConfirmacion(
+        utilidades.mostrarAlertaConfirmacion(
                 "Confirmar cancelación",
                 "¿Está seguro que desea cancelar?",
                 "Los cambios no guardados se perderán",
@@ -304,7 +349,7 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
                     campoNumeroPersonal.setText(numeroPersonalOriginal);
                     campoCorreo.setText(correoOriginal);
 
-                    UTILIDADES.mostrarAlerta(
+                    utilidades.mostrarAlerta(
                             "Operación cancelada",
                             "Los cambios no han sido descartados",
                             "Puede continuar editando el registro"

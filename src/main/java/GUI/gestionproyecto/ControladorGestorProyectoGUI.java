@@ -111,7 +111,8 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
     @FXML
     private Label etiquetaContadorResponsabilidades;
 
-    private final Utilidades UTILIDADES = new Utilidades();
+    private Utilidades utilidades = new Utilidades();
+
     private ProyectoDTO proyectoSeleccionado;
     int idRepresentante = 0;
 
@@ -186,23 +187,77 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
             OrganizacionVinculadaDTO organizacionVinculadaDTO =
                     organizacionDAO.buscarOrganizacionPorID(representanteDTO.getIdOrganizacion());
 
-            etiquetaRepresentante.setText(representanteDTO.getNombre() + " " + representanteDTO.getApellidos());
+            etiquetaRepresentante.setText(representanteDTO.getNombre() + " " +
+                    representanteDTO.getApellidos());
             etiquetaOrganizacion.setText(organizacionVinculadaDTO.getNombre());
 
         } catch (SQLException e) {
 
-            LOGGER.severe("Error al cargar los horarios: " + e);
-            UTILIDADES.mostrarAlerta("Error al cargar datos del encargado del proyecto.",
-                    "Ocurrio un errro al cargar los datos del representante y Organización",
-                    "Por favor, intentelo de nuevo más tarde o contacte a soporte.");
+            String estadoSQL = e.getSQLState();
+
+            switch (estadoSQL) {
+
+                case "08S01":
+
+                    LOGGER.severe("El servicio de SQL se encuentra desactivado: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer una conexión con la base de datos.",
+                            "La conexión con la base de datos se encuentra interrumpida."
+                    );
+                    break;
+
+                case "42000":
+
+                    LOGGER.severe("La base de datos no existe: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer conexión con la base de datos.",
+                            "La base de datos actualmente no existe."
+                    );
+                    break;
+
+                case "28000":
+
+                    LOGGER.severe("Credenciales invalidas para el acceso: " + e);
+                    utilidades.mostrarAlerta(
+                            "Credenciales inválidas",
+                            "Usuario o contraseña incorrectos.",
+                            "Por favor, verifique los datos de acceso a la base" +
+                                    "de datos"
+                    );
+                    break;
+
+                default:
+
+                    LOGGER.severe("Error de SQL no manejado: " + estadoSQL + "-" + e);
+                    utilidades.mostrarAlerta(
+                            "Error del sistema.",
+                            "Se produjo un error al acceder a la base de datos.",
+                            "Por favor, contacte al soporte técnico."
+                    );
+                    break;
+            }
 
         } catch (IOException e) {
 
-            LOGGER.severe("Error al cargar los horarios: " + e);
-            UTILIDADES.mostrarAlerta("Error al cargar datos del encargado del proyecto.",
-                    "Ocurrio un errro al cargar los datos del representante y Organización",
-                    "Por favor, intentelo de nuevo más tarde o contacte a soporte.");
+            LOGGER.severe("Error de IOException: " + e);
+            utilidades.mostrarAlerta(
+                    "Error interno del sistema",
+                    "No se pudo completar la operación.",
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                            "o contacte al administrador."
+            );
 
+        } catch (Exception e) {
+
+            LOGGER.severe("Error inesperado: " + e);
+            utilidades.mostrarAlerta(
+                    "Error interno del sistema",
+                    "Ocurrió un error al completar la operación.",
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                            "o contacte al administrador."
+            );
         }
 
         cargarHorariosEnTabla(proyectoSeleccionado.getIdProyecto());
@@ -259,24 +314,80 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
             }
 
             tablaHorarios.getItems().clear();
-            tablaHorarios.getItems().add(new ContenedorHorarioProyectoGUI(lunes, martes, miercoles, jueves, viernes));
+            tablaHorarios.getItems().add(new ContenedorHorarioProyectoGUI(
+                    lunes,
+                    martes,
+                    miercoles,
+                    jueves,
+                    viernes
+            ));
 
         } catch (SQLException e) {
 
-            LOGGER.warning("Error al cargar los horarios: " + e);
-            UTILIDADES.mostrarAlerta(
-                    "Error",
-                    "No se pudieron cargar los horarios",
-                    "Error al cargar los horarios del proyecto."
-            );
+            String estadoSQL = e.getSQLState();
+
+            switch (estadoSQL) {
+
+                case "08S01":
+
+                    LOGGER.severe("El servicio de SQL se encuentra desactivado: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer una conexión con la base de datos.",
+                            "La conexión con la base de datos se encuentra interrumpida."
+                    );
+                    break;
+
+                case "42000":
+
+                    LOGGER.severe("La base de datos no existe: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer conexión con la base de datos.",
+                            "La base de datos actualmente no existe."
+                    );
+                    break;
+
+                case "28000":
+
+                    LOGGER.severe("Credenciales invalidas para el acceso: " + e);
+                    utilidades.mostrarAlerta(
+                            "Credenciales inválidas",
+                            "Usuario o contraseña incorrectos.",
+                            "Por favor, verifique los datos de acceso a la base" +
+                                    "de datos"
+                    );
+                    break;
+
+                default:
+
+                    LOGGER.severe("Error de SQL no manejado: " + estadoSQL + "-" + e);
+                    utilidades.mostrarAlerta(
+                            "Error del sistema.",
+                            "Se produjo un error al acceder a la base de datos.",
+                            "Por favor, contacte al soporte técnico."
+                    );
+                    break;
+            }
 
         } catch (IOException e) {
 
-            LOGGER.warning("Error al cargar los horarios: " + e);
-            UTILIDADES.mostrarAlerta(
-                    "Error",
-                    "No se pudieron cargar los horarios",
-                    "Error al cargar los horarios del proyecto."
+            LOGGER.severe("Error de IOException: " + e);
+            utilidades.mostrarAlerta(
+                    "Error interno del sistema",
+                    "No se pudo completar la operación.",
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                            "o contacte al administrador."
+            );
+
+        } catch (Exception e) {
+
+            LOGGER.severe("Error inesperado: " + e);
+            utilidades.mostrarAlerta(
+                    "Error interno del sistema",
+                    "Ocurrió un error al completar la operación.",
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                            "o contacte al administrador."
             );
         }
     }
@@ -376,15 +487,16 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
         String estudiantesSolicitados = campoEstudiantesSolicitados.getText().trim();
 
         ValidadorDatosProyecto validadorDatosProyecto = new ValidadorDatosProyecto();
-        ProyectoDTO proyectoDTO = new ProyectoDTO(nombre, objetivoGeneral, objetivosInmediatos, objetivosMediatos,
-                metodologia, recursos, actividades, responsabilidades, descripcionGeneral);
+        ProyectoDTO proyectoDTO =
+                new ProyectoDTO(nombre, objetivoGeneral, objetivosInmediatos, objetivosMediatos,
+                        metodologia, recursos, actividades, responsabilidades, descripcionGeneral);
 
         List<String> camposVacios = validadorDatosProyecto.camposVaciosProyecto(proyectoDTO);
 
         if (!camposVacios.isEmpty()) {
 
             String mensajeError = String.join("\n", camposVacios);
-            UTILIDADES.mostrarAlerta(
+            utilidades.mostrarAlerta(
                     "Campos vacíos",
                     "Por favor, complete todos los campos requeridos.",
                     mensajeError
@@ -397,7 +509,7 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
         if (!camposInvalidos.isEmpty()) {
 
             String mensajeError = String.join("\n", camposInvalidos);
-            UTILIDADES.mostrarAlerta(
+            utilidades.mostrarAlerta(
                     "Campos inválidos",
                     "Algunos campos contienen información inválida.",
                     mensajeError
@@ -411,9 +523,9 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
         if (!usuariosInvalidos.isEmpty()) {
 
             String mensajeError = String.join("\n", usuariosInvalidos);
-            UTILIDADES.mostrarAlerta(
-                    "Campos Invalidos",
-                    "Algunos campos contienen informacion invalida.",
+            utilidades.mostrarAlerta(
+                    "Campos Inválidos",
+                    "Algunos campos contienen información invalida.",
                     mensajeError
             );
         }
@@ -421,7 +533,6 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
         int idRepresentanteFinal = representanteCambiado && representanteSeleccionadoTemporal != null
                 ? representanteSeleccionadoTemporal.getIDRepresentante()
                 : idRepresentante;
-
 
         int numeroUsuariosDirectos = Integer.parseInt(usuariosDirectos);
         int numeroUsuariosIndirectos = Integer.parseInt(usuariosIndirectos);
@@ -455,9 +566,11 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
                 SeleccionRepresentanteOrganizacion.
                         setOrganizacionSeleccionada(organizacionVinculadaSeleccionadaTemporal);
 
-                UTILIDADES.mostrarAlerta("Modificación exitosa.",
+                utilidades.mostrarAlerta(
+                        "Modificación exitosa.",
                         "Se ha modificado con éxito el proyecto.",
                         "");
+
                 deshabilitarCamposParaEdicion();
                 cargarDatosProyecto();
                 representanteSeleccionadoTemporal = null;
@@ -465,20 +578,81 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
 
             } else {
 
-                UTILIDADES.mostrarAlerta("No se pudo modificar el proyecto.",
+                utilidades.mostrarAlerta(
+                        "No se pudo modificar el proyecto.",
                         "Ocurrió un error al modificar el proyecto.",
                         "Por favor contacte al administrador.");
             }
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
-            LOGGER.warning("Error al modificar el proyecto: " + e);
-            UTILIDADES.mostrarAlerta("Error al actualizar.",
-                    "Ocurrió un error al intentar actualizar los datos del proyecto.",
-                    "Por favor, intente de nuevo más tarde o contacte al administrador.");
+            String estadoSQL = e.getSQLState();
+
+            switch (estadoSQL) {
+
+                case "08S01":
+
+                    LOGGER.severe("El servicio de SQL se encuentra desactivado: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer una conexión con la base de datos.",
+                            "La conexión con la base de datos se encuentra interrumpida."
+                    );
+                    break;
+
+                case "42000":
+
+                    LOGGER.severe("La base de datos no existe: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer conexión con la base de datos.",
+                            "La base de datos actualmente no existe."
+                    );
+                    break;
+
+                case "28000":
+
+                    LOGGER.severe("Credenciales invalidas para el acceso: " + e);
+                    utilidades.mostrarAlerta(
+                            "Credenciales inválidas",
+                            "Usuario o contraseña incorrectos.",
+                            "Por favor, verifique los datos de acceso a la base" +
+                                    "de datos"
+                    );
+                    break;
+
+                default:
+
+                    LOGGER.severe("Error de SQL no manejado: " + estadoSQL + "-" + e);
+                    utilidades.mostrarAlerta(
+                            "Error del sistema.",
+                            "Se produjo un error al acceder a la base de datos.",
+                            "Por favor, contacte al soporte técnico."
+                    );
+                    break;
+            }
+
+        } catch (IOException e) {
+
+            LOGGER.severe("Error de IOException: " + e);
+            utilidades.mostrarAlerta(
+                    "Error interno del sistema",
+                    "No se pudo completar la operación.",
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                            "o contacte al administrador."
+            );
+
+        } catch (Exception e) {
+
+            LOGGER.severe("Error inesperado: " + e);
+            utilidades.mostrarAlerta(
+                    "Error interno del sistema",
+                    "Ocurrió un error al completar la operación.",
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                            "o contacte al administrador."
+            );
         }
     }
-
 
     @FXML
     private void cancelarActualizacionProyecto() {
@@ -499,7 +673,7 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
         representanteSeleccionadoTemporal = null;
         organizacionVinculadaSeleccionadaTemporal = null;
 
-        UTILIDADES.mostrarAlertaConfirmacion(
+        utilidades.mostrarAlertaConfirmacion(
                 "Confirmar cancelación",
                 "¿Está seguro que desea cancelar?",
                 "Los cambios no guardados se perderán",
@@ -525,7 +699,7 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
                     campoUsuariosIndirectos.setText(textoUsuariosIndirectos);
                     campoEstudiantesSolicitados.setText(textoEstudiantesSolicitados);
 
-                    UTILIDADES.mostrarAlerta(
+                    utilidades.mostrarAlerta(
                             "Operación cancelada.",
                             "Los cambios no han sido descartados..",
                             "Puede continuar con las modificaciones."
@@ -566,44 +740,44 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
 
             Stage ventanaActual = (Stage) botonCambiarOrganizacion.getScene().getWindow();
 
-            FXMLLoader cargador = new FXMLLoader(getClass().getResource("/SeleccionarRepresentante.fxml"));
-            Parent root = cargador.load();
+            FXMLLoader cargarFXML = new FXMLLoader(getClass().getResource("/SeleccionarRepresentante.fxml"));
+            Parent contenidoVentana = cargarFXML.load();
 
-            ControladorSeleccionRepresentanteGUI controlador = cargador.getController();
-            controlador.setControladorPadre(this);
+            ControladorSeleccionRepresentanteGUI controladorSeleccionRepresentante = cargarFXML.getController();
+            controladorSeleccionRepresentante.setControladorPadre(this);
 
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Seleccionar Representante");
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(ventanaActual);
+            Stage nuevaVentana = new Stage();
+            nuevaVentana.setScene(new Scene(contenidoVentana));
+            nuevaVentana.setTitle("Seleccionar Representante");
+            nuevaVentana.initModality(Modality.WINDOW_MODAL);
+            nuevaVentana.initOwner(ventanaActual);
 
-            stage.showAndWait();
+            nuevaVentana.showAndWait();
 
             if (SeleccionRepresentanteOrganizacion.getRepresentanteSeleccionado() != null) {
                 actualizarRepresentanteYOrganizacion();
             }
 
         } catch (IOException e) {
-
-            LOGGER.severe("Error al abrir ventana de selección: " + e);
-            UTILIDADES.mostrarAlerta("Error",
-                    "No se pudo abrir la ventana de selección",
-                    "Por favor, intente nuevamente o contacte al administrador.");
+            LOGGER.severe("Error de E/S al abrir ventana de selección: " + e);
+            utilidades.mostrarAlerta(
+                    "Error de sistema",
+                    "No se pudo abrir la ventana de selección.",
+                    "Verifique el archivo de interfaz o contacte al administrador.");
         }
     }
 
     @FXML
     private void regresarAConsultarProyecto() {
 
-        UTILIDADES.mostrarAlertaConfirmacion(
+        utilidades.mostrarAlertaConfirmacion(
                 "Confirmar regreso",
                 "¿Está seguro que desea regresar a la ventana anterior?",
                 "",
                 () -> {
 
                     if (controladorPadre != null) {
-                        controladorPadre.cargarProyectoYOrganizacion();
+                        controladorPadre.cargarRepresentanteYProyecto();
                     }
 
                     Stage ventanaActual = (Stage) botonCancelar.getScene().getWindow();

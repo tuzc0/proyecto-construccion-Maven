@@ -51,14 +51,14 @@ public class GestorHorarios {
         });
     }
 
-    public void configurarHabilitacionPorDia() {
+    public void habilitarHorariosPorDiaSeleccionado() {
 
-        diasConHorarios.forEach((diaCheckBox, listaCombos) -> {
+        diasConHorarios.forEach((diaCheckBox, combosHorarios) -> {
 
             diaCheckBox.selectedProperty().addListener((valorObservado,
-                                                        valorAnterior, valorActual) -> {
+                                                        valorAnterior, estadoSeleccionado) -> {
 
-                listaCombos.forEach(comboHorarios -> comboHorarios.setDisable(!valorActual));
+                combosHorarios.forEach(comboHorario -> comboHorario.setDisable(!estadoSeleccionado));
             });
         });
     }
@@ -70,17 +70,17 @@ public class GestorHorarios {
 
     public List<String> validarHorarios() {
 
-        List<String> errores = new ArrayList<>();
+        List<String> listaDeErrores = new ArrayList<>();
 
-        diasConHorarios.forEach((diaCheckBox, listaDeCombosPorDia) -> {
+        diasConHorarios.forEach((comboDia, listaDeCombosPorDia) -> {
 
-            if (diaCheckBox.isSelected() && !verificarHorarioDia(listaDeCombosPorDia)) {
+            if (comboDia.isSelected() && !verificarHorarioDia(listaDeCombosPorDia)) {
 
-                errores.add("Horario inválido para " + obtenerNombreDia(diaCheckBox));
+                listaDeErrores.add("Horario inválido para " + obtenerNombreDia(comboDia));
             }
         });
 
-        return errores;
+        return listaDeErrores;
     }
 
     public boolean verificarHorarioDia(List<ComboBox<String>> horarios) {
@@ -125,7 +125,6 @@ public class GestorHorarios {
         if (checkBox.getId() == null) {
             return "Día desconocido";
         }
-
 
         switch(checkBox.getId()) {
 

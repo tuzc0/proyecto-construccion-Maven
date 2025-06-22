@@ -132,7 +132,7 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
     private Button botonSeleccionarRepresentante;
 
     GestorHorarios gestorHorarios;
-    private final Utilidades UTILIDADES = new Utilidades();
+    private Utilidades utilidades = new Utilidades();
 
     @FXML
     private void initialize() {
@@ -175,7 +175,7 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
                 comboHoraViernesFin, comboMinutosViernesFin);
 
         gestorHorarios.inicializarCombosHorarios();
-        gestorHorarios.configurarHabilitacionPorDia();
+        gestorHorarios.habilitarHorariosPorDiaSeleccionado();
 
         botonRegistrar.setCursor(Cursor.HAND);
         botonCancelar.setCursor(Cursor.HAND);
@@ -210,7 +210,7 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
         if (!camposVacios.isEmpty()) {
 
             String mensajeError = String.join("\n", camposVacios);
-            UTILIDADES.mostrarAlerta(
+            utilidades.mostrarAlerta(
                     "Campos vacíos",
                     "Por favor, complete todos los campos requeridos.",
                     mensajeError
@@ -223,7 +223,7 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
         if (!camposErroneos.isEmpty()) {
 
             String mensajeError = String.join("\n", camposErroneos);
-            UTILIDADES.mostrarAlerta(
+            utilidades.mostrarAlerta(
                     "Errores de validación",
                     "Por favor, ingrese información válida en los campos.",
                     mensajeError
@@ -231,13 +231,17 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
             return;
         }
 
-        List<String> usuariosInvalidos = validadorDatosProyecto.camposNumericosInvalidos(textoUsuariosDirectos,
-                textoUsuariosIndirectos, textoEstudiantesRequeridos);
+        List<String> usuariosInvalidos =
+                validadorDatosProyecto.camposNumericosInvalidos(
+                        textoUsuariosDirectos,
+                        textoUsuariosIndirectos,
+                        textoEstudiantesRequeridos
+                );
 
         if (!usuariosInvalidos.isEmpty()) {
 
             String mensajeError = String.join("\n", usuariosInvalidos);
-            UTILIDADES.mostrarAlerta(
+            utilidades.mostrarAlerta(
                     "Campos vacíos",
                     "Por favor, complete todos los campos requeridos.",
                     mensajeError
@@ -245,26 +249,10 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
             return;
         }
 
-        if (!validarDiasSeleccionados()) {
+        boolean horarioValido = validarHorarioSeleccionado();
 
-            UTILIDADES.mostrarAlerta(
-                    "Días no seleccionados",
-                    "Por favor, seleccione al menos un día de la semana.",
-                    "Debe marcar al menos un día en el panel derecho."
-            );
-            return;
-        }
+        if (!horarioValido) {
 
-        List<String> erroresEnHorarios = validarHorarios();
-
-        if (!erroresEnHorarios.isEmpty()) {
-
-            UTILIDADES.mostrarAlerta(
-                    "Error en horarios",
-                    "La hora de entrada debe ser menor a la hora de salida. " +
-                            "Por favor verifique el horario.",
-                    String.join("\n", erroresEnHorarios)
-            );
             return;
         }
 
@@ -273,7 +261,7 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
 
         if (representanteSeleccionado == null) {
 
-            UTILIDADES.mostrarAlerta(
+            utilidades.mostrarAlerta(
                     "Error.",
                     "Por favor, seleccione un representante para el proyecto.",
                     "De clic en el botón 'Seleccionar Representante'"
@@ -295,7 +283,6 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
                 duracionProyecto, estadoActivoProyecto, idRepresentante,
                 descripcionProyecto, usuariosDirectos, usuariosIndirectos, estudiantesRequedidos
         );
-
         ProyectoDAO proyectoDAO = new ProyectoDAO();
 
         try {
@@ -305,7 +292,7 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
 
             if (proyectoExistente.getIdProyecto() != proyectoNoEncontrado) {
 
-                UTILIDADES.mostrarAlerta(
+                utilidades.mostrarAlerta(
                         "Error",
                         "El nombre del proyecto ya se encuentra registrado dentro del sistema.",
                         "Por favor, ingrese un nombre diferente."
@@ -319,7 +306,7 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
             if (horariosInsertados) {
 
                 LOGGER.info("Registro de proyecto exitoso.");
-                UTILIDADES.mostrarAlerta(
+                utilidades.mostrarAlerta(
                         "Registro exitoso",
                         "El proyecto ha sido registrado correctamente.",
                         ""
@@ -328,7 +315,7 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
             } else {
 
                 LOGGER.warn("No se pudieron guardar todos los datos del proyecto.");
-                UTILIDADES.mostrarAlerta(
+                utilidades.mostrarAlerta(
                         "Registro incompleto",
                         "No se pudieron guardar todos los datos.",
                         "Por favor, verifique la información e intente nuevamente."
@@ -337,29 +324,70 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
 
         } catch (SQLException e) {
 
-            LOGGER.error("Error durante el registro del proyecto.", e);
-            UTILIDADES.mostrarAlerta(
-                    "Error durante el registro.",
-                    "Ocurrió un error. Por favor, inténtelo de nuevo más tarde.",
-                    ""
-            );
+            String estadoSQL = e.getSQLState();
+
+            switch (estadoSQL) {
+
+                case "08S01":
+
+                    LOGGER.error("El servicio de SQL se encuentra desactivado: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer una conexión con la base de datos.",
+                            "La conexión con la base de datos se encuentra interrumpida."
+                    );
+                    break;
+
+                case "42000":
+
+                    LOGGER.error("La base de datos no existe: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer conexión con la base de datos.",
+                            "La base de datos actualmente no existe."
+                    );
+                    break;
+
+                case "28000":
+
+                    LOGGER.error("Credenciales invalidas para el acceso: " + e);
+                    utilidades.mostrarAlerta(
+                            "Credenciales inválidas",
+                            "Usuario o contraseña incorrectos.",
+                            "Por favor, verifique los datos de acceso a la base" +
+                                    "de datos"
+                    );
+                    break;
+
+                default:
+
+                    LOGGER.error("Error de SQL no manejado: " + estadoSQL + "-" + e);
+                    utilidades.mostrarAlerta(
+                            "Error del sistema.",
+                            "Se produjo un error al acceder a la base de datos.",
+                            "Por favor, contacte al soporte técnico."
+                    );
+                    break;
+            }
 
         } catch (IOException e) {
 
-            LOGGER.error("Error durante el registro del proyecto.", e);
-            UTILIDADES.mostrarAlerta(
-                    "Error.",
-                    "Ocurrió un error. Por favor, inténtelo de nuevo más tarde.",
-                    ""
+            LOGGER.error("Error de IOException: " + e);
+            utilidades.mostrarAlerta(
+                    "Error interno del sistema",
+                    "No se pudo completar la operación.",
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                            "o contacte al administrador."
             );
 
         } catch (Exception e) {
 
-            LOGGER.error("Error durante el registro del proyecto.", e);
-            UTILIDADES.mostrarAlerta(
-                    "Error",
-                    "Ocurrió un error. Por favor, inténtelo de nuevo más tarde.",
-                    ""
+            LOGGER.error("Error inesperado: " + e);
+            utilidades.mostrarAlerta(
+                    "Error interno del sistema",
+                    "Ocurrió un error al completar la operación.",
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                            "o contacte al administrador."
             );
         }
     }
@@ -381,7 +409,7 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
         String textoUsuariosIndirectos = campoUsuariosIndirectos.getText();
         String textoEstudiantesRequeridos = campoEstudianteRequeridos.getText();
 
-        UTILIDADES.mostrarAlertaConfirmacion(
+        utilidades.mostrarAlertaConfirmacion(
                 "Confirmar cancelación",
                 "¿Está seguro que desea cancelar?",
                 "Los cambios no guardados se perderán",
@@ -406,7 +434,7 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
                     campoUsuariosIndirectos.setText(textoUsuariosIndirectos);
                     campoEstudianteRequeridos.setText(textoEstudiantesRequeridos);
 
-                    UTILIDADES.mostrarAlerta(
+                    utilidades.mostrarAlerta(
                             "Operación cancelada.",
                             "Los cambios no han sido descartados..",
                             "Puede continuar con el registro."
@@ -415,12 +443,36 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
         );
     }
 
-    private boolean validarDiasSeleccionados() {
-        return gestorHorarios.validarDiasSeleccionados();
-    }
+    private boolean validarHorarioSeleccionado() {
 
-    private List<String> validarHorarios() {
-        return gestorHorarios.validarHorarios();
+        boolean horarioValido = true;
+
+        if (!gestorHorarios.validarDiasSeleccionados()) {
+
+            utilidades.mostrarAlerta(
+                    "Días no seleccionados",
+                    "Por favor, seleccione al menos un día de la semana.",
+                    "Debe marcar al menos un día en el panel derecho."
+            );
+
+            horarioValido = false;
+        }
+
+        List<String> erroresEnHorarios = gestorHorarios.validarHorarios();
+
+        if (!erroresEnHorarios.isEmpty()) {
+
+            utilidades.mostrarAlerta(
+                    "Error en horarios",
+                    "La hora de entrada debe ser menor a la hora de salida. " +
+                            "Por favor verifique el horario.",
+                    String.join("\n", erroresEnHorarios)
+            );
+
+            horarioValido = false;
+        }
+
+        return horarioValido;
     }
 
     private boolean insertarHorarios(int idProyecto) throws SQLException, IOException {
@@ -444,9 +496,11 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
                 int minutoFin = Integer.parseInt(horarios.get(3).getValue());
                 Time horaInicioSQL = Time.valueOf(String.format("%02d:%02d:00", horaInicio, minutoInicio));
                 Time horaFinSQL = Time.valueOf(String.format("%02d:%02d:00", horaFin, minutoFin));
+                int idHorario = 0;
+                String idEstudiante = null;
 
                 HorarioProyectoDTO horarioDTO = new HorarioProyectoDTO(
-                        0, idProyecto, diaSemana, horaInicioSQL, horaFinSQL, null
+                        idHorario, idProyecto, diaSemana, horaInicioSQL, horaFinSQL, idEstudiante
                 );
 
                 horariosInsertados = horarioDAO.crearNuevoHorarioProyecto(horarioDTO);
@@ -471,7 +525,7 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
         Stage ventanaActual = (Stage) botonSeleccionarRepresentante.getScene().getWindow();
 
         FXMLLoader cargadorVentana = new FXMLLoader(getClass().getResource("/SeleccionarRepresentante.fxml"));
-        UTILIDADES.abrirVentana(
+        utilidades.abrirVentana(
                 "/SeleccionarRepresentante.fxml",
                 "Seleccionar Representante",
                 ventanaActual);

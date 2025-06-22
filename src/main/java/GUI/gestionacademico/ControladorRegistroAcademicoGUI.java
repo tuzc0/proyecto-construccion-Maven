@@ -52,7 +52,6 @@ public class ControladorRegistroAcademicoGUI {
     EncriptadorContraseñas encriptadorContraseñas = new EncriptadorContraseñas();
     private UtilidadesContraseña utilidadesConstraña = new UtilidadesContraseña();
     private Utilidades utilidades = new Utilidades();
-
     private boolean contraseñaVisible = false;
 
     @FXML
@@ -136,7 +135,8 @@ public class ControladorRegistroAcademicoGUI {
             return;
         }
 
-        List<String> errores = VerificacionUsuario.validarCampos(
+        List<String> errores =
+                VerificacionUsuario.validarCampos(
                 nombre,
                 apellidos,
                 numeroDePersonalTexto,
@@ -202,11 +202,10 @@ public class ControladorRegistroAcademicoGUI {
             }
 
             UsuarioDTO usuarioDTO = new UsuarioDTO(idUsuario, nombre, apellidos, estadoActivo);
-
             idUsuario = new UsuarioDAO().insertarUsuario(usuarioDTO);
-            contrasena = encriptadorContraseñas.encriptar(contrasena);
-
             CuentaDTO cuentaDTO = new CuentaDTO(correo, contrasena, idUsuario);
+
+            contrasena = encriptadorContraseñas.encriptar(contrasena);
 
             AcademicoDTO academicoDTO = new AcademicoDTO(
                     numeroPersonal,
@@ -252,7 +251,6 @@ public class ControladorRegistroAcademicoGUI {
         } catch (SQLException e) {
 
             String estadoSQL = e.getSQLState();
-            LOGGER.error("Error de SQL: " + e);
 
             switch (estadoSQL) {
 
@@ -271,8 +269,19 @@ public class ControladorRegistroAcademicoGUI {
                     LOGGER.error("La base de datos no existe: " + e);
                     utilidades.mostrarAlerta(
                             "Error de conexión",
-                            "No se pudo establer conexión con la base de datos.",
+                            "No se pudo establecer conexión con la base de datos.",
                             "La base de datos actualmente no existe."
+                    );
+                    break;
+
+                case "28000":
+
+                    LOGGER.error("Credenciales invalidas para el acceso: " + e);
+                    utilidades.mostrarAlerta(
+                            "Credenciales inválidas",
+                            "Usuario o contraseña incorrectos.",
+                            "Por favor, verifique los datos de acceso a la base" +
+                                    "de datos"
                     );
                     break;
 
@@ -281,7 +290,7 @@ public class ControladorRegistroAcademicoGUI {
                     LOGGER.error("Error de SQL no manejado: " + estadoSQL + "-" + e);
                     utilidades.mostrarAlerta(
                             "Error del sistema.",
-                            "Se produjo un error inesperado al acceder a la base de datos.",
+                            "Se produjo un error al acceder a la base de datos.",
                             "Por favor, contacte al soporte técnico."
                     );
                     break;
@@ -289,23 +298,22 @@ public class ControladorRegistroAcademicoGUI {
 
         } catch (IOException e) {
 
-            LOGGER.error("Error de I/O al registrar académico: " + e);
+            LOGGER.error("Error de IOException al registrar académico: " + e);
             utilidades.mostrarAlerta(
-                    "Error de sistema",
-                    "No se pudo completar la operación debido"
-                            + " a un error interno.",
-                    "Por favor, inténtelo nuevamente más tarde."
+                    "Error interno del sistema",
+                    "No se pudo completar la operación.",
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                            "o contacte al administrador."
             );
 
         } catch (Exception e) {
 
             LOGGER.error("Error inesperado al registrar académico: " + e);
             utilidades.mostrarAlerta(
-                    "Error desconocido",
-                    "Ocurrió un error inesperado al registrar"
-                            + " al académico.",
-                    "Por favor, inténtelo de nuevo o contacte"
-                            + " al administrador del sistema."
+                    "Error interno del sistema",
+                    "Ocurrió un error al completar la operación.",
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                            "o contacte al administrador."
             );
         }
     }

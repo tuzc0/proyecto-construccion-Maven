@@ -21,7 +21,7 @@ import logica.DAOs.ProyectoDAO;
 import logica.DAOs.RepresentanteDAO;
 import logica.DTOs.ProyectoDTO;
 import logica.DTOs.RepresentanteDTO;
-import logica.utilidadesproyecto.ContenedoraOrganizacionProyecto;
+import logica.utilidadesproyecto.AsociacionRepresentanteOrganizacionProyecto;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -33,26 +33,26 @@ public class ControladorConsultarProyectosGUI {
             .getLogger(ControladorConsultarProyectosGUI.class.getName());
 
     @FXML
-    private TableView<ContenedoraOrganizacionProyecto>
+    private TableView<AsociacionRepresentanteOrganizacionProyecto>
             tablaProyectos;
     @FXML
-    private TableColumn<ContenedoraOrganizacionProyecto, String>
+    private TableColumn<AsociacionRepresentanteOrganizacionProyecto, String>
             columnaNombreProyecto;
     @FXML
-    private TableColumn<ContenedoraOrganizacionProyecto, String>
+    private TableColumn<AsociacionRepresentanteOrganizacionProyecto, String>
             columnaNombreRepresentante;
     @FXML
-    private TableColumn<ContenedoraOrganizacionProyecto, Void>
+    private TableColumn<AsociacionRepresentanteOrganizacionProyecto, Void>
             columnaVerDetalles;
     @FXML
-    private TableColumn<ContenedoraOrganizacionProyecto, Void>
+    private TableColumn<AsociacionRepresentanteOrganizacionProyecto, Void>
             columnaEliminarProyecto;
     @FXML
     private TextField campoBusqueda;
     @FXML
     private Button botonRegistrar;
 
-    private final Utilidades UTILIDADES = new Utilidades();
+    private Utilidades utilidades = new Utilidades();
     private ProyectoDTO proyectoSeleccionado;
 
     @FXML
@@ -89,7 +89,7 @@ public class ControladorConsultarProyectosGUI {
                     tablaProyectos.refresh();
                 });
 
-        cargarProyectoYOrganizacion();
+        cargarRepresentanteYProyecto();
         añadirBotonEliminarATabla();
         añadirBotonVerDetallesATabla();
 
@@ -98,17 +98,18 @@ public class ControladorConsultarProyectosGUI {
 
     private void añadirBotonVerDetallesATabla() {
 
-        Callback<TableColumn<ContenedoraOrganizacionProyecto, Void>,
-                TableCell<ContenedoraOrganizacionProyecto, Void>>
-                cellFactory = columnaProyecto -> new TableCell<>() {
+        Callback<TableColumn<AsociacionRepresentanteOrganizacionProyecto, Void>,
+                TableCell<AsociacionRepresentanteOrganizacionProyecto, Void>>
+                fabricadorCeldas = columnaProyecto -> new TableCell<>() {
 
-            private final Button botonVerDetalles = new Button("Ver detalles");
+            private final Button botonDetalles = new Button("Ver detalles");
             {
-                botonVerDetalles.setOnAction(evento -> {
+                botonDetalles.setOnAction(evento -> {
 
-                    ContenedoraOrganizacionProyecto contenedor = getTableView().getItems().get(getIndex());
-                    ProyectoDTO proyectoDTO = contenedor.getProyecto();
-                    abrirVentanaDetallesProyecto(proyectoDTO);
+                    AsociacionRepresentanteOrganizacionProyecto asociacionSeleccionada =
+                            getTableView().getItems().get(getIndex());
+                    ProyectoDTO proyectoSeleccionado = asociacionSeleccionada.getProyecto();
+                    abrirVentanaDetallesProyecto(proyectoSeleccionado);
                 });
             }
 
@@ -125,27 +126,27 @@ public class ControladorConsultarProyectosGUI {
 
                 } else {
 
-                    setGraphic(botonVerDetalles);
+                    setGraphic(botonDetalles);
                 }
             }
         };
 
-        columnaVerDetalles.setCellFactory(cellFactory);
+        columnaVerDetalles.setCellFactory(fabricadorCeldas);
     }
 
     private void añadirBotonEliminarATabla() {
 
-        Callback<TableColumn<ContenedoraOrganizacionProyecto, Void>,
-                TableCell<ContenedoraOrganizacionProyecto, Void>>
-                cellFactory = param -> new TableCell<>() {
+        Callback<TableColumn<AsociacionRepresentanteOrganizacionProyecto, Void>,
+                TableCell<AsociacionRepresentanteOrganizacionProyecto, Void>>
+                fabricadorCeldas = columna -> new TableCell<>() {
 
             private final Button botonEliminar = new Button("Eliminar");
             {
                 botonEliminar.setOnAction(evento -> {
-                    ContenedoraOrganizacionProyecto contenedor =
+                    AsociacionRepresentanteOrganizacionProyecto asociacionSeleccionada =
                             getTableView().getItems().get(getIndex());
-                    ProyectoDTO proyectoDTO = contenedor.getProyecto();
-                    confirmarEliminacion(proyectoDTO);
+                    ProyectoDTO proyectoAEliminar = asociacionSeleccionada.getProyecto();
+                    confirmarEliminacion(proyectoAEliminar);
                 });
             }
 
@@ -169,35 +170,37 @@ public class ControladorConsultarProyectosGUI {
             }
         };
 
-        columnaEliminarProyecto.setCellFactory(cellFactory);
+        columnaEliminarProyecto.setCellFactory(fabricadorCeldas);
     }
 
     private void abrirVentanaDetallesProyecto(ProyectoDTO proyectoSeleccionado) {
 
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestorProyectoGUI.fxml"));
-            Parent root = loader.load();
+            FXMLLoader cargarFXML = new FXMLLoader(getClass().getResource("/GestorProyectoGUI.fxml"));
+            Parent contenidoVentana = cargarFXML.load();
 
-            ControladorGestorProyectoGUI controladorGestorProyectoGUI = loader.getController();
+            ControladorGestorProyectoGUI controladorGestorProyectoGUI = cargarFXML.getController();
             controladorGestorProyectoGUI.setProyectoDTO(proyectoSeleccionado);
             controladorGestorProyectoGUI.setControladorPadre(this);
 
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Detalles Proyecto");
-            stage.show();
+            Stage ventanaDetallesProyecto = new Stage();
+            ventanaDetallesProyecto.setScene(new Scene(contenidoVentana));
+            ventanaDetallesProyecto.setTitle("Detalles Proyecto");
+            ventanaDetallesProyecto.show();
 
-        } catch (Exception e) {
+        } catch (IOException e) {
 
-            LOGGER.severe("Error al abrir la ventana de detalles de la organización: " + e);
-            UTILIDADES.mostrarAlerta("Error",
-                    "Error al abrir la ventana de detalles de proyecto",
-                    "Por favor, intentelo de nuevo más tarde");
+            LOGGER.severe("Error de E/S al abrir la ventana: " + e);
+
+            utilidades.mostrarAlerta(
+                    "Error de archivo",
+                    "No se pudo cargar la interfaz del proyecto.",
+                    "Verifique que el archivo FXML exista y sea válido.");
         }
     }
 
-    public void cargarProyectoYOrganizacion() {
+    public void cargarRepresentanteYProyecto() {
 
         ProyectoDAO proyectoDAO = new ProyectoDAO();
         RepresentanteDAO representanteDAO = new RepresentanteDAO();
@@ -207,36 +210,94 @@ public class ControladorConsultarProyectosGUI {
             List<ProyectoDTO> proyectos = proyectoDAO.listarProyectos();
             List<RepresentanteDTO> representantes = representanteDAO.obtenerTodosLosRepresentantes();
 
-            ObservableList<ContenedoraOrganizacionProyecto> listaCombinada =
+            ObservableList<AsociacionRepresentanteOrganizacionProyecto> listaRepresentantesProyectos =
                     FXCollections.observableArrayList();
 
-            for (ProyectoDTO proyecto : proyectos) {
+            for (ProyectoDTO proyectoDTO : proyectos) {
 
-                for (RepresentanteDTO representante : representantes) {
+                for (RepresentanteDTO representanteDTO : representantes) {
 
-                    if (proyecto.getIdRepresentante() == representante.getIDRepresentante()) {
+                    if (proyectoDTO.getIdRepresentante() == representanteDTO.getIDRepresentante()) {
 
-                        listaCombinada.add(
-
-                                new ContenedoraOrganizacionProyecto(
-                                        representante,
+                        listaRepresentantesProyectos.add(
+                                new AsociacionRepresentanteOrganizacionProyecto(
+                                        representanteDTO,
                                         null,
-                                        proyecto
+                                        proyectoDTO
                                 )
                         );
                     }
                 }
             }
 
-            tablaProyectos.setItems(listaCombinada);
+            tablaProyectos.setItems(listaRepresentantesProyectos);
 
-        } catch (IOException | SQLException e) {
+        } catch (SQLException e) {
 
-            LOGGER.severe("Error al cargar representantes y organizaciones: " + e);
-            UTILIDADES.mostrarAlerta(
-                    "Error",
-                    "Error al cargar datos",
-                    "No se pudo cargar la lista de representantes y organizaciones."
+            String estadoSQL = e.getSQLState();
+
+            switch (estadoSQL) {
+
+                case "08S01":
+
+                    LOGGER.severe("El servicio de SQL se encuentra desactivado: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer una conexión con la base de datos.",
+                            "La conexión con la base de datos se encuentra interrumpida."
+                    );
+                    break;
+
+                case "42000":
+
+                    LOGGER.severe("La base de datos no existe: " + e);
+                    utilidades.mostrarAlerta(
+                            "Error de conexión",
+                            "No se pudo establecer conexión con la base de datos.",
+                            "La base de datos actualmente no existe."
+                    );
+                    break;
+
+                case "28000":
+
+                    LOGGER.severe("Credenciales invalidas para el acceso: " + e);
+                    utilidades.mostrarAlerta(
+                            "Credenciales inválidas",
+                            "Usuario o contraseña incorrectos.",
+                            "Por favor, verifique los datos de acceso a la base" +
+                                    "de datos"
+                    );
+                    break;
+
+                default:
+
+                    LOGGER.severe("Error de SQL no manejado: " + estadoSQL + "-" + e);
+                    utilidades.mostrarAlerta(
+                            "Error del sistema.",
+                            "Se produjo un error al acceder a la base de datos.",
+                            "Por favor, contacte al soporte técnico."
+                    );
+                    break;
+            }
+
+        } catch (IOException e) {
+
+            LOGGER.severe("Error de IOException: " + e);
+            utilidades.mostrarAlerta(
+                    "Error interno del sistema",
+                    "No se pudo completar la carga de proyectos.",
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                            "o contacte al administrador."
+            );
+
+        } catch (Exception e) {
+
+            LOGGER.severe("Error inesperado: " + e);
+            utilidades.mostrarAlerta(
+                    "Error interno del sistema",
+                    "Ocurrió un error al completar la carga de proyectos.",
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                            "o contacte al administrador."
             );
         }
     }
@@ -244,64 +305,64 @@ public class ControladorConsultarProyectosGUI {
     @FXML
     private void abrirVentanaRegistroProyecto() {
 
-        UTILIDADES.abrirVentana(
+        utilidades.abrirVentana(
                 "/RegistroProyectoGUI.fxml",
                 "Registrar Proyecto",
                 (Stage) botonRegistrar.getScene().getWindow()
         );
 
-        cargarProyectoYOrganizacion();
+        cargarRepresentanteYProyecto();
     }
 
     @FXML
-    private void buscarProyecto() {
+    private void filtrarProyectosPorNombre() {
 
-        String textoBusqueda = campoBusqueda.getText().toLowerCase();
+        String criterioBusqueda = campoBusqueda.getText().toLowerCase();
 
-        if (textoBusqueda.isEmpty()) {
+        if (criterioBusqueda.isEmpty()) {
 
-            UTILIDADES.mostrarAlerta(
+            utilidades.mostrarAlerta(
                     "Error",
                     "El campo de busqueda se encuentra vacio",
                     "Por favor, ingrese el nombre del proyecto a buscar"
             );
-            cargarProyectoYOrganizacion();
+            cargarRepresentanteYProyecto();
             return;
         }
 
-        ObservableList<ContenedoraOrganizacionProyecto> listaFiltrada =
+        ObservableList<AsociacionRepresentanteOrganizacionProyecto> proyectosFiltrados =
                 FXCollections.observableArrayList();
 
-        for (ContenedoraOrganizacionProyecto contenedor : tablaProyectos.getItems()) {
+        for (AsociacionRepresentanteOrganizacionProyecto asociacionProyecto : tablaProyectos.getItems()) {
 
-            String nombreProyecto = contenedor.getProyecto().getNombre().toLowerCase();
-            String nombreRepresentante = contenedor.getRepresentante().getNombre().toLowerCase();
+            String nombreProyecto = asociacionProyecto.getProyecto().getNombre().toLowerCase();
+            String nombreRepresentante = asociacionProyecto.getRepresentante().getNombre().toLowerCase();
 
-            if (nombreProyecto.contains(textoBusqueda) || nombreRepresentante.contains(textoBusqueda)) {
+            if (nombreProyecto.contains(criterioBusqueda) || nombreRepresentante.contains(criterioBusqueda)) {
 
-                listaFiltrada.add(contenedor);
+                proyectosFiltrados.add(asociacionProyecto);
 
             }
         }
 
-        if (listaFiltrada.isEmpty()) {
-            UTILIDADES.mostrarAlerta(
+        if (proyectosFiltrados.isEmpty()) {
+            utilidades.mostrarAlerta(
                     "Proyecto no encontrado",
-                    "No se ha encontrado ningun proyecto activo con ese nombre",
+                    "No se ha encontrado ningún proyecto activo con ese nombre",
                     "Por favor, verifique que haya ingresado bien el nombre o registre el proyecto"
             );
-            cargarProyectoYOrganizacion();
+            cargarRepresentanteYProyecto();
             return;
         }
 
-        tablaProyectos.setItems(listaFiltrada);
+        tablaProyectos.setItems(proyectosFiltrados);
     }
 
     private void confirmarEliminacion(ProyectoDTO proyectoAEliminar) {
 
         ProyectoDAO proyectoDAO = new ProyectoDAO();
 
-        UTILIDADES.mostrarAlertaConfirmacion(
+        utilidades.mostrarAlertaConfirmacion(
                 "Confirmar eliminación",
                 "¿Está seguro que desea eliminar el proyecto seleccionado?",
                 "",
@@ -311,7 +372,7 @@ public class ControladorConsultarProyectosGUI {
 
                         if (!proyectoDAO.eliminarProyectoPorID(proyectoAEliminar.getIdProyecto())) {
 
-                            UTILIDADES.mostrarAlerta(
+                            utilidades.mostrarAlerta(
                                     "Error",
                                     "No fue posible eliminar el proyecto seleccionado.",
                                     "Inténtelo más tarde o contacte al administrador."
@@ -319,39 +380,86 @@ public class ControladorConsultarProyectosGUI {
 
                         } else {
 
-                            UTILIDADES.mostrarAlerta(
+                            utilidades.mostrarAlerta(
                                     "Éxito",
                                     "El proyecto ha sido eliminado correctamente.",
                                     ""
                             );
                         }
 
-                        cargarProyectoYOrganizacion();
+                        cargarRepresentanteYProyecto();
 
-                    } catch (IOException | SQLException e) {
+                    } catch (SQLException e) {
 
-                        LOGGER.severe("Error al eliminar proyecto: " + e);
-                        UTILIDADES.mostrarAlerta(
-                                "Error",
-                                "Error al eliminar",
-                                "Ocurrió un error dentro del sistema, por favor intente de nuevo más tarde."
+                        String estadoSQL = e.getSQLState();
+
+                        switch (estadoSQL) {
+
+                            case "08S01":
+
+                                LOGGER.severe("El servicio de SQL se encuentra desactivado: " + e);
+                                utilidades.mostrarAlerta(
+                                        "Error de conexión",
+                                        "No se pudo establecer una conexión con la base de datos.",
+                                        "La conexión con la base de datos se encuentra interrumpida."
+                                );
+                                break;
+
+                            case "42000":
+
+                                LOGGER.severe("La base de datos no existe: " + e);
+                                utilidades.mostrarAlerta(
+                                        "Error de conexión",
+                                        "No se pudo establecer conexión con la base de datos.",
+                                        "La base de datos actualmente no existe."
+                                );
+                                break;
+
+                            case "28000":
+
+                                LOGGER.severe("Credenciales invalidas para el acceso: " + e);
+                                utilidades.mostrarAlerta(
+                                        "Credenciales inválidas",
+                                        "Usuario o contraseña incorrectos.",
+                                        "Por favor, verifique los datos de acceso a la base" +
+                                                "de datos"
+                                );
+                                break;
+
+                            default:
+
+                                LOGGER.severe("Error de SQL no manejado: " + estadoSQL + "-" + e);
+                                utilidades.mostrarAlerta(
+                                        "Error del sistema.",
+                                        "Se produjo un error al acceder a la base de datos.",
+                                        "Por favor, contacte al soporte técnico."
+                                );
+                                break;
+                        }
+
+                    } catch (IOException e) {
+
+                        LOGGER.severe("Error de IOException: " + e);
+                        utilidades.mostrarAlerta(
+                                "Error interno del sistema",
+                                "No se pudo completar la carga de proyectos.",
+                                "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                                        "o contacte al administrador."
                         );
                     }
                 },
                 () -> {
 
                     tablaProyectos.getSelectionModel().clearSelection();
-                    tablaProyectos.getItems().stream().filter(item ->
-                                    item.getProyecto().equals(proyectoAEliminar)
-                            )
+                    tablaProyectos.getItems().stream()
+                            .filter(asociacionProyecto ->
+                                    asociacionProyecto.getProyecto().equals(proyectoAEliminar))
                             .findFirst()
-                            .ifPresent(item ->
-                                    tablaProyectos
-                                            .getSelectionModel()
-                                            .select(item)
+                            .ifPresent(asociacionProyecto ->
+                                    tablaProyectos.getSelectionModel().select(asociacionProyecto)
                             );
 
-                    UTILIDADES.mostrarAlerta(
+                    utilidades.mostrarAlerta(
                             "Operación cancelada",
                             "La eliminación fue cancelada",
                             "El proyecto no ha sido eliminado."

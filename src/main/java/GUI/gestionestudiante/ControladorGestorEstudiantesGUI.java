@@ -1,7 +1,7 @@
 package GUI.gestionestudiante;
 
 import GUI.ControladorObjetoEvaluacion;
-import GUI.ManejadorExepciones;
+import logica.ManejadorExcepciones;
 import GUI.utilidades.Utilidades;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -20,6 +20,7 @@ import logica.DTOs.CuentaDTO;
 import logica.DTOs.EstudianteDTO;
 import logica.DTOs.UsuarioDTO;
 import logica.VerificacionUsuario;
+import logica.interfaces.GestorAlertas;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.Logger;
 
@@ -124,9 +125,10 @@ public class ControladorGestorEstudiantesGUI {
 
     final int MAX_CARACTERES_MATRICULA= 9;
 
-    Utilidades utilidades = new Utilidades();
+    Utilidades utilidadesVentana = new Utilidades();
+    GestorAlertas mensajeDeAlerta = new Utilidades();
 
-    ManejadorExepciones manejadorExepciones = new ManejadorExepciones();
+    ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(mensajeDeAlerta, logger);
 
     @FXML
     public void initialize() {
@@ -171,16 +173,16 @@ public class ControladorGestorEstudiantesGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al cargar los estudiantes: " + e);
-            utilidades.mostrarAlerta(
+            utilidadesVentana.mostrarAlerta(
                     "Error inesperado",
                     "No se pudieron cargar los estudiantes.",
                     "Por favor, intente nuevamente más tarde."
@@ -196,7 +198,7 @@ public class ControladorGestorEstudiantesGUI {
 
         if (matricula.isEmpty()) {
 
-            utilidades.mostrarAlerta(
+            utilidadesVentana.mostrarAlerta(
                     "Campos vacíos",
                     "Por favor, ingrese una matrícula para buscar.",
                     "El campo de matrícula no puede estar vacío."
@@ -228,16 +230,16 @@ public class ControladorGestorEstudiantesGUI {
 
         } catch (SQLException e){
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al buscar el estudiante: " + e);
-            utilidades.mostrarAlerta(
+            utilidadesVentana.mostrarAlerta(
                     "Error inesperado",
                     "No se pudo buscar el estudiante.",
                     "Por favor, intente nuevamente más tarde."
@@ -268,16 +270,16 @@ public class ControladorGestorEstudiantesGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al mostrar los detalles del estudiante: " + e);
-            utilidades.mostrarAlerta(
+            utilidadesVentana.mostrarAlerta(
                     "Error inesperado",
                     "No se pudieron mostrar los detalles del estudiante.",
                     "Por favor, intente nuevamente más tarde."
@@ -313,7 +315,7 @@ public class ControladorGestorEstudiantesGUI {
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
         }
     }
 
@@ -351,11 +353,11 @@ public class ControladorGestorEstudiantesGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
@@ -371,7 +373,7 @@ public class ControladorGestorEstudiantesGUI {
     @FXML
     private void confirmarEliminacionEstudiante() {
 
-        utilidades.mostrarAlertaConfirmacion(
+        utilidadesVentana.mostrarAlertaConfirmacion(
                 "Confirmar eliminación",
                 "¿Está seguro que desea eliminar el estudiante seleccionado?",
                 "Se eliminará el estudiante seleccionado. Esta acción no se puede deshacer.",
@@ -379,7 +381,7 @@ public class ControladorGestorEstudiantesGUI {
                     eliminarEstudiante();
                 },
                 () -> {
-                    utilidades.mostrarAlerta("Cancelado",
+                    utilidadesVentana.mostrarAlerta("Cancelado",
                             "Eliminación cancelada",
                             "No se ha eliminado ningún estudiante.");
                 }
@@ -414,7 +416,7 @@ public class ControladorGestorEstudiantesGUI {
     @FXML
     private void confirmacionEliminarEstudianteSeleccionado() {
 
-        utilidades.mostrarAlertaConfirmacion(
+        utilidadesVentana.mostrarAlertaConfirmacion(
                 "Confirmar eliminación",
                 "¿Está seguro que desea eliminar los estudiantes seleccionados?",
                 "Se eliminarán los estudiantes seleccionados. Esta acción no se puede deshacer.",
@@ -422,7 +424,7 @@ public class ControladorGestorEstudiantesGUI {
                     eliminarEstudianteSeleccionado();
                 },
                 () -> {
-                    utilidades.mostrarAlerta("Cancelado",
+                    utilidadesVentana.mostrarAlerta("Cancelado",
                             "Eliminación cancelada",
                             "No se ha eliminado ningún estudiante.");
                 }
@@ -462,12 +464,12 @@ public class ControladorGestorEstudiantesGUI {
             }
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
             error = true;
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
             error = true;
 
         } catch (Exception e) {
@@ -529,7 +531,7 @@ public class ControladorGestorEstudiantesGUI {
     private void editarEstudiante() {
 
         if (etiquetaMatriculaEncontrada.getText().trim().isEmpty()) {
-            utilidades.mostrarAlerta("No se ha seleccionado un estudiante",
+            utilidadesVentana.mostrarAlerta("No se ha seleccionado un estudiante",
                     "Por favor, busque o seleccione un estudiante antes de editar.",
                     "El campo de matrícula no puede estar vacío.");
             return;
@@ -672,11 +674,11 @@ public class ControladorGestorEstudiantesGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 

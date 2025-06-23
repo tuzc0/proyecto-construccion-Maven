@@ -9,13 +9,15 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import logica.interfaces.GestorAlertas;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.io.IOException;
+import java.lang.management.GarbageCollectorMXBean;
 import java.util.Optional;
 
 
-public class Utilidades {
+public class Utilidades implements GestorAlertas {
 
     private static final Logger logger = LogManager.getLogger(Utilidades.class);
 
@@ -83,6 +85,7 @@ public class Utilidades {
         }
     }
 
+    @Override
     public void mostrarAlerta(String titulo, String cabecera, String contenido) {
 
         Alert alerta = new Alert(Alert.AlertType.INFORMATION);

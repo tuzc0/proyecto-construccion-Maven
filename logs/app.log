@@ -4121,7 +4121,7 @@ POST https://oauth2.googleapis.com/token
 2025-06-09 01:50:56 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - Se encontró una autoevaluación vinculada a la matrícula: S25044060
 2025-06-09 01:52:03 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
 2025-06-09 01:53:53 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
-2025-06-09 01:53:54 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID: S25044060
+2025-06-09 01:53:54 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID: S25044060
 2025-06-09 01:54:10 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - Se encontró una autoevaluación vinculada a la matrícula: S25044060
 2025-06-09 02:28:22 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
 2025-06-09 02:28:25 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - Se encontró una autoevaluación vinculada a la matrícula: S25044060
@@ -5013,16 +5013,16 @@ POST https://oauth2.googleapis.com/token
 2025-06-09 07:34:10 [JavaFX Application Thread] WARN  GUI.ControladorRegistrarEvaluacionGUI - El valor ingresado no es un número válido.
 2025-06-09 07:34:16 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
 2025-06-09 07:34:24 [JavaFX Application Thread] WARN  GUI.ControladorRegistrarEvaluacionGUI - El valor ingresado no es un número válido.
-2025-06-09 07:59:06 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID:
-2025-06-09 07:59:14 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID:
+2025-06-09 07:59:06 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID:  
+2025-06-09 07:59:14 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID:  
 2025-06-09 08:02:08 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
-2025-06-09 08:05:46 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID:
-2025-06-09 08:06:38 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID:
-2025-06-09 08:08:29 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID:
-2025-06-09 08:09:58 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID:
-2025-06-09 08:12:16 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID:
-2025-06-09 08:14:54 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID:
-2025-06-09 08:16:09 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID:
+2025-06-09 08:05:46 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID:  
+2025-06-09 08:06:38 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID:  
+2025-06-09 08:08:29 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID:  
+2025-06-09 08:09:58 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID:  
+2025-06-09 08:12:16 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID:  
+2025-06-09 08:14:54 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID:  
+2025-06-09 08:16:09 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID:  
 2025-06-09 08:23:43 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
 2025-06-09 15:28:26 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
 2025-06-09 15:28:42 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - Se encontró una autoevaluación vinculada a la matrícula: S23014091
@@ -7798,8 +7798,8 @@ Caused by: java.lang.NullPointerException: Cannot invoke "javafx.scene.control.L
 2025-06-19 21:00:47 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error inesperado: javax.crypto.IllegalBlockSizeException: Input length must be multiple of 16 when decrypting with padded cipher
 2025-06-19 21:01:26 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
 2025-06-19 21:02:26 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarCriterioEvaluacionGUI - Error inesperado al buscar el cronograma por matrícula: java.lang.NullPointerException: Cannot invoke "logica.DTOs.CronogramaActividadesDTO.getIDCronograma()" because "cronogramaActividadesDTO" is null
-2025-06-19 21:02:47 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No se encontraron evalauciones S23014101
-2025-06-19 21:02:47 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID: S23014101
+2025-06-19 21:02:47 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No se encontraron evalauciones S23014101
+2025-06-19 21:02:47 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID: S23014101
 2025-06-19 21:03:16 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - Criterios de autoevaluación actualizados correctamente.
 2025-06-19 21:03:17 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
 2025-06-19 21:03:17 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error inesperado al guardar la autoevaluación: java.lang.NullPointerException: Location is required.
@@ -8659,8 +8659,8 @@ Caused by: java.lang.NullPointerException: Cannot invoke "java.sql.Timestamp.toS
 2025-06-19 21:27:59 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error inesperado al guardar la autoevaluación: java.lang.NullPointerException: Location is required.
 2025-06-19 21:28:08 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
 2025-06-19 21:28:11 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - Se encontró una autoevaluación vinculada a la matrícula: S21014092
-2025-06-19 21:28:16 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No se encontraron evalauciones S21014092
-2025-06-19 21:28:16 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID: S21014092
+2025-06-19 21:28:16 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No se encontraron evalauciones S21014092
+2025-06-19 21:28:16 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID: S21014092
 2025-06-19 21:29:12 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
 2025-06-19 21:29:14 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
 2025-06-19 21:29:18 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
@@ -10556,10 +10556,10 @@ java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child 
 	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
 	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
 	at java.lang.Thread.run(Thread.java:1570) [?:?]
-2025-06-20 10:15:35 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No se encontraron evalauciones S89898433
-2025-06-20 10:15:35 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID: S89898433
-2025-06-20 10:41:00 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No se encontraron evalauciones S23014898
-2025-06-20 10:41:00 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID: S23014898
+2025-06-20 10:15:35 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No se encontraron evalauciones S89898433
+2025-06-20 10:15:35 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID: S89898433
+2025-06-20 10:41:00 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No se encontraron evalauciones S23014898
+2025-06-20 10:41:00 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID: S23014898
 2025-06-20 11:18:13 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error al iniciar sesión: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
 
 The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
@@ -12039,19 +12039,439 @@ The last packet sent successfully to the server was 0 milliseconds ago. The driv
 2025-06-22 15:23:48 [JavaFX Application Thread] ERROR GUI.ControladorObjetoEvaluacion - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
 
 The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
-2025-06-22 19:47:37 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - La base de datos no existe o hay un error de sintaxis SQL: java.sql.SQLSyntaxErrorException: Access denied for user 'coordinador'@'localhost' to database 'sistemapractias'
-2025-06-22 20:11:01 [JavaFX Application Thread] WARN  GUI.gestionacademico.ControladorRegistroAcademicoGUI - No se pudo eliminar al académico con número de personal: 83215
-2025-06-22 20:11:13 [JavaFX Application Thread] WARN  GUI.gestionacademico.ControladorRegistroAcademicoGUI - No se pudo eliminar al académico con número de personal: 67840
-2025-06-22 20:11:15 [JavaFX Application Thread] WARN  GUI.gestionacademico.ControladorRegistroAcademicoGUI - No se pudo eliminar al académico con número de personal: 83215
-2025-06-22 20:11:26 [JavaFX Application Thread] WARN  GUI.gestionacademico.ControladorRegistroAcademicoGUI - No se pudo eliminar al académico con número de personal: 83215
-2025-06-22 20:14:27 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error inesperado: javax.crypto.IllegalBlockSizeException: Input length must be multiple of 16 when decrypting with padded cipher
-2025-06-22 20:16:40 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No se encontraron evalauciones S82728755
-2025-06-22 20:16:40 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No se encontraron evaluaciones con la matricula: S82728755
-2025-06-22 20:44:44 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarCriterioEvaluacionGUI - Error inesperado: java.lang.NullPointerException: Cannot invoke "java.time.LocalDate.atStartOfDay()" because the return value of "javafx.scene.control.DatePicker.getValue()" is null
-2025-06-22 20:44:49 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarCriterioEvaluacionGUI - Error inesperado: java.lang.NullPointerException: Cannot invoke "java.time.LocalDate.atStartOfDay()" because the return value of "javafx.scene.control.DatePicker.getValue()" is null
-2025-06-22 20:45:08 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarCriterioEvaluacionGUI - Violación de restricción de integridad: java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child row: a foreign key constraint fails (`sistemapracticas`.`reportecontiene`, CONSTRAINT `reportecontiene_ibfk_2` FOREIGN KEY (`idActividad`) REFERENCES `actividad` (`idActividad`))
-2025-06-22 20:46:44 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarCriterioEvaluacionGUI - Violación de restricción de integridad: java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child row: a foreign key constraint fails (`sistemapracticas`.`reportecontiene`, CONSTRAINT `reportecontiene_ibfk_2` FOREIGN KEY (`idActividad`) REFERENCES `actividad` (`idActividad`))
-2025-06-22 20:46:57 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarCriterioEvaluacionGUI - Violación de restricción de integridad: java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child row: a foreign key constraint fails (`sistemapracticas`.`reportecontiene`, CONSTRAINT `reportecontiene_ibfk_2` FOREIGN KEY (`idActividad`) REFERENCES `actividad` (`idActividad`))
-2025-06-22 20:48:37 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarReporteMensualGUI - Violación de restricción de integridad: java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child row: a foreign key constraint fails (`sistemapracticas`.`reportecontiene`, CONSTRAINT `reportecontiene_ibfk_2` FOREIGN KEY (`idActividad`) REFERENCES `actividad` (`idActividad`))
-2025-06-22 20:48:40 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarReporteMensualGUI - Violación de restricción de integridad: java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child row: a foreign key constraint fails (`sistemapracticas`.`reportecontiene`, CONSTRAINT `reportecontiene_ibfk_2` FOREIGN KEY (`idActividad`) REFERENCES `actividad` (`idActividad`))
-2025-06-22 20:51:29 [JavaFX Application Thread] ERROR GUI.menuusarios.ControladorMenuEstudianteGUI - Violación de restricción de integridad: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`reportecontiene`, CONSTRAINT `reportecontiene_ibfk_1` FOREIGN KEY (`idReporte`) REFERENCES `reporte` (`idReporte`))
+2025-06-22 18:02:40 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:02:41 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:02:41 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:02:41 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:02:41 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:02:41 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:02:41 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:02:41 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:02:41 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:02:41 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:02:41 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:02:41 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:02:41 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:02:41 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:02:41 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:02:41 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:10:06 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:10:06 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:10:06 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:10:06 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:10:06 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:10:06 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:10:06 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:10:06 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:10:06 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:10:06 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:10:06 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:10:06 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:10:06 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:10:06 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:10:06 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:10:06 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:18:05 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:18:05 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:18:05 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:18:05 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:18:05 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:18:05 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:18:05 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:18:05 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:18:05 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:18:05 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:18:05 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:18:05 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:18:05 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:18:05 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:18:05 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:18:05 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:23:02 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:23:02 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:23:02 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:23:02 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:23:02 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:23:02 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:23:02 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:23:02 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:23:02 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:23:02 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:23:02 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:23:02 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:23:02 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:23:02 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:23:02 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:23:02 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:28:10 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error al iniciar sesión: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:28:26 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error inesperado: javax.crypto.IllegalBlockSizeException: Input length must be multiple of 16 when decrypting with padded cipher
+2025-06-22 18:28:29 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error inesperado: javax.crypto.IllegalBlockSizeException: Input length must be multiple of 16 when decrypting with padded cipher
+2025-06-22 18:28:43 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error inesperado: javax.crypto.IllegalBlockSizeException: Input length must be multiple of 16 when decrypting with padded cipher
+2025-06-22 18:31:54 [JavaFX Application Thread] ERROR GUI.ControladorObjetoEvaluacion - Error al registrar el estudiante: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:31:58 [JavaFX Application Thread] ERROR GUI.ControladorObjetoEvaluacion - Error al registrar el estudiante: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:32:03 [JavaFX Application Thread] ERROR GUI.ControladorObjetoEvaluacion - Error al registrar el estudiante: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:32:08 [JavaFX Application Thread] ERROR GUI.ControladorObjetoEvaluacion - Error al registrar el estudiante: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:33:51 [JavaFX Application Thread] ERROR GUI.gestionestudiante.AuxiliarGestionEstudiante - Error al obtener el NRC: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:33:53 [JavaFX Application Thread] ERROR GUI.ControladorObjetoEvaluacion - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:39:22 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:39:22 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:39:22 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:39:22 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:39:22 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:39:22 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:39:22 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:39:22 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:39:22 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:39:22 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:39:22 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:39:22 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:39:22 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:39:22 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:39:22 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 18:39:22 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 19:50:32 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 19:50:32 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 19:50:32 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 19:50:32 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 19:50:32 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 19:50:32 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 19:50:32 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 19:50:32 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 19:50:32 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 19:50:32 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 19:50:32 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 19:50:32 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 19:50:32 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 19:50:32 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 19:50:32 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 19:50:32 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 19:58:27 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error inesperado: javax.crypto.IllegalBlockSizeException: Input length must be multiple of 16 when decrypting with padded cipher
+2025-06-22 19:59:34 [JavaFX Application Thread] ERROR GUI.gestionestudiante.AuxiliarGestionEstudiante - Error al obtener el NRC: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 19:59:36 [JavaFX Application Thread] ERROR GUI.ControladorObjetoEvaluacion - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 19:59:43 [JavaFX Application Thread] ERROR GUI.gestionestudiante.AuxiliarGestionEstudiante - Error al obtener el NRC: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 19:59:44 [JavaFX Application Thread] ERROR GUI.ControladorObjetoEvaluacion - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 19:59:59 [JavaFX Application Thread] ERROR GUI.ControladorObjetoEvaluacion - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 20:37:08 [main] ERROR AcademicoDAOTest - Error al inicializar la conexión en @BeforeAllCommunications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:175) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:64) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:446) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:239) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:188) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at java.sql.DriverManager.getConnection(DriverManager.java:682) ~[java.sql:?]
+	at java.sql.DriverManager.getConnection(DriverManager.java:230) ~[java.sql:?]
+	at accesoadatos.ConexionBaseDeDatos.<init>(ConexionBaseDeDatos.java:16) ~[classes/:?]
+	at AcademicoDAOTest.inicializarConexion(AcademicoDAOTest.java:38) ~[test-classes/:?]
+	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728) ~[junit-platform-commons-1.10.2.jar:1.10.2]
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:156) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptLifecycleMethod(TimeoutExtension.java:128) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptBeforeAllMethod(TimeoutExtension.java:70) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:103) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:93) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:92) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:86) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$invokeBeforeAllMethods$13(ClassBasedTestDescriptor.java:412) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.invokeBeforeAllMethods(ClassBasedTestDescriptor.java:410) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.before(ClassBasedTestDescriptor.java:216) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.before(ClassBasedTestDescriptor.java:85) ~[junit-jupiter-engine-5.10.2.jar:5.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:148) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at java.util.ArrayList.forEach(ArrayList.java:1597) ~[?:?]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54) ~[junit-platform-engine-1.10.2.jar:1.10.2]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:198) ~[junit-platform-launcher-1.10.2.jar:1.10.2]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:169) ~[junit-platform-launcher-1.10.2.jar:1.10.2]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:93) ~[junit-platform-launcher-1.10.2.jar:1.10.2]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:58) ~[junit-platform-launcher-1.10.2.jar:1.10.2]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:141) [junit-platform-launcher-1.10.2.jar:1.10.2]
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:57) [junit-platform-launcher-1.10.2.jar:1.10.2]
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:103) [junit-platform-launcher-1.10.2.jar:1.10.2]
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:85) [junit-platform-launcher-1.10.2.jar:1.10.2]
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:47) [junit-platform-launcher-1.10.2.jar:1.10.2]
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:63) [junit-platform-launcher-1.10.2.jar:1.10.2]
+	at com.intellij.junit5.JUnit5IdeaTestRunner.startRunnerWithArgs(JUnit5IdeaTestRunner.java:57) [junit5-rt.jar:?]
+	at com.intellij.rt.junit.IdeaTestRunner$Repeater$1.execute(IdeaTestRunner.java:38) [junit-rt.jar:?]
+	at com.intellij.rt.execution.junit.TestsRepeater.repeat(TestsRepeater.java:11) [idea_rt.jar:?]
+	at com.intellij.rt.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:35) [junit-rt.jar:?]
+	at com.intellij.rt.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:231) [junit-rt.jar:?]
+	at com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:55) [junit-rt.jar:?]
+Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62) ~[?:?]
+	at java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502) ~[?:?]
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:486) ~[?:?]
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:62) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:105) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:150) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.exceptions.ExceptionFactory.createCommunicationsException(ExceptionFactory.java:166) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:89) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.NativeSession.connect(NativeSession.java:121) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:945) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:815) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	... 65 more
+Caused by: java.net.ConnectException: Connection refused: connect
+	at sun.nio.ch.Net.connect0(Native Method) ~[?:?]
+	at sun.nio.ch.Net.connect(Net.java:589) ~[?:?]
+	at sun.nio.ch.Net.connect(Net.java:578) ~[?:?]
+	at sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:583) ~[?:?]
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[?:?]
+	at java.net.Socket.connect(Socket.java:752) ~[?:?]
+	at com.mysql.cj.protocol.StandardSocketFactory.connect(StandardSocketFactory.java:153) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:63) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.NativeSession.connect(NativeSession.java:121) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:945) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:815) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	... 65 more
+2025-06-22 20:56:10 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 21:03:06 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.

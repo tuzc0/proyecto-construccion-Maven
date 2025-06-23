@@ -17,6 +17,7 @@ import logica.DAOs.UsuarioDAO;
 import logica.DTOs.AcademicoDTO;
 import logica.DTOs.CuentaDTO;
 import logica.DTOs.UsuarioDTO;
+import logica.interfaces.GestorAlertas;
 import logica.utilidadesproyecto.EncriptadorContraseñas;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.LogManager;
@@ -51,7 +52,8 @@ public class ControladorRegistroAcademicoGUI {
 
     EncriptadorContraseñas encriptadorContraseñas = new EncriptadorContraseñas();
     private UtilidadesContraseña utilidadesConstraña = new UtilidadesContraseña();
-    private Utilidades utilidades = new Utilidades();
+    private GestorAlertas utilidades = new Utilidades();
+    private Utilidades utilidadesVentana = new Utilidades();
     private boolean contraseñaVisible = false;
 
     @FXML
@@ -326,7 +328,7 @@ public class ControladorRegistroAcademicoGUI {
         String numeroPersonalOriginal = campoNumeroPersonal.getText();
         String correoOriginal = campoCorreo.getText();
 
-        utilidades.mostrarAlertaConfirmacion(
+        utilidadesVentana.mostrarAlertaConfirmacion(
                 "Confirmar cancelación",
                 "¿Está seguro que desea cancelar?",
                 "Los cambios no guardados se perderán",

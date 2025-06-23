@@ -1,14 +1,25 @@
 import accesoadatos.ConexionBaseDeDatos;
 import logica.DAOs.*;
 import logica.DTOs.*;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.*;
+import utilidadesPruebas.UtilidadesConsola;
+
+import java.io.EOFException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AutoevaluacionDAOTest {
+
+    private static final Logger LOGGER = LogManager.getLogger(AutoevaluacionDAOTest.class);
 
     private PeriodoDAO periodoDAO;
     private UsuarioDAO usuarioDAO;
@@ -17,12 +28,142 @@ public class AutoevaluacionDAOTest {
     private EstudianteDAO estudianteDAO;
     private AcademicoEvaluadorDAO academicoEvaluadorDAO;
     private AutoevaluacionDAO autoevaluacionDAO;
-    private Connection conexionBaseDeDatos;
+    private static Connection conexionBaseDeDatos;
+    private IGestorAlertas gestorAlertas;
+    private ManejadorExcepciones manejadorExcepciones;
 
     private final List<Integer> IDS_USUARIOS_INSERTADOS = new ArrayList<>();
     private final List<Integer> IDS_GRUPOS_INSERTADOS = new ArrayList<>();
     private final List<String> MATRICULAS_INSERTADAS = new ArrayList<>();
     private final List<Integer> IDS_AUTOEVALUACIONES_INSERTADAS = new ArrayList<>();
+
+    @BeforeAll
+    static void inicializarConexion() {
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+
+        } catch (SQLException e) {
+
+            String estadoSQL = e.getSQLState();
+
+            switch (estadoSQL) {
+
+                case "08S01" -> {
+
+                    LOGGER.error("Error de conexión con la base de datos: " + e);
+                    System.out.println(
+                            "Error de conexión :" +
+                                    "No se pudo establecer una conexión con la base de datos: " +
+                                    "La base de datos se encuentra desactivada o hay un problema de red."
+                    );
+                }
+
+                case "42000" -> {
+
+                    LOGGER.error("Error de sintaxis SQL o base de datos no existe: " + e);
+                    System.out.println(
+                            "Error de conexión :" +
+                                    "No se pudo establecer conexión con la base de datos: " +
+                                    "La base de datos no existe o hay un error de sintaxis en la consulta."
+                    );
+                }
+
+                case "28000" -> {
+
+                    LOGGER.error("Credenciales inválidas: " + e);
+                    System.out.println(
+                            "Credenciales inválidas: " +
+                                    "Usuario o contraseña incorrectos: " +
+                                    "Verifique los datos de acceso a la base de datos."
+                    );
+                }
+
+                case "23000" -> {
+
+                    LOGGER.error("Violación de restricción de integridad: " + e);
+                    System.out.println(
+                            "Dato duplicado o relación inválida: " +
+                                    "No se puede completar la operación: " +
+                                    "Verifique que los datos no estén repetidos o que las relaciones sean válidas."
+                    );
+                }
+
+                case "42S02" -> {
+
+                    LOGGER.error("Tabla no encontrada: " + e);
+                    System.out.println(
+                            "Tabla inexistente: " +
+                                    "No se encontró una tabla necesaria para ejecutar la operación: " +
+                                    "Verifique que todas las tablas estén correctamente creadas."
+                    );
+                }
+
+                case "42S22" -> {
+
+                    LOGGER.error("Columna no encontrada: " + e);
+                    System.out.println(
+                            "Columna inexistente: " +
+                                    "No se encontró una columna requerida: " +
+                                    "Revise los nombres de las columnas en su consulta."
+                    );
+                }
+
+                default -> {
+
+                    LOGGER.error("SQLState desconocido (" + estadoSQL + "): " + e);
+                    System.out.println(
+                            "Error desconocido: " +
+                                    "Se produjo un error inesperado al acceder a la base de datos: " +
+                                    "Contacte a soporte técnico."
+                    );
+                }
+            }
+
+        } catch (IOException e) {
+
+            if (e instanceof FileNotFoundException) {
+
+                LOGGER.error("Archivo no encontrado: " + e);
+                System.out.println(
+                        "Archivo no encontrado: " +
+                                "No se pudo encontrar el archivo especificado: " +
+                                "Verifique que el archivo exista."
+                );
+
+            } else if (e instanceof EOFException) {
+
+                LOGGER.error("Fin inesperado del archivo: " + e);
+                System.out.println(
+                        "Lectura incompleta: " +
+                                "Se alcanzó el final del archivo antes de lo esperado: " +
+                                "El archivo puede estar incompleto o dañado."
+                );
+
+            } else if (e instanceof ConnectException) {
+
+                LOGGER.error("Error de conexión de red: " + e);
+                System.out.println(
+                        "Fallo de conexión: " +
+                                "No se pudo conectar con el recurso: " +
+                                "Revise su conexión o intente más tarde."
+                );
+            } else {
+
+                LOGGER.error("Error de E/S desconocido: " + e);
+                System.out.println(
+                        "Error de entrada/salida: " +
+                                "Se produjo un error inesperado: " +
+                                "Verifique los recursos utilizados o contacte soporte."
+                );
+            }
+
+        } catch (Exception e) {
+
+            fail("Error con la conexión con la base base de datos." + e.getMessage());
+        }
+    }
 
     @BeforeEach
     void prepararDatosDePrueba() {
@@ -34,6 +175,8 @@ public class AutoevaluacionDAOTest {
         estudianteDAO = new EstudianteDAO();
         academicoEvaluadorDAO = new AcademicoEvaluadorDAO();
         autoevaluacionDAO = new AutoevaluacionDAO();
+        IGestorAlertas utilidadesConsola = new UtilidadesConsola();
+        manejadorExcepciones = new ManejadorExcepciones(utilidadesConsola, LOGGER);
 
         MATRICULAS_INSERTADAS.clear();
         IDS_USUARIOS_INSERTADOS.clear();
@@ -41,8 +184,6 @@ public class AutoevaluacionDAOTest {
         IDS_AUTOEVALUACIONES_INSERTADAS.clear();
 
         try {
-
-            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
 
             conexionBaseDeDatos.prepareStatement("DELETE FROM autoevaluacion").executeUpdate();
             conexionBaseDeDatos.prepareStatement("DELETE FROM estudiante").executeUpdate();
@@ -119,7 +260,17 @@ public class AutoevaluacionDAOTest {
             IDS_AUTOEVALUACIONES_INSERTADAS.add(idAutoevaluacion1DTO);
             IDS_AUTOEVALUACIONES_INSERTADAS.add(idAutoevaluacion2DTO);
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+            fail("Error en @BeforeEach al preparar datos: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+            fail("Error en @BeforeEach al preparar datos: " + e);
+
+        } catch (Exception e) {
 
             fail("Error en @BeforeEach al preparar datos: " + e);
         }
@@ -130,8 +281,6 @@ public class AutoevaluacionDAOTest {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-
             conexionBaseDeDatos.prepareStatement("DELETE FROM autoevaluacion").executeUpdate();
             conexionBaseDeDatos.prepareStatement("DELETE FROM estudiante").executeUpdate();
             conexionBaseDeDatos.prepareStatement("DELETE FROM grupo").executeUpdate();
@@ -140,11 +289,102 @@ public class AutoevaluacionDAOTest {
             conexionBaseDeDatos.prepareStatement("DELETE FROM periodo").executeUpdate();
             conexionBaseDeDatos.prepareStatement("DELETE FROM usuario").executeUpdate();
 
-            conexionBaseDeDatos.close();
+        } catch (SQLException e) {
 
-        } catch (SQLException | IOException e) {
-
+            manejadorExcepciones.manejarSQLException(e);
             fail("Error en @AfterEach al limpiar datos: " + e);
+        }
+    }
+
+    @AfterAll
+    static void cerrarConexion() {
+
+        try {
+
+            if (conexionBaseDeDatos != null && !conexionBaseDeDatos.isClosed()) {
+
+                conexionBaseDeDatos.close();
+            }
+
+        } catch (SQLException e) {
+
+            String estadoSQL = e.getSQLState();
+
+            switch (estadoSQL) {
+
+                case "08S01" -> {
+
+                    LOGGER.error("Error de conexión con la base de datos: " + e);
+                    System.out.println(
+                            "Error de conexión :" +
+                                    "No se pudo establecer una conexión con la base de datos: " +
+                                    "La base de datos se encuentra desactivada o hay un problema de red."
+                    );
+                }
+
+                case "42000" -> {
+
+                    LOGGER.error("Error de sintaxis SQL o base de datos no existe: " + e);
+                    System.out.println(
+                            "Error de conexión :" +
+                                    "No se pudo establecer conexión con la base de datos: " +
+                                    "La base de datos no existe o hay un error de sintaxis en la consulta."
+                    );
+                }
+
+                case "28000" -> {
+
+                    LOGGER.error("Credenciales inválidas: " + e);
+                    System.out.println(
+                            "Credenciales inválidas: " +
+                                    "Usuario o contraseña incorrectos: " +
+                                    "Verifique los datos de acceso a la base de datos."
+                    );
+                }
+
+                case "23000" -> {
+
+                    LOGGER.error("Violación de restricción de integridad: " + e);
+                    System.out.println(
+                            "Dato duplicado o relación inválida: " +
+                                    "No se puede completar la operación: " +
+                                    "Verifique que los datos no estén repetidos o que las relaciones sean válidas."
+                    );
+                }
+
+                case "42S02" -> {
+
+                    LOGGER.error("Tabla no encontrada: " + e);
+                    System.out.println(
+                            "Tabla inexistente: " +
+                                    "No se encontró una tabla necesaria para ejecutar la operación: " +
+                                    "Verifique que todas las tablas estén correctamente creadas."
+                    );
+                }
+
+                case "42S22" -> {
+
+                    LOGGER.error("Columna no encontrada: " + e);
+                    System.out.println(
+                            "Columna inexistente: " +
+                                    "No se encontró una columna requerida: " +
+                                    "Revise los nombres de las columnas en su consulta."
+                    );
+                }
+
+                default -> {
+
+                    LOGGER.error("SQLState desconocido (" + estadoSQL + "): " + e);
+                    System.out.println(
+                            "Error desconocido: " +
+                                    "Se produjo un error inesperado al acceder a la base de datos: " +
+                                    "Contacte a soporte técnico."
+                    );
+                }
+            }
+        } catch (Exception e) {
+
+            fail("Error con la conexión con la base base de datos." + e.getMessage());
         }
     }
 
@@ -161,9 +401,19 @@ public class AutoevaluacionDAOTest {
             assertTrue(idAutoevaluacionCreada > 0,
                     "ID de autoevaluación creada debe ser mayor que 0");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
+            manejadorExcepciones.manejarSQLException(e);
             fail("Error al crear nueva autoevaluación con datos válidos: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+            fail("Error al crear nueva autoevaluación con datos válidos: " + e);
+
+        } catch (Exception e) {
+
+            fail("Error al crear nueva autoevaluación con datos validos: " + e);
         }
     }
 
@@ -189,7 +439,17 @@ public class AutoevaluacionDAOTest {
 
             assertTrue(resultadoPrueba, "La autoevaluación debería haberse eliminado correctamente");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+            fail("Error al eliminar autoevaluación por ID existente: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+            fail("Error al eliminar autoevaliación por ID existente: " + e);
+
+        } catch (Exception e) {
 
             fail("Error al eliminar autoevaluación por ID existente: " + e);
         }
@@ -204,7 +464,17 @@ public class AutoevaluacionDAOTest {
             boolean resultadoPrueba = autoevaluacionDAO.eliminarAutoevaluacionPorID(idAutoevaluacionInexistente);
             assertFalse(resultadoPrueba, "No debería eliminar una autoevaluación con ID inexistente");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+            fail("Error al eliminar autoevaluación por ID inexistente: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+            fail("Error al eliminar autoevaluación por ID inexistente: " + e);
+
+        } catch (Exception e) {
 
             fail("Error al eliminar autoevaluación por ID inexistente: " + e);
         }
@@ -222,9 +492,19 @@ public class AutoevaluacionDAOTest {
 
             assertTrue(resultadoPrueba, "La autoevaluación debería haberse modificado correctamente");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
+            manejadorExcepciones.manejarSQLException(e);
             fail("Error al modificar autoevaluación con datos válidos: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+            fail("Error al modificar autoevaluación con datos válidos: " + e);
+
+        } catch (Exception e) {
+
+            fail("Error al modificar autoevaluación con datos válidos: " +e);
         }
     }
 
@@ -240,9 +520,19 @@ public class AutoevaluacionDAOTest {
             boolean resultadoPrueba = autoevaluacionDAO.modificarAutoevaluacion(autoevaluacionAModificar);
             assertFalse(resultadoPrueba, "Se espera que no se modifique la autoevaluacion con un ID invalido");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
-            fail("Error al modificar con datos inexistentes" +e );
+            manejadorExcepciones.manejarSQLException(e);
+            fail("Error al modificar con datos inexistentes" + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+            fail("Error al modificar con datos inexistentes: " + e);
+
+        } catch (Exception e) {
+
+            fail("Error al modificar con datos inexistentes: " + e);
         }
     }
 
@@ -261,9 +551,15 @@ public class AutoevaluacionDAOTest {
             assertEquals(autoevalucionEsperada, autoevaluacionEncontrada,
                     "La autoevaluación encontrada debería ser igual a la esperada");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
+            manejadorExcepciones.manejarSQLException(e);
             fail("Error al buscar autoevaluación por ID existente: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+            fail("Error al buscar autoevaluación por ID existente: " +e);
         }
     }
 
@@ -280,9 +576,19 @@ public class AutoevaluacionDAOTest {
             assertEquals(autoevaluacionEsperada, autoevaluacionEncontrada,
                     "La autoevaluación encontrada debería ser igual a la esperada para ID inexistente");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
+            manejadorExcepciones.manejarSQLException(e);
             fail("Error al buscar autoevaluación por ID inexistente: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+            fail("Error al buscar autoevaluación por ID inexistente: " +e);
+
+        } catch (Exception e) {
+
+            fail("Error al buscar autoevaluación por ID inexistente: " +e);
         }
     }
 
@@ -302,7 +608,17 @@ public class AutoevaluacionDAOTest {
             assertEquals(autoevaluacionEsperada, autoevaluacionEncontrada,
                     "La autoevaluación debería haber sido eliminada definitivamente");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+            fail("Error al eliminar autoevaluación definitivamente por ID existente: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+            fail("Error al eliminar autoevaluación definitivamente por ID existente: " + e);
+
+        } catch (Exception e) {
 
             fail("Error al eliminar autoevaluación definitivamente por ID existente: " + e);
         }
@@ -322,9 +638,19 @@ public class AutoevaluacionDAOTest {
             assertEquals(autoevaluacionEsperada, autoevaluacionesEncontradas,
                     "La autoevaluación encontrada debería ser igual a la esperada");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
+            manejadorExcepciones.manejarSQLException(e);
             fail("Error al buscar autoevaluación por matrícula existente: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+            fail("Error al buscar autoevaluación por matricula existente: " + e);
+
+        } catch (Exception e) {
+
+            fail("Error al buscar autoevaluación por matricula existente: ", e);
         }
     }
 
@@ -342,7 +668,17 @@ public class AutoevaluacionDAOTest {
             assertEquals(autoevaluacionEsperada, autoevaluacionesEncontradas,
                     "La autoevaluación encontrada debería ser igual a la esperada para matrícula inexistente");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+            fail("Error al buscar autoevaluación por matrícula inexistente: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+            fail("Error al buscar autoevaluación por matrícula inexistente: " + e);
+
+        } catch (Exception e) {
 
             fail("Error al buscar autoevaluación por matrícula inexistente: " + e);
         }
@@ -366,9 +702,19 @@ public class AutoevaluacionDAOTest {
             assertEquals( autoevaluacionEsperada, autoevaluacionesEncontradas,
                     "La autoevaluación encontrada debería ser igual a la esperada");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
+            manejadorExcepciones.manejarSQLException(e);
             fail("Error al buscar autoevaluación por matrícula sin autoevaluaciones en la base de datos: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+            fail("Error al buscar autoevaluación por matricula sin autoevaluaciones en la base de datos: " + e);
+
+        } catch (Exception e) {
+
+            fail("Error al buscar autoevaluación por matricula sin autoevaluaciones en la base de datos: " + e);
         }
     }
 }

@@ -3,8 +3,16 @@ import logica.DAOs.CoordinadorDAO;
 import logica.DAOs.UsuarioDAO;
 import logica.DTOs.CoordinadorDTO;
 import logica.DTOs.UsuarioDTO;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.*;
+
+import java.io.EOFException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,12 +22,144 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CoordinadorDAOTest {
 
+    private static final Logger LOGGER = LogManager.getLogger(AutoevaluacionDAOTest.class);
+
     private CoordinadorDAO coordinadorDAO;
     private UsuarioDAO usuarioDAO;
-    private Connection conexionBaseDeDatos;
+    private static Connection conexionBaseDeDatos;
+    private IGestorAlertas gestorAlertas;
+    private ManejadorExcepciones manejadorExcepciones;
 
     private final List<Integer> NUMEROS_DE_PERSONAL_INSERTADOS = new ArrayList<>();
     private final List<Integer> IDS_USUARIOS_INSERTADOS = new ArrayList<>();
+
+    @BeforeAll
+    static void inicializarConexion() {
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+
+        } catch (SQLException e) {
+
+            String estadoSQL = e.getSQLState();
+
+            switch (estadoSQL) {
+
+                case "08S01" -> {
+
+                    LOGGER.error("Error de conexión con la base de datos: " + e);
+                    System.out.println(
+                            "Error de conexión :" +
+                                    "No se pudo establecer una conexión con la base de datos: " +
+                                    "La base de datos se encuentra desactivada o hay un problema de red."
+                    );
+                }
+
+                case "42000" -> {
+
+                    LOGGER.error("Error de sintaxis SQL o base de datos no existe: " + e);
+                    System.out.println(
+                            "Error de conexión :" +
+                                    "No se pudo establecer conexión con la base de datos: " +
+                                    "La base de datos no existe o hay un error de sintaxis en la consulta."
+                    );
+                }
+
+                case "28000" -> {
+
+                    LOGGER.error("Credenciales inválidas: " + e);
+                    System.out.println(
+                            "Credenciales inválidas: " +
+                                    "Usuario o contraseña incorrectos: " +
+                                    "Verifique los datos de acceso a la base de datos."
+                    );
+                }
+
+                case "23000" -> {
+
+                    LOGGER.error("Violación de restricción de integridad: " + e);
+                    System.out.println(
+                            "Dato duplicado o relación inválida: " +
+                                    "No se puede completar la operación: " +
+                                    "Verifique que los datos no estén repetidos o que las relaciones sean válidas."
+                    );
+                }
+
+                case "42S02" -> {
+
+                    LOGGER.error("Tabla no encontrada: " + e);
+                    System.out.println(
+                            "Tabla inexistente: " +
+                                    "No se encontró una tabla necesaria para ejecutar la operación: " +
+                                    "Verifique que todas las tablas estén correctamente creadas."
+                    );
+                }
+
+                case "42S22" -> {
+
+                    LOGGER.error("Columna no encontrada: " + e);
+                    System.out.println(
+                            "Columna inexistente: " +
+                                    "No se encontró una columna requerida: " +
+                                    "Revise los nombres de las columnas en su consulta."
+                    );
+                }
+
+                default -> {
+
+                    LOGGER.error("SQLState desconocido (" + estadoSQL + "): " + e);
+                    System.out.println(
+                            "Error desconocido: " +
+                                    "Se produjo un error inesperado al acceder a la base de datos: " +
+                                    "Contacte a soporte técnico."
+                    );
+                }
+            }
+
+        } catch (IOException e) {
+
+            if (e instanceof FileNotFoundException) {
+
+                LOGGER.error("Archivo no encontrado: " + e);
+                System.out.println(
+                        "Archivo no encontrado: " +
+                                "No se pudo encontrar el archivo especificado: " +
+                                "Verifique que el archivo exista."
+                );
+
+            } else if (e instanceof EOFException) {
+
+                LOGGER.error("Fin inesperado del archivo: " + e);
+                System.out.println(
+                        "Lectura incompleta: " +
+                                "Se alcanzó el final del archivo antes de lo esperado: " +
+                                "El archivo puede estar incompleto o dañado."
+                );
+
+            } else if (e instanceof ConnectException) {
+
+                LOGGER.error("Error de conexión de red: " + e);
+                System.out.println(
+                        "Fallo de conexión: " +
+                                "No se pudo conectar con el recurso: " +
+                                "Revise su conexión o intente más tarde."
+                );
+            } else {
+
+                LOGGER.error("Error de E/S desconocido: " + e);
+                System.out.println(
+                        "Error de entrada/salida: " +
+                                "Se produjo un error inesperado: " +
+                                "Verifique los recursos utilizados o contacte soporte."
+                );
+            }
+
+        } catch (Exception e) {
+
+            fail("Error con la conexión con la base base de datos." + e.getMessage());
+        }
+    }
 
     @BeforeEach
     void prepararDatosDePrueba() {
@@ -31,8 +171,6 @@ public class CoordinadorDAOTest {
         IDS_USUARIOS_INSERTADOS.clear();
 
         try {
-
-            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
 
             for (int numero : List.of(1001, 1002, 1003, 55555, 99999, 88888)) {
 

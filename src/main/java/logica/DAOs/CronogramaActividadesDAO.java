@@ -82,7 +82,7 @@ public class CronogramaActividadesDAO implements ICronogramaActividadesDAO {
     public CronogramaActividadesDTO buscarCronogramaDeActividadesPorID(int idCronograma) throws SQLException, IOException {
 
         CronogramaActividadesDTO cronogramaEncontrado = new CronogramaActividadesDTO(-1, "0", -1,-1,0);
-        String buscarSQLCronograma = "SELECT * FROM cronogramaactividades WHERE idCronograma = ?";
+        String buscarSQLCronograma = "SELECT * FROM cronograma WHERE idCronograma = ?";
 
         try {
 
@@ -94,7 +94,7 @@ public class CronogramaActividadesDAO implements ICronogramaActividadesDAO {
             if (resultadoConsultaCronograma.next()) {
 
                 cronogramaEncontrado.setIDCronograma(resultadoConsultaCronograma.getInt("idCronograma"));
-                cronogramaEncontrado.setMatriculaEstudiante(resultadoConsultaCronograma.getString("idEstudiante"));
+                cronogramaEncontrado.setMatriculaEstudiante(resultadoConsultaCronograma.getString("matriculaEstudiante"));
                 cronogramaEncontrado.setIdProyecto(resultadoConsultaCronograma.getInt("idProyecto"));
                 cronogramaEncontrado.setIdPeriodo(resultadoConsultaCronograma.getInt("idPeriodo"));
                 cronogramaEncontrado.setEstadoActivo(resultadoConsultaCronograma.getInt("estadoActivo"));

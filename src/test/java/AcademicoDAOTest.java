@@ -22,7 +22,7 @@ import utilidadesPruebas.UtilidadesConsola;
 
 public class AcademicoDAOTest {
 
-    private static final Logger logger = LogManager.getLogger(AcademicoDAOTest.class);
+    private static final Logger LOGGER = LogManager.getLogger(AcademicoDAOTest.class);
 
     private AcademicoDAO academicoDAO;
     private UsuarioDAO usuarioDAO;
@@ -47,7 +47,7 @@ public class AcademicoDAOTest {
 
                 case "08S01" -> {
 
-                    logger.error("Error de conexión con la base de datos: " + e);
+                    LOGGER.error("Error de conexión con la base de datos: " + e);
                     System.out.println(
                             "Error de conexión :" +
                             "No se pudo establecer una conexión con la base de datos: " +
@@ -57,7 +57,7 @@ public class AcademicoDAOTest {
 
                 case "42000" -> {
 
-                    logger.error("Error de sintaxis SQL o base de datos no existe: " + e);
+                    LOGGER.error("Error de sintaxis SQL o base de datos no existe: " + e);
                     System.out.println(
                             "Error de conexión :" +
                             "No se pudo establecer conexión con la base de datos: " +
@@ -67,7 +67,7 @@ public class AcademicoDAOTest {
 
                 case "28000" -> {
 
-                    logger.error("Credenciales inválidas: " + e);
+                    LOGGER.error("Credenciales inválidas: " + e);
                     System.out.println(
                             "Credenciales inválidas: " +
                             "Usuario o contraseña incorrectos: " +
@@ -77,7 +77,7 @@ public class AcademicoDAOTest {
 
                 case "23000" -> {
 
-                    logger.error("Violación de restricción de integridad: " + e);
+                    LOGGER.error("Violación de restricción de integridad: " + e);
                     System.out.println(
                             "Dato duplicado o relación inválida: " +
                             "No se puede completar la operación: " +
@@ -87,7 +87,7 @@ public class AcademicoDAOTest {
 
                 case "42S02" -> {
 
-                    logger.error("Tabla no encontrada: " + e);
+                    LOGGER.error("Tabla no encontrada: " + e);
                     System.out.println(
                             "Tabla inexistente: " +
                             "No se encontró una tabla necesaria para ejecutar la operación: " +
@@ -97,7 +97,7 @@ public class AcademicoDAOTest {
 
                 case "42S22" -> {
 
-                    logger.error("Columna no encontrada: " + e);
+                    LOGGER.error("Columna no encontrada: " + e);
                     System.out.println(
                             "Columna inexistente: " +
                             "No se encontró una columna requerida: " +
@@ -107,7 +107,7 @@ public class AcademicoDAOTest {
 
                 default -> {
 
-                    logger.error("SQLState desconocido (" + estadoSQL + "): " + e);
+                    LOGGER.error("SQLState desconocido (" + estadoSQL + "): " + e);
                     System.out.println(
                             "Error desconocido: " +
                             "Se produjo un error inesperado al acceder a la base de datos: " +
@@ -120,7 +120,7 @@ public class AcademicoDAOTest {
 
             if (e instanceof FileNotFoundException) {
 
-                logger.error("Archivo no encontrado: " + e);
+                LOGGER.error("Archivo no encontrado: " + e);
                 System.out.println(
                         "Archivo no encontrado: " +
                         "No se pudo encontrar el archivo especificado: " +
@@ -129,7 +129,7 @@ public class AcademicoDAOTest {
 
             } else if (e instanceof EOFException) {
 
-                logger.error("Fin inesperado del archivo: " + e);
+                LOGGER.error("Fin inesperado del archivo: " + e);
                 System.out.println(
                         "Lectura incompleta: " +
                         "Se alcanzó el final del archivo antes de lo esperado: " +
@@ -138,7 +138,7 @@ public class AcademicoDAOTest {
 
             } else if (e instanceof ConnectException) {
 
-                logger.error("Error de conexión de red: " + e);
+                LOGGER.error("Error de conexión de red: " + e);
                 System.out.println(
                         "Fallo de conexión: " +
                         "No se pudo conectar con el recurso: " +
@@ -146,13 +146,17 @@ public class AcademicoDAOTest {
                 );
             } else {
 
-                logger.error("Error de E/S desconocido: " + e);
+                LOGGER.error("Error de E/S desconocido: " + e);
                 System.out.println(
                         "Error de entrada/salida: " +
                         "Se produjo un error inesperado: " +
                         "Verifique los recursos utilizados o contacte soporte."
                 );
             }
+
+        } catch (Exception e) {
+
+            fail("Error durante el @BeforeAll: " + e.getMessage(), e);
         }
     }
 
@@ -160,7 +164,7 @@ public class AcademicoDAOTest {
     void prepararDatosDePrueba() {
 
         IGestorAlertas utilidadesConsola = new UtilidadesConsola();
-        manejadorExcepciones = new ManejadorExcepciones(utilidadesConsola, logger);
+        manejadorExcepciones = new ManejadorExcepciones(utilidadesConsola, LOGGER);
         academicoDAO = new AcademicoDAO();
         usuarioDAO = new UsuarioDAO();
 
@@ -257,7 +261,7 @@ public class AcademicoDAOTest {
 
                 case "08S01" -> {
 
-                    logger.error("Error de conexión con la base de datos: " + e);
+                    LOGGER.error("Error de conexión con la base de datos: " + e);
                     System.out.println(
                             "Error de conexión :" +
                                     "No se pudo establecer una conexión con la base de datos: " +
@@ -267,7 +271,7 @@ public class AcademicoDAOTest {
 
                 case "42000" -> {
 
-                    logger.error("Error de sintaxis SQL o base de datos no existe: " + e);
+                    LOGGER.error("Error de sintaxis SQL o base de datos no existe: " + e);
                     System.out.println(
                             "Error de conexión :" +
                                     "No se pudo establecer conexión con la base de datos: " +
@@ -277,7 +281,7 @@ public class AcademicoDAOTest {
 
                 case "28000" -> {
 
-                    logger.error("Credenciales inválidas: " + e);
+                    LOGGER.error("Credenciales inválidas: " + e);
                     System.out.println(
                             "Credenciales inválidas: " +
                                     "Usuario o contraseña incorrectos: " +
@@ -287,7 +291,7 @@ public class AcademicoDAOTest {
 
                 case "23000" -> {
 
-                    logger.error("Violación de restricción de integridad: " + e);
+                    LOGGER.error("Violación de restricción de integridad: " + e);
                     System.out.println(
                             "Dato duplicado o relación inválida: " +
                                     "No se puede completar la operación: " +
@@ -297,7 +301,7 @@ public class AcademicoDAOTest {
 
                 case "42S02" -> {
 
-                    logger.error("Tabla no encontrada: " + e);
+                    LOGGER.error("Tabla no encontrada: " + e);
                     System.out.println(
                             "Tabla inexistente: " +
                                     "No se encontró una tabla necesaria para ejecutar la operación: " +
@@ -307,7 +311,7 @@ public class AcademicoDAOTest {
 
                 case "42S22" -> {
 
-                    logger.error("Columna no encontrada: " + e);
+                    LOGGER.error("Columna no encontrada: " + e);
                     System.out.println(
                             "Columna inexistente: " +
                                     "No se encontró una columna requerida: " +
@@ -317,7 +321,7 @@ public class AcademicoDAOTest {
 
                 default -> {
 
-                    logger.error("SQLState desconocido (" + estadoSQL + "): " + e);
+                    LOGGER.error("SQLState desconocido (" + estadoSQL + "): " + e);
                     System.out.println(
                             "Error desconocido: " +
                                     "Se produjo un error inesperado al acceder a la base de datos: " +

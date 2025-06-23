@@ -1,8 +1,17 @@
 import accesoadatos.ConexionBaseDeDatos;
 import logica.DAOs.*;
 import logica.DTOs.*;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.*;
+import utilidadesPruebas.UtilidadesConsola;
+
+import java.io.EOFException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.sql.*;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,12 +19,16 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AutoevaluacionContieneDAOTest {
 
+    private static final Logger LOGGER = LogManager.getLogger(AutoevaluacionContieneDAOTest.class);
+
     private AutoevaluacionContieneDAO autoevaluacionContieneDAO;
     private AutoevaluacionDAO autoevaluacionDAO;
     private EstudianteDAO estudianteDAO;
     private UsuarioDAO usuarioDAO;
     private CriterioAutoevaluacionDAO criterioAutoevaluacionDAO;
-    private Connection conexionBaseDeDatos;
+    private static Connection conexionBaseDeDatos;
+    private IGestorAlertas gestorAlertas;
+    private ManejadorExcepciones manejadorExcepciones;
 
     private final List<Integer> IDS_AUTOEVALUACIONES_CREADAS = new ArrayList<>();
     private final List<AutoEvaluacionContieneDTO> REGISTROS_AUTOEVALUACIONES_CONTIENE = new ArrayList<>();
@@ -23,15 +36,145 @@ class AutoevaluacionContieneDAOTest {
     private final List<Integer> IDS_USUARIOS_INSERTADOS = new ArrayList<>();
 
     @BeforeAll
-    void prepararDatosDePrueba() {
+    static void inicializarConexion() {
+
         try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+
+        } catch (SQLException e) {
+
+            String estadoSQL = e.getSQLState();
+
+            switch (estadoSQL) {
+
+                case "08S01" -> {
+
+                    LOGGER.error("Error de conexión con la base de datos: " + e);
+                    System.out.println(
+                            "Error de conexión :" +
+                                    "No se pudo establecer una conexión con la base de datos: " +
+                                    "La base de datos se encuentra desactivada o hay un problema de red."
+                    );
+                }
+
+                case "42000" -> {
+
+                    LOGGER.error("Error de sintaxis SQL o base de datos no existe: " + e);
+                    System.out.println(
+                            "Error de conexión :" +
+                                    "No se pudo establecer conexión con la base de datos: " +
+                                    "La base de datos no existe o hay un error de sintaxis en la consulta."
+                    );
+                }
+
+                case "28000" -> {
+
+                    LOGGER.error("Credenciales inválidas: " + e);
+                    System.out.println(
+                            "Credenciales inválidas: " +
+                                    "Usuario o contraseña incorrectos: " +
+                                    "Verifique los datos de acceso a la base de datos."
+                    );
+                }
+
+                case "23000" -> {
+
+                    LOGGER.error("Violación de restricción de integridad: " + e);
+                    System.out.println(
+                            "Dato duplicado o relación inválida: " +
+                                    "No se puede completar la operación: " +
+                                    "Verifique que los datos no estén repetidos o que las relaciones sean válidas."
+                    );
+                }
+
+                case "42S02" -> {
+
+                    LOGGER.error("Tabla no encontrada: " + e);
+                    System.out.println(
+                            "Tabla inexistente: " +
+                                    "No se encontró una tabla necesaria para ejecutar la operación: " +
+                                    "Verifique que todas las tablas estén correctamente creadas."
+                    );
+                }
+
+                case "42S22" -> {
+
+                    LOGGER.error("Columna no encontrada: " + e);
+                    System.out.println(
+                            "Columna inexistente: " +
+                                    "No se encontró una columna requerida: " +
+                                    "Revise los nombres de las columnas en su consulta."
+                    );
+                }
+
+                default -> {
+
+                    LOGGER.error("SQLState desconocido (" + estadoSQL + "): " + e);
+                    System.out.println(
+                            "Error desconocido: " +
+                                    "Se produjo un error inesperado al acceder a la base de datos: " +
+                                    "Contacte a soporte técnico."
+                    );
+                }
+            }
+
+        } catch (IOException e) {
+
+            if (e instanceof FileNotFoundException) {
+
+                LOGGER.error("Archivo no encontrado: " + e);
+                System.out.println(
+                        "Archivo no encontrado: " +
+                                "No se pudo encontrar el archivo especificado: " +
+                                "Verifique que el archivo exista."
+                );
+
+            } else if (e instanceof EOFException) {
+
+                LOGGER.error("Fin inesperado del archivo: " + e);
+                System.out.println(
+                        "Lectura incompleta: " +
+                                "Se alcanzó el final del archivo antes de lo esperado: " +
+                                "El archivo puede estar incompleto o dañado."
+                );
+
+            } else if (e instanceof ConnectException) {
+
+                LOGGER.error("Error de conexión de red: " + e);
+                System.out.println(
+                        "Fallo de conexión: " +
+                                "No se pudo conectar con el recurso: " +
+                                "Revise su conexión o intente más tarde."
+                );
+            } else {
+
+                LOGGER.error("Error de E/S desconocido: " + e);
+                System.out.println(
+                        "Error de entrada/salida: " +
+                                "Se produjo un error inesperado: " +
+                                "Verifique los recursos utilizados o contacte soporte."
+                );
+            }
+
+        } catch (Exception e) {
+
+            fail("Error con la conexión con la base base de datos." + e.getMessage());
+        }
+    }
+
+    @BeforeEach
+    void prepararDatosDePrueba() {
+
+        try {
+
             autoevaluacionContieneDAO = new AutoevaluacionContieneDAO();
             autoevaluacionDAO = new AutoevaluacionDAO();
             estudianteDAO = new EstudianteDAO();
             usuarioDAO = new UsuarioDAO();
             criterioAutoevaluacionDAO = new CriterioAutoevaluacionDAO();
-
-            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            IGestorAlertas utilidadesConsola = new UtilidadesConsola();
+            manejadorExcepciones = new ManejadorExcepciones(utilidadesConsola, LOGGER);
 
             conexionBaseDeDatos.prepareStatement("DELETE FROM autoevaluacioncontiene").executeUpdate();
             conexionBaseDeDatos.prepareStatement("DELETE FROM autoevaluacion WHERE idAutoevaluacion BETWEEN 1000 AND 2000").executeUpdate();
@@ -64,13 +207,23 @@ class AutoevaluacionContieneDAOTest {
             autoevaluacionContieneDAO.insertarAutoevaluacionContiene(registroInicial);
             REGISTROS_AUTOEVALUACIONES_CONTIENE.add(registroInicial);
 
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+            fail("Error en preparación de datos: " + e.getMessage());
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+            fail("Error en preparación de datos: " + e.getMessage());
+
         } catch (Exception e) {
 
-            fail("Error en preparación de datos: " + e.getMessage());
+            fail("Error con la conexión con la base base de datos." + e.getMessage());
         }
     }
 
-    @AfterAll
+    @AfterEach
     void limpiarDatosDePrueba() {
 
         try {
@@ -83,7 +236,6 @@ class AutoevaluacionContieneDAOTest {
                 eliminarAutoevaluacionContiene.setInt(1, registroAutoEvaluacionContieneDTO.getIdAutoevaluacion());
                 eliminarAutoevaluacionContiene.setInt(2, registroAutoEvaluacionContieneDTO.getIdCriterio());
                 eliminarAutoevaluacionContiene.executeUpdate();
-                eliminarAutoevaluacionContiene.close();
             }
 
             for (int idAutoevaluacion : IDS_AUTOEVALUACIONES_CREADAS) {
@@ -93,7 +245,6 @@ class AutoevaluacionContieneDAOTest {
 
                 eliminarAutoevaluacion.setInt(1, idAutoevaluacion);
                 eliminarAutoevaluacion.executeUpdate();
-                eliminarAutoevaluacion.close();
             }
 
             for (String matricula : MATRICULAS_ESTUDIANTES_INSERTADAS) {
@@ -103,7 +254,6 @@ class AutoevaluacionContieneDAOTest {
 
                 eliminarEstudiante.setString(1, matricula);
                 eliminarEstudiante.executeUpdate();
-                eliminarEstudiante.close();
             }
 
             for (int idUsuario : IDS_USUARIOS_INSERTADOS) {
@@ -113,22 +263,114 @@ class AutoevaluacionContieneDAOTest {
 
                 eliminarUsuario.setInt(1, idUsuario);
                 eliminarUsuario.executeUpdate();
-                eliminarUsuario.close();
             }
 
             PreparedStatement eliminarCriterios = conexionBaseDeDatos.prepareStatement(
                     "DELETE FROM criterioautoevaluacion WHERE IDCriterio IN (1001, 1002)");
             eliminarCriterios.executeUpdate();
-            eliminarCriterios.close();
-
-            conexionBaseDeDatos.close();
 
         } catch (SQLException e) {
 
+            manejadorExcepciones.manejarSQLException(e);
             fail("Error al limpiar datos: " + e.getMessage());
+
+        } catch (Exception e) {
+
+            fail("Error con la conexión con la base base de datos." + e.getMessage());
         }
     }
 
+    @AfterAll
+    static void cerrarConexion() {
+
+        try {
+
+            if (conexionBaseDeDatos != null && !conexionBaseDeDatos.isClosed()) {
+
+                conexionBaseDeDatos.close();
+            }
+
+        } catch (SQLException e) {
+
+            String estadoSQL = e.getSQLState();
+
+            switch (estadoSQL) {
+
+                case "08S01" -> {
+
+                    LOGGER.error("Error de conexión con la base de datos: " + e);
+                    System.out.println(
+                            "Error de conexión :" +
+                                    "No se pudo establecer una conexión con la base de datos: " +
+                                    "La base de datos se encuentra desactivada o hay un problema de red."
+                    );
+                }
+
+                case "42000" -> {
+
+                    LOGGER.error("Error de sintaxis SQL o base de datos no existe: " + e);
+                    System.out.println(
+                            "Error de conexión :" +
+                                    "No se pudo establecer conexión con la base de datos: " +
+                                    "La base de datos no existe o hay un error de sintaxis en la consulta."
+                    );
+                }
+
+                case "28000" -> {
+
+                    LOGGER.error("Credenciales inválidas: " + e);
+                    System.out.println(
+                            "Credenciales inválidas: " +
+                                    "Usuario o contraseña incorrectos: " +
+                                    "Verifique los datos de acceso a la base de datos."
+                    );
+                }
+
+                case "23000" -> {
+
+                    LOGGER.error("Violación de restricción de integridad: " + e);
+                    System.out.println(
+                            "Dato duplicado o relación inválida: " +
+                                    "No se puede completar la operación: " +
+                                    "Verifique que los datos no estén repetidos o que las relaciones sean válidas."
+                    );
+                }
+
+                case "42S02" -> {
+
+                    LOGGER.error("Tabla no encontrada: " + e);
+                    System.out.println(
+                            "Tabla inexistente: " +
+                                    "No se encontró una tabla necesaria para ejecutar la operación: " +
+                                    "Verifique que todas las tablas estén correctamente creadas."
+                    );
+                }
+
+                case "42S22" -> {
+
+                    LOGGER.error("Columna no encontrada: " + e);
+                    System.out.println(
+                            "Columna inexistente: " +
+                                    "No se encontró una columna requerida: " +
+                                    "Revise los nombres de las columnas en su consulta."
+                    );
+                }
+
+                default -> {
+
+                    LOGGER.error("SQLState desconocido (" + estadoSQL + "): " + e);
+                    System.out.println(
+                            "Error desconocido: " +
+                                    "Se produjo un error inesperado al acceder a la base de datos: " +
+                                    "Contacte a soporte técnico."
+                    );
+                }
+            }
+        } catch (Exception e) {
+
+            fail("Error con la conexión con la base base de datos." + e.getMessage());
+        }
+    }
 
     @Test
     void testInsertarAutoevaluacionContieneConDatosValidos() {
@@ -140,9 +382,19 @@ class AutoevaluacionContieneDAOTest {
             REGISTROS_AUTOEVALUACIONES_CONTIENE.add(autoEvaluacionContieneDTO);
             assertTrue(fueInsertado);
 
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+            fail("Excepción inesperada: " + e.getMessage());
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+            fail("Excepción inesperada: " + e.getMessage());
+
         } catch (Exception e) {
 
-            fail("Excepción inesperada: " + e.getMessage());
+            fail("Error con la conexión con la base base de datos." + e.getMessage());
         }
     }
 
@@ -165,9 +417,19 @@ class AutoevaluacionContieneDAOTest {
             AutoEvaluacionContieneDTO resultadoBusqueda = autoevaluacionContieneDAO.buscarAutoevaluacionContienePorID(1001, 1002);
             assertNotNull(resultadoBusqueda);
 
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+            fail("Error al buscar registro existente: " + e.getMessage());
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+            fail("Error al buscar registro existente: " + e.getMessage());
+
         } catch (Exception e) {
 
-            fail("Error al buscar registro existente: " + e.getMessage());
+            fail("Error con la conexión con la base base de datos." + e.getMessage());
         }
     }
 
@@ -179,9 +441,19 @@ class AutoevaluacionContieneDAOTest {
             AutoEvaluacionContieneDTO resultadoBusqueda = autoevaluacionContieneDAO.buscarAutoevaluacionContienePorID(-1, -1);
             assertEquals(-1, resultadoBusqueda.getIdAutoevaluacion());
 
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+            fail("Error inesperado: " + e.getMessage());
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+            fail("Error inesperado: " + e.getMessage());
+
         } catch (Exception e) {
 
-            fail("Error inesperado: " + e.getMessage());
+            fail("Error con la conexión con la base base de datos." + e.getMessage());
         }
     }
 
@@ -194,9 +466,19 @@ class AutoevaluacionContieneDAOTest {
             boolean fueModificado = autoevaluacionContieneDAO.modificarCalificacion(registroAutoEvaluacionContieneDTO);
             assertTrue(fueModificado);
 
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+            fail("Error inesperado: " + e.getMessage());
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+            fail("Error inesperado: " + e.getMessage());
+
         } catch (Exception e) {
 
-            fail("Error inesperado: " + e.getMessage());
+            fail("Error con la conexión con la base base de datos." + e.getMessage());
         }
     }
 
@@ -208,6 +490,16 @@ class AutoevaluacionContieneDAOTest {
             AutoEvaluacionContieneDTO registroAutoEvaluacionContieneDTOInvalido = new AutoEvaluacionContieneDTO(-1, -1.0f, -1);
             boolean fueModificado = autoevaluacionContieneDAO.modificarCalificacion(registroAutoEvaluacionContieneDTOInvalido);
             assertFalse(fueModificado);
+
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+            fail("Error inesperado: " + e.getMessage());
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+            fail("Error inesperado: " + e.getMessage());
 
         } catch (Exception e) {
 
@@ -226,7 +518,17 @@ class AutoevaluacionContieneDAOTest {
             boolean resultadoModificacion = autoevaluacionContieneDAO.modificarCalificacion(autoevaluacionContieneInexistente);
             assertFalse(resultadoModificacion, "No debería modificarse un registro inexistente en autoevaluacioncontiene.");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+            fail("No se esperaba una excepción: " + e.getMessage());
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+            fail("No se esperaba una excepción: " + e.getMessage());
+
+        } catch (Exception e) {
 
             fail("No se esperaba una excepción: " + e.getMessage());
         }

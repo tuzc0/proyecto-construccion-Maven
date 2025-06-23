@@ -1,10 +1,19 @@
 import accesoadatos.ConexionBaseDeDatos;
 import logica.DAOs.UsuarioDAO;
 import logica.DTOs.UsuarioDTO;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.*;
 import logica.DAOs.AcademicoEvaluadorDAO;
 import logica.DTOs.AcademicoEvaluadorDTO;
+import utilidadesPruebas.UtilidadesConsola;
+
+import java.io.EOFException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -14,25 +23,153 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AcademicoEvaluadorDAOTest {
 
+    private static final Logger LOGGER = LogManager.getLogger(AcademicoEvaluadorDAOTest.class);
+
     private AcademicoEvaluadorDAO academicoEvaluadorDAO;
     private UsuarioDAO usuarioDAO;
-    private Connection conexionBaseDeDatos;
+    private static Connection conexionBaseDeDatos;
+    private IGestorAlertas gestorAlertas;
+    private ManejadorExcepciones manejadorExcepciones;
 
     private final List<Integer> NUMEROS_DE_PERSONAL_INSERTADOS = new ArrayList<>();
     private final List<Integer> IDS_USUARIOS_INSERTADOS = new ArrayList<>();
+
+    @BeforeAll
+    static void inicializarConexion() {
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+
+        } catch (SQLException e) {
+
+            String estadoSQL = e.getSQLState();
+
+            switch (estadoSQL) {
+
+                case "08S01" -> {
+
+                    LOGGER.error("Error de conexión con la base de datos: " + e);
+                    System.out.println(
+                            "Error de conexión :" +
+                                    "No se pudo establecer una conexión con la base de datos: " +
+                                    "La base de datos se encuentra desactivada o hay un problema de red."
+                    );
+                }
+
+                case "42000" -> {
+
+                    LOGGER.error("Error de sintaxis SQL o base de datos no existe: " + e);
+                    System.out.println(
+                            "Error de conexión :" +
+                                    "No se pudo establecer conexión con la base de datos: " +
+                                    "La base de datos no existe o hay un error de sintaxis en la consulta."
+                    );
+                }
+
+                case "28000" -> {
+
+                    LOGGER.error("Credenciales inválidas: " + e);
+                    System.out.println(
+                            "Credenciales inválidas: " +
+                                    "Usuario o contraseña incorrectos: " +
+                                    "Verifique los datos de acceso a la base de datos."
+                    );
+                }
+
+                case "23000" -> {
+
+                    LOGGER.error("Violación de restricción de integridad: " + e);
+                    System.out.println(
+                            "Dato duplicado o relación inválida: " +
+                                    "No se puede completar la operación: " +
+                                    "Verifique que los datos no estén repetidos o que las relaciones sean válidas."
+                    );
+                }
+
+                case "42S02" -> {
+
+                    LOGGER.error("Tabla no encontrada: " + e);
+                    System.out.println(
+                            "Tabla inexistente: " +
+                                    "No se encontró una tabla necesaria para ejecutar la operación: " +
+                                    "Verifique que todas las tablas estén correctamente creadas."
+                    );
+                }
+
+                case "42S22" -> {
+
+                    LOGGER.error("Columna no encontrada: " + e);
+                    System.out.println(
+                            "Columna inexistente: " +
+                                    "No se encontró una columna requerida: " +
+                                    "Revise los nombres de las columnas en su consulta."
+                    );
+                }
+
+                default -> {
+
+                    LOGGER.error("SQLState desconocido (" + estadoSQL + "): " + e);
+                    System.out.println(
+                            "Error desconocido: " +
+                                    "Se produjo un error inesperado al acceder a la base de datos: " +
+                                    "Contacte a soporte técnico."
+                    );
+                }
+            }
+
+        } catch (IOException e) {
+
+            if (e instanceof FileNotFoundException) {
+
+                LOGGER.error("Archivo no encontrado: " + e);
+                System.out.println(
+                        "Archivo no encontrado: " +
+                                "No se pudo encontrar el archivo especificado: " +
+                                "Verifique que el archivo exista."
+                );
+
+            } else if (e instanceof EOFException) {
+
+                LOGGER.error("Fin inesperado del archivo: " + e);
+                System.out.println(
+                        "Lectura incompleta: " +
+                                "Se alcanzó el final del archivo antes de lo esperado: " +
+                                "El archivo puede estar incompleto o dañado."
+                );
+
+            } else if (e instanceof ConnectException) {
+
+                LOGGER.error("Error de conexión de red: " + e);
+                System.out.println(
+                        "Fallo de conexión: " +
+                                "No se pudo conectar con el recurso: " +
+                                "Revise su conexión o intente más tarde."
+                );
+            } else {
+
+                LOGGER.error("Error de E/S desconocido: " + e);
+                System.out.println(
+                        "Error de entrada/salida: " +
+                                "Se produjo un error inesperado: " +
+                                "Verifique los recursos utilizados o contacte soporte."
+                );
+            }
+        }
+    }
 
     @BeforeEach
     void prepararDatosDePrueba() {
 
         usuarioDAO = new UsuarioDAO();
         academicoEvaluadorDAO = new AcademicoEvaluadorDAO();
+        IGestorAlertas utilidadesConsola = new UtilidadesConsola();
+        manejadorExcepciones = new ManejadorExcepciones(utilidadesConsola, LOGGER);
 
         NUMEROS_DE_PERSONAL_INSERTADOS.clear();
         IDS_USUARIOS_INSERTADOS.clear();
 
         try {
-
-            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
 
             for (int numero : List.of(1001, 1002, 1003, 55555, 99999, 88888)) {
 
@@ -71,8 +208,14 @@ public class AcademicoEvaluadorDAOTest {
 
             NUMEROS_DE_PERSONAL_INSERTADOS.addAll(List.of(1001, 1002, 1003));
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
+            manejadorExcepciones.manejarSQLException(e);
+            fail("Error en @BeforeEach al preparar datos: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
             fail("Error en @BeforeEach al preparar datos: " + e);
         }
     }
@@ -96,11 +239,99 @@ public class AcademicoEvaluadorDAOTest {
                         .executeUpdate();
             }
 
-            conexionBaseDeDatos.close();
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+            fail("Error en @AfterEach al limpiar datos: " + e);
+        }
+    }
+
+    @AfterAll
+    static void cerrarConexion() {
+
+        try {
+
+            if (conexionBaseDeDatos != null && !conexionBaseDeDatos.isClosed()) {
+
+                conexionBaseDeDatos.close();
+            }
 
         } catch (SQLException e) {
 
-            fail("Error en @AfterEach al limpiar datos: " + e);
+            String estadoSQL = e.getSQLState();
+
+            switch (estadoSQL) {
+
+                case "08S01" -> {
+
+                    LOGGER.error("Error de conexión con la base de datos: " + e);
+                    System.out.println(
+                            "Error de conexión :" +
+                                    "No se pudo establecer una conexión con la base de datos: " +
+                                    "La base de datos se encuentra desactivada o hay un problema de red."
+                    );
+                }
+
+                case "42000" -> {
+
+                    LOGGER.error("Error de sintaxis SQL o base de datos no existe: " + e);
+                    System.out.println(
+                            "Error de conexión :" +
+                                    "No se pudo establecer conexión con la base de datos: " +
+                                    "La base de datos no existe o hay un error de sintaxis en la consulta."
+                    );
+                }
+
+                case "28000" -> {
+
+                    LOGGER.error("Credenciales inválidas: " + e);
+                    System.out.println(
+                            "Credenciales inválidas: " +
+                                    "Usuario o contraseña incorrectos: " +
+                                    "Verifique los datos de acceso a la base de datos."
+                    );
+                }
+
+                case "23000" -> {
+
+                    LOGGER.error("Violación de restricción de integridad: " + e);
+                    System.out.println(
+                            "Dato duplicado o relación inválida: " +
+                                    "No se puede completar la operación: " +
+                                    "Verifique que los datos no estén repetidos o que las relaciones sean válidas."
+                    );
+                }
+
+                case "42S02" -> {
+
+                    LOGGER.error("Tabla no encontrada: " + e);
+                    System.out.println(
+                            "Tabla inexistente: " +
+                                    "No se encontró una tabla necesaria para ejecutar la operación: " +
+                                    "Verifique que todas las tablas estén correctamente creadas."
+                    );
+                }
+
+                case "42S22" -> {
+
+                    LOGGER.error("Columna no encontrada: " + e);
+                    System.out.println(
+                            "Columna inexistente: " +
+                                    "No se encontró una columna requerida: " +
+                                    "Revise los nombres de las columnas en su consulta."
+                    );
+                }
+
+                default -> {
+
+                    LOGGER.error("SQLState desconocido (" + estadoSQL + "): " + e);
+                    System.out.println(
+                            "Error desconocido: " +
+                                    "Se produjo un error inesperado al acceder a la base de datos: " +
+                                    "Contacte a soporte técnico."
+                    );
+                }
+            }
         }
     }
 
@@ -120,8 +351,14 @@ public class AcademicoEvaluadorDAOTest {
             assertTrue(insercionExitosa, "El académico debería ser insertado correctamente.");
             NUMEROS_DE_PERSONAL_INSERTADOS.add(55555);
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
+            manejadorExcepciones.manejarSQLException(e);
+            fail("No se esperaba una excepción: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
             fail("No se esperaba una excepción: " + e);
         }
     }
@@ -150,8 +387,14 @@ public class AcademicoEvaluadorDAOTest {
             assertTrue(academicoEvaluadorDTOEliminado,
                     "El académico debería ser eliminado correctamente.");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
+            manejadorExcepciones.manejarSQLException(e);
+            fail("No se esperaba una excepción: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
             fail("No se esperaba una excepción: " + e);
         }
     }
@@ -168,8 +411,14 @@ public class AcademicoEvaluadorDAOTest {
             assertFalse(AcademicoEvaluadorDTOEliminado,
                     "No debería eliminarse ningún académico inexistente.");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
+            manejadorExcepciones.manejarSQLException(e);
+            fail("No se esperaba una excepción: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
             fail("No se esperaba una excepción: " + e);
         }
     }
@@ -185,8 +434,14 @@ public class AcademicoEvaluadorDAOTest {
                     academicoEvaluadorDAO.eliminarAcademicoEvaluadorPorNumeroDePersonal(numeroDePersonalInexistente);
             assertFalse(resultadoAlEliminar, "No debería poder eliminar un académico evaluador inexistente");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
+            manejadorExcepciones.manejarSQLException(e);
+            fail("No se esperaba una excepción: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
             fail("No se esperaba una excepción: " + e);
         }
     }
@@ -206,8 +461,14 @@ public class AcademicoEvaluadorDAOTest {
 
             assertTrue(modificado, "El académico debería ser modificado correctamente.");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
+            manejadorExcepciones.manejarSQLException(e);
+            fail("No se esperaba una excepción: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
             fail("No se esperaba una excepción: " + e);
         }
     }
@@ -225,8 +486,14 @@ public class AcademicoEvaluadorDAOTest {
             assertFalse(resultadoDeLaModificacion,
                     "No debería modificarse un académico con datos inválidos.");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
+            manejadorExcepciones.manejarSQLException(e);
+            fail("No se esperaba una excepción: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
             fail("No se esperaba una excepción: " + e);
         }
     }
@@ -245,9 +512,15 @@ public class AcademicoEvaluadorDAOTest {
             assertFalse(ResultadoDemodificacion,
                     "No se debería modificar un académico inexistente.");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
+            manejadorExcepciones.manejarSQLException(e);
             fail("No se esperaba excepción: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+            fail("No se esperaba excepción: " +e);
         }
     }
 
@@ -265,8 +538,14 @@ public class AcademicoEvaluadorDAOTest {
             assertEquals(AcademicoEvaluadorEsperado, academicoEncontrado,
                     "El académico debería ser encontrado correctamente.");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
+            manejadorExcepciones.manejarSQLException(e);
+            fail("No se esperaba una excepción: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
             fail("No se esperaba una excepción: " + e);
         }
     }
@@ -284,8 +563,14 @@ public class AcademicoEvaluadorDAOTest {
             assertEquals(academicoEvaluadorEsperado, academicoEncontrado,
                     "Debería retornar un DTO con valores por defecto");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
+            manejadorExcepciones.manejarSQLException(e);
+            fail("No se esperaba una excepción: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
             fail("No se esperaba una excepción: " + e);
         }
     }
@@ -303,9 +588,15 @@ public class AcademicoEvaluadorDAOTest {
             assertEquals(academicoEvaluadorEsperado, resultado,
                     "Debería retornar un DTO con valores por defecto para un académico inexistente");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
             fail("No se esperaba una excepción: " + e);
+            manejadorExcepciones.manejarSQLException(e);
+
+        } catch (IOException e) {
+
+            fail("No se esperaba una excepción: " + e);
+            manejadorExcepciones.manejarIOException(e);
         }
     }
 
@@ -322,8 +613,14 @@ public class AcademicoEvaluadorDAOTest {
             assertEquals(academicoEsperado, academicoEncontrado,
                     "El académico encontrado debería ser igual al esperado según equals()");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
+            manejadorExcepciones.manejarSQLException(e);
+            fail("No se esperaba una excepción: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
             fail("No se esperaba una excepción: " + e);
         }
     }
@@ -340,9 +637,15 @@ public class AcademicoEvaluadorDAOTest {
             assertEquals(academicoEsperado, resultado,
                     "Debería retornar un DTO con valores por defecto para un ID inválido");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
+            manejadorExcepciones.manejarSQLException(e);
             fail("No se esperaba una excepción: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+            fail("No se esperaba una excepción: " +e);
         }
     }
 
@@ -358,8 +661,14 @@ public class AcademicoEvaluadorDAOTest {
             assertEquals(academicoEsperado, resultado,
                     "Debería retornar un DTO con valores por defecto para un ID inexistente");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
+            manejadorExcepciones.manejarSQLException(e);
+            fail("No se esperaba una excepción: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
             fail("No se esperaba una excepción: " + e);
         }
     }
@@ -382,8 +691,14 @@ public class AcademicoEvaluadorDAOTest {
             assertTrue(listaObtenida.containsAll(listaEsperada),
                     "La lista de académicos obtenida debería contener los datos esperados.");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
+            manejadorExcepciones.manejarSQLException(e);
+            fail("No se esperaba una excepción: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
             fail("No se esperaba una excepción: " + e);
         }
     }
@@ -402,9 +717,15 @@ public class AcademicoEvaluadorDAOTest {
             assertEquals(0, listaAcademicosDTOs.size(),
                     "La lista de académicos evaluadores debería estar vacía.");
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
+            manejadorExcepciones.manejarSQLException(e);
             fail("No se esperaba una excepción: " + e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+            fail("No se esperaba una excepción: " +e);
         }
     }
 }

@@ -1,5 +1,7 @@
 package logica.DTOs;
 
+import java.util.Objects;
+
 public class CronogramaActividadesDTO {
 
     private int IDCronograma;
@@ -70,5 +72,31 @@ public class CronogramaActividadesDTO {
     public void setEstadoActivo(int estadoActivo) {
 
         this.estadoActivo = estadoActivo;
+    }
+
+    @Override
+    public boolean equals(Object objetoAComparar) {
+
+        if (this == objetoAComparar) {
+            return true;
+        }
+
+        if (objetoAComparar == null || getClass() != objetoAComparar.getClass()) {
+            return false;
+        }
+
+        CronogramaActividadesDTO cronogramaComparado = (CronogramaActividadesDTO) objetoAComparar;
+
+        return IDCronograma == cronogramaComparado.IDCronograma &&
+                idProyecto == cronogramaComparado.idProyecto &&
+                idPeriodo == cronogramaComparado.idPeriodo &&
+                estadoActivo == cronogramaComparado.estadoActivo &&
+                Objects.equals(matriculaEstudiante, cronogramaComparado.matriculaEstudiante);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(IDCronograma, matriculaEstudiante, idProyecto, idPeriodo, estadoActivo);
     }
 }

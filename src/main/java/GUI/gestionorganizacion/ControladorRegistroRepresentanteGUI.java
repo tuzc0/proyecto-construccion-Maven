@@ -35,6 +35,8 @@ public class ControladorRegistroRepresentanteGUI {
 
     VerificicacionGeneral verificicacionGeneral = new VerificicacionGeneral();
 
+    public int idOrganizacion = ControladorRegistroOrganizacionVinculadaGUI.idOrganizacion;
+
     final int MAX_CARACTERES_NOMBRE = 50;
 
     final int MAX_CARACTERES_APELLIDOS = 50;
@@ -61,9 +63,6 @@ public class ControladorRegistroRepresentanteGUI {
         String apellidos = campoApellidos.getText();
         String correo = campoCorreo.getText();
         String numeroContacto = campoContacto.getText();
-        int idOrganizacion = 0;
-
-        idOrganizacion = ControladorRegistroOrganizacionVinculadaGUI.idOrganizacion;
 
         auxiliarRegistroRepresentante.registrarRepresentante(nombre, apellidos, correo, numeroContacto, idOrganizacion);
     }
@@ -81,5 +80,9 @@ public class ControladorRegistroRepresentanteGUI {
     public void guardarRegistro() {
 
         registrarRepresentante();
+    }
+
+    public void setIdOrganizacion(int idOrganizacion) {
+        this.idOrganizacion = idOrganizacion;
     }
 }

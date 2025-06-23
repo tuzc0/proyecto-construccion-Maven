@@ -270,5 +270,26 @@ public class OrganizacionVinculadaDAO implements IOvDAO {
 
         return listaOrganizaciones;
     }
+
+    public boolean tieneRepresentanteConProyectoActivo(int idOrganizacion) throws SQLException, IOException {
+        boolean tieneProyectoActivo = false;
+        String consultaSQL = "SELECT COUNT(*) AS cantidad " +
+                "FROM proyecto p " +
+                "JOIN representante r ON p.idRepresentante = r.idRepresentante " +
+                "WHERE r.idOV = ? AND p.estadoActivo = 1";
+
+        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+             PreparedStatement sentencia = conexionBaseDeDatos.prepareStatement(consultaSQL)) {
+
+            sentencia.setInt(1, idOrganizacion);
+            try (ResultSet resultado = sentencia.executeQuery()) {
+                if (resultado.next()) {
+                    tieneProyectoActivo = resultado.getInt("cantidad") > 0;
+                }
+            }
+        }
+
+        return tieneProyectoActivo;
+    }
 }
 

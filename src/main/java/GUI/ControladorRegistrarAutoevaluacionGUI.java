@@ -470,6 +470,7 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
             etiquetaErrorArchivos.setText("Error al subir archivos: " + e);
             logger.error("Error al subir archivos: ", e);
+            cancelarRegistro();
 
         }
     }

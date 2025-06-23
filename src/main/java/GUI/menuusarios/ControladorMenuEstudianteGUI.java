@@ -1,8 +1,9 @@
 package GUI.menuusarios;
 
 import GUI.ControladorInicioDeSesionGUI;
-import GUI.gestioncronogramaactividades.ControladorDetallesCronogramaActividadesGUI;
+import GUI.ControladorListarReportesPorEstudianteGUI;
 import GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividadesGUI;
+import GUI.gestionorganizacion.ControladorConsultarRepresentante;
 import GUI.gestionproyecto.asignacionproyecto.ControladorDetallesAsignacionProyectoGUI;
 import GUI.utilidades.Utilidades;
 import javafx.fxml.FXML;
@@ -500,56 +501,33 @@ public class ControladorMenuEstudianteGUI {
         }
 
         return cronogramaRegistrado;
+
     }
 
     @FXML
-    public void abrirConsultarCronograma() {
+    public void abrirConsultarReporteMensual() {
 
-        if (!verificarAsignacionProyecto()) {
-            return;
-        }
 
-        try {
+        try{
 
-            CronogramaActividadesDAO cronogramaDAO = new CronogramaActividadesDAO();
-            CronogramaActividadesDTO cronograma = cronogramaDAO.buscarCronogramaPorMatricula(matricula);
-
-            if (cronograma == null || cronograma.getIDCronograma() == NULL) {
-                gestorVentanas.mostrarAlerta(
-                        "Información",
-                        "No hay cronograma registrado",
-                        "No tienes un cronograma de actividades registrado."
-                );
-                return;
-            }
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/DetallesCronogramaActividadesGUI.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ListaReportesEstudianteGUI.fxml"));
             Parent root = loader.load();
 
-            ControladorDetallesCronogramaActividadesGUI controlador = loader.getController();
-            controlador.setMatriculaDTO(matricula);
+            ControladorListarReportesPorEstudianteGUI controlador = loader.getController();
+            controlador.setMatriculaEstudiante(matricula);
 
             Stage stage = new Stage();
-            stage.setTitle("Detalles del Cronograma");
             stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
 
-        } catch (SQLException e) {
-
-            manejadorExcepciones.manejarSQLException(e);
-
-        } catch (IOException e) {
-
+        } catch (IOException e){
             manejadorExcepciones.manejarIOException(e);
-
-        } catch (Exception e) {
-
-            logger.error("Error al abrir detalles del cronograma: " + e);
+        }  catch (Exception e) {
+            logger.error("Error inesperado al abrir la ventana de consulta de reportes mensuales: " + e);
             gestorVentanas.mostrarAlerta(
                     "Error",
-                    "No se pudo abrir los detalles del cronograma",
-                    "Por favor, intente nuevamente más tarde."
+                    "Ocurrió un error inesperado al abrir la ventana de consulta de reportes mensuales.",
+                    "Por favor, contacta al administrador si el problema persiste."
             );
         }
     }

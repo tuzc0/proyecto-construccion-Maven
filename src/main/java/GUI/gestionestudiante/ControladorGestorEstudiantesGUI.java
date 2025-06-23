@@ -325,6 +325,7 @@ public class ControladorGestorEstudiantesGUI {
         Utilidades utilidades = new Utilidades();
         String matricula = etiquetaMatriculaEncontrada.getText().trim();
 
+
         if (matricula.isEmpty()) {
 
             utilidades.mostrarAlerta(

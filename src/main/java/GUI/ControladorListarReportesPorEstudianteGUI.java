@@ -39,9 +39,17 @@ public class ControladorListarReportesPorEstudianteGUI {
 
     public static int idReporteSeleccionado = 0;
 
+    public String matriculaEstudiante = ControladorListarEstudiantesConReporteMensualGUI.matriculaEstudiante;
+
+
+    public void setMatriculaEstudiante(String matricula) {
+        this.matriculaEstudiante = matricula;
+        cargarDatosReportes();
+    }
 
     @FXML
     public void initialize() {
+
 
         columnaFecha.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getFecha().toString()));
@@ -50,7 +58,6 @@ public class ControladorListarReportesPorEstudianteGUI {
         columnaVerReporte.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getObservaciones()));
 
-        cargarDatosReportes();
         configurarColumnaVerReporte();
     }
 
@@ -58,15 +65,17 @@ public class ControladorListarReportesPorEstudianteGUI {
         ReporteDAO reporteDAO = new ReporteDAO();
 
         try {
-            List<ReporteDTO> listaReportes = reporteDAO.buscarReportesPorMatricula(ControladorListarEstudiantesConReporteMensualGUI.matriculaEstudiante);
+            List<ReporteDTO> listaReportes = reporteDAO.buscarReportesPorMatricula(matriculaEstudiante);
 
             if (listaReportes != null && !listaReportes.isEmpty()) {
                 tablaReportes.getItems().setAll(listaReportes);
+
             } else {
                 gestorVentana.mostrarAlerta("No se encontraron reportes para el estudiante seleccionado.",
                         "Información",
                         "El estudiante no tiene reportes mensuales registrados.");
             }
+
         } catch (SQLException e) {
 
             manejadorExcepciones.manejarSQLException(e);

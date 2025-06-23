@@ -1,25 +1,33 @@
 package GUI.gestionorganizacion;
 
 import GUI.utilidades.Utilidades;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import logica.DAOs.OrganizacionVinculadaDAO;
+import logica.DAOs.RepresentanteDAO;
 import logica.DTOs.OrganizacionVinculadaDTO;
+import logica.DTOs.RepresentanteDTO;
+import logica.ManejadorExcepciones;
 import logica.VerificacionUsuario;
+import logica.interfaces.IGestorAlertas;
 import logica.verificacion.VerificicacionGeneral;
+import org.apache.logging.log4j.Logger;
 
-import javax.imageio.IIOException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Logger;
 
 
 public class ControladorGestorOrganizacionGUI {
 
-    Logger logger = Logger.getLogger(ControladorGestorOrganizacionGUI.class.getName());
+    Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorGestorOrganizacionGUI.class);
 
     @FXML
     private Label campoNombreEncontrado;
@@ -66,7 +74,27 @@ public class ControladorGestorOrganizacionGUI {
     @FXML
     private Label etiquetaContadorDireccion;
 
-    private int idOrganizacionSeleccionada = ControladorConsultarOrganizacionGUI.idOrganizacionSeleccionada;
+    @FXML
+    private TableView<RepresentanteDTO> tablaRepresentantes;
+
+    @FXML
+    private TableColumn<RepresentanteDTO, String> columnaNombre;
+
+    @FXML
+    private TableColumn<RepresentanteDTO, String> columnaCorreo;
+
+    @FXML
+    private TableColumn<RepresentanteDTO, String> columnaApellidos;
+
+    public int idOrganizacionSeleccionada = ControladorConsultarOrganizacionGUI.idOrganizacionSeleccionada;
+
+    int idRepresentanteSeleccionado = 0;
+
+    IGestorAlertas mensajeDeAlerta = new Utilidades();
+
+    Utilidades utilidades = new Utilidades();
+
+    ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(mensajeDeAlerta, logger);
 
     VerificicacionGeneral verificicacionGeneral = new VerificicacionGeneral();
     final int MAX_CARACTERES_NOMBRE = 50;
@@ -83,14 +111,47 @@ public class ControladorGestorOrganizacionGUI {
         verificicacionGeneral.contadorCaracteresTextField(campoDireccionEditable, etiquetaContadorDireccion, MAX_CARACTERES_DIRECCION);
 
         cargarDatosOrganizacion();
+        listarRepresentantes();
+
+    }
+
+    public void listarRepresentantes() {
+
+        RepresentanteDAO representanteDAO = new RepresentanteDAO();
+
+        try {
+
+            List<RepresentanteDTO> representantes = representanteDAO.obtenerRepresentantesActivosPorIdOrganizacion(idOrganizacionSeleccionada);
+
+            if (representantes.isEmpty()) {
+                utilidades.mostrarAlerta("Información", "Sin representantes", "No hay representantes activos para esta organización.");
+                return;
+            }
+
+            ObservableList<RepresentanteDTO> listaObservable = FXCollections.observableArrayList(representantes);
+            tablaRepresentantes.setItems(listaObservable);
+
+            columnaNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+            columnaCorreo.setCellValueFactory(new PropertyValueFactory<>("correo"));
+            columnaApellidos.setCellValueFactory(new PropertyValueFactory<>("apellidos"));
+
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+        } catch (Exception e) {
+
+            utilidades.mostrarAlerta("Error", "No se pudo listar los representantes", "Error al cargar los representantes.");
+            logger.error("Error al listar los representantes: " + e);
+        }
     }
 
     @FXML
     private void cargarDatosOrganizacion( ) {
 
-        Utilidades utilidades = new Utilidades();
         OrganizacionVinculadaDAO organizacionDAO = new OrganizacionVinculadaDAO();
-
 
         try {
 
@@ -106,21 +167,18 @@ public class ControladorGestorOrganizacionGUI {
 
         } catch (IOException e){
 
-            logger.warning("Error de IO: " + e);
-            utilidades.mostrarAlerta("Error", "No se pudo cargar los datos",
-                    "error al cargar los datos de la organizacion seleccionada");
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (SQLException e) {
 
-            logger.warning("Error de SQL: " + e);
-            utilidades.mostrarAlerta("Error", "No se pudo cargar los datos",
-                    "error al cargar los datos de la organizacion seleccionada");
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (Exception e) {
 
-            logger.warning("Error: " + e);
             utilidades.mostrarAlerta("Error", "No se pudo cargar los datos",
                     "error al cargar los datos de la organizacion seleccionada");
+
+            logger.error("Error al cargar los datos de la organización: " + e);
 
         }
     }
@@ -184,7 +242,6 @@ public class ControladorGestorOrganizacionGUI {
     @FXML
     public void guardarEdicion () {
 
-        Utilidades utilidades = new Utilidades();
         VerificacionUsuario verificacionUsuario = new VerificacionUsuario();
         OrganizacionVinculadaDAO organizacionDAO = new OrganizacionVinculadaDAO();
         OrganizacionVinculadaDTO organizacionDTO = new OrganizacionVinculadaDTO();
@@ -238,22 +295,151 @@ public class ControladorGestorOrganizacionGUI {
             cancelarEdicion();
 
         } catch (IOException e) {
-            logger.warning("Error de IO: " + e);
-            utilidades.mostrarAlerta("Error", "No se pudo actualizar la organización",
-                    "error al actualizar los datos de la organizacion seleccionada");
+
+            manejadorExcepciones.manejarIOException(e);
+
         } catch (SQLException e) {
-            logger.warning("Error de SQL: " + e);
-            utilidades.mostrarAlerta("Error", "No se pudo actualizar la organización",
-                    "error al actualizar los datos de la organizacion seleccionada");
+
+            manejadorExcepciones.manejarSQLException(e);
+
         } catch (Exception e) {
-            logger.warning("Error: " + e);
+
             utilidades.mostrarAlerta("Error", "No se pudo actualizar la organización",
                     "error al actualizar los datos de la organizacion seleccionada");
+            logger.error("Error al actualizar los datos de la organización: " + e);
+
         }
     }
 
     @FXML
-    public void listarRepresentantes (){
+    public void confirmarEliminacionRepresentante() {
+
+        utilidades.mostrarAlertaConfirmacion(
+                "Confirmar eliminación",
+                "¿Está seguro que desea eliminar al representante seleccionado?",
+                "Se eliminará al representante seleccionado. Esta acción no se puede deshacer.",
+                () -> {
+                    eliminarRepresentante();
+                },
+                () -> {
+                    utilidades.mostrarAlerta("Cancelado",
+                            "Eliminación cancelada",
+                            "No se ha eliminado ningún representante.");
+                }
+        );
 
     }
+
+    public void eliminarRepresentante() {
+
+
+
+        tablaRepresentantes.getSelectionModel().getSelectedItem();
+        RepresentanteDTO representanteSeleccionado = tablaRepresentantes.getSelectionModel().getSelectedItem();
+
+        if (representanteSeleccionado == null) {
+            utilidades.mostrarAlerta("Error", "No se ha seleccionado un representante",
+                    "Por favor, seleccione un representante de la lista.");
+            return;
+        }
+
+        RepresentanteDAO representanteDAO = new RepresentanteDAO();
+
+        try {
+
+
+            idRepresentanteSeleccionado = representanteSeleccionado.getIDRepresentante();
+
+            if (representanteDAO.estaVinculadoAProyectoActivo(idRepresentanteSeleccionado)) {
+
+                utilidades.mostrarAlerta("Error", "No se puede eliminar el representante",
+                        "El representante está vinculado a un proyecto activo y no se puede eliminar.");
+                return;
+
+            }
+
+
+            boolean eliminado = representanteDAO.eliminarRepresentantePorID(idRepresentanteSeleccionado);
+
+            if (eliminado) {
+                utilidades.mostrarAlerta("Éxito", "Representante eliminado",
+                        "El representante ha sido eliminado correctamente.");
+                listarRepresentantes();
+            } else {
+                utilidades.mostrarAlerta("Error", "No se pudo eliminar el representante",
+                        "Ocurrió un error al intentar eliminar el representante seleccionado.");
+            }
+
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            utilidades.mostrarAlerta("Error", "Error inesperado",
+                    "Ocurrió un error inesperado al eliminar el representante.");
+            logger.error("Error al eliminar el representante: " + e);
+        }
+
+    }
+
+    @FXML
+    public void registrarRepresentante() {
+
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistroRepresentanteGUI.fxml"));
+            Parent root = loader.load();
+
+            ControladorRegistroRepresentanteGUI controladorRegistroRepresentanteGUI = loader.getController();
+            controladorRegistroRepresentanteGUI.setIdOrganizacion(idOrganizacionSeleccionada);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            listarRepresentantes();
+
+        } catch (IOException e) {
+            manejadorExcepciones.manejarIOException(e);
+        }
+    }
+
+    @FXML
+    public void verDetallesRepresentante() {
+
+        try {
+
+            RepresentanteDTO representanteSeleccionado = tablaRepresentantes.getSelectionModel().getSelectedItem();
+
+            if (representanteSeleccionado == null) {
+                utilidades.mostrarAlerta("Error", "No se ha seleccionado un representante",
+                        "Por favor, seleccione un representante de la lista.");
+                return;
+            }
+            idRepresentanteSeleccionado = representanteSeleccionado.getIDRepresentante();
+
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ConsultarRepresentanteGUI.fxml"));
+            Parent root = loader.load();
+
+            ControladorConsultarRepresentante controlador = loader.getController();
+            controlador.setIdRepresentante(idRepresentanteSeleccionado);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+
+            listarRepresentantes();
+
+        } catch (IOException e) {
+            manejadorExcepciones.manejarIOException(e);
+        }
+
+    }
+
 }

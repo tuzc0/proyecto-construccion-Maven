@@ -245,5 +245,50 @@ public class RepresentanteDAO implements IRepresentanteDAO {
 
         return listaRepresentantes;
     }
+
+    public List<RepresentanteDTO> obtenerRepresentantesActivosPorIdOrganizacion(int idOrganizacion) throws SQLException, IOException {
+        List<RepresentanteDTO> listaRepresentantes = new ArrayList<>();
+        String consultaSQL = "SELECT * FROM representante WHERE idOV = ? AND estadoActivo = 1";
+
+        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+             PreparedStatement sentenciaRepresentante = conexionBaseDeDatos.prepareStatement(consultaSQL)) {
+
+            sentenciaRepresentante.setInt(1, idOrganizacion);
+            try (ResultSet resultadoConsultaRepresentante = sentenciaRepresentante.executeQuery()) {
+                while (resultadoConsultaRepresentante.next()) {
+                    RepresentanteDTO representanteDTO = new RepresentanteDTO(
+                            resultadoConsultaRepresentante.getInt("idRepresentante"),
+                            resultadoConsultaRepresentante.getString("correo"),
+                            resultadoConsultaRepresentante.getString("telefono"),
+                            resultadoConsultaRepresentante.getString("nombre"),
+                            resultadoConsultaRepresentante.getString("apellidos"),
+                            resultadoConsultaRepresentante.getInt("idOV"),
+                            resultadoConsultaRepresentante.getInt("estadoActivo")
+                    );
+                    listaRepresentantes.add(representanteDTO);
+                }
+            }
+        }
+
+        return listaRepresentantes;
+    }
+
+    public boolean estaVinculadoAProyectoActivo(int idRepresentante) throws SQLException, IOException {
+        boolean vinculadoAProyectoActivo = false;
+        String consultaSQL = "SELECT COUNT(*) AS cantidad FROM proyecto WHERE idRepresentante = ? AND estadoActivo = 1";
+
+        try (Connection conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+             PreparedStatement sentenciaProyecto = conexionBaseDeDatos.prepareStatement(consultaSQL)) {
+
+            sentenciaProyecto.setInt(1, idRepresentante);
+            try (ResultSet resultadoConsultaProyecto = sentenciaProyecto.executeQuery()) {
+                if (resultadoConsultaProyecto.next()) {
+                    vinculadoAProyectoActivo = resultadoConsultaProyecto.getInt("cantidad") > 0;
+                }
+            }
+        }
+
+        return vinculadoAProyectoActivo;
+    }
 }
 

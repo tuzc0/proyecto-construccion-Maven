@@ -13,15 +13,17 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import logica.DAOs.OrganizacionVinculadaDAO;
 import logica.DTOs.OrganizacionVinculadaDTO;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
+import org.apache.logging.log4j.Logger;
 
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.Logger;
 
 public class ControladorConsultarOrganizacionGUI {
 
-    Logger logger = Logger.getLogger(ControladorConsultarOrganizacionGUI.class.getName());
+    Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorConsultarOrganizacionGUI.class);
 
     @FXML
     private TableColumn <OrganizacionVinculadaDTO, String> columnaNombre;
@@ -45,6 +47,12 @@ public class ControladorConsultarOrganizacionGUI {
     private TableColumn <OrganizacionVinculadaDTO, Void> columnaBotonEliminar;
 
     private OrganizacionVinculadaDTO organizacionSeleccionada;
+
+    IGestorAlertas mensajeDeAlerta = new Utilidades();
+
+    Utilidades utilidades = new Utilidades();
+
+    ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(mensajeDeAlerta, logger);
 
     public static int idOrganizacionSeleccionada = 0;
 
@@ -89,23 +97,17 @@ public class ControladorConsultarOrganizacionGUI {
 
         } catch (IOException e) {
 
-            logger.severe("Error al cargar las organizaciones: " + e);
-            utilidades.mostrarAlerta("Error", "Error de entrada/salida",
-                    "No se pudo cargar la lista de organizaciones.");
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (SQLException e) {
 
-            logger.severe("Error al cargar las organizaciones: " + e);
-            utilidades.mostrarAlerta("Error", "Error de SQL",
-                    "No se pudo cargar la lista de organizaciones.");
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (Exception e) {
 
-            logger.severe("Error inesperado al cargar las organizaciones: " + e);
-            utilidades.mostrarAlerta("Error",
-                    "Error inesperado",
+            logger.error("Error inesperado al cargar organizaciones: " + e.getMessage());
+            utilidades.mostrarAlerta("Error", "Error inesperado",
                     "No se pudo cargar la lista de organizaciones.");
-
         }
     }
 
@@ -191,11 +193,14 @@ public class ControladorConsultarOrganizacionGUI {
             stage.show();
 
 
-        } catch (Exception e) {
+        } catch (IOException e){
 
-            logger.severe("Error al abrir la ventana de detalles de la organización: " + e);
-            utilidades.mostrarAlerta("Error", "Error al abrir la ventana",
-                    "No se pudo abrir la ventana de detalles de la organización.");
+            manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e){
+            logger.error("Error inesperado al abrir la ventana de detalles de organización: " + e.getMessage());
+            utilidades.mostrarAlerta("Error", "Error inesperado",
+                    "No se pudo abrir la ventana de detalles de organización.");
         }
     }
 
@@ -206,25 +211,32 @@ public class ControladorConsultarOrganizacionGUI {
         try {
 
             OrganizacionVinculadaDAO organizacionDAO = new OrganizacionVinculadaDAO();
+
+            organizacionDAO.tieneRepresentanteConProyectoActivo(organizacionSeleccionada.getIdOrganizacion());
+
+            if (organizacionDAO.tieneRepresentanteConProyectoActivo(organizacionSeleccionada.getIdOrganizacion())) {
+                utilidades.mostrarAlerta("Error", "No se puede eliminar la organización",
+                        "La organización tiene un representante con un proyecto activo.");
+                return;
+            }
+
             organizacionDAO.eliminarOrganizacionPorID(organizacionSeleccionada.getIdOrganizacion());
             cargarOrganizaciones();
             utilidades.mostrarAlerta("Éxito", "Organización eliminada",
                     "La organización ha sido eliminada correctamente.");
         } catch (IOException e) {
 
-            logger.severe("Error al eliminar la organización: " + e);
-            utilidades.mostrarAlerta("Error", "Error de entrada/salida",
-                    "No se pudo eliminar la organización.");
+            manejadorExcepciones.manejarIOException(e);
+
         } catch (SQLException e) {
 
-            logger.severe("Error al eliminar la organización: " + e);
-            utilidades.mostrarAlerta("Error", "Error de SQL",
-                    "No se pudo eliminar la organización.");
+            manejadorExcepciones.manejarSQLException(e);
+
         } catch (Exception e) {
 
-            logger.severe("Error inesperado al eliminar la organización: " + e);
+            logger.error("Error inesperado al eliminar organización: " + e.getMessage());
             utilidades.mostrarAlerta("Error", "Error inesperado",
-                    "No se pudo eliminar la organización.");
+                    "No se pudo eliminar la organización seleccionada.");
         }
     }
 
@@ -246,17 +258,18 @@ public class ControladorConsultarOrganizacionGUI {
                     FXCollections.observableArrayList(organizacionDAO.buscarOrganizacionesPorNombre(textoBusqueda));
             tablaOrganizaciones.setItems(organizaciones);
         } catch (IOException e) {
-            logger.severe("Error al buscar organizaciones: " + e);
-            utilidades.mostrarAlerta("Error", "Error de entrada/salida",
-                    "No se pudo realizar la búsqueda de organizaciones.");
+
+            manejadorExcepciones.manejarIOException(e);
+
         } catch (SQLException e) {
-            logger.severe("Error al buscar organizaciones: " + e);
-            utilidades.mostrarAlerta("Error", "Error de SQL",
-                    "No se pudo realizar la búsqueda de organizaciones.");
+
+            manejadorExcepciones.manejarSQLException(e);
+
         } catch (Exception e) {
-            logger.severe("Error inesperado al buscar organizaciones: " + e);
+
+            logger.error("Error inesperado al buscar organizaciones: " + e.getMessage());
             utilidades.mostrarAlerta("Error", "Error inesperado",
-                    "No se pudo realizar la búsqueda de organizaciones.");
+                    "No se pudo buscar la organización.");
         }
 
 
@@ -264,21 +277,6 @@ public class ControladorConsultarOrganizacionGUI {
 
     }
 
-    @FXML
-    private void activarModoSeleccion() {
-
-
-    }
-
-    @FXML
-    private void cancelarSeleccionOrganizacion(){
-
-    }
-
-    @FXML
-    private void eliminarOrganizacionSeleccionada(){
-
-    }
 
     @FXML
     private void abrirVentanaRegistrarOrganizacion(){
@@ -295,8 +293,12 @@ public class ControladorConsultarOrganizacionGUI {
             stage.show();
 
         } catch (IOException e) {
-            logger.severe("Error al abrir la ventana de registro de organización: " + e);
-            utilidades.mostrarAlerta("Error", "Error al abrir la ventana",
+
+            manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+            logger.error("Error inesperado al abrir la ventana de registro de organización: " + e.getMessage());
+            utilidades.mostrarAlerta("Error", "Error inesperado",
                     "No se pudo abrir la ventana de registro de organización.");
         }
 

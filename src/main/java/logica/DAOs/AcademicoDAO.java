@@ -30,6 +30,7 @@ public class AcademicoDAO implements IAcademicoDAO {
             consultaPreparada.setInt(2, academico.getIdUsuario());
 
             if (consultaPreparada.executeUpdate() > 0) {
+
                 academicoInsertado = true;
             }
 
@@ -57,6 +58,7 @@ public class AcademicoDAO implements IAcademicoDAO {
             consultaPreparada.setInt(1, numeroDePersonal);
 
             if (consultaPreparada.executeUpdate() > 0) {
+
                 academicoEliminado = true;
             }
 
@@ -84,6 +86,7 @@ public class AcademicoDAO implements IAcademicoDAO {
             consultaPreparada.setInt(2, academico.getIdUsuario());
 
             if (consultaPreparada.executeUpdate() > 0) {
+
                 academicoModificado = true;
             }
 
@@ -181,6 +184,7 @@ public class AcademicoDAO implements IAcademicoDAO {
             resultadoConsulta = consultaPreparada.executeQuery();
 
             if (resultadoConsulta.next()) {
+
                 int numeroDePersonal = resultadoConsulta.getInt("numeroDePersonal");
                 String apellidos = resultadoConsulta.getString("apellidos");
                 String nombre = resultadoConsulta.getString("nombre");
@@ -188,8 +192,11 @@ public class AcademicoDAO implements IAcademicoDAO {
 
                 academico = new AcademicoDTO(numeroDePersonal, idUsuario, nombre, apellidos, estadoActivo);
             }
+
         } finally {
+
             if (consultaPreparada != null) {
+
                 consultaPreparada.close();
             }
         }

@@ -431,6 +431,10 @@ public class ControladorRegistrarAutoevaluacionGUI {
                 etiquetaErrorArchivos.setText("");
 
             } else {
+
+                utilidades.mostrarAlerta("Error de validación",
+                        "Archivos no válidos",
+                        "Los archivos seleccionados no cumplen con los requisitos de tamaño o formato.");
                 etiquetaErrorArchivos.setText("Archivos no válidos. Verifique tamaño y formatos.");
             }
         }

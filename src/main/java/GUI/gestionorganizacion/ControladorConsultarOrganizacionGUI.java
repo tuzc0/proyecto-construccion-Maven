@@ -156,7 +156,20 @@ public class ControladorConsultarOrganizacionGUI {
             {
                 botonEliminar.setOnAction(event -> {
                     OrganizacionVinculadaDTO organizacion = getTableView().getItems().get(getIndex());
-                    eliminarOrganizacion(organizacion);
+
+                    utilidades.mostrarAlertaConfirmacion(
+                            "Confirmar eliminación",
+                            "¿Está seguro que desea eliminar la organizacion seleccionado?",
+                            "Se eliminará la organizacion seleccionada. Esta acción no se puede deshacer.",
+                            () -> {
+                                eliminarOrganizacion(organizacion);
+                            },
+                            () -> {
+                                utilidades.mostrarAlerta("Cancelado",
+                                        "Eliminación cancelada",
+                                        "No se ha eliminado ningúna organizacion.");
+                            }
+                    );
 
                 });
             }
@@ -206,6 +219,8 @@ public class ControladorConsultarOrganizacionGUI {
             utilidades.mostrarAlerta("Error", "Error inesperado",
                     "No se pudo abrir la ventana de detalles de organización.");
         }
+
+        cargarOrganizaciones();
     }
 
     private void eliminarOrganizacion(OrganizacionVinculadaDTO organizacionSeleccionada) {
@@ -242,6 +257,7 @@ public class ControladorConsultarOrganizacionGUI {
             utilidades.mostrarAlerta("Error", "Error inesperado",
                     "No se pudo eliminar la organización seleccionada.");
         }
+
     }
 
     @FXML
@@ -307,6 +323,8 @@ public class ControladorConsultarOrganizacionGUI {
             utilidades.mostrarAlerta("Error", "Error inesperado",
                     "No se pudo abrir la ventana de registro de organización.");
         }
+
+        cargarOrganizaciones();
 
     }
 }

@@ -151,6 +151,10 @@ public class ControladorRegistrarReporteMensualGUI {
                 etiquetaErrorArchivos.setText("");
 
             } else {
+
+                utilidades.mostrarAlerta("Error de validación",
+                        "Archivos no válidos",
+                        "Los archivos deben ser PDF o imágenes (PNG, JPG) y no deben exceder " + TAMANO_MAXIMO_MB + " MB en total.");
                 etiquetaErrorArchivos.setText("Archivos no válidos. Verifique tamaño y formatos.");
             }
         }

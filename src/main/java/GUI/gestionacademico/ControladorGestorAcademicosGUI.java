@@ -1,5 +1,6 @@
 package GUI.gestionacademico;
 
+import GUI.ManejadorExepciones;
 import GUI.utilidades.Utilidades;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -10,9 +11,11 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import logica.DAOs.CuentaDAO;
 import logica.DAOs.AcademicoDAO;
+import logica.DAOs.GrupoDAO;
 import logica.DAOs.UsuarioDAO;
 import logica.DTOs.CuentaDTO;
 import logica.DTOs.AcademicoDTO;
+import logica.DTOs.GrupoDTO;
 import logica.DTOs.UsuarioDTO;
 import logica.VerificacionUsuario;
 import logica.verificacion.VerificicacionGeneral;
@@ -59,6 +62,9 @@ public class ControladorGestorAcademicosGUI {
     private Utilidades utilidades = new Utilidades();
 
     private int idUsuario = 0;
+
+    ManejadorExepciones manejadorExepciones = new ManejadorExepciones();
+
 
     @FXML
     public void initialize() {
@@ -127,61 +133,11 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (SQLException e) {
 
-            String estadoSQL = e.getSQLState();
-
-            switch (estadoSQL) {
-
-                case "08S01":
-
-                    LOGGER.error("Error de conexión con la base datos: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer una conexión con la base de datos.",
-                            "La base de datos se encuentra desactivada."
-                    );
-                    break;
-
-                case "42000":
-
-                    LOGGER.error("La base de datos no existe: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer conexión con la base de datos.",
-                            "La base de datos actualmente no existe."
-                    );
-                    break;
-
-                case "28000":
-
-                    LOGGER.error("Credenciales invalidas para el acceso: " + e);
-                    utilidades.mostrarAlerta(
-                            "Credenciales inválidas",
-                            "Usuario o contraseña incorrectos.",
-                            "Por favor, verifique los datos de acceso a la base" +
-                                    "de datos"
-                    );
-                    break;
-
-                default:
-
-                    LOGGER.error("Error de SQL no manejado: " + estadoSQL + "-" + e);
-                    utilidades.mostrarAlerta(
-                            "Error del sistema.",
-                            "Se produjo un error al acceder a la base de datos.",
-                            "Por favor, contacte al soporte técnico."
-                    );
-                    break;
-            }
+            manejadorExepciones.manejarSQLException(e, LOGGER, utilidades);
 
         } catch (IOException e) {
 
-            LOGGER.error("Error de IOException al listar académicos: " + e);
-            utilidades.mostrarAlerta(
-                    "Error interno del sistema",
-                    "No se pudo realizar la carga de académicos.",
-                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo " +
-                            "o contacte al administrador."
-            );
+            manejadorExepciones.manejarIOException(e, LOGGER, utilidades);
 
         } catch (Exception e) {
 
@@ -259,59 +215,20 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (SQLException e) {
 
-            String estadoSQL = e.getSQLState();
-
-            switch (estadoSQL) {
-
-                case "08S01":
-
-                    LOGGER.error("Error de conexión con la base datos: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer una conexión con la base de datos.",
-                            "La base de datos se encuentra desactivada."
-                    );
-                    break;
-
-                case "42000":
-
-                    LOGGER.error("La base de datos no existe: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer conexión con la base de datos.",
-                            "La base de datos actualmente no existe."
-                    );
-                    break;
-
-                case "28000":
-
-                    LOGGER.error("Credenciales invalidas para el acceso: " + e);
-                    utilidades.mostrarAlerta(
-                            "Credenciales inválidas",
-                            "Usuario o contraseña incorrectos.",
-                            "Por favor, verifique los datos de acceso a la base" +
-                                    "de datos"
-                    );
-                    break;
-
-                default:
-
-                    LOGGER.error("Error de SQL no manejado: " + estadoSQL + "-" + e);
-                    utilidades.mostrarAlerta(
-                            "Error del sistema.",
-                            "Se produjo un error al acceder a la base de datos.",
-                            "Por favor, contacte al soporte técnico."
-                    );
-                    break;
-            }
+            manejadorExepciones.manejarSQLException(e, LOGGER, utilidades);
 
         } catch (IOException e) {
 
-            LOGGER.error("Error de entrada/salida al buscar al académico: " + e);
+            manejadorExepciones.manejarIOException(e, LOGGER, utilidades);
+
+        } catch (Exception e) {
+
+            LOGGER.error("Error inesperado al buscar académico: " + e);
             utilidades.mostrarAlerta(
-                    "Error de conexión",
-                    "Ocurrió un error antes de completar la búsqueda.",
-                    "Por favor, inténtelo nuevamente o contacte al administrador."
+                    "Error interno del sistema",
+                    "Ocurrió un error al buscar el académico.",
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                            "o contacte al administrador."
             );
         }
     }
@@ -345,61 +262,22 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (SQLException e) {
 
-            String estadoSQL = e.getSQLState();
-
-            switch (estadoSQL) {
-
-                case "08S01":
-
-                    LOGGER.error("Error de conexión con la base datos: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer una conexión con la base de datos.",
-                            "La base de datos se encuentra desactivada."
-                    );
-                    break;
-
-                case "42000":
-
-                    LOGGER.error("La base de datos no existe: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer conexión con la base de datos.",
-                            "La base de datos actualmente no existe."
-                    );
-                    break;
-
-                case "28000":
-
-                    LOGGER.error("Credenciales invalidas para el acceso: " + e);
-                    utilidades.mostrarAlerta(
-                            "Credenciales inválidas",
-                            "Usuario o contraseña incorrectos.",
-                            "Por favor, verifique los datos de acceso a la base" +
-                                    "de datos"
-                    );
-                    break;
-
-                default:
-
-                    LOGGER.error("Error de SQL no manejado: " + estadoSQL + "-" + e);
-                    utilidades.mostrarAlerta(
-                            "Error del sistema.",
-                            "Se produjo un error al acceder a la base de datos.",
-                            "Por favor, contacte al soporte técnico."
-                    );
-                    break;
-            }
+            manejadorExepciones.manejarSQLException(e, LOGGER, utilidades);
 
         } catch (IOException e) {
 
-            LOGGER.error("Error de entrada/salida al mostrar detalles del académico: " + e);
+            manejadorExepciones.manejarIOException(e, LOGGER, utilidades);
+
+        } catch (Exception e) {
+
+            LOGGER.error("Error inesperado al mostrar detalles del académico: " + e);
             utilidades.mostrarAlerta(
-                    "Error de conexión",
-                    "No fue posible recuperar los detalles del académico.",
-                    "Por favor, vuelva a intentarlo en unos minutos o" +
-                            "contacte al administrador."
+                    "Error interno del sistema",
+                    "Ocurrió un error al mostrar los detalles del académico.",
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                            "o contacte al administrador."
             );
+
         }
     }
 
@@ -418,77 +296,56 @@ public class ControladorGestorAcademicosGUI {
     private boolean eliminarAcademico(int numeroDePersonal) {
 
         AcademicoDAO academicoDAO = new AcademicoDAO();
+        GrupoDAO grupoDAO = new GrupoDAO();
         boolean estadoEliminacion = false;
+        boolean academicoEliminado = false;
 
         try {
 
-            boolean academicoEliminado =
-                    academicoDAO.eliminarAcademicoPorNumeroDePersonal(numeroDePersonal);
+            GrupoDTO grupoDTO =
+                    grupoDAO.buscarGrupoActivoPorNumeroDePersonal(numeroDePersonal);
+
+            if (grupoDTO.getNRC() != (-1)) {
+
+                utilidades.mostrarAlerta(
+                        "Error al eliminar académico",
+                        "El académico no puede ser eliminado porque está asignado a un grupo activo.",
+                        "Por favor, desasigne al académico del grupo antes de intentar eliminarlo."
+                );
+
+                estadoEliminacion = false;
+
+            } else {
+
+                academicoEliminado = academicoDAO.eliminarAcademicoPorNumeroDePersonal(numeroDePersonal);
+
+            }
 
             if (academicoEliminado) {
                 estadoEliminacion = true;
+
             } else {
+
                 LOGGER.warn("No se pudo eliminar al académico con número de personal: " +
                         numeroDePersonal);
             }
 
         } catch (SQLException e) {
 
-            String estadoSQL = e.getSQLState();
-
-            switch (estadoSQL) {
-
-                case "08S01":
-
-                    LOGGER.error("Error de conexión con la base datos: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer una conexión con la base de datos.",
-                            "La base de datos se encuentra desactivada."
-                    );
-                    break;
-
-                case "42000":
-
-                    LOGGER.error("La base de datos no existe: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer conexión con la base de datos.",
-                            "La base de datos actualmente no existe."
-                    );
-                    break;
-
-                case "28000":
-
-                    LOGGER.error("Credenciales invalidas para el acceso: " + e);
-                    utilidades.mostrarAlerta(
-                            "Credenciales inválidas",
-                            "Usuario o contraseña incorrectos.",
-                            "Por favor, verifique los datos de acceso a la base" +
-                                    "de datos"
-                    );
-                    break;
-
-                default:
-
-                    LOGGER.error("Error de SQL no manejado: " + estadoSQL + "-" + e);
-                    utilidades.mostrarAlerta(
-                            "Error del sistema.",
-                            "Se produjo un error al acceder a la base de datos.",
-                            "Por favor, contacte al soporte técnico."
-                    );
-                    break;
-            }
+            manejadorExepciones.manejarSQLException(e, LOGGER, utilidades);
 
         } catch (IOException e) {
 
-            LOGGER.error("Error de entrada/salida al eliminar académico: " + e);
+            manejadorExepciones.manejarIOException(e, LOGGER, utilidades);
+
+        } catch (Exception e) {
+
+            LOGGER.error("Error inesperado al eliminar académico: " + e);
             utilidades.mostrarAlerta(
-                    "Error de conexión",
-                    "No fue posible la eliminación.",
-                    "Error, no fue posible la eliminación debido a un error interno" +
-                            "dentro del sistema, por favor inténtelo de nuevo más tarde o contacte" +
-                            "al administrador."
+                    "Error interno del sistema",
+                    "Ocurrió un error al eliminar el académico.",
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                            "o contacte al administrador."
             );
         }
 
@@ -844,61 +701,11 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (SQLException e) {
 
-            String estadoSQL = e.getSQLState();
-
-            switch (estadoSQL) {
-
-                case "08S01":
-
-                    LOGGER.error("Error de conexión con la base datos: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer una conexión con la base de datos.",
-                            "La base de datos se encuentra desactivada."
-                    );
-                    break;
-
-                case "42000":
-
-                    LOGGER.error("La base de datos no existe: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer conexión con la base de datos.",
-                            "La base de datos actualmente no existe."
-                    );
-                    break;
-
-                case "28000":
-
-                    LOGGER.error("Credenciales invalidas para el acceso: " + e);
-                    utilidades.mostrarAlerta(
-                            "Credenciales inválidas",
-                            "Usuario o contraseña incorrectos.",
-                            "Por favor, verifique los datos de acceso a la base" +
-                                    "de datos"
-                    );
-                    break;
-
-                default:
-
-                    LOGGER.error("Error de SQL no manejado: " + estadoSQL + "-" + e);
-                    utilidades.mostrarAlerta(
-                            "Error del sistema.",
-                            "Se produjo un error al acceder a la base de datos.",
-                            "Por favor, contacte al soporte técnico."
-                    );
-                    break;
-            }
+            manejadorExepciones.manejarSQLException(e, LOGGER, utilidades);
 
         } catch (IOException e) {
 
-            LOGGER.error("Error de IOException al listar académicos: " + e);
-            utilidades.mostrarAlerta(
-                    "Error interno del sistema",
-                    "No se pudo completar la operación.",
-                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
-                            "o contacte al administrador."
-            );
+            manejadorExepciones.manejarIOException(e, LOGGER, utilidades);
 
         } catch (Exception e) {
 

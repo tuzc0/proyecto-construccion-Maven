@@ -12039,3 +12039,8 @@ The last packet sent successfully to the server was 0 milliseconds ago. The driv
 2025-06-22 15:23:48 [JavaFX Application Thread] ERROR GUI.ControladorObjetoEvaluacion - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
 
 The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-22 19:47:37 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - La base de datos no existe o hay un error de sintaxis SQL: java.sql.SQLSyntaxErrorException: Access denied for user 'coordinador'@'localhost' to database 'sistemapractias'
+2025-06-22 20:11:01 [JavaFX Application Thread] WARN  GUI.gestionacademico.ControladorRegistroAcademicoGUI - No se pudo eliminar al académico con número de personal: 83215
+2025-06-22 20:11:13 [JavaFX Application Thread] WARN  GUI.gestionacademico.ControladorRegistroAcademicoGUI - No se pudo eliminar al académico con número de personal: 67840
+2025-06-22 20:11:15 [JavaFX Application Thread] WARN  GUI.gestionacademico.ControladorRegistroAcademicoGUI - No se pudo eliminar al académico con número de personal: 83215
+2025-06-22 20:11:26 [JavaFX Application Thread] WARN  GUI.gestionacademico.ControladorRegistroAcademicoGUI - No se pudo eliminar al académico con número de personal: 83215

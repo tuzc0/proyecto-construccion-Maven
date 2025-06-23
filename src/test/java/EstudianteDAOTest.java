@@ -32,6 +32,19 @@ class EstudianteDAOTest {
     private final List<Integer> IDS_PROYECTOS_INSERTADOS = new ArrayList<>();
     private final List<String> MATRICULAS_INSERTADAS = new ArrayList<>();
 
+    @BeforeAll
+    void inicializarConexionALaBase() {
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+
+        } catch (SQLException | IOException e) {
+
+            fail("Error al inicializar la conexión a la base de datos: " + e);
+        }
+    }
+
     @BeforeEach
     void prepararDatosDePrueba() {
 
@@ -52,8 +65,6 @@ class EstudianteDAOTest {
         IDS_PROYECTOS_INSERTADOS.clear();
 
         try {
-
-            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
 
             conexionBaseDeDatos.prepareStatement("DELETE FROM evaluacion").executeUpdate();
             conexionBaseDeDatos.prepareStatement("DELETE FROM estudiante").executeUpdate();
@@ -184,8 +195,6 @@ class EstudianteDAOTest {
 
         try {
 
-            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
-
             conexionBaseDeDatos.prepareStatement("DELETE FROM evaluacion").executeUpdate();
             conexionBaseDeDatos.prepareStatement("DELETE FROM estudiante").executeUpdate();
             conexionBaseDeDatos.prepareStatement("DELETE FROM grupo").executeUpdate();
@@ -197,11 +206,24 @@ class EstudianteDAOTest {
             conexionBaseDeDatos.prepareStatement("DELETE FROM periodo").executeUpdate();
             conexionBaseDeDatos.prepareStatement("DELETE FROM usuario").executeUpdate();
 
-            conexionBaseDeDatos.close();
-
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
             fail("Error en @AfterEach al limpiar datos: " + e);
+        }
+    }
+
+    @AfterAll
+    void cerrarConexionALaBaseDeDatos() {
+
+        try {
+
+            if (conexionBaseDeDatos != null && !conexionBaseDeDatos.isClosed()) {
+
+                conexionBaseDeDatos.close();
+            }
+        } catch (SQLException e) {
+
+            fail("Error al cerrar la conexión a la base de datos: " + e);
         }
     }
 

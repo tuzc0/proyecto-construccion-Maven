@@ -21,6 +21,7 @@ public class ConexionBaseDeDatos {
     }
 
     public Connection getConnection() {
+
         return conexion;
     }
 }

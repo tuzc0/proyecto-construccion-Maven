@@ -58,6 +58,7 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
             consultaPreparada.setInt(2, numeroDePersonal);
 
             if (consultaPreparada.executeUpdate() > 0) {
+
                 eliminadoConExito = true;
             }
 
@@ -85,6 +86,7 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
             consultaPreparada.setInt(2, academicoEvaluador.getIdUsuario());
 
             if (consultaPreparada.executeUpdate() > 0) {
+
                 modificacionExitosa = true;
             }
 
@@ -181,6 +183,7 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
             resultadoConsulta = consultaPreparada.executeQuery();
 
             if (resultadoConsulta.next()) {
+
                 int numeroDePersonal = resultadoConsulta.getInt("numeroDePersonal");
                 String apellidos = resultadoConsulta.getString("apellidos");
                 String nombre = resultadoConsulta.getString("nombre");
@@ -188,8 +191,11 @@ public class AcademicoEvaluadorDAO implements IAcademicoEvaluadorDAO {
 
                 academicoEvaluador = new AcademicoEvaluadorDTO(numeroDePersonal, idUsuario, nombre, apellidos, estadoActivo);
             }
+
         } finally {
+
             if (consultaPreparada != null) {
+
                 consultaPreparada.close();
             }
         }

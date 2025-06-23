@@ -99,13 +99,13 @@ public class ControladorListarEstudiantesConReporteMensualGUI {
 
     private void configurarColumnaVerReporte() {
 
-        columnaVerReporte.setCellFactory(param ->
+        columnaVerReporte.setCellFactory(parametro ->
                 new javafx.scene.control.TableCell<>() {
                     private final javafx.scene.control.Button botonVerReporte =
                             new javafx.scene.control.Button("Ver Reporte");
 
                     {
-                        botonVerReporte.setOnAction(event -> {
+                        botonVerReporte.setOnAction(evento -> {
                             EstudianteDTO estudiante = getTableView().getItems().get(getIndex());
                             matriculaEstudiante = estudiante.getMatricula();
                             verListaReporteMensual();
@@ -134,15 +134,15 @@ public class ControladorListarEstudiantesConReporteMensualGUI {
 
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ListaReportesEstudianteGUI.fxml"));
-            Parent root = loader.load();
+            FXMLLoader cargadorVentana = new FXMLLoader(getClass().getResource("/ListaReportesEstudianteGUI.fxml"));
+            Parent raiz = cargadorVentana.load();
 
-            ControladorListarReportesPorEstudianteGUI controlador = loader.getController();
+            ControladorListarReportesPorEstudianteGUI controlador = cargadorVentana.getController();
             controlador.setMatriculaEstudiante(matriculaEstudiante);
 
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
+            Stage escenaVentana = new Stage();
+            escenaVentana.setScene(new Scene(raiz));
+            escenaVentana.show();
 
         } catch (IOException e) {
 

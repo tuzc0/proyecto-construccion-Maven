@@ -148,10 +148,10 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
         columna.setCellFactory(col -> new TableCell<>() {
 
-            private final RadioButton radio = new RadioButton();
+            private final RadioButton radioBotonCalificacion = new RadioButton();
 
             {
-                radio.setOnAction(e -> {
+                radioBotonCalificacion.setOnAction(e -> {
                     AutoEvaluacionContieneDTO autoEvaluacionContiene =
                             getTableView().getItems().get(getIndex()).getAutoEvaluacionContiene();
                     autoEvaluacionContiene.setCalificacion(valor);
@@ -172,8 +172,8 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
                     AutoEvaluacionContieneDTO autoEvaluacionContiene =
                             getTableView().getItems().get(getIndex()).getAutoEvaluacionContiene();
-                    radio.setSelected(autoEvaluacionContiene.getCalificacion() == valor);
-                    setGraphic(radio);
+                    radioBotonCalificacion.setSelected(autoEvaluacionContiene.getCalificacion() == valor);
+                    setGraphic(radioBotonCalificacion);
                 }
             }
         });

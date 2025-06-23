@@ -12,16 +12,14 @@ import logica.VerificacionUsuario;
 import logica.interfaces.IGestorAlertas;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Text;
 
-import javax.imageio.IIOException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ControladorConsultarRepresentante {
+public class ControladorConsultarRepresentanteGUI {
 
-    Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorConsultarRepresentante.class);
+    Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorConsultarRepresentanteGUI.class);
 
     @FXML
     TextField campoNombre;
@@ -169,10 +167,10 @@ public class ControladorConsultarRepresentante {
 
         RepresentanteDAO representanteDAO = new RepresentanteDAO();
 
-        String nombre = campoNombre.getText();
-        String apellidos = campoApellidos.getText();
-        String correo = campoCorreo.getText();
-        String telefono = campoTelefono.getText();
+        String nombre = campoNombre.getText().trim();
+        String apellidos = campoApellidos.getText().trim();
+        String correo = campoCorreo.getText().trim();
+        String telefono = campoTelefono.getText().trim();
 
         try {
 

@@ -599,7 +599,7 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
 
             Stage ventanaActual = (Stage) botonCambiarOrganizacion.getScene().getWindow();
 
-            FXMLLoader cargarFXML = new FXMLLoader(getClass().getResource("/SeleccionarRepresentante.fxml"));
+            FXMLLoader cargarFXML = new FXMLLoader(getClass().getResource("/SeleccionarRepresentanteGUI.fxml"));
             Parent contenidoVentana = cargarFXML.load();
 
             ControladorSeleccionRepresentanteGUI controladorSeleccionRepresentante = cargarFXML.getController();

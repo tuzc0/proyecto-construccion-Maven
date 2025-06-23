@@ -76,12 +76,12 @@ public class ControladorConsultarEvaluacionesEstudianteGUI {
 
             for (EvaluacionDTO evaluacion : listaEvaluaciones) {
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ObjetoEvaluacion.fxml"));
+                FXMLLoader cargadorVentana = new FXMLLoader(getClass().getResource("/ObjetoEvaluacion.fxml"));
                 Node objetoEvaluacion;
 
                 try {
 
-                    objetoEvaluacion = loader.load();
+                    objetoEvaluacion = cargadorVentana.load();
 
                 } catch (IOException e) {
 
@@ -98,7 +98,7 @@ public class ControladorConsultarEvaluacionesEstudianteGUI {
                     continue;
                 }
 
-                ControladorObjetoEvaluacion controlador = loader.getController();
+                ControladorObjetoEvaluacion controlador = cargadorVentana.getController();
                 String nombreEvaluador = obtenerNombreEvaluador(evaluacion.getNumeroDePersonal());
                 controlador.setDatosEvaluacion(nombreEvaluador, String.valueOf(evaluacion.getCalificacionFinal()), evaluacion.getIDEvaluacion());
 

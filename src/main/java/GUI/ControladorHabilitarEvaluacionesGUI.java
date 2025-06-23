@@ -96,14 +96,14 @@ public class ControladorHabilitarEvaluacionesGUI {
 
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistrarCriterioEvaluacionGUI.fxml"));
-            Parent root = loader.load();
+            FXMLLoader cargadorVentana = new FXMLLoader(getClass().getResource("/RegistrarCriterioEvaluacionGUI.fxml"));
+            Parent raiz = cargadorVentana.load();
 
-            Stage stage = new Stage();
-            stage.setTitle("Registrar Nuevo Criterio");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
+            Stage escenaVentana = new Stage();
+            escenaVentana.setTitle("Registrar Nuevo Criterio");
+            escenaVentana.setScene(new Scene(raiz));
+            escenaVentana.initModality(Modality.APPLICATION_MODAL);
+            escenaVentana.showAndWait();
 
             cargarCriterios();
 
@@ -177,9 +177,9 @@ public class ControladorHabilitarEvaluacionesGUI {
     public void editarCriterios() {
 
         columnaDescripcion.setCellFactory(TextFieldTableCell.forTableColumn());
-        columnaDescripcion.setOnEditCommit(event -> {
-            CriterioEvaluacionDTO criterio = event.getRowValue();
-            criterio.setDescripcion(event.getNewValue());
+        columnaDescripcion.setOnEditCommit(evento -> {
+            CriterioEvaluacionDTO criterio = evento.getRowValue();
+            criterio.setDescripcion(evento.getNewValue());
             actualizarCriterioEnBaseDeDatos(criterio);
 
 

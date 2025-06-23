@@ -304,14 +304,14 @@ public class ControladorGestorEstudiantesGUI {
                 return;
             }
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistroEstudianteGUI.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
+            FXMLLoader cargadorVentana = new FXMLLoader(getClass().getResource("/RegistroEstudianteGUI.fxml"));
+            Parent raiz = cargadorVentana.load();
+            Stage escenaVentana = new Stage();
+            escenaVentana.setScene(new Scene(raiz));
 
-            stage.setOnHiding(event -> cargarEstudiantes());
+            escenaVentana.setOnHiding(evento -> cargarEstudiantes());
 
-            stage.show();
+            escenaVentana.show();
 
         } catch (IOException e) {
 

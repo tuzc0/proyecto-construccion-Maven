@@ -99,11 +99,11 @@ public class ControladorHabilitarAutoevaluacionGUI {
 
             FXMLLoader cargarFXML =
                     new FXMLLoader(getClass().getResource("/RegistrarCriterioAutoevaluacionGUI.fxml"));
-            Parent root = cargarFXML.load();
+            Parent raiz = cargarFXML.load();
 
             Stage ventana = new Stage();
             ventana.setTitle("Registrar Nuevo Criterio");
-            ventana.setScene(new Scene(root));
+            ventana.setScene(new Scene(raiz));
             ventana.initModality(Modality.APPLICATION_MODAL);
             ventana.showAndWait();
 
@@ -177,9 +177,9 @@ public class ControladorHabilitarAutoevaluacionGUI {
     public void editarCriterios() {
 
         columnaDescripcion.setCellFactory(TextFieldTableCell.forTableColumn());
-        columnaDescripcion.setOnEditCommit(event -> {
-            CriterioAutoevaluacionDTO criterio = event.getRowValue();
-            criterio.setDescripcion(event.getNewValue());
+        columnaDescripcion.setOnEditCommit(evento -> {
+            CriterioAutoevaluacionDTO criterio = evento.getRowValue();
+            criterio.setDescripcion(evento.getNewValue());
             actualizarCriterioEnBaseDeDatos(criterio);
 
             botonAñadirCriterio.setDisable(false);

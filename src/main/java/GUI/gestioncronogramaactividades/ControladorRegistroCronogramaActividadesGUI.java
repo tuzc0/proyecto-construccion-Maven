@@ -253,6 +253,7 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
             for (ActividadDTO actividad : actividadesSecundarias) {
 
+                int estadoActivo = 1;
                 int idActividad = actividadDAO.crearNuevaActividad(actividad);
                 String mes = actividad.getFechaInicio().toLocalDate().getMonth().toString();
 
@@ -260,7 +261,7 @@ public class ControladorRegistroCronogramaActividadesGUI {
                         idCronograma,
                         idActividad,
                         mes,
-                        1
+                        estadoActivo
                 );
 
                 cronogramaContieneDAO.insertarCronogramaContiene(cronogramaContieneDTO);
@@ -307,16 +308,17 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
                 String nombreDia = gestorHorarios.obtenerNombreDia(dia);
 
-                int hInicio = Integer.parseInt(combos.get(0).getValue());
-                int mInicio = Integer.parseInt(combos.get(1).getValue());
-                int hFin = Integer.parseInt(combos.get(2).getValue());
-                int mFin = Integer.parseInt(combos.get(3).getValue());
+                int horaInicio = Integer.parseInt(combos.get(0).getValue());
+                int minutoInicio = Integer.parseInt(combos.get(1).getValue());
+                int horaFin = Integer.parseInt(combos.get(2).getValue());
+                int minutoFin = Integer.parseInt(combos.get(3).getValue());
+                int idHorario = 0;
 
-                Time inicio = Time.valueOf(String.format("%02d:%02d:00", hInicio, mInicio));
-                Time fin = Time.valueOf(String.format("%02d:%02d:00", hFin, mFin));
+                Time inicio = Time.valueOf(String.format("%02d:%02d:00", horaInicio, minutoInicio));
+                Time fin = Time.valueOf(String.format("%02d:%02d:00", horaFin, minutoFin));
 
                 HorarioProyectoDTO horario = new HorarioProyectoDTO(
-                        0,
+                        idHorario,
                         idProyecto,
                         nombreDia,
                         inicio,
@@ -336,18 +338,18 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistrarActividadGUI.fxml"));
-            Parent root = loader.load();
+            FXMLLoader cargadorVentana = new FXMLLoader(getClass().getResource("/RegistrarActividadGUI.fxml"));
+            Parent raiz = cargadorVentana.load();
 
-            ControladorRegistroActividadGUI controlador = loader.getController();
+            ControladorRegistroActividadGUI controlador = cargadorVentana.getController();
             controlador.setControladorPrincipal(this);
             controlador.setDatosIniciales(matriculaEstudiante);
 
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Registrar Actividad");
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
+            Stage escenaVentana = new Stage();
+            escenaVentana.setScene(new Scene(raiz));
+            escenaVentana.setTitle("Registrar Actividad");
+            escenaVentana.initModality(Modality.APPLICATION_MODAL);
+            escenaVentana.showAndWait();
 
         } catch (IOException e) {
 

@@ -94,14 +94,14 @@ public class ControladorListarEstudiantesConAutoevaluacionGUI {
 
     private void configurarColumnaVerAutoevaluacion() {
 
-        columnaVerAutoevaluacion.setCellFactory(param ->
+        columnaVerAutoevaluacion.setCellFactory(parametro ->
                 new javafx.scene.control.TableCell<>() {
 
                     private final javafx.scene.control.Button botonVerEvaluacion =
                             new javafx.scene.control.Button("Ver Autoevaluacion");
 
                     {
-                        botonVerEvaluacion.setOnAction(event -> {
+                        botonVerEvaluacion.setOnAction(evento -> {
                             EstudianteDTO estudiante = getTableView().getItems().get(getIndex());
                             matriculaEstudiante = estudiante.getMatricula();
                             verAutoevaluacion();

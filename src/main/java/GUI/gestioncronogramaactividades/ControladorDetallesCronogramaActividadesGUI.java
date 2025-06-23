@@ -171,6 +171,7 @@ public class ControladorDetallesCronogramaActividadesGUI {
             Time horaFin = horario.getHoraFin();
 
             switch (dia.toLowerCase()) {
+
                 case "lunes":
 
                     checkLunes.setSelected(true);
@@ -216,13 +217,13 @@ public class ControladorDetallesCronogramaActividadesGUI {
                 new Callback<TableColumn<ActividadDTO, Void>, TableCell<ActividadDTO, Void>>() {
 
                     @Override
-                    public TableCell<ActividadDTO, Void> call(TableColumn<ActividadDTO, Void> param) {
+                    public TableCell<ActividadDTO, Void> call(TableColumn<ActividadDTO, Void> parametro) {
                         return new TableCell<ActividadDTO, Void>() {
 
                             private final Button botonDetalles = new Button("Ver detalles");
 
                             {
-                                botonDetalles.setOnAction(event -> {
+                                botonDetalles.setOnAction(evento -> {
                                     ActividadDTO actividad = getTableView().getItems().get(getIndex());
                                     abrirVentanaDetallesActividad(actividad.getIDActividad());
                                 });
@@ -249,17 +250,17 @@ public class ControladorDetallesCronogramaActividadesGUI {
 
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/DetallesActividadGUI.fxml"));
-            Parent root = loader.load();
+            FXMLLoader cargadorVentana = new FXMLLoader(getClass().getResource("/DetallesActividadGUI.fxml"));
+            Parent raiz = cargadorVentana.load();
 
-            ControladorDetallesActividadGUI controlador = loader.getController();
+            ControladorDetallesActividadGUI controlador = cargadorVentana.getController();
             controlador.setIdActividad(idActividad);
 
-            Stage stage = new Stage();
-            stage.setTitle("Detalles de Actividad");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.show();
+            Stage escenaVentana = new Stage();
+            escenaVentana.setTitle("Detalles de Actividad");
+            escenaVentana.setScene(new Scene(raiz));
+            escenaVentana.initModality(Modality.APPLICATION_MODAL);
+            escenaVentana.show();
 
         } catch (IOException e) {
 

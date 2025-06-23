@@ -96,14 +96,14 @@ public class ControladorRegistrarEvaluacionGUI {
 
 
         columnaCalificacion.setCellFactory(TextFieldTableCell.forTableColumn());
-        columnaCalificacion.setOnEditCommit(event -> {
+        columnaCalificacion.setOnEditCommit(evento -> {
 
-            ContenedorCriteriosEvaluacion contenedor = event.getRowValue();
+            ContenedorCriteriosEvaluacion contenedor = evento.getRowValue();
             EvaluacionContieneDTO evaluacionContiene = contenedor.getEvaluacionContiene();
 
             try {
 
-                float nuevaCalificacion = Float.parseFloat(event.getNewValue());
+                float nuevaCalificacion = Float.parseFloat(evento.getNewValue());
 
                 if (nuevaCalificacion < 0 || nuevaCalificacion > 10) {
 

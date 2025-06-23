@@ -23,11 +23,15 @@ public class ActividadDAOTest {
     private static final Logger LOGGER = LogManager.getLogger(ActividadDAOTest.class);
 
     private ActividadDAO actividadDAO;
+
     private static Connection conexionBaseDeDatos;
+
     private IGestorAlertas gestorAlertas;
+
     private ManejadorExcepciones manejadorExcepciones;
 
     private final List<Integer> IDS_ACTIVIDADES_CREADAS = new ArrayList<>();
+
 
     @BeforeAll
     static void inicializarConexion() {

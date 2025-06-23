@@ -97,11 +97,12 @@ public class ControladorListarReportesPorEstudianteGUI {
     }
 
     private void configurarColumnaVerReporte() {
-        columnaVerReporte.setCellFactory(param -> new TableCell<>() {
+
+        columnaVerReporte.setCellFactory(parametro -> new TableCell<>() {
             private final Button BOTON_VER_DETALLES = new Button("Ver Detalles");
 
             {
-                BOTON_VER_DETALLES.setOnAction(event -> {
+                BOTON_VER_DETALLES.setOnAction(evento -> {
                     ReporteDTO reporte = getTableView().getItems().get(getIndex());
                     idReporteSeleccionado = reporte.getIDReporte();
                     verDetallesReporte(reporte);

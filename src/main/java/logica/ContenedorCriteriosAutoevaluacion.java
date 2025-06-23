@@ -9,6 +9,7 @@ public class ContenedorCriteriosAutoevaluacion {
     private AutoEvaluacionContieneDTO autoEvaluacionContiene;
 
     public ContenedorCriteriosAutoevaluacion(CriterioAutoevaluacionDTO criterioAutoevaluacion, AutoEvaluacionContieneDTO autoEvaluacionContiene) {
+
         this.criterioAutoevaluacion = criterioAutoevaluacion;
         this.autoEvaluacionContiene = autoEvaluacionContiene;
     }

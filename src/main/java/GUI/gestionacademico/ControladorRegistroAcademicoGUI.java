@@ -279,10 +279,10 @@ public class ControladorRegistroAcademicoGUI {
     @FXML
     private void cancelarRegistroAcademico() {
 
-        String nombreOriginal = campoNombre.getText();
-        String apellidosOriginal = campoApellidos.getText();
-        String numeroPersonalOriginal = campoNumeroPersonal.getText();
-        String correoOriginal = campoCorreo.getText();
+        String nombreOriginal = campoNombre.getText().trim();
+        String apellidosOriginal = campoApellidos.getText().trim();
+        String numeroPersonalOriginal = campoNumeroPersonal.getText().trim();
+        String correoOriginal = campoCorreo.getText().trim();
 
         utilidadesVentana.mostrarAlertaConfirmacion(
                 "Confirmar cancelación",

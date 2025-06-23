@@ -5964,7 +5964,7 @@ javafx.fxml.LoadException:
 	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3248) ~[javafx.fxml.jar:?]
 	at javafx.fxml.FXMLLoader.load(FXMLLoader.java:3241) ~[javafx.fxml.jar:?]
 	at GUI.utilidades.Utilidades.mostrarVentana(Utilidades.java:26) ~[classes/:?]
-	at GUI.menuusarios.ControladorMenuCoordinador.abrirConsultarOrganizacionVinculada(ControladorMenuCoordinador.java:42) ~[classes/:?]
+	at GUI.menuusarios.ControladorMenuCoordinadorGUI.abrirConsultarOrganizacionVinculada(ControladorMenuCoordinador.java:42) ~[classes/:?]
 	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
@@ -6055,7 +6055,7 @@ javafx.fxml.LoadException:
 	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3248) ~[javafx.fxml.jar:?]
 	at javafx.fxml.FXMLLoader.load(FXMLLoader.java:3241) ~[javafx.fxml.jar:?]
 	at GUI.utilidades.Utilidades.mostrarVentana(Utilidades.java:26) ~[classes/:?]
-	at GUI.menuusarios.ControladorMenuCoordinador.abrirConsultarOrganizacionVinculada(ControladorMenuCoordinador.java:42) ~[classes/:?]
+	at GUI.menuusarios.ControladorMenuCoordinadorGUI.abrirConsultarOrganizacionVinculada(ControladorMenuCoordinador.java:42) ~[classes/:?]
 	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
@@ -6146,7 +6146,7 @@ javafx.fxml.LoadException:
 	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3248) ~[javafx.fxml.jar:?]
 	at javafx.fxml.FXMLLoader.load(FXMLLoader.java:3241) ~[javafx.fxml.jar:?]
 	at GUI.utilidades.Utilidades.mostrarVentana(Utilidades.java:26) ~[classes/:?]
-	at GUI.menuusarios.ControladorMenuCoordinador.abrirConsultarOrganizacionVinculada(ControladorMenuCoordinador.java:42) ~[classes/:?]
+	at GUI.menuusarios.ControladorMenuCoordinadorGUI.abrirConsultarOrganizacionVinculada(ControladorMenuCoordinador.java:42) ~[classes/:?]
 	at jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx.base.jar:?]
@@ -12834,3 +12834,48 @@ java.lang.NullPointerException: Cannot invoke "java.sql.Timestamp.toString()" be
 	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
 	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
 	at java.lang.Thread.run(Thread.java:1570) [?:?]
+2025-06-23 10:54:39 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-23 11:12:56 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Credenciales inválidas: java.sql.SQLException: Access denied for user 'claudio_test'@'localhost' (using password: YES)
+2025-06-23 11:13:01 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Credenciales inválidas: java.sql.SQLException: Access denied for user 'claudio_test'@'localhost' (using password: YES)
+2025-06-23 11:13:21 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Credenciales inválidas: java.sql.SQLException: Access denied for user 'claudio_test'@'localhost' (using password: YES)
+2025-06-23 11:15:08 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - Criterios de autoevaluación actualizados correctamente.
+2025-06-23 11:15:09 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error inesperado al guardar la autoevaluación: java.lang.NullPointerException: Location is required.
+2025-06-23 11:17:33 [JavaFX Application Thread] INFO  GUI.gestionacademicoevaluador.ControladorRegistroAcademicoEvaluadorGUI - Registro exitoso.
+2025-06-23 11:27:25 [JavaFX Application Thread] ERROR GUI.ControladorHabilitarEvaluacionesGUI - No se ha seleccionado ningún criterio para eliminar.
+2025-06-23 11:27:28 [JavaFX Application Thread] INFO  GUI.ControladorHabilitarEvaluacionesGUI - Criterio eliminado correctamente.
+2025-06-23 11:27:33 [JavaFX Application Thread] INFO  GUI.ControladorHabilitarEvaluacionesGUI - Criterio eliminado correctamente.
+2025-06-23 11:27:34 [JavaFX Application Thread] INFO  GUI.ControladorHabilitarEvaluacionesGUI - Criterio eliminado correctamente.
+2025-06-23 11:27:36 [JavaFX Application Thread] INFO  GUI.ControladorHabilitarEvaluacionesGUI - Criterio eliminado correctamente.
+2025-06-23 11:27:37 [JavaFX Application Thread] INFO  GUI.ControladorHabilitarEvaluacionesGUI - Criterio eliminado correctamente.
+2025-06-23 11:27:39 [JavaFX Application Thread] INFO  GUI.ControladorHabilitarEvaluacionesGUI - Criterio eliminado correctamente.
+2025-06-23 11:28:10 [JavaFX Application Thread] ERROR GUI.ControladorHabilitarEvaluacionesGUI - No se pudo actualizar el criterio.
+2025-06-23 11:29:17 [JavaFX Application Thread] INFO  GUI.ControladorHabilitarEvaluacionesGUI - Criterio eliminado correctamente.
+2025-06-23 11:32:24 [JavaFX Application Thread] WARN  GUI.ControladorRegistrarEvaluacionGUI - La calificación debe estar entre 0 y 100.
+2025-06-23 11:32:28 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-23 11:32:31 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-23 11:32:33 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-23 11:32:36 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-23 11:32:39 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-23 11:35:41 [JavaFX Application Thread] WARN  GUI.ControladorRegistrarEvaluacionGUI - La calificación debe estar entre 0 y 100.
+2025-06-23 11:35:47 [JavaFX Application Thread] WARN  GUI.ControladorRegistrarEvaluacionGUI - El valor ingresado no es un número válido.
+2025-06-23 11:35:59 [JavaFX Application Thread] WARN  GUI.ControladorRegistrarEvaluacionGUI - La calificación debe estar entre 0 y 100.
+2025-06-23 11:36:06 [JavaFX Application Thread] WARN  GUI.ControladorRegistrarEvaluacionGUI - La calificación debe estar entre 0 y 100.
+2025-06-23 11:36:11 [JavaFX Application Thread] WARN  GUI.ControladorRegistrarEvaluacionGUI - El valor ingresado no es un número válido.
+2025-06-23 11:36:47 [JavaFX Application Thread] WARN  GUI.ControladorRegistrarEvaluacionGUI - La calificación debe estar entre 0 y 100.
+2025-06-23 11:37:04 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-23 11:38:14 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-23 11:38:24 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-23 11:38:27 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-23 11:38:28 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-23 11:38:47 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
+2025-06-23 11:40:29 [JavaFX Application Thread] ERROR GUI.ControladorConsultarEstudiantesAEvaluarGUI - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-23 11:59:52 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error inesperado: javax.crypto.IllegalBlockSizeException: Input length must be multiple of 16 when decrypting with padded cipher
+2025-07-23 12:04:06 [JavaFX Application Thread] ERROR GUI.menuusarios.ControladorMenuEstudianteGUI - Violación de restricción de integridad: java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`sistemapracticas`.`reportecontiene`, CONSTRAINT `reportecontiene_ibfk_1` FOREIGN KEY (`idReporte`) REFERENCES `reporte` (`idReporte`))
+2025-07-23 12:07:50 [JavaFX Application Thread] ERROR GUI.menuusarios.ControladorMenuEstudianteGUI - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-23 12:09:05 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error inesperado: javax.crypto.IllegalBlockSizeException: Input length must be multiple of 16 when decrypting with padded cipher

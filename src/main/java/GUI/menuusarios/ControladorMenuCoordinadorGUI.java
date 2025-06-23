@@ -1,10 +1,9 @@
 package GUI.menuusarios;
 
-import GUI.ControladorInicioDeSesionGUI;
 import GUI.utilidades.Utilidades;
 import javafx.fxml.FXML;
 
-public class ControladorMenuCoordinador {
+public class ControladorMenuCoordinadorGUI {
 
     Utilidades utilidades = new Utilidades();
 

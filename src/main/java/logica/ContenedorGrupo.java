@@ -12,6 +12,7 @@ public class ContenedorGrupo {
 
 
     public ContenedorGrupo(GrupoDTO grupo, AcademicoDTO academico) {
+
         this.grupo = grupo;
         this.academico = academico;
     }

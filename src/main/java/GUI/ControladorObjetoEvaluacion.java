@@ -41,16 +41,16 @@ public class ControladorObjetoEvaluacion {
 
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/DetallesEvaluacionGUI.fxml"));
-            Stage stage = new Stage();
-            stage.setScene(new Scene(loader.load()));
+            FXMLLoader cargadorVentana = new FXMLLoader(getClass().getResource("/DetallesEvaluacionGUI.fxml"));
+            Stage escenaVentana = new Stage();
+            escenaVentana.setScene(new Scene(cargadorVentana.load()));
 
-            ControladorDetallesEvaluacionGUI controller = loader.getController();
+            ControladorDetallesEvaluacionGUI controller = cargadorVentana.getController();
             controller.cargarDetallesEvaluacion(this.idEvaluacion);
 
-            stage.setTitle("Detalles de Evaluación");
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.show();
+            escenaVentana.setTitle("Detalles de Evaluación");
+            escenaVentana.initModality(Modality.APPLICATION_MODAL);
+            escenaVentana.show();
 
         } catch (IOException e) {
 

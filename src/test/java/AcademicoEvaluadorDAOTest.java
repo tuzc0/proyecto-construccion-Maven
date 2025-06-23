@@ -21,14 +21,19 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+
 public class AcademicoEvaluadorDAOTest {
 
     private static final Logger LOGGER = LogManager.getLogger(AcademicoEvaluadorDAOTest.class);
 
     private AcademicoEvaluadorDAO academicoEvaluadorDAO;
+
     private UsuarioDAO usuarioDAO;
+
     private static Connection conexionBaseDeDatos;
+
     private IGestorAlertas gestorAlertas;
+
     private ManejadorExcepciones manejadorExcepciones;
 
     private final List<Integer> NUMEROS_DE_PERSONAL_INSERTADOS = new ArrayList<>();
@@ -719,6 +724,7 @@ public class AcademicoEvaluadorDAOTest {
 
         } catch (SQLException e) {
 
+
             manejadorExcepciones.manejarSQLException(e);
             fail("No se esperaba una excepción: " + e);
 
@@ -727,5 +733,6 @@ public class AcademicoEvaluadorDAOTest {
             manejadorExcepciones.manejarIOException(e);
             fail("No se esperaba una excepción: " +e);
         }
+
     }
 }

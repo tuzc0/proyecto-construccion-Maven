@@ -202,6 +202,7 @@ public class ManejadorExcepciones {
 
             LOGGER.error("Excepción no controlada durante operación con Google Drive: " + e);
             MENSAJE_DE_ALERTA.mostrarAlerta(
+
                     "Error inesperado",
                     "Ocurrió un error inesperado al subir el archivo.",
                     "Detalles: " + e.getMessage()

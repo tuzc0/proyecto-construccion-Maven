@@ -61,11 +61,11 @@ public class ControladorRegistrarCalificacionFinalGUI {
     }
 
     private Callback<TableColumn<EstudianteDTO, Void>, TableCell<EstudianteDTO, Void>> crearBotonAsignarCalificacion() {
-        return param -> new TableCell<>() {
+        return parametro -> new TableCell<>() {
             private final Button botonAsignar = new Button("Asignar/Editar");
 
             {
-                botonAsignar.setOnAction(event -> {
+                botonAsignar.setOnAction(evento -> {
                     EstudianteDTO estudiante = getTableView().getItems().get(getIndex());
                     mostrarDialogoCalificacion(estudiante);
                 });

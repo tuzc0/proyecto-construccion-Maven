@@ -140,25 +140,21 @@ public class ControladorRegistroEstudianteGUI {
 
 
     @FXML
-    private void guardarEstudiante(ActionEvent event) {
+    private void guardarEstudiante(ActionEvent evento) {
 
         EncriptadorContraseñas encriptadorContraseñas = new EncriptadorContraseñas();
 
-        String nombre = campoNombre.getText();
-        String apellidos = campoApellidos.getText();
-        String matricula = campoMatricula.getText();
-        String correo = campoCorreo.getText();
-        String contraseña = contraseñaIngresada.getText();
-        String confirmarContraseña = contraseñaConfirmada.getText();
+        String nombre = campoNombre.getText().trim();
+        String apellidos = campoApellidos.getText().trim();
+        String matricula = campoMatricula.getText().trim();
+        String correo = campoCorreo.getText().trim();
+        String contraseña = contraseñaIngresada.getText().trim();
+        String confirmarContraseña = contraseñaConfirmada.getText().trim();
 
         int estadoActivo = 1;
         int idUsuario = 0;
 
-
-
-
         try {
-
 
             List<String> errores = verificacionUsuario.validarCamposRegistroEstudiante(nombre, apellidos, matricula, correo, contraseña, confirmarContraseña);
 

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" prefHeight="521.0" prefWidth="1000" spacing="20" style="-fx-background-color: #f0f4f8; -fx-padding: 30;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.menuusarios.ControladorMenuCoordinador">
+<VBox alignment="TOP_CENTER" prefHeight="521.0" prefWidth="1000" spacing="20" style="-fx-background-color: #f0f4f8; -fx-padding: 30;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.menuusarios.ControladorMenuCoordinadorGUI">
 
    <!-- Encabezado -->
    <Label style="-fx-text-fill: #1e3a8a; -fx-font-weight: bold;" text="Menú del Coordinador">

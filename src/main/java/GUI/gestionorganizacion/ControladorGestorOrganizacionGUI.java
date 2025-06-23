@@ -248,10 +248,10 @@ public class ControladorGestorOrganizacionGUI {
         OrganizacionVinculadaDAO organizacionDAO = new OrganizacionVinculadaDAO();
         OrganizacionVinculadaDTO organizacionDTO = new OrganizacionVinculadaDTO();
 
-        String nombre = campoNombreEditable.getText();
-        String correo = campoCorreoEditable.getText();
-        String contacto = campoContactoEditable.getText();
-        String direccion = campoDireccionEditable.getText();
+        String nombre = campoNombreEditable.getText().trim();
+        String correo = campoCorreoEditable.getText().trim();
+        String contacto = campoContactoEditable.getText().trim();
+        String direccion = campoDireccionEditable.getText().trim();
 
         try {
 
@@ -390,15 +390,15 @@ public class ControladorGestorOrganizacionGUI {
 
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistroRepresentanteGUI.fxml"));
-            Parent root = loader.load();
+            FXMLLoader cargadorVentana = new FXMLLoader(getClass().getResource("/RegistroRepresentanteGUI.fxml"));
+            Parent raiz = cargadorVentana.load();
 
-            ControladorRegistroRepresentanteGUI controladorRegistroRepresentanteGUI = loader.getController();
+            ControladorRegistroRepresentanteGUI controladorRegistroRepresentanteGUI = cargadorVentana.getController();
             controladorRegistroRepresentanteGUI.setIdOrganizacion(idOrganizacionSeleccionada);
 
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
+            Stage escenaVentana = new Stage();
+            escenaVentana.setScene(new Scene(raiz));
+            escenaVentana.show();
 
             listarRepresentantes();
 
@@ -431,7 +431,7 @@ public class ControladorGestorOrganizacionGUI {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ConsultarRepresentanteGUI.fxml"));
             Parent root = loader.load();
 
-            ControladorConsultarRepresentante controlador = loader.getController();
+            ControladorConsultarRepresentanteGUI controlador = loader.getController();
             controlador.setIdRepresentante(idRepresentanteSeleccionado);
 
             Stage stage = new Stage();

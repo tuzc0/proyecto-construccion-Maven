@@ -103,7 +103,7 @@ public class ControladorCrearGruposYPeriodoGUI {
 
     private void restringirFechas(String periodo) {
 
-        fechaInicio.setDayCellFactory(picker -> new DateCell() {
+        fechaInicio.setDayCellFactory(selector -> new DateCell() {
             @Override
             public void updateItem(java.time.LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
@@ -120,7 +120,7 @@ public class ControladorCrearGruposYPeriodoGUI {
             }
         });
 
-        fechaFinal.setDayCellFactory(picker -> new DateCell() {
+        fechaFinal.setDayCellFactory(selector -> new DateCell() {
             @Override
             public void updateItem(java.time.LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
@@ -271,14 +271,14 @@ public class ControladorCrearGruposYPeriodoGUI {
 
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/CrearGrupoGUI.fxml"));
-            Parent root = loader.load();
+            FXMLLoader cargadorVentana = new FXMLLoader(getClass().getResource("/CrearGrupoGUI.fxml"));
+            Parent raiz = cargadorVentana.load();
 
-            Stage stage = new Stage();
-            stage.setTitle("Crear nuevo grupo");
-            stage.setScene(new Scene(root));
-            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
-            stage.showAndWait();
+            Stage escenaVentana = new Stage();
+            escenaVentana.setTitle("Crear nuevo grupo");
+            escenaVentana.setScene(new Scene(raiz));
+            escenaVentana.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            escenaVentana.showAndWait();
             cargarGruposActivos();
 
         } catch (IOException e) {
@@ -342,11 +342,14 @@ public class ControladorCrearGruposYPeriodoGUI {
 
             PeriodoDTO nuevoPeriodo = new PeriodoDTO();
 
-            nuevoPeriodo.setIDPeriodo(0);
+            int idPeriodo = 0;
+            int estadoActivo = 1;
+
+            nuevoPeriodo.setIDPeriodo(idPeriodo);
             nuevoPeriodo.setDescripcion(comboPeriodo.getValue());
             nuevoPeriodo.setFechaInicio(java.sql.Date.valueOf(fechaInicio.getValue()));
             nuevoPeriodo.setFechaFinal(java.sql.Date.valueOf(fechaFinal.getValue()));
-            nuevoPeriodo.setEstadoActivo(1);
+            nuevoPeriodo.setEstadoActivo(estadoActivo);
 
             periodoDAO.crearNuevoPeriodo(nuevoPeriodo);
 

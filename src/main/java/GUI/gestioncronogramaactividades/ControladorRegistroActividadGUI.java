@@ -68,9 +68,9 @@ public class ControladorRegistroActividadGUI {
     @FXML
     private void añadirActividad() throws SQLException, IOException {
 
-        String nombreActividad = campoNombreActividad.getText();
-        String duracion = campoDuracion.getText();
-        String hitos = campoHitos.getText();
+        String nombreActividad = campoNombreActividad.getText().trim();
+        String duracion = campoDuracion.getText().trim();
+        String hitos = campoHitos.getText().trim();
         LocalDate fechaInicio = fechaInicioActividad.getValue();
         LocalDate fechaFin = fechaFinActividad.getValue();
 

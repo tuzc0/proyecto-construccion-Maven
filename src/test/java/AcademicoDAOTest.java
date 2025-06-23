@@ -25,11 +25,15 @@ public class AcademicoDAOTest {
     private static final Logger LOGGER = LogManager.getLogger(AcademicoDAOTest.class);
 
     private AcademicoDAO academicoDAO;
+
     private UsuarioDAO usuarioDAO;
+
     private static Connection conexionBaseDeDatos;
+
     private ManejadorExcepciones manejadorExcepciones;
 
     private final List<Integer> NUMEROS_DE_PERSONAL_INSERTADOS = new ArrayList<>();
+
     private final List<Integer> IDS_USUARIOS_INSERTADOS = new ArrayList<>();
 
     @BeforeAll

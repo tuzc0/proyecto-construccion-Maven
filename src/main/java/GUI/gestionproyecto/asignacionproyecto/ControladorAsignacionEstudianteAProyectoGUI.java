@@ -66,7 +66,7 @@ public class ControladorAsignacionEstudianteAProyectoGUI {
 
     private Callback<TableColumn<EstudianteDTO, Void>, TableCell<EstudianteDTO, Void>> crearFabricaBotonAccion() {
 
-        return param -> new TableCell<>() {
+        return parametro -> new TableCell<>() {
 
             private final Button botonDeAcccion = new Button();
 
@@ -171,7 +171,7 @@ public class ControladorAsignacionEstudianteAProyectoGUI {
     private void configurarInteracciones() {
 
         botonBuscarEstudiante.setCursor(Cursor.HAND);
-        botonBuscarEstudiante.setOnAction(event -> buscarEstudiante());
+        botonBuscarEstudiante.setOnAction(evento -> buscarEstudiante());
 
         botonRegresar.setCursor(Cursor.HAND);
         botonRegresar.setOnAction(evento -> regresar());

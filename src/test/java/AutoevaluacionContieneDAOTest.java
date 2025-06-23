@@ -22,17 +22,27 @@ class AutoevaluacionContieneDAOTest {
     private static final Logger LOGGER = LogManager.getLogger(AutoevaluacionContieneDAOTest.class);
 
     private AutoevaluacionContieneDAO autoevaluacionContieneDAO;
+
     private AutoevaluacionDAO autoevaluacionDAO;
+
     private EstudianteDAO estudianteDAO;
+
     private UsuarioDAO usuarioDAO;
+
     private CriterioAutoevaluacionDAO criterioAutoevaluacionDAO;
+
     private static Connection conexionBaseDeDatos;
+
     private IGestorAlertas gestorAlertas;
+
     private ManejadorExcepciones manejadorExcepciones;
 
     private final List<Integer> IDS_AUTOEVALUACIONES_CREADAS = new ArrayList<>();
+
     private final List<AutoEvaluacionContieneDTO> REGISTROS_AUTOEVALUACIONES_CONTIENE = new ArrayList<>();
+
     private final List<String> MATRICULAS_ESTUDIANTES_INSERTADAS = new ArrayList<>();
+
     private final List<Integer> IDS_USUARIOS_INSERTADOS = new ArrayList<>();
 
     @BeforeAll

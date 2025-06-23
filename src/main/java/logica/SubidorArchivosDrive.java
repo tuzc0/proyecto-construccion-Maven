@@ -19,12 +19,14 @@ public class SubidorArchivosDrive {
     private final String folderId;
 
     public SubidorArchivosDrive(String folderId) throws IOException, GeneralSecurityException {
+
         this.servicioDrive = AutenticadorDrive.obtenerServicioDrive();
         this.folderId = folderId;
     }
 
 
     public Map<String, String> subirArchivos(List<java.io.File> archivosLocales) throws IOException {
+
         Map<String, String> urlsDrive = new HashMap<>();
 
         for (java.io.File archivoLocal : archivosLocales) {
@@ -51,6 +53,7 @@ public class SubidorArchivosDrive {
 
 
     private String determinarTipoMIME(String nombreArchivo) {
+
         String extension = nombreArchivo.substring(nombreArchivo.lastIndexOf('.')).toLowerCase();
         switch (extension) {
             case ".pdf": return "application/pdf";

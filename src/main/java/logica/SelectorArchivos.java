@@ -11,6 +11,7 @@ public class SelectorArchivos {
     private final Window ventanaPadre;
 
     public SelectorArchivos(Window ventanaPadre, String titulo) {
+
         this.ventanaPadre = ventanaPadre;
         this.fileChooser = new FileChooser();
         this.fileChooser.setTitle(titulo);
@@ -18,6 +19,7 @@ public class SelectorArchivos {
     }
 
     private void configurarFiltros() {
+
         FileChooser.ExtensionFilter filtroPDF = new FileChooser.ExtensionFilter("PDF", "*.pdf");
         FileChooser.ExtensionFilter filtroImagen = new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg");
         fileChooser.getExtensionFilters().addAll(filtroPDF, filtroImagen);
@@ -30,7 +32,9 @@ public class SelectorArchivos {
 
 
     public static boolean validarArchivos(List<File> archivos, double tamanoMaximoMB) {
+
         if (archivos == null || archivos.isEmpty()) {
+
             return false;
         }
 
@@ -40,14 +44,18 @@ public class SelectorArchivos {
                 .sum();
 
         if (tamanoTotalMB > tamanoMaximoMB) {
+
             return false;
         }
 
 
         for (File archivo : archivos) {
+
             String nombre = archivo.getName().toLowerCase();
+
             if (!nombre.endsWith(".pdf") && !nombre.endsWith(".png") &&
                     !nombre.endsWith(".jpg") && !nombre.endsWith(".jpeg")) {
+
                 return false;
             }
         }

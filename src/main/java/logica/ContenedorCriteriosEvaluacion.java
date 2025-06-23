@@ -10,6 +10,7 @@ public class ContenedorCriteriosEvaluacion {
     private EvaluacionContieneDTO evaluacionContiene;
 
     public ContenedorCriteriosEvaluacion(CriterioEvaluacionDTO criterioEvaluacion, EvaluacionContieneDTO evaluacionContiene) {
+
         this.criterioEvaluacion = criterioEvaluacion;
         this.evaluacionContiene = evaluacionContiene;
     }

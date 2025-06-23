@@ -173,9 +173,9 @@ public class ControladorConsultarAutoevaluacionGUI {
         }
     }
 
-    private void abrirURLDrive(MouseEvent event) {
+    private void abrirURLDrive(MouseEvent evento) {
 
-        if (event.getClickCount() == 2) {
+        if (evento.getClickCount() == 2) {
 
             String url = listaArchivos.getSelectionModel().getSelectedItem();
 

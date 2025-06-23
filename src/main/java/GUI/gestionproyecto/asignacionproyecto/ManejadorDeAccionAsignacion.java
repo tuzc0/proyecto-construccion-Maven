@@ -16,11 +16,11 @@ public class ManejadorDeAccionAsignacion {
                                               ControladorAsignacionEstudianteAProyectoGUI controladorPadre,
                                               List<ProyectoDTO> proyectos) throws IOException {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/SeleccionarProyectoGUI.fxml"));
+        FXMLLoader cargadorVentana = new FXMLLoader(getClass().getResource("/SeleccionarProyectoGUI.fxml"));
         Stage escenario = new Stage();
-        escenario.setScene(new Scene(loader.load()));
+        escenario.setScene(new Scene(cargadorVentana.load()));
 
-        ControladorSeleccionProyectoGUI controlador = loader.getController();
+        ControladorSeleccionProyectoGUI controlador = cargadorVentana.getController();
         controlador.inicializarDatos(estudiante, controladorPadre, proyectos);
 
         if (estudiante.getIdProyecto() == 0) {
@@ -38,7 +38,7 @@ public class ManejadorDeAccionAsignacion {
             throws IOException {
 
         FXMLLoader cargarVentana = new FXMLLoader(getClass().getResource("/DetallesAsignacionProyectoGUI.fxml"));
-        Parent root = cargarVentana.load();
+        Parent raiz = cargarVentana.load();
 
         ControladorDetallesAsignacionProyectoGUI controlador = cargarVentana.getController();
         controlador.setEsVistaDeCoordinador(true);
@@ -46,7 +46,7 @@ public class ManejadorDeAccionAsignacion {
         controlador.configurarVista();
 
         Stage escenario = new Stage();
-        escenario.setScene(new Scene(root));
+        escenario.setScene(new Scene(raiz));
         escenario.setTitle("Detalles Asignación");
         escenario.initModality(Modality.APPLICATION_MODAL);
         escenario.showAndWait();

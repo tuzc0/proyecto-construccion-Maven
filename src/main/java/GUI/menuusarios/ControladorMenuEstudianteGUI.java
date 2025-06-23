@@ -4,7 +4,6 @@ import GUI.ControladorInicioDeSesionGUI;
 import GUI.ControladorListarReportesPorEstudianteGUI;
 import GUI.gestioncronogramaactividades.ControladorDetallesCronogramaActividadesGUI;
 import GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividadesGUI;
-import GUI.gestionorganizacion.ControladorConsultarRepresentante;
 import GUI.gestionproyecto.asignacionproyecto.ControladorDetallesAsignacionProyectoGUI;
 import GUI.utilidades.Utilidades;
 import javafx.fxml.FXML;
@@ -117,20 +116,20 @@ public class ControladorMenuEstudianteGUI {
 
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistrarAutoevaluacionGUI.fxml"));
-            Parent root = loader.load();
+            FXMLLoader cargadorVentana = new FXMLLoader(getClass().getResource("/RegistrarAutoevaluacionGUI.fxml"));
+            Parent raiz = cargadorVentana.load();
 
             Stage stage = new Stage();
             stage.setTitle("Registrar Autoevaluación");
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(raiz));
             stage.initModality(Modality.APPLICATION_MODAL);
 
-            stage.setOnHidden(event -> {
+            stage.setOnHidden(evento -> {
 
                 verificarAutoevaluacionRegistrada();
             });
 
-            stage.setOnCloseRequest(event -> {
+            stage.setOnCloseRequest(evento -> {
                 eliminarEvaluacion();
             });
 
@@ -257,15 +256,15 @@ public class ControladorMenuEstudianteGUI {
                 return;
             }
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistrarReporteMensualGUI.fxml"));
-            Parent root = loader.load();
+            FXMLLoader cargadorVentana = new FXMLLoader(getClass().getResource("/RegistrarReporteMensualGUI.fxml"));
+            Parent raiz = cargadorVentana.load();
 
-            Stage stage = new Stage();
-            stage.setTitle("Registrar Reporte Mensual");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setOnCloseRequest(event -> eliminarReporte());
-            stage.showAndWait();
+            Stage escenaVentana = new Stage();
+            escenaVentana.setTitle("Registrar Reporte Mensual");
+            escenaVentana.setScene(new Scene(raiz));
+            escenaVentana.initModality(Modality.APPLICATION_MODAL);
+            escenaVentana.setOnCloseRequest(evento -> eliminarReporte());
+            escenaVentana.showAndWait();
 
         } catch (IOException e) {
 
@@ -346,14 +345,14 @@ public class ControladorMenuEstudianteGUI {
         try {
 
             FXMLLoader cargarVentana = new FXMLLoader(getClass().getResource("/RegistroCronogramaActividadesGUI.fxml"));
-            Parent root = cargarVentana.load();
+            Parent raiz = cargarVentana.load();
 
             ControladorRegistroCronogramaActividadesGUI controlador = cargarVentana.getController();
             controlador.setDatosIniciales(matricula);
 
             Stage stage = new Stage();
             stage.setTitle("Registrar Cronograma de Actividades");
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(raiz));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
@@ -526,15 +525,15 @@ public class ControladorMenuEstudianteGUI {
 
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ListaReportesEstudianteGUI.fxml"));
-            Parent root = loader.load();
+            FXMLLoader cargadorVentana = new FXMLLoader(getClass().getResource("/ListaReportesEstudianteGUI.fxml"));
+            Parent raiz = cargadorVentana.load();
 
-            ControladorListarReportesPorEstudianteGUI controlador = loader.getController();
+            ControladorListarReportesPorEstudianteGUI controlador = cargadorVentana.getController();
             controlador.setMatriculaEstudiante(matricula);
 
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
+            Stage escenaVentana = new Stage();
+            escenaVentana.setScene(new Scene(raiz));
+            escenaVentana.show();
 
         } catch (IOException e) {
             manejadorExcepciones.manejarIOException(e);
@@ -569,17 +568,17 @@ public class ControladorMenuEstudianteGUI {
                 return;
             }
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/DetallesCronogramaActividadesGUI.fxml"));
-            Parent root = loader.load();
+            FXMLLoader cargadorVentana = new FXMLLoader(getClass().getResource("/DetallesCronogramaActividadesGUI.fxml"));
+            Parent raiz = cargadorVentana.load();
 
-            ControladorDetallesCronogramaActividadesGUI controlador = loader.getController();
+            ControladorDetallesCronogramaActividadesGUI controlador = cargadorVentana.getController();
             controlador.setMatriculaDTO(matricula);
 
-            Stage stage = new Stage();
-            stage.setTitle("Detalles del Cronograma");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.show();
+            Stage escenaVentana = new Stage();
+            escenaVentana.setTitle("Detalles del Cronograma");
+            escenaVentana.setScene(new Scene(raiz));
+            escenaVentana.initModality(Modality.APPLICATION_MODAL);
+            escenaVentana.show();
 
         } catch (SQLException e) {
 

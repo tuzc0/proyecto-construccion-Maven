@@ -9,6 +9,7 @@ public class ContenedorActividadesReporte {
     private ReporteContieneDTO reporteContiene;
 
     public ContenedorActividadesReporte(ActividadDTO actividad, ReporteContieneDTO reporteContiene) {
+
         this.actividad = actividad;
         this.reporteContiene = reporteContiene;
     }

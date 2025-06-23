@@ -130,15 +130,15 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
     private void registrarOrganizacion() {
 
 
-        String nombreOrganizacion = campoNombreOrganizacion.getText();
-        String correoOrganizacion = campoCorreoOrganizacion.getText();
-        String contactoOrganizacion = campoContactoOrganizacion.getText();
-        String direccionOrganizacion = campoDireccionOrganizacion.getText();
+        String nombreOrganizacion = campoNombreOrganizacion.getText().trim();
+        String correoOrganizacion = campoCorreoOrganizacion.getText().trim();
+        String contactoOrganizacion = campoContactoOrganizacion.getText().trim();
+        String direccionOrganizacion = campoDireccionOrganizacion.getText().trim();
 
-        String nombreRepresentante = campoNombreRepresentante.getText();
-        String apellidosRepresentante = campoApellidosRepresentante.getText();
-        String correoRepresentante = campoCorreoRepresentante.getText();
-        String contactoRepresentante = campoContactoRepresentante.getText();
+        String nombreRepresentante = campoNombreRepresentante.getText().trim();
+        String apellidosRepresentante = campoApellidosRepresentante.getText().trim();
+        String correoRepresentante = campoCorreoRepresentante.getText().trim();
+        String contactoRepresentante = campoContactoRepresentante.getText().trim();
 
         int estadoActivo = 1;
 
@@ -261,12 +261,12 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
 
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistroRepresentanteGUI.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
+            FXMLLoader cargadorVentana = new FXMLLoader(getClass().getResource("/RegistroRepresentanteGUI.fxml"));
+            Parent raiz = cargadorVentana.load();
+            Stage escenaVentana = new Stage();
+            escenaVentana.setScene(new Scene(raiz));
 
-            stage.show();
+            escenaVentana.show();
 
         } catch (IOException e) {
 

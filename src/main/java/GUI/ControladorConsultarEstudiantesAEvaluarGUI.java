@@ -114,11 +114,11 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
     private void añadirBotonEvaluarATable() {
 
         Callback<TableColumn<EstudianteDTO, Void>, TableCell<EstudianteDTO, Void>> cellFactory =
-                param -> new TableCell<>() {
+                parametro -> new TableCell<>() {
 
             private final Button botonEvaluar = new Button("Evaluar");
             {
-                botonEvaluar.setOnAction(event -> {
+                botonEvaluar.setOnAction(evento -> {
 
                     EstudianteDTO estudianteSeleccionado = getTableView().getItems().get(getIndex());
                     matriculaEstudianteSeleccionado = estudianteSeleccionado.getMatricula();
@@ -148,19 +148,19 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
     public void abrirVentanaRegistrarEvaluacion() {
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistrarEvaluacionGUI.fxml"));
-            Parent root = loader.load();
+            FXMLLoader cargadorVentana = new FXMLLoader(getClass().getResource("/RegistrarEvaluacionGUI.fxml"));
+            Parent raiz = cargadorVentana.load();
 
-            Stage stage = new Stage();
-            stage.setTitle("Registrar Evaluación");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
+            Stage escenaVentana = new Stage();
+            escenaVentana.setTitle("Registrar Evaluación");
+            escenaVentana.setScene(new Scene(raiz));
+            escenaVentana.initModality(Modality.APPLICATION_MODAL);
 
-            stage.setOnCloseRequest(evento -> {
+            escenaVentana.setOnCloseRequest(evento -> {
                 eliminarEvaluacion();
             });
 
-            stage.showAndWait();
+            escenaVentana.showAndWait();
 
             cargarEstudiantes();
 

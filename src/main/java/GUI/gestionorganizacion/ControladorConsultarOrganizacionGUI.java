@@ -116,12 +116,12 @@ public class ControladorConsultarOrganizacionGUI {
     private void añadirBotonConsultarATable() {
 
         Callback<TableColumn<OrganizacionVinculadaDTO, Void>, TableCell<OrganizacionVinculadaDTO, Void>> cellFactory =
-                param -> new TableCell<>() {
+                parametro -> new TableCell<>() {
 
             private final Button botonConsultar = new Button("Consultar");
 
             {
-                botonConsultar.setOnAction(event -> {
+                botonConsultar.setOnAction(evento -> {
                     OrganizacionVinculadaDTO organizacion = getTableView().getItems().get(getIndex());
                     abrirVentanaDetallesOrganizacion(organizacion);
                 });
@@ -149,12 +149,12 @@ public class ControladorConsultarOrganizacionGUI {
     private void añadirBotonEliminarATable() {
 
         Callback<TableColumn<OrganizacionVinculadaDTO, Void>, TableCell<OrganizacionVinculadaDTO, Void>> cellFactory =
-                param -> new TableCell<>() {
+                parametro -> new TableCell<>() {
 
             private final Button botonEliminar = new Button("Eliminar");
 
             {
-                botonEliminar.setOnAction(event -> {
+                botonEliminar.setOnAction(evento -> {
                     OrganizacionVinculadaDTO organizacion = getTableView().getItems().get(getIndex());
 
                     utilidades.mostrarAlertaConfirmacion(
@@ -200,14 +200,14 @@ public class ControladorConsultarOrganizacionGUI {
 
             idOrganizacionSeleccionada = organizacion.getIdOrganizacion();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestorOrganizacionGUI.fxml"));
-            Parent root = loader.load();
+            FXMLLoader cargadorVentana = new FXMLLoader(getClass().getResource("/GestorOrganizacionGUI.fxml"));
+            Parent raiz = cargadorVentana.load();
 
 
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Lista de Participantes");
-            stage.show();
+            Stage escenaVentana = new Stage();
+            escenaVentana.setScene(new Scene(raiz));
+            escenaVentana.setTitle("Lista de Participantes");
+            escenaVentana.show();
 
 
         } catch (IOException e){
@@ -305,13 +305,13 @@ public class ControladorConsultarOrganizacionGUI {
         Utilidades utilidades = new Utilidades();
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistroOrganizacionVinculadaGUI.fxml"));
-            Parent root = loader.load();
+            FXMLLoader cargadorVentana = new FXMLLoader(getClass().getResource("/RegistroOrganizacionVinculadaGUI.fxml"));
+            Parent raiz = cargadorVentana.load();
 
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Registrar Organización Vinculada");
-            stage.show();
+            Stage escenaVentana = new Stage();
+            escenaVentana.setScene(new Scene(raiz));
+            escenaVentana.setTitle("Registrar Organización Vinculada");
+            escenaVentana.show();
 
         } catch (IOException e) {
 

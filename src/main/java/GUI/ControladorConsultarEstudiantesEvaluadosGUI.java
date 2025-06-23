@@ -120,7 +120,7 @@ public class ControladorConsultarEstudiantesEvaluadosGUI {
                     private final Button botonEvaluar = new Button("Ver Evaluaciones");
 
                     {
-                        botonEvaluar.setOnAction(event -> {
+                        botonEvaluar.setOnAction(evento -> {
 
                             EstudianteDTO estudianteSeleccionado = getTableView().getItems().get(getIndex());
                             matriculaEstudianteSeleccionado = estudianteSeleccionado.getMatricula();
@@ -152,19 +152,19 @@ public class ControladorConsultarEstudiantesEvaluadosGUI {
 
         try {
 
-            FXMLLoader loader =
+            FXMLLoader cargadorVentana =
                     new FXMLLoader(getClass().getResource("/ConsultarEvaluacionesEstudianteGUI.fxml"));
-            Parent root = loader.load();
+            Parent raiz = cargadorVentana.load();
 
-            ControladorConsultarEvaluacionesEstudianteGUI controlador = loader.getController();
+            ControladorConsultarEvaluacionesEstudianteGUI controlador = cargadorVentana.getController();
             controlador.setMatricula(matriculaEstudianteSeleccionado);
 
-            Stage stage = new Stage();
-            stage.setTitle("Evaluaciones del Estudiante");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
+            Stage escenaVentana = new Stage();
+            escenaVentana.setTitle("Evaluaciones del Estudiante");
+            escenaVentana.setScene(new Scene(raiz));
+            escenaVentana.initModality(Modality.APPLICATION_MODAL);
 
-            stage.showAndWait();
+            escenaVentana.showAndWait();
             cargarEstudiantes();
 
         } catch (IOException e) {

@@ -1,16 +1,8 @@
 package GUI.menuusarios;
 
-import GUI.ControladorInicioDeSesionGUI;
-import GUI.gestioncronogramaactividades.ControladorConsultarCronogramaActividadesGUI;
 import GUI.gestionestudiante.AuxiliarGestionEstudiante;
 import GUI.utilidades.Utilidades;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class ControladorMenuAcademicoGUI {
 
@@ -68,7 +60,7 @@ public class ControladorMenuAcademicoGUI {
     @FXML
     public void abrirConsultarReporteMensual() {
 
-        String ventana = "/ListarEstudiantesConReporteMensual.fxml";
+        String ventana = "/ListarEstudiantesConReporteMensualGUI.fxml";
         mostrarVentana(ventana);
     }
 

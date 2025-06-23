@@ -59,10 +59,10 @@ public class ControladorRegistroRepresentanteGUI {
     public void registrarRepresentante() {
 
         AuxiliarRegistroRepresentante auxiliarRegistroRepresentante = new AuxiliarRegistroRepresentante();
-        String nombre = campoNombre.getText();
-        String apellidos = campoApellidos.getText();
-        String correo = campoCorreo.getText();
-        String numeroContacto = campoContacto.getText();
+        String nombre = campoNombre.getText().trim();
+        String apellidos = campoApellidos.getText().trim();
+        String correo = campoCorreo.getText().trim();
+        String numeroContacto = campoContacto.getText().trim();
 
         auxiliarRegistroRepresentante.registrarRepresentante(nombre, apellidos, correo, numeroContacto, idOrganizacion);
     }

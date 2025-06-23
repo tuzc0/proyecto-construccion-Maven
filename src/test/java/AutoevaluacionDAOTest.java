@@ -22,14 +22,23 @@ public class AutoevaluacionDAOTest {
     private static final Logger LOGGER = LogManager.getLogger(AutoevaluacionDAOTest.class);
 
     private PeriodoDAO periodoDAO;
+
     private UsuarioDAO usuarioDAO;
+
     private AcademicoDAO academicoDAO;
+
     private GrupoDAO grupoDAO;
+
     private EstudianteDAO estudianteDAO;
+
     private AcademicoEvaluadorDAO academicoEvaluadorDAO;
+
     private AutoevaluacionDAO autoevaluacionDAO;
+
     private static Connection conexionBaseDeDatos;
+
     private IGestorAlertas gestorAlertas;
+
     private ManejadorExcepciones manejadorExcepciones;
 
     private final List<Integer> IDS_USUARIOS_INSERTADOS = new ArrayList<>();

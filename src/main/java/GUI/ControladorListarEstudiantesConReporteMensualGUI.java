@@ -3,8 +3,12 @@ package GUI;
 import GUI.gestionestudiante.AuxiliarGestionEstudiante;
 import GUI.utilidades.Utilidades;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 import logica.DAOs.EstudianteDAO;
 import logica.DTOs.EstudianteDTO;
 import logica.ManejadorExcepciones;
@@ -120,7 +124,28 @@ public class ControladorListarEstudiantesConReporteMensualGUI {
 
     private void verListaReporteMensual( ) {
 
-            gestorVentanas.mostrarVentana("/ListaReportesEstudianteGUI.fxml");
+        try{
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ListaReportesEstudianteGUI.fxml"));
+            Parent root = loader.load();
+
+            ControladorListarReportesPorEstudianteGUI controlador = loader.getController();
+            controlador.setMatriculaEstudiante(matriculaEstudiante);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e){
+            manejadorExcepciones.manejarIOException(e);
+        }  catch (Exception e) {
+            logger.error("Error inesperado al abrir la ventana de consulta de reportes mensuales: " + e);
+            gestorVentanas.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error inesperado al abrir la ventana de consulta de reportes mensuales.",
+                    "Por favor, contacta al administrador si el problema persiste."
+            );
+        }
     }
 
 

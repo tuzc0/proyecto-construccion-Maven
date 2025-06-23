@@ -43,6 +43,7 @@
       <Button fx:id="botonRegistrarAutoevaluacion" onAction="#abrirRegistrarAutoevaluacion" style="-fx-background-color: #fee2e2; -fx-text-fill: #991b1b; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;" text="Registrar Autoevaluación" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
       <Button fx:id="botonConsultarAutoevaluacion" onAction="#abrirConsultarAutoevaluacion" style="-fx-background-color: #fee2e2; -fx-text-fill: #991b1b; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;" text="Consultar Autoevaluación" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Button onAction="#abrirConsultarReporteMensual" style="-fx-background-color: #dcfce7; -fx-text-fill: #166534; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;" text="Consultar Reportes" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <rowConstraints>
          <RowConstraints />
          <RowConstraints />

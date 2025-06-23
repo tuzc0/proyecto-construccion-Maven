@@ -1,7 +1,9 @@
 package GUI.menuusarios;
 
 import GUI.ControladorInicioDeSesionGUI;
+import GUI.ControladorListarReportesPorEstudianteGUI;
 import GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividadesGUI;
+import GUI.gestionorganizacion.ControladorConsultarRepresentante;
 import GUI.gestionproyecto.asignacionproyecto.ControladorDetallesAsignacionProyectoGUI;
 import GUI.utilidades.Utilidades;
 import javafx.fxml.FXML;
@@ -500,5 +502,33 @@ public class ControladorMenuEstudianteGUI {
 
         return cronogramaRegistrado;
 
+    }
+
+    @FXML
+    public void abrirConsultarReporteMensual() {
+
+
+        try{
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ListaReportesEstudianteGUI.fxml"));
+            Parent root = loader.load();
+
+            ControladorListarReportesPorEstudianteGUI controlador = loader.getController();
+            controlador.setMatriculaEstudiante(matricula);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e){
+            manejadorExcepciones.manejarIOException(e);
+        }  catch (Exception e) {
+            logger.error("Error inesperado al abrir la ventana de consulta de reportes mensuales: " + e);
+            gestorVentanas.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error inesperado al abrir la ventana de consulta de reportes mensuales.",
+                    "Por favor, contacta al administrador si el problema persiste."
+            );
+        }
     }
 }

@@ -1,6 +1,7 @@
 package GUI.gestioncronogramaactividades;
 
 import GUI.GestorHorarios;
+import GUI.ManejadorExepciones;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
@@ -107,6 +108,8 @@ public class ControladorRegistroCronogramaActividadesGUI {
     private String matriculaEstudiante;
     private final Utilidades UTILIDADES = new Utilidades();
     private GestorHorarios gestorHorarios;
+
+    ManejadorExepciones manejadorExepciones = new ManejadorExepciones();
 
     @FXML
     public void initialize() {
@@ -320,19 +323,19 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
         } catch (SQLException e) {
 
-            LOGGER.error("Error al guardar cronograma dentro de SQL: ", e);
-            UTILIDADES.mostrarAlerta(
-                    "Error durante el registro.",
-                    "Ocurrio un error durante el registro.",
-                    "Por favor, intentelo de nuevo más tarde o contacte al administrador.");
+            manejadorExepciones.manejarSQLException(e, LOGGER, UTILIDADES);
 
         } catch (IOException e) {
 
-            LOGGER.error("Error durante la ejecución: ", e);
+            manejadorExepciones.manejarIOException(e, LOGGER, UTILIDADES);
+        } catch (Exception e) {
+
+            LOGGER.error("Error inesperado al guardar el cronograma de actividades: " + e);
             UTILIDADES.mostrarAlerta(
-                    "Error durante registro.",
-                    "Ocurrio al momento del registro.",
-                    "Por favor, intentelo de nuevo más tarde o contacte al administrador.");
+                    "Error inesperado",
+                    "No se pudo guardar el cronograma de actividades.",
+                    "Por favor, inténtelo de nuevo más tarde."
+            );
         }
     }
 
@@ -463,12 +466,17 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
         } catch (IOException e) {
 
-            LOGGER.error("No se pudo cargar la ventana de registro actividad:" + e);
+            manejadorExepciones.manejarIOException(e, LOGGER, UTILIDADES);
+
+        } catch (Exception e) {
+
+            LOGGER.error("Error inesperado al agregar actividad: " + e.getMessage());
             UTILIDADES.mostrarAlerta(
-                    "Error",
-                    "Ocurrió un error al intentar abrir la ventana",
+                    "Error inesperado",
+                    "No se pudo agregar la actividad.",
                     "Por favor, inténtelo de nuevo más tarde."
             );
+
         }
     }
 

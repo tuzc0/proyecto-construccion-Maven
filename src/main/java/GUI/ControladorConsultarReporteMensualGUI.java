@@ -57,6 +57,8 @@ public class ControladorConsultarReporteMensualGUI {
 
     Utilidades utilidades = new Utilidades();
 
+    ManejadorExepciones manejadorExepciones = new ManejadorExepciones();
+
     int idReporteSeleccionado = ControladorListarReportesPorEstudianteGUI.idReporteSeleccionado;
 
     @FXML
@@ -106,9 +108,17 @@ public class ControladorConsultarReporteMensualGUI {
             }
 
 
-        } catch (SQLException | IOException e) {
-            logger.error("Error al cargar el reporte: " + e);
-            utilidades.mostrarAlerta("Error", "No se pudo cargar el reporte mensual.", "Por favor, intente nuevamente más tarde.");
+        } catch (SQLException e) {
+
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+
+        } catch (IOException e) {
+
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
+
+        } catch (Exception e) {
+            logger.error("Error inesperado al cargar los datos del reporte: " + e);
+            utilidades.mostrarAlerta("Error", "No se pudieron cargar los datos del reporte.", "Por favor, intente nuevamente más tarde.");
         }
     }
 
@@ -116,14 +126,20 @@ public class ControladorConsultarReporteMensualGUI {
     public void verArchivo() {
         String urlSeleccionada = listaArchivos.getSelectionModel().getSelectedItem();
         if (urlSeleccionada != null && !urlSeleccionada.isEmpty()) {
+
             try {
+
                 java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
                 desktop.browse(new java.net.URI(urlSeleccionada));
+
             } catch (Exception e) {
+
                 utilidades.mostrarAlerta("Error", "No se pudo abrir el archivo.", "Por favor, verifique la URL.");
                 logger.error("Error al abrir el archivo: " + e);
+
             }
         } else {
+
             utilidades.mostrarAlerta("Advertencia", "No se seleccionó ningún archivo.", "Seleccione un archivo de la lista para abrirlo.");
         }
     }
@@ -154,17 +170,11 @@ public class ControladorConsultarReporteMensualGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error al cargar las actividades: " + e);
-            utilidades.mostrarAlerta("Error",
-                    "No se pudieron cargar las actividades.",
-                    "Por favor, intente nuevamente más tarde.");
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO al cargar las actividades: " + e);
-            utilidades.mostrarAlerta("Error",
-                    "No se pudieron cargar las actividades.",
-                    "Por favor, intente nuevamente más tarde.");
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
 
         } catch (Exception e) {
 

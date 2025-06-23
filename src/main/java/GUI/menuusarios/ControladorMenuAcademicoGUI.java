@@ -9,14 +9,9 @@ public class ControladorMenuAcademicoGUI {
 
     Utilidades utilidades = new Utilidades();
 
-    int numeroDePersonal = ControladorInicioDeSesionGUI.numeroDePersonal;
-
     AuxiliarGestionEstudiante auxiliarGestionEstudiante = new AuxiliarGestionEstudiante();
 
     int NRC = auxiliarGestionEstudiante.obtenerNRC();
-
-
-
 
     @FXML
     public void abrirRegistroEstudiante() {
@@ -24,7 +19,6 @@ public class ControladorMenuAcademicoGUI {
         String ventana = "/RegistroEstudianteGUI.fxml";
 
         mostrarVentana(ventana);
-
 
     }
 
@@ -45,6 +39,7 @@ public class ControladorMenuAcademicoGUI {
     public void mostrarVentana(String ventana) {
 
         if (NRC == -1) {
+
             utilidades.mostrarAlerta(
                     "Grupo no encontrado",
                     "No se encontró un grupo activo",

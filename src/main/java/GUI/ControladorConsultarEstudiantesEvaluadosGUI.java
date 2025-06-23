@@ -12,18 +12,11 @@ import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import logica.DAOs.CuentaDAO;
 import logica.DAOs.EstudianteDAO;
-import logica.DAOs.EvaluacionContieneDAO;
-import logica.DAOs.EvaluacionDAO;
-import logica.DTOs.CuentaDTO;
 import logica.DTOs.EstudianteDTO;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.logging.Logger;
-
-import static GUI.ControladorRegistrarEvaluacionGUI.idEvaluacionGenerada;
 
 public class ControladorConsultarEstudiantesEvaluadosGUI {
 
@@ -140,7 +133,7 @@ public class ControladorConsultarEstudiantesEvaluadosGUI {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ConsultarEvaluacionesEstudianteGUI.fxml"));
             Parent root = loader.load();
 
-            ConsultarEvaluacionesEstudiante controlador = loader.getController();
+            ControladorConsultarEvaluacionesEstudianteGUI controlador = loader.getController();
             controlador.setMatricula(matriculaEstudianteSeleccionado);
 
             Stage stage = new Stage();

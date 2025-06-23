@@ -50,24 +50,6 @@ public class SubidorArchivosDrive {
     }
 
 
-
-
-    public String crearCarpeta(String nombreCarpeta, String idCarpetaPadre) throws IOException {
-        File metadatosCarpeta = new File();
-        metadatosCarpeta.setName(nombreCarpeta);
-        metadatosCarpeta.setMimeType("application/vnd.google-apps.folder");
-
-        if (idCarpetaPadre != null && !idCarpetaPadre.isEmpty()) {
-            metadatosCarpeta.setParents(Collections.singletonList(idCarpetaPadre));
-        }
-
-        File carpetaCreada = servicioDrive.files().create(metadatosCarpeta)
-                .setFields("id")
-                .execute();
-
-        return carpetaCreada.getId();
-    }
-
     private String determinarTipoMIME(String nombreArchivo) {
         String extension = nombreArchivo.substring(nombreArchivo.lastIndexOf('.')).toLowerCase();
         switch (extension) {

@@ -60,7 +60,7 @@
                 </placeholder>
             </ListView>
 
-            <Label fx:id="lblErrorArchivos" style="-fx-text-fill: #d9534f; -fx-font-weight: bold;" text="" />
+            <Label fx:id="etiquetaErrorArchivos" style="-fx-text-fill: #d9534f; -fx-font-weight: bold;" text="" />
         </VBox>
 
         <!-- Botones finales -->

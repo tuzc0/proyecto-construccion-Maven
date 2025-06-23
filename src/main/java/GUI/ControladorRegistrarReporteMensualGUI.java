@@ -85,12 +85,14 @@ public class ControladorRegistrarReporteMensualGUI {
 
     public static int idReporte = 0;
 
-    private Map<String, String> urlsDrive = new HashMap<>();
+    private Map<String, String> urlsDocumentos = new HashMap<>();
 
     private static final double TAMANO_MAXIMO_MB = 10.0;
 
     final int MAX_CARACTERES_METODOLOGIA = 100;
+
     final int MAX_CARACTERES_OBSERVACIONES = 255;
+
     final int MAX_CARACTERES_HORAS = 2;
 
     VerificicacionGeneral verificacionGeneral = new VerificicacionGeneral();
@@ -98,6 +100,8 @@ public class ControladorRegistrarReporteMensualGUI {
     private List<java.io.File> archivosLocales = new ArrayList<>();
 
     public static VerificacionEntradas verificacionEntradas = new VerificacionEntradas();
+
+    ManejadorExepciones manejadorExepciones = new ManejadorExepciones();
 
     @FXML
     public void initialize() {
@@ -214,22 +218,12 @@ public class ControladorRegistrarReporteMensualGUI {
             stage.close();
 
         } catch (SQLException e) {
-            logger.error("Error al guardar el reporte: ", e);
 
-            if (e.getMessage().contains("The driver has not received any packets from the server.")){
-
-                utilidades.mostrarAlerta("Error",
-                        "No se pudo guardar el reporte, porque no hay conexion con la base de datos",
-                        "Por favor, intente nuevamente más tarde.");
-                return;
-            }
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO al guardar el reporte: ", e);
-            utilidades.mostrarAlerta("Error",
-                    "No se pudo guardar el reporte",
-                    "Por favor, intente nuevamente más tarde.");
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
 
         } catch (Exception e) {
 
@@ -245,26 +239,34 @@ public class ControladorRegistrarReporteMensualGUI {
         List<String> errores = new ArrayList<>();
 
         if (metodologia.isEmpty()) {
+
             errores.add("El campo de metodología no puede estar vacío.");
+
         } else if (!verificacionEntradas.validarTextoAlfanumerico(metodologia)) {
+
             errores.add("La metodología contiene caracteres invalidos.");
         }
 
         if (observaciones.isEmpty()) {
+
             errores.add("El campo de observaciones no puede estar vacío.");
+
         } else if (!verificacionEntradas.validarTextoAlfanumerico(observaciones)) {
+
             errores.add("Las observaciones contienen caracteres invalidos.");
         }
 
         if (horas.isEmpty()) {
+
             errores.add("El campo de horas no puede estar vacío.");
+
         } else if (!verificacionEntradas.esEnteroPositivo(horas)) {
+
             errores.add("El número de horas debe ser un número entero positivo.");
+
         }
 
-
         return errores;
-
 
     }
 
@@ -297,16 +299,18 @@ public class ControladorRegistrarReporteMensualGUI {
         try {
 
             SubidorArchivosDrive subidor = new SubidorArchivosDrive("1LGx2JpfFoNvqm7Dodf6i8Q2ijqDDONzR");
-            urlsDrive = subidor.subirArchivos(archivosLocales);
+            urlsDocumentos = subidor.subirArchivos(archivosLocales);
 
             subirUrlBD();
 
             utilidades.mostrarAlerta("Subida Exitosa", "Archivos subidos correctamente",
-                    "Se subieron " + urlsDrive.size() + " archivos a Google Drive");
+                    "Se subieron " + urlsDocumentos.size() + " archivos a Google Drive");
 
         } catch (Exception e) {
+
             etiquetaErrorArchivos.setText("Error al subir archivos: " + e);
             logger.error("Error al subir archivos: ", e);
+
         }
     }
 
@@ -319,7 +323,7 @@ public class ControladorRegistrarReporteMensualGUI {
 
             for (java.io.File archivo : archivosLocales) {
 
-                String url = urlsDrive.get(archivo.getName());
+                String url = urlsDocumentos.get(archivo.getName());
 
                 if (url != null) {
 
@@ -337,15 +341,11 @@ public class ControladorRegistrarReporteMensualGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL al insertar evidencia: " + e);
-            utilidades.mostrarAlerta("Error", "Error al insertar evidencia",
-                    "No se pudo insertar la evidencia en la base de datos. Verifique los registros.");
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO al insertar evidencia: " + e);
-            utilidades.mostrarAlerta("Error", "Error de IO al insertar evidencia",
-                    "No se pudo insertar la evidencia en la base de datos. Verifique los registros.");
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
 
         } catch (Exception e) {
 
@@ -375,13 +375,19 @@ public class ControladorRegistrarReporteMensualGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error al buscar el cronograma por matrícula: " + e);
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+
         } catch (IOException e) {
 
-            logger.error("Error de IO al buscar el cronograma por matrícula: " + e);
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
+
         } catch (Exception e) {
 
             logger.error("Error inesperado al buscar el cronograma por matrícula: " + e);
+            utilidades.mostrarAlerta("Error",
+                    "No se pudo cargar el cronograma de actividades.",
+                    "Por favor, intente nuevamente más tarde.");
+
         }
 
     }
@@ -406,17 +412,11 @@ public class ControladorRegistrarReporteMensualGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error al crear el reporte: " + e);
-            utilidades.mostrarAlerta("Error",
-                    "No se pudo crear el reporte.",
-                    "Por favor, intente nuevamente más tarde.");
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO al crear el reporte: " + e);
-            utilidades.mostrarAlerta("Error",
-                    "No se pudo crear el reporte.",
-                    "Por favor, intente nuevamente más tarde.");
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
 
         } catch (Exception e) {
 
@@ -471,12 +471,10 @@ public class ControladorRegistrarReporteMensualGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error al añadir actividad: " + e);
-            utilidades.mostrarAlerta("Error",
-                    "No se pudo añadir la actividad",
-                    "Por favor, intente nuevamente más tarde.");
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
 
         } catch (Exception e) {
+
             logger.error("Error inesperado: " + e);
             utilidades.mostrarAlerta("Error",
                     "Ocurrió un error inesperado",
@@ -528,17 +526,11 @@ public class ControladorRegistrarReporteMensualGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error al cargar las actividades: " + e);
-            utilidades.mostrarAlerta("Error",
-                    "No se pudieron cargar las actividades.",
-                    "Por favor, intente nuevamente más tarde.");
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO al cargar las actividades: " + e);
-            utilidades.mostrarAlerta("Error",
-                    "No se pudieron cargar las actividades.",
-                    "Por favor, intente nuevamente más tarde.");
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
 
         } catch (Exception e) {
 
@@ -577,15 +569,13 @@ public class ControladorRegistrarReporteMensualGUI {
             reporteDAO.eliminarReporte(idReporte);
 
         } catch (SQLException e) {
-            logger.error("Error al eliminar el reporte: ", e);
-            utilidades.mostrarAlerta("Error",
-                    "No se pudo eliminar el reporte.",
-                    "Por favor, intente nuevamente más tarde.");
+
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+
         } catch (IOException e) {
-            logger.error("Error de IO al eliminar el reporte: ", e);
-            utilidades.mostrarAlerta("Error",
-                    "No se pudo eliminar el reporte.",
-                    "Por favor, intente nuevamente más tarde.");
+
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
+
         } catch (Exception e) {
             logger.error("Error inesperado al eliminar el reporte: ", e);
             utilidades.mostrarAlerta("Error",

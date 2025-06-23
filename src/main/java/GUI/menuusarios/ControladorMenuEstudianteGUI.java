@@ -1,6 +1,7 @@
 package GUI.menuusarios;
 
 import GUI.ControladorInicioDeSesionGUI;
+import GUI.ManejadorExepciones;
 import GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividadesGUI;
 import GUI.gestionproyecto.asignacionproyecto.ControladorDetallesAsignacionProyectoGUI;
 import GUI.utilidades.Utilidades;
@@ -27,7 +28,6 @@ import static java.sql.Types.NULL;
 
 public class ControladorMenuEstudianteGUI {
 
-
     Utilidades utilidades = new Utilidades();
     Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorMenuEstudianteGUI.class);
 
@@ -38,6 +38,8 @@ public class ControladorMenuEstudianteGUI {
     private Button botonConsultarAutoevaluacion;
 
     private String matricula = ControladorInicioDeSesionGUI.matricula;
+
+    ManejadorExepciones manejadorExepciones = new ManejadorExepciones();
 
 
     @FXML
@@ -70,15 +72,20 @@ public class ControladorMenuEstudianteGUI {
             }
         } catch (SQLException e) {
 
-            logger.error("Error de SQL al verificar autoevaluación: " + e);
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO al verificar autoevaluación: " + e);
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
 
         } catch (Exception e) {
 
-            logger.error("Error inesperado al verificar autoevaluación: " + e);
+            logger.error("Error inesperado al verificar autoevaluación registrada: " + e);
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error inesperado al verificar la autoevaluación.",
+                    "Por favor, contacta al administrador si el problema persiste."
+            );
         }
     }
 
@@ -121,7 +128,8 @@ public class ControladorMenuEstudianteGUI {
 
         } catch (IOException e) {
 
-            logger.error("Error al abrir la ventana RegistrarAutoevaluacionGUI: " + e);
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
+
         }
     }
 
@@ -138,15 +146,20 @@ public class ControladorMenuEstudianteGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL al eliminar la evaluación: " + e);
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO al eliminar la evaluación: " + e);
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al eliminar la evaluación: " + e);
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error inesperado al eliminar la evaluación.",
+                    "Por favor, contacta al administrador si el problema persiste."
+            );
 
         }
     }
@@ -161,15 +174,21 @@ public class ControladorMenuEstudianteGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL al eliminar el reporte: " + e);
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO al eliminar el reporte: " + e);
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al eliminar el reporte: " + e);
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error inesperado al eliminar el reporte.",
+                    "Por favor, contacta al administrador si el problema persiste."
+            );
+
         }
 
     }
@@ -205,6 +224,7 @@ public class ControladorMenuEstudianteGUI {
         }
 
         try {
+
             ReporteDAO reporteDAO = new ReporteDAO();
 
             int mesActual = java.time.LocalDate.now().getMonthValue();
@@ -227,43 +247,60 @@ public class ControladorMenuEstudianteGUI {
             stage.setOnCloseRequest(event -> eliminarReporte());
 
             stage.showAndWait();
-        } catch (SQLException | IOException e) {
-            logger.error("Error al verificar reporte mensual: " + e);
-            utilidades.mostrarAlerta("Error", "No se pudo verificar el reporte mensual.", "Por favor, intenta nuevamente más tarde.");
+
+        } catch (IOException e) {
+
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
+
+        } catch (SQLException e) {
+
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al abrir la ventana de reporte mensual: " + e);
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error inesperado al abrir la ventana de reporte mensual.",
+                    "Por favor, contacta al administrador si el problema persiste."
+            );
         }
     }
 
     private boolean verificarExistenciaCronogramaActividades() {
 
         CronogramaActividadesDAO cronogramaActividadesDAO = new CronogramaActividadesDAO();
+
         try {
+
             CronogramaActividadesDTO cronograma = cronogramaActividadesDAO.buscarCronogramaPorMatricula(matricula);
+
             if (cronograma == null || cronograma.getIDCronograma() == NULL) {
+
                 utilidades.mostrarAlerta(
                         "Cronograma de Actividades",
                         "No tienes un cronograma de actividades registrado.",
                         "Debes registrar un cronograma de actividades antes de poder registrar un reporte mensual."
                 );
+
                 return false;
+
             }
+
             return true;
+
         } catch (SQLException e) {
-            logger.error("Error al verificar cronograma de actividades: " + e);
-            utilidades.mostrarAlerta(
-                    "Error",
-                    "No se pudo verificar el cronograma de actividades.",
-                    "Por favor, intenta nuevamente más tarde."
-            );
+
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
             return false;
+
         } catch (IOException e) {
-            logger.error("Error de IO al verificar cronograma de actividades: " + e);
-            utilidades.mostrarAlerta(
-                    "Error",
-                    "Error de entrada/salida al verificar el cronograma de actividades.",
-                    "Por favor, intenta nuevamente más tarde."
-            );
+
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
             return false;
+
         } catch (Exception e) {
+
             logger.error("Error inesperado al verificar cronograma de actividades: " + e);
             utilidades.mostrarAlerta(
                     "Error",
@@ -271,6 +308,7 @@ public class ControladorMenuEstudianteGUI {
                     "Por favor, contacta al administrador si el problema persiste."
             );
             return false;
+
         }
     }
 
@@ -288,6 +326,7 @@ public class ControladorMenuEstudianteGUI {
 
 
         try {
+
             FXMLLoader cargarVentana = new FXMLLoader(getClass().getResource("/RegistroCronogramaActividadesGUI.fxml"));
             Parent root = cargarVentana.load();
 
@@ -300,11 +339,16 @@ public class ControladorMenuEstudianteGUI {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
         } catch (IOException e) {
-            logger.error("Error al abrir la ventana RegistrarCronogramaActividadesGUI: " + e);
+
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al abrir la ventana de registro de cronograma de actividades: " + e);
             utilidades.mostrarAlerta(
                     "Error",
-                    "Ocurrió un error al intentar abrir la ventana",
-                    "Por favor, inténtelo de nuevo más tarde."
+                    "Ocurrió un error inesperado al abrir la ventana de registro de cronograma de actividades.",
+                    "Por favor, contacta al administrador si el problema persiste."
             );
         }
     }
@@ -340,20 +384,19 @@ public class ControladorMenuEstudianteGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error en la base de datos al buscar el proyecto del estudiante: " + e);
-            utilidades.mostrarAlerta(
-                    "Error",
-                    "No se pudo abrir el proyecto.",
-                    "Contacta al administrador si el problema persiste."
-            );
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
 
         } catch (IOException e) {
 
-            logger.error("Error al cargar la ventana de detalles del proyecto para el estudiante: " + e);
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al abrir los detalles de asignación del proyecto: " + e);
             utilidades.mostrarAlerta(
                     "Error",
-                    "Ocurrio un error al cargar la ventana",
-                    "Contacte al administrador si el problema persiste"
+                    "Ocurrió un error inesperado al abrir los detalles de asignación del proyecto.",
+                    "Por favor, contacta al administrador si el problema persiste."
             );
         }
     }
@@ -362,69 +405,101 @@ public class ControladorMenuEstudianteGUI {
     private boolean verificarAsignacionProyecto() {
 
         EstudianteDAO estudianteDAO = new EstudianteDAO();
+        boolean proyectoAsignado = false;
+
         try {
 
             EstudianteDTO estudianteDTO = estudianteDAO.buscarEstudiantePorMatricula(matricula);
+
             if (estudianteDTO.getIdProyecto() == NULL) {
+
                 utilidades.mostrarAlerta(
                         "Error",
                         "No estás asignado a un proyecto.",
                         "Por favor, contacta al administrador para más información."
                 );
-                return false;
+
+                proyectoAsignado = false;
+
+            } else {
+
+                proyectoAsignado = true;
+
             }
-            return true;
+
         } catch (SQLException e) {
-            logger.error("Error de SQL al verificar asignación de proyecto: " + e);
+
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            proyectoAsignado = false;
+
         } catch (IOException e) {
-            logger.error("Error de IO al verificar asignación de proyecto: " + e);
+
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            proyectoAsignado = false;
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al verificar asignación de proyecto: " + e);
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error al verificar tu asignación de proyecto.",
+                    "Por favor, intenta nuevamente más tarde."
+            );
+            proyectoAsignado = false;
+
         }
-        utilidades.mostrarAlerta(
-                "Error",
-                "Ocurrió un error al verificar tu asignación de proyecto.",
-                "Por favor, intenta nuevamente más tarde."
-        );
-        return false;
+
+        return proyectoAsignado;
+
     }
 
     public boolean verificarCronogramaActividades() {
+
         CronogramaActividadesDAO cronogramaActividadesDAO = new CronogramaActividadesDAO();
+        boolean cronogramaRegistrado = false;
+
         try {
 
             CronogramaActividadesDTO cronograma = cronogramaActividadesDAO.buscarCronogramaPorMatricula(matricula);
+
             if (cronograma != null && cronograma.getIDCronograma() != NULL) {
+
                 utilidades.mostrarAlerta(
                         "Cronograma de Actividades",
                         "Ya has registrado un cronograma de actividades.",
                         "No puedes registrar más de un cronograma de actividades por proyecto."
                 );
-                return false;
+
+                cronogramaRegistrado = false;
+
+            } else {
+
+                cronogramaRegistrado = true;
+
             }
-            return true;
+
         } catch (SQLException e) {
-            logger.error("Error al verificar cronograma de actividades: " + e);
-            utilidades.mostrarAlerta(
-                    "Error",
-                    "No se pudo verificar el cronograma de actividades.",
-                    "Por favor, intenta nuevamente más tarde."
-            );
-            return false;
+
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            cronogramaRegistrado = false;
+
         } catch (IOException e) {
-            logger.error("Error de IO al verificar cronograma de actividades: " + e);
-            utilidades.mostrarAlerta(
-                    "Error",
-                    "Error de entrada/salida al verificar el cronograma de actividades.",
-                    "Por favor, intenta nuevamente más tarde."
-            );
-            return false;
+
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            cronogramaRegistrado = false;
+
         } catch (Exception e) {
+
             logger.error("Error inesperado al verificar cronograma de actividades: " + e);
             utilidades.mostrarAlerta(
                     "Error",
                     "Ocurrió un error inesperado al verificar el cronograma de actividades.",
                     "Por favor, contacta al administrador si el problema persiste."
             );
-            return false;
+            cronogramaRegistrado = false;
         }
+
+        return cronogramaRegistrado;
+
     }
 }

@@ -44,6 +44,8 @@ public class ControladorInicioDeSesionGUI {
 
     EncriptadorContraseñas encriptadorContraseñas = new EncriptadorContraseñas();
 
+    ManejadorExepciones manejadorExepciones = new ManejadorExepciones();
+
     @FXML
     public void initialize() {
 
@@ -107,28 +109,11 @@ public class ControladorInicioDeSesionGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error al iniciar sesión: " + e);
-
-            if (e.getMessage().contains("The driver has not received any packets from the server.")){
-
-                utilidades.mostrarAlerta("Error de conexion con la base de datos",
-                        "No se pudo iniciar sesión, porque no hay conexion con la base de datos",
-                        "Por favor, intente nuevamente más tarde.");
-                return;
-
-            }
-
-            utilidades.mostrarAlerta("Error con la base de datos",
-                    "No se pudo iniciar sesión",
-                    "Por favor, verifique su correo y contraseña e intente nuevamente.");
-
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
 
         } catch (IOException e) {
 
-            logger.error("Error de entrada/salida: " + e);
-            utilidades.mostrarAlerta("Error de entrada/salida",
-                    "No se pudo iniciar sesión",
-                    "Por favor, intente nuevamente más tarde.");
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
 
         } catch (Exception e) {
 
@@ -185,9 +170,20 @@ public class ControladorInicioDeSesionGUI {
                 return;
             }
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
-            logger.error("Error al validar tipo de usuario: " + e);
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+
+        } catch (IOException e) {
+
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al validar el tipo de usuario: " + e);
+            utilidades.mostrarAlerta("Error inesperado",
+                    "No se pudo validar el tipo de usuario",
+                    "Por favor, intente nuevamente más tarde.");
         }
     }
 

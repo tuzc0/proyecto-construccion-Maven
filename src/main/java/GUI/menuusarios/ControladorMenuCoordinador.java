@@ -8,9 +8,6 @@ public class ControladorMenuCoordinador {
 
     Utilidades utilidades = new Utilidades();
 
-    int numeroDePersonal = ControladorInicioDeSesionGUI.numeroDePersonal;
-
-
     @FXML
     public void abrirRegistroAcademico() {
         utilidades.mostrarVentana("/RegistroAcademicoGUI.fxml");

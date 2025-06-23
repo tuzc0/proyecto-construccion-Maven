@@ -4121,7 +4121,7 @@ POST https://oauth2.googleapis.com/token
 2025-06-09 01:50:56 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - Se encontró una autoevaluación vinculada a la matrícula: S25044060
 2025-06-09 01:52:03 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
 2025-06-09 01:53:53 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
-2025-06-09 01:53:54 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID: S25044060
+2025-06-09 01:53:54 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID: S25044060
 2025-06-09 01:54:10 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - Se encontró una autoevaluación vinculada a la matrícula: S25044060
 2025-06-09 02:28:22 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
 2025-06-09 02:28:25 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - Se encontró una autoevaluación vinculada a la matrícula: S25044060
@@ -5013,16 +5013,16 @@ POST https://oauth2.googleapis.com/token
 2025-06-09 07:34:10 [JavaFX Application Thread] WARN  GUI.ControladorRegistrarEvaluacionGUI - El valor ingresado no es un número válido.
 2025-06-09 07:34:16 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
 2025-06-09 07:34:24 [JavaFX Application Thread] WARN  GUI.ControladorRegistrarEvaluacionGUI - El valor ingresado no es un número válido.
-2025-06-09 07:59:06 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID:  
-2025-06-09 07:59:14 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID:  
+2025-06-09 07:59:06 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID:
+2025-06-09 07:59:14 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID:
 2025-06-09 08:02:08 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
-2025-06-09 08:05:46 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID:  
-2025-06-09 08:06:38 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID:  
-2025-06-09 08:08:29 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID:  
-2025-06-09 08:09:58 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID:  
-2025-06-09 08:12:16 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID:  
-2025-06-09 08:14:54 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID:  
-2025-06-09 08:16:09 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID:  
+2025-06-09 08:05:46 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID:
+2025-06-09 08:06:38 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID:
+2025-06-09 08:08:29 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID:
+2025-06-09 08:09:58 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID:
+2025-06-09 08:12:16 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID:
+2025-06-09 08:14:54 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID:
+2025-06-09 08:16:09 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID:
 2025-06-09 08:23:43 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
 2025-06-09 15:28:26 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
 2025-06-09 15:28:42 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - Se encontró una autoevaluación vinculada a la matrícula: S23014091
@@ -7798,8 +7798,8 @@ Caused by: java.lang.NullPointerException: Cannot invoke "javafx.scene.control.L
 2025-06-19 21:00:47 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error inesperado: javax.crypto.IllegalBlockSizeException: Input length must be multiple of 16 when decrypting with padded cipher
 2025-06-19 21:01:26 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
 2025-06-19 21:02:26 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarCriterioEvaluacionGUI - Error inesperado al buscar el cronograma por matrícula: java.lang.NullPointerException: Cannot invoke "logica.DTOs.CronogramaActividadesDTO.getIDCronograma()" because "cronogramaActividadesDTO" is null
-2025-06-19 21:02:47 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No se encontraron evalauciones S23014101
-2025-06-19 21:02:47 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID: S23014101
+2025-06-19 21:02:47 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No se encontraron evalauciones S23014101
+2025-06-19 21:02:47 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID: S23014101
 2025-06-19 21:03:16 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - Criterios de autoevaluación actualizados correctamente.
 2025-06-19 21:03:17 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
 2025-06-19 21:03:17 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error inesperado al guardar la autoevaluación: java.lang.NullPointerException: Location is required.
@@ -8659,8 +8659,8 @@ Caused by: java.lang.NullPointerException: Cannot invoke "java.sql.Timestamp.toS
 2025-06-19 21:27:59 [JavaFX Application Thread] ERROR GUI.ControladorRegistrarAutoevaluacionGUI - Error inesperado al guardar la autoevaluación: java.lang.NullPointerException: Location is required.
 2025-06-19 21:28:08 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - No se encontró una autoevaluación vinculada a la matrícula:  
 2025-06-19 21:28:11 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarAutoevaluacionGUI - Se encontró una autoevaluación vinculada a la matrícula: S21014092
-2025-06-19 21:28:16 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No se encontraron evalauciones S21014092
-2025-06-19 21:28:16 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID: S21014092
+2025-06-19 21:28:16 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No se encontraron evalauciones S21014092
+2025-06-19 21:28:16 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID: S21014092
 2025-06-19 21:29:12 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
 2025-06-19 21:29:14 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
 2025-06-19 21:29:18 [JavaFX Application Thread] INFO  GUI.ControladorRegistrarEvaluacionGUI - Calificación actualizada correctamente.
@@ -10556,10 +10556,10 @@ java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child 
 	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx.graphics.jar:?]
 	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:185) ~[javafx.graphics.jar:?]
 	at java.lang.Thread.run(Thread.java:1570) [?:?]
-2025-06-20 10:15:35 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No se encontraron evalauciones S89898433
-2025-06-20 10:15:35 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID: S89898433
-2025-06-20 10:41:00 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No se encontraron evalauciones S23014898
-2025-06-20 10:41:00 [JavaFX Application Thread] INFO  GUI.ConsultarEvaluacionesEstudiante - No evaluations found for student ID: S23014898
+2025-06-20 10:15:35 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No se encontraron evalauciones S89898433
+2025-06-20 10:15:35 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID: S89898433
+2025-06-20 10:41:00 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No se encontraron evalauciones S23014898
+2025-06-20 10:41:00 [JavaFX Application Thread] INFO  GUI.ControladorConsultarEvaluacionesEstudianteGUI - No evaluations found for student ID: S23014898
 2025-06-20 11:18:13 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error al iniciar sesión: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
 
 The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.

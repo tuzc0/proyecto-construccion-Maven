@@ -18,9 +18,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ConsultarEvaluacionesEstudiante {
+public class ControladorConsultarEvaluacionesEstudianteGUI {
 
-    Logger logger = org.apache.logging.log4j.LogManager.getLogger(ConsultarEvaluacionesEstudiante.class);
+    Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorConsultarEvaluacionesEstudianteGUI.class);
 
     @FXML
     private VBox contenedorEvaluaciones;
@@ -32,12 +32,14 @@ public class ConsultarEvaluacionesEstudiante {
 
     Utilidades utilidades = new Utilidades();
 
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
-        System.out.println("Matricula establecida: " + matricula);
-        cargarEvaluaciones();
-    }
+    ManejadorExepciones manejadorExepciones = new ManejadorExepciones();
 
+    public void setMatricula(String matricula) {
+
+        this.matricula = matricula;
+        cargarEvaluaciones();
+
+    }
 
     @FXML
     public void initialize() {
@@ -45,9 +47,11 @@ public class ConsultarEvaluacionesEstudiante {
         if (matricula != null && !matricula.isBlank() ) {
             cargarEvaluaciones();
         }
+
     }
 
     private void cargarEvaluaciones() {
+
         EvaluacionDAO evaluacionDAO = new EvaluacionDAO();
         double calificacionFinal = calcularCalificacionFinal();
         etiquetaCalificacion.setText(String.valueOf(calificacionFinal));
@@ -56,18 +60,31 @@ public class ConsultarEvaluacionesEstudiante {
             List<EvaluacionDTO> listaEvaluaciones = evaluacionDAO.listarEvaluacionesPorIdEstudiante(matricula);
 
             if (listaEvaluaciones == null || listaEvaluaciones.isEmpty()) {
-                logger.info("No evaluations found for student ID: " + matricula);
+
+                logger.info("No se encontraron evaluaciones con la matricula: " + matricula);
+                utilidades.mostrarAlerta("No hay evaluaciones", "No se encontraron evaluaciones para el estudiante con matrícula: "
+                        + matricula, "Información");
                 return;
             }
 
             for (EvaluacionDTO evaluacion : listaEvaluaciones) {
+
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ObjetoEvaluacion.fxml"));
                 Node objetoEvaluacion;
 
                 try {
+
                     objetoEvaluacion = loader.load();
+
                 } catch (IOException e) {
-                    logger.error("Error loading ObjetoEvaluacion.fxml: " + e.getMessage(), e);
+
+                    manejadorExepciones.manejarIOException(e, logger, utilidades);
+                    continue;
+
+                } catch (Exception e) {
+
+                    logger.error("Error inesperado al cargar el objeto de evaluación: " + e);
+                    utilidades.mostrarAlerta("Error inesperado", "Ocurrió un error al cargar las evaluaciones.", "Error");
                     continue;
                 }
 
@@ -77,9 +94,20 @@ public class ConsultarEvaluacionesEstudiante {
 
                 contenedorEvaluaciones.getChildren().add(objetoEvaluacion);
             }
-        } catch (SQLException | IOException e) {
-            utilidades.mostrarAlerta("Error al cargar las evaluaciones", "No se pudieron cargar las evaluaciones del estudiante. Por favor, inténtelo de nuevo más tarde.", "Error de conexión");
-            logger.error("Error al cargar las evaluaciones del estudiante: " + e.getMessage(), e);
+
+        } catch (SQLException e) {
+
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+
+
+        } catch (IOException e) {
+
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al cargar las evaluaciones: " + e);
+            utilidades.mostrarAlerta("Error inesperado", "Ocurrió un error al cargar las evaluaciones.", "Error");
         }
     }
 
@@ -106,12 +134,17 @@ public class ConsultarEvaluacionesEstudiante {
 
         } catch (SQLException e) {
 
-            utilidades.mostrarAlerta("Error al calcular la calificación final", "No se pudieron obtener las evaluaciones del estudiante.", "Error de conexión");
-            logger.error("Error al calcular la calificación final: " + e);
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
 
         } catch (IOException e) {
-            utilidades.mostrarAlerta("Error de entrada/salida", "Ocurrió un error al intentar cargar los datos del estudiante.", "Error de conexión");
-            logger.error("Error de entrada/salida al calcular la calificación final: " +  e);
+
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al calcular la calificación final: " + e);
+            utilidades.mostrarAlerta("Error inesperado", "Ocurrió un error al calcular la calificación final.", "Error");
+
         }
 
         return calificacionFinal;
@@ -132,11 +165,18 @@ public class ConsultarEvaluacionesEstudiante {
             nombreEvaluador = usuario.getNombre() + " " + usuario.getApellido();
 
         } catch (SQLException e) {
-            utilidades.mostrarAlerta("Error al obtener el nombre del evaluador", "No se pudo obtener el nombre del evaluador. Por favor, inténtelo de nuevo más tarde.", "Error de conexión");
-            logger.error("Error al obtener el nombre del evaluador: " + e.getMessage(), e);
+
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+
         } catch (IOException e) {
-            utilidades.mostrarAlerta("Error de entrada/salida", "Ocurrió un error al intentar cargar los datos del evaluador.", "Error de conexión");
-            logger.error("Error de entrada/salida al obtener el nombre del evaluador: " + e.getMessage(), e);
+
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al obtener el nombre del evaluador: " + e);
+            utilidades.mostrarAlerta("Error inesperado", "Ocurrió un error al obtener el nombre del evaluador.", "Error");
+
         }
 
         return nombreEvaluador;

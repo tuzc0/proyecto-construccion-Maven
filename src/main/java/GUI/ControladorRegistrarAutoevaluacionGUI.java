@@ -1,17 +1,12 @@
 package GUI;
 
 import GUI.utilidades.Utilidades;
-import accesoadatos.AutenticadorDrive;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import logica.ContenedorCriteriosAutoevaluacion;
-import logica.ContenedorCriteriosEvaluacion;
 import logica.DAOs.*;
 import logica.DTOs.AutoEvaluacionContieneDTO;
 import logica.DTOs.AutoevaluacionDTO;
@@ -21,12 +16,7 @@ import logica.SelectorArchivos;
 import logica.SubidorArchivosDrive;
 import org.apache.logging.log4j.Logger;
 
-import com.google.api.client.http.FileContent;
-import com.google.api.services.drive.Drive;
-import com.google.api.services.drive.model.File;
-
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.*;
 import java.sql.SQLException;
 
@@ -69,11 +59,8 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
     @FXML private ListView<String> listaArchivos;
 
-    @FXML private Label lblErrorArchivos;
+    @FXML private Label etiquetaErrorArchivos;
 
-    @FXML private Button btnGuardar;
-
-    private static final String FOLDER_ID = "1LGx2JpfFoNvqm7Dodf6i8Q2ijqDDONzR";
 
     private Map<String, String> urlsDrive = new HashMap<>();
 
@@ -84,6 +71,8 @@ public class ControladorRegistrarAutoevaluacionGUI {
     public static int idAutoevaluacion = 0;
 
     String idEstudiante = ControladorInicioDeSesionGUI.matricula;
+
+    ManejadorExepciones manejadorExepciones = new ManejadorExepciones();
 
 
     @FXML
@@ -103,6 +92,7 @@ public class ControladorRegistrarAutoevaluacionGUI {
         guardarAutoevaluacionVacia();
         guardarCriteriosVacios();
         cargarCriteriosAutoevaluacion();
+
     }
 
     public void cargarCriteriosAutoevaluacion() {
@@ -132,15 +122,18 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL: " + e);
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO: " + e);
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado: " + e);
+            utilidades.mostrarAlerta("Error inesperado",
+                    "Ocurrió un error al cargar los criterios de autoevaluación.",
+                    "Por favor, intente nuevamente más tarde.");
 
         }
     }
@@ -184,8 +177,11 @@ public class ControladorRegistrarAutoevaluacionGUI {
         int contador = 0;
 
         for (ContenedorCriteriosAutoevaluacion contenedor : tablaAutoevaluacion.getItems()) {
+
             AutoEvaluacionContieneDTO autoEvaluacionContiene = contenedor.getAutoEvaluacionContiene();
+
             if (autoEvaluacionContiene.getCalificacion() == 0) {
+
                 utilidades.mostrarAlerta("Advertencia",
                         "Calificación incompleta",
                         "Debe calificar todos los criterios antes de calcular el promedio.");
@@ -218,15 +214,18 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL al crear la autoevaluación: " + e);
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO al crear la autoevaluación: " + e);
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al crear la autoevaluación: " + e);
+            utilidades.mostrarAlerta("Error inesperado",
+                    "Ocurrió un error al crear la autoevaluación.",
+                    "Por favor, intente nuevamente más tarde.");
 
         }
     }
@@ -251,14 +250,19 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL al guardar los criterios vacíos: " + e);
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO al guardar los criterios vacíos: " + e);
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
 
         } catch (Exception e) {
+
             logger.error("Error inesperado al guardar los criterios vacíos: " + e);
+            utilidades.mostrarAlerta("Error inesperado",
+                    "Ocurrió un error al guardar los criterios vacíos.",
+                    "Por favor, intente nuevamente más tarde.");
+
         }
     }
 
@@ -314,15 +318,18 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL al guardar la autoevaluación: " + e);
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO al guardar la autoevaluación: " + e);
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al guardar la autoevaluación: " + e);
+            utilidades.mostrarAlerta("Error inesperado",
+                    "Ocurrió un error al guardar la autoevaluación.",
+                    "Por favor, intente nuevamente más tarde.");
 
         }
     }
@@ -346,15 +353,19 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL al actualizar los criterios de autoevaluación: " + e);
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO al actualizar los criterios de autoevaluación: " + e);
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al actualizar los criterios de autoevaluación: " + e);
+            utilidades.mostrarAlerta("Error inesperado",
+                    "Ocurrió un error al actualizar los criterios de autoevaluación.",
+                    "Por favor, intente nuevamente más tarde.");
+
         }
     }
 
@@ -374,11 +385,20 @@ public class ControladorRegistrarAutoevaluacionGUI {
             utilidades.mostrarVentana("GUI/MenuEstudianteGUI.fxml");
 
         } catch (SQLException e) {
-            logger.error("Error de SQL al cancelar el registro: " + e);
+
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+
         } catch (IOException e) {
-            logger.error("Error de IO al cancelar el registro: " + e);
+
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
+
         } catch (Exception e) {
+
             logger.error("Error inesperado al cancelar el registro: " + e);
+            utilidades.mostrarAlerta("Error inesperado",
+                    "Ocurrió un error al cancelar el registro.",
+                    "Por favor, intente nuevamente más tarde.");
+
         }
 
     }
@@ -399,10 +419,10 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
                 archivosLocales.addAll(archivosSeleccionados);
                 actualizarListaArchivos();
-                lblErrorArchivos.setText("");
+                etiquetaErrorArchivos.setText("");
 
             } else {
-                lblErrorArchivos.setText("Archivos no válidos. Verifique tamaño y formatos.");
+                etiquetaErrorArchivos.setText("Archivos no válidos. Verifique tamaño y formatos.");
             }
         }
     }
@@ -431,7 +451,7 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
         if (archivosLocales.isEmpty()) {
 
-            lblErrorArchivos.setText("Debe adjuntar al menos un archivo de evidencia");
+            etiquetaErrorArchivos.setText("Debe adjuntar al menos un archivo de evidencia");
             return;
         }
 
@@ -446,8 +466,10 @@ public class ControladorRegistrarAutoevaluacionGUI {
                     "Se subieron " + urlsDrive.size() + " archivos a Google Drive");
 
         } catch (Exception e) {
-            lblErrorArchivos.setText("Error al subir archivos: " + e);
+
+            etiquetaErrorArchivos.setText("Error al subir archivos: " + e);
             logger.error("Error al subir archivos: ", e);
+
         }
     }
 
@@ -474,24 +496,20 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL al insertar evidencia: " + e);
-            utilidades.mostrarAlerta("Error", "Error al insertar evidencia",
-                    "No se pudo insertar la evidencia en la base de datos. Verifique los registros.");
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO al insertar evidencia: " + e);
-            utilidades.mostrarAlerta("Error", "Error de IO al insertar evidencia",
-                    "No se pudo insertar la evidencia en la base de datos. Verifique los registros.");
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al insertar evidencia: " + e);
             utilidades.mostrarAlerta("Error", "Error inesperado al insertar evidencia",
                     "No se pudo insertar la evidencia en la base de datos. Verifique los registros.");
+
         }
     }
-
 
 }
 

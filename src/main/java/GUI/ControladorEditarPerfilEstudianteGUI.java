@@ -16,9 +16,6 @@ import logica.VerificacionUsuario;
 import logica.utilidadesproyecto.EncriptadorContraseñas;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.Logger;
-
-
-
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -74,6 +71,8 @@ public class ControladorEditarPerfilEstudianteGUI {
 
     int idUsuario = 0;
 
+    ManejadorExepciones manejadorExepciones = new ManejadorExepciones();
+
     @FXML
     public void initialize() {
 
@@ -91,8 +90,6 @@ public class ControladorEditarPerfilEstudianteGUI {
 
         cargarDatosPerfil();
         utilidadesContraseña.inicializarIcono(iconoOjo);
-
-
 
     }
 
@@ -126,16 +123,18 @@ public class ControladorEditarPerfilEstudianteGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error al buscar estudiante por matrícula: " + matricula, e);
+            manejadorExepciones.manejarSQLException( e, logger, utilidades);
 
         } catch (IOException e) {
 
-            logger.error("Error de entrada/salida al buscar estudiante por matrícula: " + matricula, e);
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
 
         } catch (Exception e) {
 
-            logger.error("Error inesperado al buscar estudiante por matrícula: " + matricula, e);
-
+            logger.error("Error inesperado al cargar los datos del perfil del estudiante: " + e);
+            utilidades.mostrarAlerta("Error inesperado",
+                    "No se pudieron cargar los datos del perfil.",
+                    "Por favor, intente nuevamente más tarde.");
         }
 
     }
@@ -162,8 +161,6 @@ public class ControladorEditarPerfilEstudianteGUI {
         CuentaDTO cuentaDTO = new CuentaDTO();
 
         cuentaDTO.setIdUsuario(idUsuario);
-
-
 
         String nuevaContrasena = campoContraseña.getText();
         String nuevaContrasenaDescifrada = campoContraseñaDescifrada.getText();
@@ -193,11 +190,12 @@ public class ControladorEditarPerfilEstudianteGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error al actualizar el perfil del estudiante: " + e);
+            manejadorExepciones.manejarSQLException(e, logger, utilidades);
 
         } catch (IOException e) {
 
-            logger.error("Error de entrada/salida al actualizar el perfil del estudiante: " + e);
+            manejadorExepciones.manejarIOException(e, logger, utilidades);
+
 
         } catch (Exception e) {
 

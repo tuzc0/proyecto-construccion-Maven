@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import logica.*;
 import logica.DAOs.*;
 import logica.DTOs.*;
+import logica.verificacion.ValidarFechas;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.Logger;
 
@@ -16,15 +17,12 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class ControladorRegistrarReporteMensualGUI {
 
-    Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorRegistrarCriterioEvaluacionGUI.class);
+    Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorRegistrarReporteMensualGUI.class);
 
     @FXML
     Label etiquetaMatricula;
@@ -102,6 +100,8 @@ public class ControladorRegistrarReporteMensualGUI {
     public static VerificacionEntradas verificacionEntradas = new VerificacionEntradas();
 
     ManejadorExepciones manejadorExepciones = new ManejadorExepciones();
+
+    ValidarFechas validarFechas = new ValidarFechas();
 
     @FXML
     public void initialize() {
@@ -363,6 +363,7 @@ public class ControladorRegistrarReporteMensualGUI {
 
         try{
             CronogramaActividadesDTO cronogramaActividadesDTO = cronogramaActividadesDAO.buscarCronogramaPorMatricula(matricula);
+            System.out.println("Cronograma encontrado: " + cronogramaActividadesDTO.getIDCronograma());
 
             idCronograma = cronogramaActividadesDTO.getIDCronograma();
             List<CronogramaContieneDTO> cronogramaContieneList = cronogramaContieneDAO.listarCronogramaContienePorID(idCronograma);
@@ -427,28 +428,28 @@ public class ControladorRegistrarReporteMensualGUI {
         }
     }
 
+
     @FXML
     public void añadirActividad() {
 
-        if (fechaInicio.getValue() == null || fechaFin.getValue() == null) {
+        LocalDate fechaInicioObtenida = this.fechaInicio.getValue();
+        LocalDate fechaFinObtenida = this.fechaFin.getValue();
 
-            utilidades.mostrarAlerta("Error",
-                    "Fechas incompletas",
-                    "Debe seleccionar ambas fechas");
-            return;
-        }
-
-        if (fechaInicio.getValue().isAfter(fechaFin.getValue())) {
-
-            utilidades.mostrarAlerta("Error",
-                    "Fecha de inicio posterior a fecha de fin",
-                    "La fecha de inicio no puede ser posterior a la fecha de fin.");
-            return;
-        }
+        List<String> errores = new ArrayList<>();
 
         ReporteContieneDAO reporteContieneDAO = new ReporteContieneDAO();
 
         try {
+
+            errores = validarFechas.validarFechas(fechaInicioObtenida, fechaFinObtenida);
+
+            if (!errores.isEmpty()) {
+
+                utilidades.mostrarAlerta("Errores de validación",
+                        "Por favor, corrija los siguientes errores:",
+                        String.join("\n", errores));
+                return;
+            }
 
             ReporteContieneDTO reporteContieneDTO = new ReporteContieneDTO();
             reporteContieneDTO.setIdReporte(idReporte);
@@ -509,6 +510,7 @@ public class ControladorRegistrarReporteMensualGUI {
         try {
 
             List<ReporteContieneDTO> listaActividadesReporte = reporteContieneDAO.listarReporteContienePorIDReporte(idReporte);
+            System.out.println(idReporte);
 
             for (ReporteContieneDTO reporteContiene : listaActividadesReporte) {
 
@@ -564,8 +566,11 @@ public class ControladorRegistrarReporteMensualGUI {
     public void cancelarRegistro() {
 
         ReporteDAO reporteDAO = new ReporteDAO();
+        ReporteContieneDAO reporteContieneDAO = new ReporteContieneDAO();
+
         try {
 
+            reporteContieneDAO.eliminarReporteContieneDefinitivamentePorIDReporte(idReporte);
             reporteDAO.eliminarReporte(idReporte);
 
         } catch (SQLException e) {

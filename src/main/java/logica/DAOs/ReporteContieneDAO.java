@@ -149,4 +149,21 @@ public class ReporteContieneDAO implements IReporteContieneDAO {
         }
         return listaReporteContiene;
     }
+
+    public boolean eliminarReporteContieneDefinitivamentePorIDReporte(int idReporte) throws SQLException, IOException {
+        String consultaSQL = "DELETE FROM reportecontiene WHERE idReporte = ?";
+        boolean reporteEliminado = false;
+
+        try (Connection conexion = new ConexionBaseDeDatos().getConnection();
+             PreparedStatement sentencia = conexion.prepareStatement(consultaSQL)) {
+
+            sentencia.setInt(1, idReporte);
+
+            if (sentencia.executeUpdate() > 0) {
+                reporteEliminado = true;
+            }
+        }
+
+        return reporteEliminado;
+    }
 }

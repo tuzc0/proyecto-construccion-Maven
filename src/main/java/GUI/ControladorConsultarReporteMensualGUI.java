@@ -48,10 +48,10 @@ public class ControladorConsultarReporteMensualGUI {
     TableColumn<ContenedorActividadesReporte, String> columnaActividad;
 
     @FXML
-    TableColumn <ContenedorActividadesReporte, String> columnaFechaInicio;
+    TableColumn<ContenedorActividadesReporte, String> columnaFechaInicio;
 
     @FXML
-    TableColumn <ContenedorActividadesReporte, String> columnaFechaFin;
+    TableColumn<ContenedorActividadesReporte, String> columnaFechaFin;
 
     @FXML
     ListView<String> listaArchivos;
@@ -90,6 +90,7 @@ public class ControladorConsultarReporteMensualGUI {
             ReporteDTO reporte = reporteDAO.buscarReportePorID(idReporteSeleccionado);
 
             if (reporte != null) {
+
                 etiquetaMatricula.setText(reporte.getMatricula());
                 etiquetaFecha.setText(reporte.getFecha().toString());
                 textoMetodologia.setText(reporte.getMetodologia());
@@ -164,6 +165,7 @@ public class ControladorConsultarReporteMensualGUI {
                 logger.error("Error al abrir el archivo: " + e);
 
             }
+
         } else {
 
             gestorVentanas.mostrarAlerta(
@@ -175,7 +177,7 @@ public class ControladorConsultarReporteMensualGUI {
     }
 
 
-    public void cargarActividades () {
+    public void cargarActividades() {
 
         ActividadDAO actividadDAO = new ActividadDAO();
         ReporteContieneDAO reporteContieneDAO = new ReporteContieneDAO();
@@ -197,7 +199,6 @@ public class ControladorConsultarReporteMensualGUI {
 
                 tablaActividades.getItems().add(contenedorActividadesReporte);
             }
-
 
         } catch (SQLException e) {
 

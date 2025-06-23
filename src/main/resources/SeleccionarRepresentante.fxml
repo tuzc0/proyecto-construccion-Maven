@@ -40,7 +40,7 @@
                      <graphic>
                         <ImageView fitHeight="19.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@/lupa.png" />
+                              <Image url="@/imagenes/lupa.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>

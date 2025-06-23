@@ -9,7 +9,7 @@ public class LectorPropiedadesContrasena {
     public static String obtenerClaveSecreta() throws IOException {
         Properties propiedades = new Properties();
 
-        try (InputStream input = LectorPropiedadesContrasena.class.getClassLoader().getResourceAsStream("contrasena.properties")) {
+        try (InputStream input = LectorPropiedadesContrasena.class.getClassLoader().getResourceAsStream("archivosdeconfiguracion/contrasena.properties")) {
             if (input == null) {
                 throw new IOException("No se encontró el archivo config.properties");
             }

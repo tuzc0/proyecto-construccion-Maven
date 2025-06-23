@@ -38,7 +38,7 @@ public class ControladorCrearGruposYPeriodoGUI {
     Label etiquetaExperienciaEducativa;
 
     @FXML
-    TableView <GrupoDTO> tablaGrupos;
+    TableView<GrupoDTO> tablaGrupos;
 
     @FXML
     TableColumn<GrupoDTO, String> columnaGrupo;
@@ -68,7 +68,9 @@ public class ControladorCrearGruposYPeriodoGUI {
     Label etiquetaFinal;
 
     Utilidades gestorVentanas = new Utilidades();
+
     IGestorAlertas utilidades = new Utilidades();
+
     ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     @FXML
@@ -81,7 +83,9 @@ public class ControladorCrearGruposYPeriodoGUI {
                                                                              periodoAnterior,
                                                                              nuevoPeriodo) -> {
             if (nuevoPeriodo != null) {
+
                 restringirFechas(nuevoPeriodo);
+
             }
         });
 
@@ -94,6 +98,7 @@ public class ControladorCrearGruposYPeriodoGUI {
         columnaAcademico.setCellValueFactory(cellData ->
                 new javafx.beans.property.SimpleStringProperty(String.valueOf(cellData.getValue().getNumeroPersonal())));
         cargarGruposActivos();
+
     }
 
     private void restringirFechas(String periodo) {
@@ -104,9 +109,13 @@ public class ControladorCrearGruposYPeriodoGUI {
                 super.updateItem(date, empty);
 
                 if (periodo.equals("febrero-julio")) {
+
                     setDisable(empty || date.getMonthValue() != 2);
+
                 } else if (periodo.equals("agosto-enero")) {
+
                     setDisable(empty || date.getMonthValue() != 8);
+
                 }
             }
         });
@@ -117,9 +126,13 @@ public class ControladorCrearGruposYPeriodoGUI {
                 super.updateItem(date, empty);
 
                 if (periodo.equals("febrero-julio")) {
+
                     setDisable(empty || date.getMonthValue() != 7);
+
                 } else if (periodo.equals("agosto-enero")) {
+
                     setDisable(empty || date.getMonthValue() != 1);
+
                 }
             }
         });
@@ -127,7 +140,6 @@ public class ControladorCrearGruposYPeriodoGUI {
         fechaInicio.setEditable(false);
         fechaFinal.setEditable(false);
     }
-
 
 
     public void verificarPeriodoActivo() {
@@ -165,10 +177,19 @@ public class ControladorCrearGruposYPeriodoGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al verificar el periodo activo: " + e);
+            utilidades.mostrarAlerta(
+                    "Error inesperado",
+                    "No se pudo verificar el periodo activo.",
+                    "Por favor, intente más tarde."
+            );
         }
     }
 
-    private void activarNuevoPeriodo () {
+    private void activarNuevoPeriodo() {
 
         etiquetaPeriodoActivo.setVisible(false);
         comboPeriodo.setVisible(true);
@@ -232,6 +253,15 @@ public class ControladorCrearGruposYPeriodoGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al eliminar el periodo: " + e);
+            utilidades.mostrarAlerta(
+                    "Error inesperado",
+                    "No se pudo eliminar el periodo activo.",
+                    "Por favor, intente más tarde."
+            );
         }
     }
 
@@ -254,6 +284,15 @@ public class ControladorCrearGruposYPeriodoGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al abrir la ventana de crear grupo: " + e);
+            utilidades.mostrarAlerta(
+                    "Error inesperado",
+                    "No se pudo abrir la ventana de crear grupo.",
+                    "Por favor, intente más tarde."
+            );
         }
     }
 
@@ -324,6 +363,15 @@ public class ControladorCrearGruposYPeriodoGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al crear el nuevo periodo: " + e);
+            utilidades.mostrarAlerta(
+                    "Error inesperado",
+                    "No se pudo crear el nuevo periodo.",
+                    "Por favor, intente más tarde."
+            );
         }
     }
 
@@ -375,6 +423,15 @@ public class ControladorCrearGruposYPeriodoGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al eliminar el grupo: " + e);
+            utilidades.mostrarAlerta(
+                    "Error inesperado",
+                    "No se pudo eliminar el grupo.",
+                    "Por favor, intente más tarde."
+            );
         }
     }
 
@@ -395,6 +452,15 @@ public class ControladorCrearGruposYPeriodoGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al cargar los grupos activos: " + e);
+            utilidades.mostrarAlerta(
+                    "Error inesperado",
+                    "No se pudieron cargar los grupos activos.",
+                    "Por favor, intente más tarde."
+            );
         }
     }
 }

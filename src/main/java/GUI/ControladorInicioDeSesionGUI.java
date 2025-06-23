@@ -26,7 +26,7 @@ public class ControladorInicioDeSesionGUI {
     TextField campoCorreo;
 
     @FXML
-    TextField  campoContraseña;
+    TextField campoContraseña;
 
     @FXML
     PasswordField contraseñaCifrada;
@@ -35,13 +35,19 @@ public class ControladorInicioDeSesionGUI {
     ImageView iconoOjo;
 
     private Utilidades gestorVetanas = new Utilidades();
+
     private IGestorAlertas utilidades = new Utilidades();
+
     private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
+
     private UtilidadesContraseña utilidadesContraseña = new UtilidadesContraseña();
+
     private EncriptadorContraseñas encriptadorContraseñas = new EncriptadorContraseñas();
 
     int idUsuario = 0;
+
     public static String matricula = " ";
+
     public static int numeroDePersonal = 0;
 
     @FXML
@@ -56,7 +62,7 @@ public class ControladorInicioDeSesionGUI {
     @FXML
     public void alternarVisibilidadContrasena() {
 
-        utilidadesContraseña.visibilidadUnicaContraseña(contraseñaCifrada,campoContraseña, iconoOjo);
+        utilidadesContraseña.visibilidadUnicaContraseña(contraseñaCifrada, campoContraseña, iconoOjo);
     }
 
     @FXML
@@ -67,16 +73,17 @@ public class ControladorInicioDeSesionGUI {
         String contraseña = contraseñaOculta;
 
         if (correo.isEmpty() || contraseña.isEmpty()) {
-           gestorVetanas.mostrarAlerta("Campos Vacíos",
-                   "Por favor, complete todos los campos.",
-                   "Todos los campos son obligatorios para iniciar sesión.");
+
+            gestorVetanas.mostrarAlerta("Campos Vacíos",
+                    "Por favor, complete todos los campos.",
+                    "Todos los campos son obligatorios para iniciar sesión.");
         }
 
         CuentaDAO cuentaDAO = new CuentaDAO();
         String contraseñaEncontrada = " ";
         String correoEncontrado = " ";
 
-        try{
+        try {
 
             CuentaDTO cuenta = cuentaDAO.buscarCuentaPorCorreo(correo);
             correoEncontrado = cuenta.getCorreoElectronico();
@@ -86,6 +93,7 @@ public class ControladorInicioDeSesionGUI {
             idUsuario = cuenta.getIdUsuario();
 
             if (correoEncontrado.equals("N/A")) {
+
                 gestorVetanas.mostrarAlerta("Correo no encontrado",
                         "El correo electrónico ingresado no está registrado.",
                         "Por favor, verifique su correo o regístrese.");
@@ -93,10 +101,12 @@ public class ControladorInicioDeSesionGUI {
             }
 
             if (!contraseñaEncontrada.equals(contraseña)) {
+
                 gestorVetanas.mostrarAlerta("Contraseña incorrecta",
                         "La contraseña ingresada es incorrecta.",
                         "Por favor, intente nuevamente.");
                 return;
+
             }
 
             gestorVetanas.mostrarAlerta("Inicio de sesión exitoso",
@@ -122,7 +132,7 @@ public class ControladorInicioDeSesionGUI {
     }
 
 
-    public void validarTipoUsuario (int idUsuario) {
+    public void validarTipoUsuario(int idUsuario) {
 
         EstudianteDAO estudianteDAO = new EstudianteDAO();
         AcademicoDAO academicoDAO = new AcademicoDAO();

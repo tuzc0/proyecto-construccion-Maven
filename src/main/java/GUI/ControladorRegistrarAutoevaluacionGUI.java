@@ -165,7 +165,9 @@ public class ControladorRegistrarAutoevaluacionGUI {
                 super.updateItem(item, empty);
 
                 if (empty) {
+
                     setGraphic(null);
+
                 } else {
 
                     AutoEvaluacionContieneDTO autoEvaluacionContiene =
@@ -179,6 +181,7 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
     @FXML
     private void calcularPromedio() {
+
         double suma = 0;
         int contador = 0;
 
@@ -193,8 +196,10 @@ public class ControladorRegistrarAutoevaluacionGUI {
                         "Debe calificar todos los criterios antes de calcular el promedio.");
                 return;
             }
+
             suma += autoEvaluacionContiene.getCalificacion();
             contador++;
+
         }
 
         double promedio = contador > 0 ? suma / contador : 0;
@@ -468,8 +473,7 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
         } catch (Exception e) {
 
-            etiquetaErrorArchivos.setText("Error al subir archivos: " + e);
-            logger.error("Error al subir archivos: ", e);
+            manejadorExcepciones.manejarExcepcionDrive(e);
             cancelarRegistro();
 
         }

@@ -29,26 +29,29 @@
       </columnConstraints>
 
       <!-- Primera columna -->
-      <Button onAction="#abrirEditarPerfilEstudiante" style="-fx-background-color: #e0f2fe; -fx-text-fill: #0369a1; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;" text="Ver Perfil" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+      <Button onAction="#abrirEditarPerfilEstudiante" style="-fx-background-color: #e0f2fe; -fx-text-fill: #0369a1; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;" text="Ver Perfil" GridPane.columnIndex="0" />
 
       <Button onAction="#abrirDetallesAsignacionComoEstudiante" style="-fx-background-color: #e0f2fe; -fx-text-fill: #0369a1; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;" text="Consultar Proyecto" GridPane.columnIndex="0" GridPane.rowIndex="1" />
 
       <Button onAction="#abrirRegistrarCronogramaActividades" style="-fx-background-color: #dcfce7; -fx-text-fill: #166534; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;" text="Registrar Cronograma" GridPane.columnIndex="0" GridPane.rowIndex="2" />
 
-      <Button onAction="#abrirRegistrarReporteMensual" style="-fx-background-color: #dcfce7; -fx-text-fill: #166534; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;" text="Registrar Reporte Mensual" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+      <Button onAction="#abrirRegistrarReporteMensual" prefWidth="198.0" style="-fx-background-color: #dcfce7; -fx-text-fill: #166534; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;" text="Registrar Reporte Mensual" GridPane.columnIndex="0" GridPane.rowIndex="3" />
 
       <!-- Segunda columna -->
-      <Button onAction="#abrirConsultarEvaluacionesEstudiante" style="-fx-background-color: #fef3c7; -fx-text-fill: #92400e; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;" text="Consultar Evaluaciones" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+      <Button onAction="#abrirConsultarEvaluacionesEstudiante" style="-fx-background-color: #fef3c7; -fx-text-fill: #92400e; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;" text="Consultar Evaluaciones" GridPane.columnIndex="1" />
 
       <Button fx:id="botonRegistrarAutoevaluacion" onAction="#abrirRegistrarAutoevaluacion" style="-fx-background-color: #fee2e2; -fx-text-fill: #991b1b; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;" text="Registrar Autoevaluación" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
       <Button fx:id="botonConsultarAutoevaluacion" onAction="#abrirConsultarAutoevaluacion" style="-fx-background-color: #fee2e2; -fx-text-fill: #991b1b; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;" text="Consultar Autoevaluación" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <Button onAction="#abrirConsultarReporteMensual" style="-fx-background-color: #dcfce7; -fx-text-fill: #166534; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;" text="Consultar Reportes" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Button onAction="#abrirConsultarCronograma" style="-fx-background-color: #dcfce7; -fx-text-fill: #166534; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 12 20; -fx-cursor: hand;" text="Consultar cronograma" GridPane.rowIndex="4" />
       <rowConstraints>
          <RowConstraints />
          <RowConstraints />
          <RowConstraints />
          <RowConstraints />
+         <RowConstraints minHeight="10.0" prefHeight="30.0" />
+         <RowConstraints minHeight="10.0" prefHeight="30.0" />
       </rowConstraints>
    </GridPane>
 

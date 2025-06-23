@@ -12,7 +12,6 @@ import logica.interfaces.IGestorAlertas;
 import org.apache.logging.log4j.Logger;
 
 
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -75,11 +74,11 @@ public class ControladorListarEstudiantesConAutoevaluacionGUI {
 
         } catch (SQLException e) {
 
-           manejadorExcepciones.manejarSQLException(e);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-           manejadorExcepciones.manejarIOException(e);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
@@ -97,30 +96,36 @@ public class ControladorListarEstudiantesConAutoevaluacionGUI {
 
         columnaVerAutoevaluacion.setCellFactory(param ->
                 new javafx.scene.control.TableCell<>() {
-            private final javafx.scene.control.Button botonVerEvaluacion =
-                    new javafx.scene.control.Button("Ver Autoevaluacion");
 
-            {
-                botonVerEvaluacion.setOnAction(event -> {
-                    EstudianteDTO estudiante = getTableView().getItems().get(getIndex());
-                    matriculaEstudiante = estudiante.getMatricula();
-                    verAutoevaluacion();
+                    private final javafx.scene.control.Button botonVerEvaluacion =
+                            new javafx.scene.control.Button("Ver Autoevaluacion");
+
+                    {
+                        botonVerEvaluacion.setOnAction(event -> {
+                            EstudianteDTO estudiante = getTableView().getItems().get(getIndex());
+                            matriculaEstudiante = estudiante.getMatricula();
+                            verAutoevaluacion();
+                        });
+                    }
+
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+
+                        super.updateItem(item, empty);
+                        if (empty) {
+
+                            setGraphic(null);
+
+                        } else {
+
+                            setGraphic(botonVerEvaluacion);
+
+                        }
+                    }
                 });
-            }
-
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(botonVerEvaluacion);
-                }
-            }
-        });
     }
 
-    private void verAutoevaluacion( ) {
+    private void verAutoevaluacion() {
 
         gestorVentanas.mostrarVentana("/ConsultarAutoevaluacionGUI.fxml");
     }

@@ -47,9 +47,13 @@ public class ControladorConsultarEstudiantesEvaluadosGUI {
     public static String matriculaEstudianteSeleccionado;
 
     private EstudianteDTO estudianteSeleccionado = new EstudianteDTO();
+
     AuxiliarGestionEstudiante auxiliarGestionEstudiante = new AuxiliarGestionEstudiante();
+
     Utilidades gestorVentanas = new Utilidades();
+
     IGestorAlertas utilidades = new Utilidades();
+
     ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     private static int numeroPersonal = ControladorInicioDeSesionGUI.numeroDePersonal;
@@ -92,9 +96,19 @@ public class ControladorConsultarEstudiantesEvaluadosGUI {
 
             manejadorExcepciones.manejarSQLException(e);
 
-        }catch (IOException e) {
+        } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            logger.error("Error al cargar los estudiantes: ", e);
+            gestorVentanas.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error al cargar los estudiantes.",
+                    "Por favor, inténtelo de nuevo más tarde."
+            );
+
         }
     }
 
@@ -103,33 +117,33 @@ public class ControladorConsultarEstudiantesEvaluadosGUI {
         Callback<TableColumn<EstudianteDTO, Void>, TableCell<EstudianteDTO, Void>> cellFactory =
                 param -> new TableCell<>() {
 
-            private final Button botonEvaluar = new Button("Ver Evaluaciones");
+                    private final Button botonEvaluar = new Button("Ver Evaluaciones");
 
-            {
-                botonEvaluar.setOnAction(event -> {
+                    {
+                        botonEvaluar.setOnAction(event -> {
 
-                    EstudianteDTO estudianteSeleccionado = getTableView().getItems().get(getIndex());
-                    matriculaEstudianteSeleccionado = estudianteSeleccionado.getMatricula();
-                    abrirVentanaConsultarEvaluacionesEstudiante();
+                            EstudianteDTO estudianteSeleccionado = getTableView().getItems().get(getIndex());
+                            matriculaEstudianteSeleccionado = estudianteSeleccionado.getMatricula();
+                            abrirVentanaConsultarEvaluacionesEstudiante();
 
-                });
-            }
+                        });
+                    }
 
-            @Override
-            protected void updateItem(Void item, boolean empty) {
+                    @Override
+                    protected void updateItem(Void item, boolean empty) {
 
-                super.updateItem(item, empty);
+                        super.updateItem(item, empty);
 
-                if (empty || getTableView().getItems().get(getIndex()) != estudianteSeleccionado) {
+                        if (empty || getTableView().getItems().get(getIndex()) != estudianteSeleccionado) {
 
-                    setGraphic(null);
+                            setGraphic(null);
 
-                } else {
+                        } else {
 
-                    setGraphic(botonEvaluar);
-                }
-            }
-        };
+                            setGraphic(botonEvaluar);
+                        }
+                    }
+                };
 
         columnaEvaluar.setCellFactory(cellFactory);
     }

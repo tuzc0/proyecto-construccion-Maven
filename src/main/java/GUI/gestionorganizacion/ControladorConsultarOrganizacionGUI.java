@@ -133,8 +133,11 @@ public class ControladorConsultarOrganizacionGUI {
                 super.updateItem(item, empty);
 
                 if (empty || getTableView().getItems().get(getIndex()) != organizacionSeleccionada) {
+
                     setGraphic(null);
+
                 } else {
+
                     setGraphic(botonConsultar);
                 }
             }
@@ -165,6 +168,7 @@ public class ControladorConsultarOrganizacionGUI {
                 if (empty || getTableView().getItems().get(getIndex()) != organizacionSeleccionada) {
 
                     setGraphic(null);
+
                 } else {
 
                     setGraphic(botonEliminar);
@@ -257,6 +261,7 @@ public class ControladorConsultarOrganizacionGUI {
             ObservableList<OrganizacionVinculadaDTO> organizaciones =
                     FXCollections.observableArrayList(organizacionDAO.buscarOrganizacionesPorNombre(textoBusqueda));
             tablaOrganizaciones.setItems(organizaciones);
+
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
@@ -297,6 +302,7 @@ public class ControladorConsultarOrganizacionGUI {
             manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
+
             logger.error("Error inesperado al abrir la ventana de registro de organización: " + e.getMessage());
             utilidades.mostrarAlerta("Error", "Error inesperado",
                     "No se pudo abrir la ventana de registro de organización.");

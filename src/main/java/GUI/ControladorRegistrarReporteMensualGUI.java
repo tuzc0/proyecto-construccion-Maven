@@ -13,6 +13,7 @@ import logica.verificacion.ValidarFechas;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.Logger;
 import logica.ManejadorExcepciones;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -40,7 +41,7 @@ public class ControladorRegistrarReporteMensualGUI {
     TextField campoHoras;
 
     @FXML
-    ComboBox <String> comboActividades;
+    ComboBox<String> comboActividades;
 
     @FXML
     DatePicker fechaInicio;
@@ -49,16 +50,16 @@ public class ControladorRegistrarReporteMensualGUI {
     DatePicker fechaFin;
 
     @FXML
-    TableView <ContenedorActividadesReporte> tablaActividades;
+    TableView<ContenedorActividadesReporte> tablaActividades;
 
     @FXML
-    TableColumn <ContenedorActividadesReporte, String> columnaActividad;
+    TableColumn<ContenedorActividadesReporte, String> columnaActividad;
 
     @FXML
-    TableColumn <ContenedorActividadesReporte, String> columnaFechaInicio;
+    TableColumn<ContenedorActividadesReporte, String> columnaFechaInicio;
 
     @FXML
-    TableColumn <ContenedorActividadesReporte, String> columnaFechaFin;
+    TableColumn<ContenedorActividadesReporte, String> columnaFechaFin;
 
     @FXML
     private ListView<String> listaArchivos;
@@ -156,7 +157,7 @@ public class ControladorRegistrarReporteMensualGUI {
     }
 
     @FXML
-    public void guardarReporte () {
+    public void guardarReporte() {
 
         String metodologia = campoMetodologia.getText();
         String observaciones = campoObservaciones.getText();
@@ -224,7 +225,7 @@ public class ControladorRegistrarReporteMensualGUI {
         }
     }
 
-    private static List<String> validarReporte (String metodologia, String observaciones, String horas) {
+    private static List<String> validarReporte(String metodologia, String observaciones, String horas) {
 
         List<String> errores = new ArrayList<>();
 
@@ -298,8 +299,7 @@ public class ControladorRegistrarReporteMensualGUI {
 
         } catch (Exception e) {
 
-            etiquetaErrorArchivos.setText("Error al subir archivos: " + e);
-            logger.error("Error al subir archivos: ", e);
+            manejadorExcepciones.manejarExcepcionDrive(e);
 
             cancelarRegistro();
 
@@ -309,7 +309,7 @@ public class ControladorRegistrarReporteMensualGUI {
 
     private void subirUrlBD() {
 
-        try{
+        try {
 
             EvidenciaReporteDAO evidenciaDAO = new EvidenciaReporteDAO();
 
@@ -347,22 +347,24 @@ public class ControladorRegistrarReporteMensualGUI {
         }
     }
 
-    public void cargarComboActividades () {
+    public void cargarComboActividades() {
 
         CronogramaActividadesDAO cronogramaActividadesDAO = new CronogramaActividadesDAO();
         CronogramaContieneDAO cronogramaContieneDAO = new CronogramaContieneDAO();
         ActividadDAO actividadDAO = new ActividadDAO();
 
-        try{
+        try {
+
             CronogramaActividadesDTO cronogramaActividadesDTO = cronogramaActividadesDAO.buscarCronogramaPorMatricula(matricula);
-            System.out.println("Cronograma encontrado: " + cronogramaActividadesDTO.getIDCronograma());
 
             idCronograma = cronogramaActividadesDTO.getIDCronograma();
             List<CronogramaContieneDTO> cronogramaContieneList = cronogramaContieneDAO.listarCronogramaContienePorID(idCronograma);
 
             for (CronogramaContieneDTO cronogramaContiene : cronogramaContieneList) {
+
                 ActividadDTO actividadDTO = actividadDAO.buscarActividadPorID(cronogramaContiene.getIdActividad());
                 comboActividades.getItems().add(actividadDTO.getNombre() + actividadDTO.getIDActividad());
+
             }
 
 
@@ -386,11 +388,11 @@ public class ControladorRegistrarReporteMensualGUI {
     }
 
 
-    public void crearReporteVacio () {
+    public void crearReporteVacio() {
 
         ReporteDAO reporteDAO = new ReporteDAO();
 
-        try{
+        try {
 
             ReporteDTO reporteDTO = new ReporteDTO();
             reporteDTO.setMatricula(matricula);
@@ -498,7 +500,7 @@ public class ControladorRegistrarReporteMensualGUI {
     }
 
 
-    public void cargarActividades () {
+    public void cargarActividades() {
 
         ActividadDAO actividadDAO = new ActividadDAO();
         ReporteContieneDAO reporteContieneDAO = new ReporteContieneDAO();

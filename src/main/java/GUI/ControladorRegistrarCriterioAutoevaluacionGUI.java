@@ -62,6 +62,10 @@ public class ControladorRegistrarCriterioAutoevaluacionGUI {
         } catch (Exception e) {
 
             logger.error("Error inesperado: " + e);
+            utilidades.mostrarAlerta("Error",
+                    "Error inesperado al inicializar la ventana.",
+                    "Por favor, intente de nuevo más tarde.");
+
         }
     }
 
@@ -118,6 +122,13 @@ public class ControladorRegistrarCriterioAutoevaluacionGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado: " + e);
+            utilidades.mostrarAlerta("Error",
+                    "Error inesperado al guardar el criterio.",
+                    "Por favor, intente de nuevo más tarde.");
         }
     }
 

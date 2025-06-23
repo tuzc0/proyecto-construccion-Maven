@@ -32,20 +32,20 @@ public class UtilidadesContraseña {
     }
 
     @FXML
-    public void visibilidadUnicaContraseña (PasswordField campoContraseña, TextField campoContraseñaVisible,
-                                              ImageView iconoOjo) {
+    public void visibilidadUnicaContraseña(PasswordField campoContraseña, TextField campoContraseñaVisible,
+                                           ImageView iconoOjo) {
         if (contraseñaVisible) {
 
             campoContraseñaVisible.setVisible(false);
             campoContraseña.setText(campoContraseñaVisible.getText());
             campoContraseña.setVisible(true);
-            iconoOjo.setImage(new Image(getClass().getResource("/ojo-cerrado.png").toExternalForm()));
+            iconoOjo.setImage(new Image(getClass().getResource("/imagenes/ojo-cerrado.png").toExternalForm()));
         } else {
 
             campoContraseña.setVisible(false);
             campoContraseñaVisible.setText(campoContraseña.getText());
             campoContraseñaVisible.setVisible(true);
-            iconoOjo.setImage(new Image(getClass().getResource("/ojo-abierto.png").toExternalForm()));
+            iconoOjo.setImage(new Image(getClass().getResource("/imagenes/ojo-abierto.png").toExternalForm()));
         }
         contraseñaVisible = !contraseñaVisible;
     }
@@ -53,7 +53,7 @@ public class UtilidadesContraseña {
 
     public void actualizarIcono(ImageView iconoOjo, boolean contraseñaVisible) {
 
-        String rutaIcono = contraseñaVisible ? "/ojo-abierto.png" : "/ojo-cerrado.png";
+        String rutaIcono = contraseñaVisible ? "/imagenes/ojo-abierto.png" : "/imagenes/ojo-cerrado.png";
         iconoOjo.setImage(new Image(getClass().getResourceAsStream(rutaIcono)));
     }
 

@@ -10,13 +10,18 @@ import logica.DAOs.EstudianteDAO;
 import logica.DAOs.ProyectoDAO;
 import logica.DTOs.EstudianteDTO;
 import logica.DTOs.ProyectoDTO;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class ControladorAsignacionEstudianteAProyectoGUI {
-    private static final Logger LOGGER = Logger.getLogger(ControladorAsignacionEstudianteAProyectoGUI.class.getName());
+
+    private static final Logger LOGGER =
+            org.apache.logging.log4j.LogManager.getLogger(ControladorAsignacionEstudianteAProyectoGUI.class);
 
     @FXML private TableView<EstudianteDTO> tablaAsignacion;
     @FXML private TableColumn<EstudianteDTO, String> columnaNombreEstudiante;
@@ -27,7 +32,13 @@ public class ControladorAsignacionEstudianteAProyectoGUI {
     @FXML private Button botonRegresar;
 
     private final ManejadorDeAccionAsignacion MANEJADOR_NAVEGACION = new ManejadorDeAccionAsignacion();
-    private Utilidades utilidades = new Utilidades();
+
+    private Utilidades gestorVentanas = new Utilidades();
+
+    private IGestorAlertas utilidades = new Utilidades();
+
+    private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, LOGGER);
+
 
     @FXML
     public void initialize() {
@@ -111,21 +122,19 @@ public class ControladorAsignacionEstudianteAProyectoGUI {
             }
         } catch (SQLException e) {
 
-            LOGGER.severe("Error en la base de datos durante el metodo manejarAccionBoton: " + e);
+            manejadorExcepciones.manejarSQLException(e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            LOGGER.error("Error inesperado al manejar la acción del botón: " + e);
             utilidades.mostrarAlerta(
                     "Error",
                     "Acción no completada",
                     "Ocurrió un problema al intentar realizar la acción. " +
-                            "Por favor, inténtelo nuevamente más tarde."
-            );
-
-        } catch (IOException e) {
-
-            LOGGER.severe("Error al manejarAccionBoton: " + e);
-            utilidades.mostrarAlerta(
-                    "Error",
-                    "Ocurrió un problema inesperado",
-                    "No se pudo completar la acción debido a un error interno. " +
                             "Por favor, inténtelo nuevamente más tarde o contacte al administrador."
             );
         }
@@ -141,20 +150,18 @@ public class ControladorAsignacionEstudianteAProyectoGUI {
 
         } catch (SQLException e) {
 
-            LOGGER.severe("Error en la base de datos al cargar estudiantes: " + e);
-            utilidades.mostrarAlerta(
-                    "Error",
-                    "No se pudieron cargar los estudiantes",
-                    "Ocurrió un problema al intentar cargar la lista de estudiantes. " +
-                            "Por favor, inténtelo nuevamente más tarde o contacte al administrador."
-            );
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            LOGGER.severe("Error al cargar estudiantes: " + e);
+            manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            LOGGER.error("Error al cargar la lista de estudiantes: " + e);
             utilidades.mostrarAlerta(
                     "Error",
-                    "No se pudieron cargar los estudiantes",
+                    "No se pudieron cargar los estudiantes.",
                     "Ocurrió un problema al intentar cargar la lista de estudiantes. " +
                             "Por favor, inténtelo nuevamente más tarde o contacte al administrador."
             );
@@ -189,21 +196,20 @@ public class ControladorAsignacionEstudianteAProyectoGUI {
 
             } catch (SQLException e) {
 
-                LOGGER.severe("Error dentro de la base de datos, no se pudo realizar la búsqueda: " + e);
-                utilidades.mostrarAlerta(
-                        "Error",
-                        "Búsqueda no completada",
-                        "Ocurrió un problema al intentar realizar la búsqueda. " +
-                                "Por favor, inténtelo nuevamente más tarde."
-                );
+                manejadorExcepciones.manejarSQLException(e);
+
 
             } catch (IOException e) {
 
-                LOGGER.severe("No se pudo realizar la accion de busqueda: " + e);
+                manejadorExcepciones.manejarIOException(e);
+
+            } catch (Exception e) {
+
+                LOGGER.error("Error al buscar estudiantes: " + e);
                 utilidades.mostrarAlerta(
                         "Error",
                         "No se pudo realizar la búsqueda.",
-                        "Ocurrió un problema al intentar buscar estudiantes. " +
+                        "Ocurrió un problema al intentar buscar el estudiante. " +
                                 "Por favor, inténtelo nuevamente más tarde o contacte al administrador."
                 );
             }
@@ -245,19 +251,31 @@ public class ControladorAsignacionEstudianteAProyectoGUI {
                         "No se pudo reasignar el proyecto",
                         "");
             }
-        } catch (SQLException | IOException e) {
-            LOGGER.severe("No se pudo reasignar al estudiante: " + e);
+        } catch (SQLException e) {
 
-            utilidades.mostrarAlerta("Error",
-                    "No se pudo realizar la asignación.",
-                    "Por favor, intente nuevamente.");
+            manejadorExcepciones.manejarSQLException(e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            LOGGER.error("Error al actualizar la asignación del estudiante: " + e);
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "No se pudo actualizar la asignación.",
+                    "Ocurrió un problema al intentar actualizar la asignación del estudiante. " +
+                            "Por favor, inténtelo nuevamente más tarde o contacte al administrador."
+            );
         }
     }
 
     @FXML
     private void regresar() {
 
-        utilidades.mostrarAlertaConfirmacion(
+        gestorVentanas.mostrarAlertaConfirmacion(
+
                 "Confirmar acción",
                 "¿Está seguro que desea regresar?",
                 "Los cambios no guardados se perderán.",

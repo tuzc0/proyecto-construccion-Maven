@@ -22,9 +22,11 @@ import logica.DTOs.ProyectoDTO;
 import logica.ManejadorExcepciones;
 import logica.interfaces.IGestorAlertas;
 import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+
 import static GUI.ControladorRegistrarAutoevaluacionGUI.idAutoevaluacion;
 import static GUI.ControladorRegistrarReporteMensualGUI.idReporte;
 import static java.sql.Types.NULL;
@@ -42,7 +44,9 @@ public class ControladorMenuEstudianteGUI {
     private String matricula = ControladorInicioDeSesionGUI.matricula;
 
     Utilidades gestorVentanas = new Utilidades();
+
     IGestorAlertas utilidades = new Utilidades();
+
     ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     @FXML
@@ -73,6 +77,7 @@ public class ControladorMenuEstudianteGUI {
                 botonConsultarAutoevaluacion.setDisable(false);
                 botonRegistrarAutoevaluacion.setDisable(true);
             }
+
         } catch (SQLException e) {
 
             manejadorExcepciones.manejarSQLException(e);
@@ -106,6 +111,7 @@ public class ControladorMenuEstudianteGUI {
     public void abrirRegistrarAutoevaluacion() {
 
         if (!verificarAsignacionProyecto()) {
+
             return;
         }
 
@@ -134,6 +140,14 @@ public class ControladorMenuEstudianteGUI {
 
             manejadorExcepciones.manejarIOException(e);
 
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al abrir la ventana de registrar autoevaluación: " + e);
+            gestorVentanas.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error inesperado al abrir la ventana de registrar autoevaluación.",
+                    "Por favor, contacta al administrador si el problema persiste."
+            );
         }
     }
 
@@ -196,6 +210,7 @@ public class ControladorMenuEstudianteGUI {
         }
 
     }
+
     @FXML
     public void abrirConsultarAutoevaluacion() {
 
@@ -509,7 +524,7 @@ public class ControladorMenuEstudianteGUI {
     public void abrirConsultarReporteMensual() {
 
 
-        try{
+        try {
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ListaReportesEstudianteGUI.fxml"));
             Parent root = loader.load();
@@ -521,9 +536,9 @@ public class ControladorMenuEstudianteGUI {
             stage.setScene(new Scene(root));
             stage.show();
 
-        } catch (IOException e){
+        } catch (IOException e) {
             manejadorExcepciones.manejarIOException(e);
-        }  catch (Exception e) {
+        } catch (Exception e) {
             logger.error("Error inesperado al abrir la ventana de consulta de reportes mensuales: " + e);
             gestorVentanas.mostrarAlerta(
                     "Error",

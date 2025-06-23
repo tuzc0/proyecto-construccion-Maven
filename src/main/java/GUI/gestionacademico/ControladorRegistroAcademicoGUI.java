@@ -10,6 +10,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import logica.ManejadorExcepciones;
 import logica.VerificacionUsuario;
 import logica.DAOs.AcademicoDAO;
 import logica.DAOs.CuentaDAO;
@@ -53,6 +54,11 @@ public class ControladorRegistroAcademicoGUI {
     EncriptadorContraseñas encriptadorContraseñas = new EncriptadorContraseñas();
     private UtilidadesContraseña utilidadesConstraña = new UtilidadesContraseña();
     private IGestorAlertas utilidades = new Utilidades();
+
+    private Utilidades gestorVentanas = new Utilidades();
+
+    private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, LOGGER);
+
     private Utilidades utilidadesVentana = new Utilidades();
     private boolean contraseñaVisible = false;
 
@@ -252,61 +258,11 @@ public class ControladorRegistroAcademicoGUI {
 
         } catch (SQLException e) {
 
-            String estadoSQL = e.getSQLState();
-
-            switch (estadoSQL) {
-
-                case "08S01":
-
-                    LOGGER.error("Error de conexión con la base datos: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer una conexión con la base de datos.",
-                            "La base de datos se encuentra desactivada."
-                    );
-                    break;
-
-                case "42000":
-
-                    LOGGER.error("La base de datos no existe: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer conexión con la base de datos.",
-                            "La base de datos actualmente no existe."
-                    );
-                    break;
-
-                case "28000":
-
-                    LOGGER.error("Credenciales invalidas para el acceso: " + e);
-                    utilidades.mostrarAlerta(
-                            "Credenciales inválidas",
-                            "Usuario o contraseña incorrectos.",
-                            "Por favor, verifique los datos de acceso a la base" +
-                                    "de datos"
-                    );
-                    break;
-
-                default:
-
-                    LOGGER.error("Error de SQL no manejado: " + estadoSQL + "-" + e);
-                    utilidades.mostrarAlerta(
-                            "Error del sistema.",
-                            "Se produjo un error al acceder a la base de datos.",
-                            "Por favor, contacte al soporte técnico."
-                    );
-                    break;
-            }
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            LOGGER.error("Error de IOException al registrar académico: " + e);
-            utilidades.mostrarAlerta(
-                    "Error interno del sistema",
-                    "No se pudo completar la operación.",
-                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
-                            "o contacte al administrador."
-            );
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 

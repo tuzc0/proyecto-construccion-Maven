@@ -50,9 +50,11 @@ public class ControladorConsultarAutoevaluacionGUI {
     private ListView<String> listaArchivos;
 
     private int idAutoevaluacion;
+
     private String matricula = ControladorInicioDeSesionGUI.matricula;
 
     private Utilidades gestorVentanas = new Utilidades();
+
     private IGestorAlertas utilidades = new Utilidades();
 
     private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
@@ -62,23 +64,23 @@ public class ControladorConsultarAutoevaluacionGUI {
 
         columnaNumeroCriterio.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleStringProperty(
-                String.valueOf(data.getValue().getCriterioAutoevaluacion().getNumeroCriterio())));
+                        String.valueOf(data.getValue().getCriterioAutoevaluacion().getNumeroCriterio())));
         columnaCriterio.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleStringProperty(
-                data.getValue().getCriterioAutoevaluacion().getDescripcion()));
+                        data.getValue().getCriterioAutoevaluacion().getDescripcion()));
         columnaCalificacion.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleStringProperty(
-                String.valueOf(data.getValue().getAutoEvaluacionContiene().getCalificacion())));
+                        String.valueOf(data.getValue().getAutoEvaluacionContiene().getCalificacion())));
         listaArchivos.setOnMouseClicked(this::abrirURLDrive);
 
         cargarAutoevaluacion();
     }
 
-    public void cargarCriterios(){
+    public void cargarCriterios() {
 
-        try{
+        try {
 
-            if(matricula == null || matricula.isEmpty() || matricula.equals(" ")) {
+            if (matricula == null || matricula.isEmpty() || matricula.equals(" ")) {
 
                 matricula = ControladorListarEstudiantesConAutoevaluacionGUI.matriculaEstudiante;
             }
@@ -98,15 +100,19 @@ public class ControladorConsultarAutoevaluacionGUI {
             List<CriterioAutoevaluacionDTO> listaCriterios = criterioDAO.listarCriteriosAutoevaluacionActivos();
 
             for (CriterioAutoevaluacionDTO criterio : listaCriterios) {
+
                 for (AutoEvaluacionContieneDTO contiene : listaContiene) {
+
                     if (criterio.getIDCriterio() == contiene.getIdCriterio()) {
+
                         tablaAutoevaluacion.getItems().add(new ContenedorCriteriosAutoevaluacion(criterio, contiene));
                     }
                 }
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
 
-            manejadorExcepciones.manejarSQLException(e); ;
+            manejadorExcepciones.manejarSQLException(e);
+            ;
 
         } catch (IOException e) {
 
@@ -134,9 +140,13 @@ public class ControladorConsultarAutoevaluacionGUI {
             EvidenciaAutoevaluacionDTO evidencias = evidenciaDAO.mostrarEvidenciaAutoevaluacionPorID(idAutoevaluacion);
 
             if (evidencias != null && evidencias.getURL() != null && !evidencias.getURL().isEmpty()) {
+
                 listaArchivos.getItems().add(evidencias.getURL());
+
             } else {
+
                 listaArchivos.getItems().add("No hay evidencias disponibles.");
+
             }
 
         } catch (SQLException e) {

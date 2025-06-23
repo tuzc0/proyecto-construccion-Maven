@@ -43,8 +43,10 @@ public class ControladorListarReportesPorEstudianteGUI {
 
 
     public void setMatriculaEstudiante(String matricula) {
+
         this.matriculaEstudiante = matricula;
         cargarDatosReportes();
+
     }
 
     @FXML
@@ -62,6 +64,7 @@ public class ControladorListarReportesPorEstudianteGUI {
     }
 
     public void cargarDatosReportes() {
+
         ReporteDAO reporteDAO = new ReporteDAO();
 
         try {
@@ -83,6 +86,13 @@ public class ControladorListarReportesPorEstudianteGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al cargar los reportes: ", e);
+            utilidades.mostrarAlerta("Error al cargar los reportes",
+                    "No se pudieron cargar los reportes del estudiante. Por favor, inténtelo de nuevo más tarde.",
+                    "Error inesperado");
         }
     }
 

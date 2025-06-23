@@ -43,8 +43,6 @@ public class ControladorRegistroActividadGUI {
     private String matriculaEstudiante;
 
     private Utilidades gestorVentanas = new Utilidades();
-    private IGestorAlertas gestorAlertas = new Utilidades();
-    private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(gestorAlertas, logger);
 
     @FXML
     private void initialize() {

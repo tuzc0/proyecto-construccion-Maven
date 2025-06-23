@@ -7,6 +7,9 @@ import java.io.EOFException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ConnectException;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
+import java.net.UnknownHostException;
+
 
 
 public class ManejadorExcepciones {
@@ -126,6 +129,7 @@ public class ManejadorExcepciones {
                     "No se pudo conectar con el recurso.",
                     "Revise su conexión o intente más tarde."
             );
+
         } else {
 
             LOGGER.error("Error de E/S desconocido: " + e);
@@ -136,5 +140,75 @@ public class ManejadorExcepciones {
             );
         }
     }
+
+    public void manejarExcepcionDrive(Exception e) {
+
+        if (e instanceof GoogleJsonResponseException jsonEx) {
+
+            int statusCode = jsonEx.getStatusCode();
+            LOGGER.error("Error de la API de Google Drive (HTTP " + statusCode + "): " + jsonEx);
+
+            switch (statusCode) {
+
+                case 401 -> MENSAJE_DE_ALERTA.mostrarAlerta(
+
+                        "No autorizado",
+                        "Tu sesión ha expirado o no tienes permisos.",
+                        "Inicia sesión nuevamente."
+                );
+
+                case 403 -> MENSAJE_DE_ALERTA.mostrarAlerta(
+
+                        "Acceso denegado",
+                        "No tienes permisos para realizar esta operación.",
+                        "Verifica los permisos de tu cuenta."
+                );
+
+                case 404 -> MENSAJE_DE_ALERTA.mostrarAlerta(
+
+                        "Archivo no encontrado",
+                        "El archivo o recurso solicitado no existe.",
+                        "Verifica que el ID sea correcto."
+                );
+
+                case 500, 503 -> MENSAJE_DE_ALERTA.mostrarAlerta(
+
+                        "Error del servidor",
+                        "Google Drive está teniendo problemas.",
+                        "Intenta de nuevo más tarde."
+                );
+
+                default -> MENSAJE_DE_ALERTA.mostrarAlerta(
+
+                        "Error desconocido",
+                        "Se produjo un error con Google Drive.",
+                        "Código de error: " + statusCode
+
+                );
+            }
+        } else if (e instanceof UnknownHostException || e instanceof ConnectException) {
+
+            LOGGER.error("Error de red: No hay conexión a internet o el servidor es inaccesible: " + e);
+            MENSAJE_DE_ALERTA.mostrarAlerta(
+                    "Sin conexión",
+                    "No se puede conectar a Google Drive.",
+                    "Verifica tu conexión a internet."
+            );
+
+        } else if (e instanceof IOException ioEx) {
+            manejarIOException(ioEx);
+
+        } else {
+
+            LOGGER.error("Excepción no controlada durante operación con Google Drive: " + e);
+            MENSAJE_DE_ALERTA.mostrarAlerta(
+                    "Error inesperado",
+                    "Ocurrió un error inesperado al subir el archivo.",
+                    "Detalles: " + e.getMessage()
+            );
+
+        }
+    }
+
 }
 

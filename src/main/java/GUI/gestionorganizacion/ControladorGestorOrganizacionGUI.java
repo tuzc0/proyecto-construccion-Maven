@@ -138,9 +138,11 @@ public class ControladorGestorOrganizacionGUI {
         } catch (SQLException e) {
 
             manejadorExcepciones.manejarSQLException(e);
+
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
         } catch (Exception e) {
 
             utilidades.mostrarAlerta("Error", "No se pudo listar los representantes", "Error al cargar los representantes.");
@@ -332,8 +334,6 @@ public class ControladorGestorOrganizacionGUI {
 
     public void eliminarRepresentante() {
 
-
-
         tablaRepresentantes.getSelectionModel().getSelectedItem();
         RepresentanteDTO representanteSeleccionado = tablaRepresentantes.getSelectionModel().getSelectedItem();
 
@@ -347,7 +347,6 @@ public class ControladorGestorOrganizacionGUI {
 
         try {
 
-
             idRepresentanteSeleccionado = representanteSeleccionado.getIDRepresentante();
 
             if (representanteDAO.estaVinculadoAProyectoActivo(idRepresentanteSeleccionado)) {
@@ -357,7 +356,6 @@ public class ControladorGestorOrganizacionGUI {
                 return;
 
             }
-
 
             boolean eliminado = representanteDAO.eliminarRepresentantePorID(idRepresentanteSeleccionado);
 
@@ -405,7 +403,13 @@ public class ControladorGestorOrganizacionGUI {
             listarRepresentantes();
 
         } catch (IOException e) {
+
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+            utilidades.mostrarAlerta("Error", "Error inesperado",
+                    "Ocurrió un error inesperado al registrar el representante.");
+            logger.error("Error al registrar el representante: " + e);
         }
     }
 
@@ -437,7 +441,15 @@ public class ControladorGestorOrganizacionGUI {
             listarRepresentantes();
 
         } catch (IOException e) {
+
             manejadorExcepciones.manejarIOException(e);
+
+        }  catch (Exception e) {
+
+            utilidades.mostrarAlerta("Error", "Error inesperado",
+                    "Ocurrió un error inesperado al cargar los detalles del representante.");
+            logger.error("Error al cargar los detalles del representante: " + e);
+
         }
 
     }

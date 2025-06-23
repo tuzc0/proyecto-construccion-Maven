@@ -33,7 +33,7 @@
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="16.0" preserveRatio="true">
                      <image>
-                        <Image url="@/lupa.png" />
+                        <Image url="@/imagenes/lupa.png" />
                      </image>
                   </ImageView>
                </graphic>

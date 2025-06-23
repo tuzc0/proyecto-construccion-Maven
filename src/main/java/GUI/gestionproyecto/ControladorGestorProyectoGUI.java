@@ -19,20 +19,22 @@ import logica.DTOs.HorarioProyectoDTO;
 import logica.DTOs.OrganizacionVinculadaDTO;
 import logica.DTOs.ProyectoDTO;
 import logica.DTOs.RepresentanteDTO;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
 import logica.interfaces.ISeleccionRepresentante;
 import logica.utilidadesproyecto.SeleccionRepresentanteOrganizacion;
 import logica.verificacion.ValidadorDatosProyecto;
 import logica.verificacion.VerificicacionGeneral;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(ControladorGestorProyectoGUI.class.getName());
+    private static final Logger LOGGER =
+            org.apache.logging.log4j.LogManager.getLogger(ControladorGestorProyectoGUI.class);
 
     @FXML
     private TextArea textoNombre;
@@ -111,9 +113,14 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
     @FXML
     private Label etiquetaContadorResponsabilidades;
 
-    private Utilidades utilidades = new Utilidades();
+    private Utilidades gestorVentanas = new Utilidades();
+
+    private IGestorAlertas utilidades = new Utilidades();
+
+    private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, LOGGER);
 
     private ProyectoDTO proyectoSeleccionado;
+
     int idRepresentante = 0;
 
     @FXML
@@ -193,71 +200,22 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
 
         } catch (SQLException e) {
 
-            String estadoSQL = e.getSQLState();
-
-            switch (estadoSQL) {
-
-                case "08S01":
-
-                    LOGGER.severe("El servicio de SQL se encuentra desactivado: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer una conexión con la base de datos.",
-                            "La conexión con la base de datos se encuentra interrumpida."
-                    );
-                    break;
-
-                case "42000":
-
-                    LOGGER.severe("La base de datos no existe: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer conexión con la base de datos.",
-                            "La base de datos actualmente no existe."
-                    );
-                    break;
-
-                case "28000":
-
-                    LOGGER.severe("Credenciales invalidas para el acceso: " + e);
-                    utilidades.mostrarAlerta(
-                            "Credenciales inválidas",
-                            "Usuario o contraseña incorrectos.",
-                            "Por favor, verifique los datos de acceso a la base" +
-                                    "de datos"
-                    );
-                    break;
-
-                default:
-
-                    LOGGER.severe("Error de SQL no manejado: " + estadoSQL + "-" + e);
-                    utilidades.mostrarAlerta(
-                            "Error del sistema.",
-                            "Se produjo un error al acceder a la base de datos.",
-                            "Por favor, contacte al soporte técnico."
-                    );
-                    break;
-            }
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            LOGGER.severe("Error de IOException: " + e);
-            utilidades.mostrarAlerta(
-                    "Error interno del sistema",
-                    "No se pudo completar la operación.",
-                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
-                            "o contacte al administrador."
-            );
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
-            LOGGER.severe("Error inesperado: " + e);
+            LOGGER.error("Error al cargar datos del proyecto: " + e);
             utilidades.mostrarAlerta(
                     "Error interno del sistema",
                     "Ocurrió un error al completar la operación.",
                     "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
                             "o contacte al administrador."
             );
+
         }
 
         cargarHorariosEnTabla(proyectoSeleccionado.getIdProyecto());
@@ -324,65 +282,15 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
 
         } catch (SQLException e) {
 
-            String estadoSQL = e.getSQLState();
-
-            switch (estadoSQL) {
-
-                case "08S01":
-
-                    LOGGER.severe("El servicio de SQL se encuentra desactivado: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer una conexión con la base de datos.",
-                            "La conexión con la base de datos se encuentra interrumpida."
-                    );
-                    break;
-
-                case "42000":
-
-                    LOGGER.severe("La base de datos no existe: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer conexión con la base de datos.",
-                            "La base de datos actualmente no existe."
-                    );
-                    break;
-
-                case "28000":
-
-                    LOGGER.severe("Credenciales invalidas para el acceso: " + e);
-                    utilidades.mostrarAlerta(
-                            "Credenciales inválidas",
-                            "Usuario o contraseña incorrectos.",
-                            "Por favor, verifique los datos de acceso a la base" +
-                                    "de datos"
-                    );
-                    break;
-
-                default:
-
-                    LOGGER.severe("Error de SQL no manejado: " + estadoSQL + "-" + e);
-                    utilidades.mostrarAlerta(
-                            "Error del sistema.",
-                            "Se produjo un error al acceder a la base de datos.",
-                            "Por favor, contacte al soporte técnico."
-                    );
-                    break;
-            }
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            LOGGER.severe("Error de IOException: " + e);
-            utilidades.mostrarAlerta(
-                    "Error interno del sistema",
-                    "No se pudo completar la operación.",
-                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
-                            "o contacte al administrador."
-            );
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
-            LOGGER.severe("Error inesperado: " + e);
+            LOGGER.error("Error al cargar horarios en la tabla: " + e);
             utilidades.mostrarAlerta(
                     "Error interno del sistema",
                     "Ocurrió un error al completar la operación.",
@@ -586,65 +494,15 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
 
         } catch (SQLException e) {
 
-            String estadoSQL = e.getSQLState();
-
-            switch (estadoSQL) {
-
-                case "08S01":
-
-                    LOGGER.severe("El servicio de SQL se encuentra desactivado: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer una conexión con la base de datos.",
-                            "La conexión con la base de datos se encuentra interrumpida."
-                    );
-                    break;
-
-                case "42000":
-
-                    LOGGER.severe("La base de datos no existe: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer conexión con la base de datos.",
-                            "La base de datos actualmente no existe."
-                    );
-                    break;
-
-                case "28000":
-
-                    LOGGER.severe("Credenciales invalidas para el acceso: " + e);
-                    utilidades.mostrarAlerta(
-                            "Credenciales inválidas",
-                            "Usuario o contraseña incorrectos.",
-                            "Por favor, verifique los datos de acceso a la base" +
-                                    "de datos"
-                    );
-                    break;
-
-                default:
-
-                    LOGGER.severe("Error de SQL no manejado: " + estadoSQL + "-" + e);
-                    utilidades.mostrarAlerta(
-                            "Error del sistema.",
-                            "Se produjo un error al acceder a la base de datos.",
-                            "Por favor, contacte al soporte técnico."
-                    );
-                    break;
-            }
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            LOGGER.severe("Error de IOException: " + e);
-            utilidades.mostrarAlerta(
-                    "Error interno del sistema",
-                    "No se pudo completar la operación.",
-                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
-                            "o contacte al administrador."
-            );
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
-            LOGGER.severe("Error inesperado: " + e);
+            LOGGER.error("Error al actualizar el proyecto: " + e);
             utilidades.mostrarAlerta(
                     "Error interno del sistema",
                     "Ocurrió un error al completar la operación.",
@@ -673,7 +531,8 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
         representanteSeleccionadoTemporal = null;
         organizacionVinculadaSeleccionadaTemporal = null;
 
-        utilidades.mostrarAlertaConfirmacion(
+        gestorVentanas.mostrarAlertaConfirmacion(
+
                 "Confirmar cancelación",
                 "¿Está seguro que desea cancelar?",
                 "Los cambios no guardados se perderán",
@@ -727,7 +586,7 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
             Platform.runLater(() -> {
 
                 etiquetaRepresentante.setText(representanteSeleccionadoTemporal.getNombre() + " " +
-                                representanteSeleccionadoTemporal.getApellidos());
+                        representanteSeleccionadoTemporal.getApellidos());
                 etiquetaOrganizacion.setText(organizacionVinculadaSeleccionadaTemporal.getNombre());
             });
         }
@@ -759,18 +618,29 @@ public class ControladorGestorProyectoGUI implements ISeleccionRepresentante {
             }
 
         } catch (IOException e) {
-            LOGGER.severe("Error de E/S al abrir ventana de selección: " + e);
+
+            LOGGER.error("Error al abrir la ventana de selección de representante: " + e);
             utilidades.mostrarAlerta(
                     "Error de sistema",
                     "No se pudo abrir la ventana de selección.",
                     "Verifique el archivo de interfaz o contacte al administrador.");
+
+        } catch (Exception e) {
+
+            LOGGER.error("Error inesperado al abrir la ventana de selección de representante: " + e);
+            utilidades.mostrarAlerta(
+                    "Error interno del sistema",
+                    "Ocurrió un error al completar la operación.",
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                            "o contacte al administrador."
+            );
         }
     }
 
     @FXML
     private void regresarAConsultarProyecto() {
 
-        utilidades.mostrarAlertaConfirmacion(
+        gestorVentanas.mostrarAlertaConfirmacion(
                 "Confirmar regreso",
                 "¿Está seguro que desea regresar a la ventana anterior?",
                 "",

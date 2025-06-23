@@ -280,6 +280,16 @@ public class ControladorRegistroCronogramaActividadesGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            gestorVentanas.mostrarAlerta(
+                    "Error inesperado",
+                    "No se pudo registrar el cronograma de actividades",
+                    "Por favor, intente nuevamente más tarde."
+            );
+            LOGGER.error("Error inesperado al registrar el cronograma de actividades: " + e);
+
         }
     }
 
@@ -342,6 +352,15 @@ public class ControladorRegistroCronogramaActividadesGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            LOGGER.error("Error al abrir la ventana de registro de actividad: " + e);
+            gestorVentanas.mostrarAlerta(
+                    "Error",
+                    "No se pudo abrir la ventana de registro de actividad",
+                    "Por favor, intente nuevamente más tarde."
+            );
         }
     }
 

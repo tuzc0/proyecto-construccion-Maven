@@ -10,6 +10,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import logica.ManejadorExcepciones;
 import logica.VerificacionUsuario;
 import logica.DAOs.CuentaDAO;
 import logica.DAOs.UsuarioDAO;
@@ -17,6 +18,7 @@ import logica.DAOs.AcademicoEvaluadorDAO;
 import logica.DTOs.CuentaDTO;
 import logica.DTOs.UsuarioDTO;
 import logica.DTOs.AcademicoEvaluadorDTO;
+import logica.interfaces.IGestorAlertas;
 import logica.utilidadesproyecto.EncriptadorContraseñas;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.LogManager;
@@ -27,8 +29,8 @@ import java.util.List;
 
 public class ControladorRegistroAcademicoEvaluadorGUI {
 
-    private static final Logger LOGGER = LogManager.
-            getLogger(ControladorRegistroAcademicoEvaluadorGUI.class);
+    private static final Logger LOGGER =
+            LogManager.getLogger(ControladorRegistroAcademicoEvaluadorGUI.class);
 
     @FXML private TextField campoNombre;
     @FXML private TextField campoApellidos;
@@ -50,7 +52,11 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
     @FXML private Button botonOjo;
 
     private UtilidadesContraseña utilContraseña = new UtilidadesContraseña();
-    private Utilidades utilidades = new Utilidades();
+
+    private Utilidades gestorVentanas = new Utilidades();
+    private IGestorAlertas gestorAlertas = new Utilidades();
+    private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(gestorAlertas, LOGGER);
+
     private EncriptadorContraseñas encriptadorContraseñas = new EncriptadorContraseñas();
 
     @FXML
@@ -125,7 +131,7 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
         if (!vacios.isEmpty()) {
 
             String mensajeCampoVacio = String.join("\n", vacios);
-            utilidades.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Campos vacíos",
                     "Complete todos los campos requeridos.",
                     mensajeCampoVacio
@@ -145,7 +151,7 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
         if (!errores.isEmpty()) {
 
             String mensajeDeError = String.join("\n", errores);
-            utilidades.mostrarAlerta(
+            gestorAlertas.mostrarAlerta(
                     "Datos inválidos",
                     "Algunos campos no son válidos.",
                     mensajeDeError
@@ -155,7 +161,7 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
 
         if (!UtilidadesContraseña.esContraseñaIgual(contraseñaIngresada, contraseñaConfirmada)) {
 
-            utilidades.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Contraseñas no coinciden",
                     "Las contraseñas ingresadas no son iguales.",
                     "Revise la contraseña y su confirmación."
@@ -179,7 +185,7 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
 
             if (academicoEvaluadorExistente.getNumeroDePersonal() != numeroDePersonalEncontrado) {
 
-                utilidades.mostrarAlerta(
+                gestorVentanas.mostrarAlerta(
                         "Número duplicado",
                         "Ya existe un académico con ese número.",
                         "Verifique que no esté registrado."
@@ -190,7 +196,7 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
             if (!correoNoEncontrado.equals(new CuentaDAO().buscarCuentaPorCorreo(correo)
                             .getCorreoElectronico())) {
 
-                utilidades.mostrarAlerta(
+                gestorVentanas.mostrarAlerta(
                         "Correo duplicado",
                         "Ya existe una cuenta con este correo.",
                         "Use un correo diferente."
@@ -229,7 +235,7 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
             if (cuentaCreada && academicoInsertado) {
 
                 LOGGER.info("Registro exitoso.");
-                utilidades.mostrarAlerta(
+                gestorVentanas.mostrarAlerta(
                         "Registro exitoso",
                         "El académico fue registrado correctamente.",
                         ""
@@ -238,7 +244,7 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
             } else {
 
                 LOGGER.warn("Fallo al guardar datos del académico evaluador.");
-                utilidades.mostrarAlerta(
+                gestorVentanas.mostrarAlerta(
                         "Registro incompleto",
                         "No se guardaron todos los datos.",
                         "Revise la información e intente de nuevo."
@@ -249,7 +255,7 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
 
             LOGGER.error(
                     "Formato numérico inválido: " + e);
-            utilidades.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error de formato",
                     "El número debe ser numérico de 5 dígitos.",
                     "Revise el campo e intente de nuevo."
@@ -257,66 +263,16 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
 
         } catch (SQLException e) {
 
-            String estadoSQL = e.getSQLState();
-
-            switch (estadoSQL) {
-
-                case "08S01":
-
-                    LOGGER.error("El servicio de SQL se encuentra desactivado: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer una conexión con la base de datos.",
-                            "La base de datos se encuentra desactivada."
-                    );
-                    break;
-
-                case "42000":
-
-                    LOGGER.error("La base de datos no existe: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer conexión con la base de datos.",
-                            "La base de datos actualmente no existe."
-                    );
-                    break;
-
-                case "28000":
-
-                    LOGGER.error("Credenciales invalidas para el acceso: " + e);
-                    utilidades.mostrarAlerta(
-                            "Credenciales inválidas",
-                            "Usuario o contraseña incorrectos.",
-                            "Por favor, verifique los datos de acceso a la base" +
-                                    "de datos"
-                    );
-                    break;
-
-                default:
-
-                    LOGGER.error("Error de SQL no manejado: " + estadoSQL + "-" + e);
-                    utilidades.mostrarAlerta(
-                            "Error del sistema.",
-                            "Se produjo un error al acceder a la base de datos.",
-                            "Por favor, contacte al soporte técnico."
-                    );
-                    break;
-            }
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            LOGGER.error("Error de IOException: " + e);
-            utilidades.mostrarAlerta(
-                    "Error interno del sistema",
-                    "No se pudo completar la operación.",
-                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
-                            "o contacte al administrador."
-            );
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             LOGGER.error("Error inesperado: " + e);
-            utilidades.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error interno del sistema",
                     "Ocurrió un error al completar la operación.",
                     "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
@@ -333,7 +289,7 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
         String numeroPersonalOriginal = campoNumeroPersonal.getText();
         String correoOriginal = campoCorreo.getText();
 
-        utilidades.mostrarAlertaConfirmacion(
+        gestorVentanas.mostrarAlertaConfirmacion(
                 "Confirmar cancelación",
                 "¿Está seguro que desea cancelar?",
                 "Los cambios no guardados se perderán",
@@ -349,7 +305,7 @@ public class ControladorRegistroAcademicoEvaluadorGUI {
                     campoNumeroPersonal.setText(numeroPersonalOriginal);
                     campoCorreo.setText(correoOriginal);
 
-                    utilidades.mostrarAlerta(
+                    gestorAlertas.mostrarAlerta(
                             "Operación cancelada",
                             "Los cambios no han sido descartados",
                             "Puede continuar editando el registro"

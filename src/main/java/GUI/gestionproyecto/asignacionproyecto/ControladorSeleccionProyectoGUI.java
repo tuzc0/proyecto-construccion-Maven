@@ -91,8 +91,11 @@ public class ControladorSeleccionProyectoGUI {
                 super.updateItem(proyectoDTO, empty);
 
                 if (empty || proyectoDTO == null) {
+
                     setText(null);
+
                 } else {
+
                     setText(proyectoDTO.getNombre());
                 }
             }

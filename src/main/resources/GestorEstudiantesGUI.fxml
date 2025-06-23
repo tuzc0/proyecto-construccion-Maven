@@ -31,7 +31,7 @@
             <Button fx:id="botonBuscar" mnemonicParsing="false" onAction="#buscarEstudiante" prefHeight="35.0" prefWidth="200.0" style="-fx-background-color: #2a5885; -fx-text-fill: white; -fx-font-weight: bold;" text="Buscar">
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                     <Image url="@/lupa.png" />
+                     <Image url="@/imagenes/lupa.png" />
                   </ImageView>
                </graphic>
             </Button>
@@ -162,7 +162,7 @@
    <Button fx:id="botonEliminarSeleccionado" disable="true" layoutX="690.0" layoutY="527.0" mnemonicParsing="false" onAction="#confirmacionEliminarEstudianteSeleccionado" prefHeight="34.0" prefWidth="54.0" style="-fx-background-color: #f44336; -fx-text-fill: white;" visible="false">
       <graphic>
          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@/bote-basura.png" />
+            <Image url="@/imagenes/bote-basura.png" />
          </ImageView>
       </graphic>
    </Button>

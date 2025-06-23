@@ -129,6 +129,15 @@ public class ControladorConsultarCronogramaActividadesGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al abrir la ventana de detalles del cronograma: " + e);
+            gestorVentanas.mostrarAlerta(
+                    "Error inesperado",
+                    "No se pudo abrir la ventana de detalles del cronograma.",
+                    "Por favor, intente nuevamente más tarde."
+            );
         }
     }
 

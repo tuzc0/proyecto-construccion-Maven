@@ -45,7 +45,9 @@ public class ControladorHabilitarAutoevaluacionGUI {
     Button botonEliminarCriterio;
 
     Utilidades gestionVentanas = new Utilidades();
+
     IGestorAlertas utilidades = new Utilidades();
+
     ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     @FXML
@@ -71,9 +73,9 @@ public class ControladorHabilitarAutoevaluacionGUI {
                             .listarCriteriosAutoevaluacionActivos());
             tablaCriterios.setItems(listaCriterios);
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
 
-             manejadorExcepciones.manejarSQLException(e);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
@@ -159,6 +161,15 @@ public class ControladorHabilitarAutoevaluacionGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al eliminar el criterio de autoevaluación: " + e);
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error al intentar eliminar el criterio de autoevaluación.",
+                    "Por favor, vuelva a intentarlo más tarde."
+            );
         }
     }
 
@@ -204,6 +215,15 @@ public class ControladorHabilitarAutoevaluacionGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al actualizar el criterio de autoevaluación: " + e);
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error al intentar actualizar el criterio de autoevaluación.",
+                    "Por favor, vuelva a intentarlo más tarde."
+            );
         }
     }
 

@@ -16,7 +16,9 @@ import logica.DTOs.CuentaDTO;
 import logica.DTOs.EstudianteDTO;
 import logica.DTOs.UsuarioDTO;
 import javafx.scene.image.ImageView;
+import logica.ManejadorExcepciones;
 import logica.VerificacionUsuario;
+import logica.interfaces.IGestorAlertas;
 import logica.utilidadesproyecto.EncriptadorContraseñas;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +29,8 @@ import java.util.List;
 
 public class ControladorRegistroEstudianteGUI {
 
-    Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorObjetoEvaluacion.class);
+    Logger logger =
+            org.apache.logging.log4j.LogManager.getLogger(ControladorRegistroEstudianteGUI.class);
 
     @FXML
     private TextField campoNombre;
@@ -82,11 +85,16 @@ public class ControladorRegistroEstudianteGUI {
 
     int NRC = auxiliarGestionEstudiante.obtenerNRC();
 
-    Utilidades utilidades = new Utilidades();
 
     VerificacionUsuario verificacionUsuario = new VerificacionUsuario();
 
     VerificicacionGeneral verificicacionGeneral = new VerificicacionGeneral();
+
+    private Utilidades gestorVentanas = new Utilidades();
+
+    private IGestorAlertas utilidades = new Utilidades();
+
+    private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     final int MAX_CARACTERES_NOMBRE_Y_APELLIDOS = 50;
 
@@ -120,6 +128,7 @@ public class ControladorRegistroEstudianteGUI {
 
     @FXML
     private void alternarVisibilidadContrasena() {
+
         utilidadesContraseña.alternarVisibilidadContrasena(
                 contraseñaIngresada,
                 campoContraseñaVisible,
@@ -212,20 +221,11 @@ public class ControladorRegistroEstudianteGUI {
 
         } catch (SQLException e) {
 
-            utilidades.mostrarAlerta("Error de base de datos",
-                    "No se pudo registrar el estudiante",
-                    "Por favor, intente nuevamente más tarde.");
-
-            logger.error("Error al registrar el estudiante: " + e);
-
-
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException i) {
 
-            utilidades.mostrarAlerta("Error de entrada/salida",
-                    "No se pudo registrar el estudiante",
-                    "Por favor, intente nuevamente más tarde.");
-            logger.error("Error de entrada/salida al registrar el estudiante: " + i);
+            manejadorExcepciones.manejarIOException(i);
 
         } catch (Exception e) {
 

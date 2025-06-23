@@ -18,9 +18,10 @@ public class ControladorObjetoEvaluacion {
 
     Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorObjetoEvaluacion.class);
 
-    @FXML private HBox root;
-    @FXML private Label etiquetaNombreEvaluador;
-    @FXML private Label etiquetaCalificacion;
+    @FXML
+    private Label etiquetaNombreEvaluador;
+    @FXML
+    private Label etiquetaCalificacion;
 
     private Utilidades gestorVentana = new Utilidades();
     private IGestorAlertas utilidades = new Utilidades();
@@ -54,6 +55,13 @@ public class ControladorObjetoEvaluacion {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            utilidades.mostrarAlerta("Error al mostrar detalles de la evaluación",
+                    "No se pudieron cargar los detalles de la evaluación. Por favor, inténtelo de nuevo más tarde.", "Error inesperado");
+            logger.error("Error al mostrar detalles de la evaluación: ", e);
+
         }
     }
 }

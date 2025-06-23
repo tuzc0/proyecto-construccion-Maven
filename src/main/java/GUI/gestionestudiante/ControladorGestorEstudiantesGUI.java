@@ -316,6 +316,15 @@ public class ControladorGestorEstudiantesGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al abrir la ventana de registro de estudiante: " + e);
+            utilidades.mostrarAlerta(
+                    "Error inesperado",
+                    "No se pudo abrir la ventana de registro de estudiante.",
+                    "Por favor, intente nuevamente más tarde."
+            );
         }
     }
 

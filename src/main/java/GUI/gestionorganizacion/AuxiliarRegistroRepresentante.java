@@ -3,7 +3,10 @@ package GUI.gestionorganizacion;
 import GUI.utilidades.Utilidades;
 import logica.DAOs.RepresentanteDAO;
 import logica.DTOs.RepresentanteDTO;
+import logica.ManejadorExcepciones;
 import logica.VerificacionUsuario;
+import logica.interfaces.IGestorAlertas;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -11,15 +14,24 @@ import java.util.List;
 
 public class AuxiliarRegistroRepresentante {
 
+    Logger LOGGER =
+            org.apache.logging.log4j.LogManager.getLogger(AuxiliarRegistroRepresentante.class);
+
+    private Utilidades gestorVentanas = new Utilidades();
+
+    private IGestorAlertas utilidades = new Utilidades();
+
+    private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, LOGGER);
+
 
     public void registrarRepresentante(String nombre, String apellidos, String correo, String numeroContacto, int idOrganizacion) {
 
-        Utilidades utilidades = new Utilidades();
+
         VerificacionUsuario verificacionUsuario = new VerificacionUsuario();
         int estadoActivo = 1;
         int idRepresentante = 0;
 
-        List<String> errores = verificacionUsuario.validarRepresentante( nombre, apellidos, numeroContacto, correo );
+        List<String> errores = verificacionUsuario.validarRepresentante(nombre, apellidos, numeroContacto, correo);
 
         if (!errores.isEmpty()) {
 
@@ -65,19 +77,12 @@ public class AuxiliarRegistroRepresentante {
 
         } catch (IOException e) {
 
-            utilidades.mostrarAlerta("Error",
-                    "Error de conexión",
-                    "No se pudo conectar a la base de datos.");
+            manejadorExcepciones.manejarIOException(e);
 
-            e. printStackTrace();
 
         } catch (SQLException e) {
 
-            utilidades.mostrarAlerta("Error",
-                    "Error al registrar el representante",
-                    "No se pudo registrar el representante.");
-
-            e.printStackTrace();
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (Exception e) {
 
@@ -85,7 +90,7 @@ public class AuxiliarRegistroRepresentante {
                     "Error al registrar el representante",
                     "No se pudo registrar el representante.");
 
-            e.printStackTrace();
+            LOGGER.error("Error al registrar el representante: " + e.getMessage(), e);
         }
     }
 }

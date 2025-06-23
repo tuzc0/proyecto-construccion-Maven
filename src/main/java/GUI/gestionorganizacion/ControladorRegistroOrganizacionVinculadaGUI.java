@@ -12,18 +12,21 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import logica.DAOs.OrganizacionVinculadaDAO;
 import logica.DTOs.OrganizacionVinculadaDTO;
+import logica.ManejadorExcepciones;
 import logica.VerificacionUsuario;
+import logica.interfaces.IGestorAlertas;
 import logica.verificacion.VerificicacionGeneral;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class ControladorRegistroOrganizacionVinculadaGUI {
 
-    Logger logger = Logger.getLogger(ControladorConsultarEstudiantesAEvaluarGUI.class.getName());
+    Logger logger =
+            org.apache.logging.log4j.LogManager.getLogger(ControladorRegistroOrganizacionVinculadaGUI.class);
 
     @FXML
     private TextField campoNombreOrganizacion;
@@ -78,7 +81,11 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
 
     public static int idOrganizacion = 0;
 
-    Utilidades utilidades = new Utilidades();
+    private Utilidades gestorVentanas = new Utilidades();
+
+    private IGestorAlertas utilidades = new Utilidades();
+
+    private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     VerificacionUsuario verificacionUsuario = new VerificacionUsuario();
 
@@ -91,7 +98,6 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
 
     @FXML
     private void initialize() {
-
 
 
         verificicacionGeneral.contadorCaracteresTextField(
@@ -184,19 +190,18 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
             botonRegistrarRepresentante.setDisable(false);
 
         } catch (SQLException e) {
-            utilidades.mostrarAlerta("Error de registro", "Error al registrar la organización",
-                    "No se pudo registrar la organización. Por favor, inténtelo de nuevo más tarde.");
-            logger.severe("Error al registrar la organización: " + e);
+
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
-            utilidades.mostrarAlerta("Error de registro", "Error al registrar la organización",
-                    "No se pudo registrar la organización. Por favor, inténtelo de nuevo más tarde.");
-            logger.severe("Error al registrar la organización: " + e);
+
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
+
             utilidades.mostrarAlerta("Error de registro", "Error al registrar la organización",
                     "No se pudo registrar la organización. Por favor, inténtelo de nuevo más tarde.");
-            logger.severe("Error al registrar la organización: " + e);
+            logger.error("Error al registrar la organización: " + e);
         }
     }
 
@@ -222,7 +227,7 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
     @FXML
     private void cancelarRegistro() {
 
-        utilidades.mostrarAlertaConfirmacion(
+        gestorVentanas.mostrarAlertaConfirmacion(
 
                 "Confirmar eliminación",
                 "¿Está seguro que desea cancelar el registro?",
@@ -238,7 +243,7 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
         );
     }
 
-    private void cancelar(){
+    private void cancelar() {
 
         campoNombreOrganizacion.clear();
         campoCorreoOrganizacion.clear();
@@ -265,10 +270,15 @@ public class ControladorRegistroOrganizacionVinculadaGUI {
 
         } catch (IOException e) {
 
-            logger.severe("Error al abrir la ventana de registro representante: " + e);
+            logger.error("Error al abrir la ventana de registro de representante: " + e);
             utilidades.mostrarAlerta("Error", "Error al abrir la ventana de registro",
                     "No se pudo abrir la ventana de registro. Por favor, inténtelo de nuevo más tarde.");
 
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al abrir la ventana de registro de representante: " + e);
+            utilidades.mostrarAlerta("Error inesperado", "Error al abrir la ventana de registro",
+                    "Ocurrió un error inesperado. Por favor, inténtelo de nuevo más tarde.");
         }
     }
 }

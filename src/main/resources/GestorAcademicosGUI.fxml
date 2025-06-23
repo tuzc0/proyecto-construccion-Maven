@@ -34,7 +34,7 @@
                                     <graphic>
                                         <ImageView fitHeight="20.0" fitWidth="18.0" pickOnBounds="true"
                                                    preserveRatio="true">
-                                            <Image url="@/lupa.png"/>
+                                            <Image url="@/imagenes/lupa.png"/>
                                         </ImageView>
                                     </graphic>
                                     <font>
@@ -205,7 +205,7 @@
                 onAction="#eliminarAcademicoSeleccionado" prefHeight="34.0" prefWidth="54.0" visible="false">
             <graphic>
                 <ImageView fitHeight="37.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@/bote-basura.png"/>
+                    <Image url="@/imagenes/bote-basura.png"/>
                 </ImageView>
             </graphic>
         </Button>

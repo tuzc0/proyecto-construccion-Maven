@@ -11,28 +11,44 @@ import logica.DAOs.OrganizacionVinculadaDAO;
 import logica.DAOs.ProyectoDAO;
 import logica.DAOs.RepresentanteDAO;
 import logica.DTOs.*;
+import logica.ManejadorExcepciones;
 import logica.generacionPDFs.GeneradoresPDF;
+import logica.interfaces.IGestorAlertas;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class ControladorDetallesAsignacionProyectoGUI {
 
     private static final Logger LOGGER =
-            Logger.getLogger(ControladorDetallesAsignacionProyectoGUI.class.getName());
+            org.apache.logging.log4j.LogManager.getLogger(ControladorDetallesAsignacionProyectoGUI.class);
 
-    @FXML private Label etiquetaNombreProyecto;
-    @FXML private Label etiquetaOrganizacionVinculada;
-    @FXML private Label etiquetaRepresentante;
-    @FXML private TextArea textoDescripcionProyecto;
-    @FXML private Button botonDescargarOficioAsignacion;
-    @FXML private Button botonReasignar;
-    @FXML private Button botonCancelar;
-    @FXML private Button botonAceptar;
+    @FXML
+    private Label etiquetaNombreProyecto;
+    @FXML
+    private Label etiquetaOrganizacionVinculada;
+    @FXML
+    private Label etiquetaRepresentante;
+    @FXML
+    private TextArea textoDescripcionProyecto;
+    @FXML
+    private Button botonDescargarOficioAsignacion;
+    @FXML
+    private Button botonReasignar;
+    @FXML
+    private Button botonCancelar;
+    @FXML
+    private Button botonAceptar;
 
-    private Utilidades utilidades = new Utilidades();
+    private Utilidades gestorVentanas = new Utilidades();
+
+    private IGestorAlertas utilidades = new Utilidades();
+
+    private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, LOGGER);
+
     private ProyectoDTO proyectoAsignado;
     private EstudianteDTO estudianteAsignado;
     private ControladorAsignacionEstudianteAProyectoGUI controladorAsignacionPrincipal;
@@ -95,18 +111,18 @@ public class ControladorDetallesAsignacionProyectoGUI {
 
         } catch (SQLException e) {
 
-            LOGGER.severe("Error al cargar los detalles del estudiante en MySQL: " + e);
-            utilidades.mostrarAlerta(
-                    "Error",
-                    "Ocurrió un error al cargar los datos.",
-                    "Por favor, intente nuevamente o contacte al administrador.");
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            LOGGER.severe("Error al cargar los detalles del estudiante: " + e);
+            manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            LOGGER.error("Error al cargar los detalles del proyecto: " + e);
             utilidades.mostrarAlerta(
                     "Error",
-                    "Ocurrió un error al intentar cargar los datos del estudiante.",
+                    "No se pudieron cargar los detalles del proyecto.",
                     "Por favor, intente nuevamente o contacte al administrador.");
         }
     }
@@ -148,7 +164,7 @@ public class ControladorDetallesAsignacionProyectoGUI {
 
         } catch (DocumentException e) {
 
-            LOGGER.severe("Error al gerar documento: " + e);
+            LOGGER.error("Error al generar el PDF: " + e);
             utilidades.mostrarAlerta(
                     "Error al generar el documento.",
                     "No se puedo generar el PDF.",
@@ -156,18 +172,18 @@ public class ControladorDetallesAsignacionProyectoGUI {
 
         } catch (SQLException e) {
 
-            LOGGER.severe("Error de base de datos: " + e);
-            utilidades.mostrarAlerta(
-                    "Error",
-                    "Ocurrió problema al acceder a los datos.",
-                    "Por favor, intente nuevamente o contacte al administrador.");
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            LOGGER.severe("Error de E/S: " + e);
+            manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            LOGGER.error("Error inesperado al generar el PDF: " + e);
             utilidades.mostrarAlerta(
-                    "Error",
-                    "Ocurrió un problema al procesar los datos.",
+                    "Error inesperado",
+                    "Ocurrió un error al generar el PDF.",
                     "Por favor, intente nuevamente o contacte al administrador.");
         }
     }
@@ -193,21 +209,19 @@ public class ControladorDetallesAsignacionProyectoGUI {
 
         } catch (SQLException e) {
 
-            LOGGER.severe("Error dentro de la base de datos: " + e);
-            utilidades.mostrarAlerta(
-                    "Error",
-                    "No se pudo iniciar la reasignación",
-                    "Por favor intentelo de nuevo más tarde");
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            LOGGER.severe("Error durante la reasignación: " + e);
+            manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            LOGGER.error("Error al abrir la ventana de selección de proyecto: " + e);
             utilidades.mostrarAlerta(
                     "Error",
-                    "Error al cargar la ventana",
-                    "Ocurrio un error al intentar cargar la ventana, por favor, " +
-                            "intentelo de nuevo o contacte al administrador."
-            );
+                    "No se pudo abrir la ventana de selección de proyecto.",
+                    "Por favor, intente nuevamente o contacte al administrador.");
         }
     }
 }

@@ -31,7 +31,7 @@ public class ControladorCrearGrupoGUI {
     Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorCrearGrupoGUI.class);
 
     @FXML
-    ComboBox <String> comboAcademico;
+    ComboBox<String> comboAcademico;
 
     @FXML
     Label etiquetaPeriodo;
@@ -195,7 +195,7 @@ public class ControladorCrearGrupoGUI {
         }
     }
 
-    public void cargarPeriodo(){
+    public void cargarPeriodo() {
 
         PeriodoDAO periodoDAO = new PeriodoDAO();
 
@@ -239,6 +239,15 @@ public class ControladorCrearGrupoGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            logger.error("Ocurrio un error al cargar el NRC: " + e.getMessage(), e);
+            gestorVentanas.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error cargar el NRC.",
+                    "Por favor, inténtelo de nuevo más tarde."
+            );
         }
 
     }

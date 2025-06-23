@@ -40,7 +40,7 @@ public class ControladorRegistrarCriterioEvaluacionGUI {
     final int MAX_CARACTERES_DESCRIPCION = 255;
 
     @FXML
-    public void initialize (){
+    public void initialize() {
 
         verificicacionGeneralUtilidad.contadorCaracteresTextArea(textoDescripcionCriterio,
                 etiquetaContadorDescripcion, MAX_CARACTERES_DESCRIPCION);
@@ -52,7 +52,7 @@ public class ControladorRegistrarCriterioEvaluacionGUI {
             nuevoNumeroCriterio = numeroCriterioMasAlto + 1;
             numeroCriterio.setText(String.valueOf(nuevoNumeroCriterio));
 
-        } catch (SQLException e ) {
+        } catch (SQLException e) {
 
             manejadorExcepciones.manejarSQLException(e);
 
@@ -63,11 +63,14 @@ public class ControladorRegistrarCriterioEvaluacionGUI {
         } catch (Exception e) {
 
             logger.error("Error inesperado: " + e);
+            utilidades.mostrarAlerta("Error",
+                    "Ocurrió un error inesperado.",
+                    "Por favor, intente nuevamente más tarde.");
         }
     }
 
     @FXML
-    public void guardarCriterio () {
+    public void guardarCriterio() {
 
         CriterioEvaluacionDAO criterioEvaluacionDAO = new CriterioEvaluacionDAO();
         String descripcion = textoDescripcionCriterio.getText();
@@ -100,7 +103,7 @@ public class ControladorRegistrarCriterioEvaluacionGUI {
                 gestorVentanas.mostrarAlerta("Éxito",
                         "Criterio de evaluación guardado correctamente.",
                         "se ha registrado el criterio de forma exitosa");
-                nuevoNumeroCriterio ++;
+                nuevoNumeroCriterio++;
                 textoDescripcionCriterio.clear();
                 numeroCriterio.setText(String.valueOf(nuevoNumeroCriterio));
 
@@ -110,13 +113,20 @@ public class ControladorRegistrarCriterioEvaluacionGUI {
                         "porfavor llene todos los campos");
             }
 
-        } catch (SQLException e){
+        } catch (SQLException e) {
 
             manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado: " + e);
+            utilidades.mostrarAlerta("Error",
+                    "Ocurrió un error inesperado.",
+                    "Por favor, intente nuevamente más tarde.");
         }
     }
 

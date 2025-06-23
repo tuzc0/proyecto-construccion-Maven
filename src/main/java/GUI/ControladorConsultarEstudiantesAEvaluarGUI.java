@@ -48,11 +48,15 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
     TextField campoMatricula;
 
     public static String matriculaEstudianteSeleccionado;
+
     private static int numeroPersonal = ControladorInicioDeSesionGUI.numeroDePersonal;
 
     private EstudianteDTO estudianteSeleccionado = new EstudianteDTO();
+
     private Utilidades gestorVentanas = new Utilidades();
+
     private IGestorAlertas utilidades = new Utilidades();
+
     private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     @FXML
@@ -95,6 +99,15 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado: " + e);
+            gestorVentanas.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error al cargar los estudiantes.",
+                    "Por favor, intentelo de nuevo más tarde."
+            );
         }
     }
 
@@ -154,6 +167,15 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al abrir la ventana de registrar evaluación: " + e);
+            gestorVentanas.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error al abrir la ventana de registrar evaluación.",
+                    "Por favor, inténtelo de nuevo más tarde o contacte al administrador."
+            );
         }
 
     }
@@ -211,14 +233,18 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
             );
 
             if (estudiantesFiltrados.isEmpty()) {
+
                 Utilidades utilidades = new Utilidades();
                 utilidades.mostrarAlerta("No encontrado",
                         "Estudiante no encontrado",
                         "No se encontró un estudiante con la matrícula: "
                                 + matriculaBuscada);
             } else {
+
                 tablaEstudiantes.setItems(estudiantesFiltrados);
+
             }
+
         } catch (SQLException e) {
 
             manejadorExcepciones.manejarSQLException(e);
@@ -226,6 +252,15 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al buscar estudiante: " + e);
+            gestorVentanas.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error al buscar el estudiante.",
+                    "Por favor, inténtelo de nuevo más tarde."
+            );
         }
     }
 }

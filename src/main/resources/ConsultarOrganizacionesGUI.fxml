@@ -44,7 +44,7 @@
               style="-fx-background-color: #3b82f6; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;">
          <graphic>
             <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@/lupa.png" />
+               <Image url="@/imagenes/lupa.png" />
             </ImageView>
          </graphic>
          <font>

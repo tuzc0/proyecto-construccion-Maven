@@ -45,7 +45,7 @@
                   <Button fx:id="botonBuscar" mnemonicParsing="false" onAction="#filtrarProyectosPorNombre" prefHeight="38.0" prefWidth="178.0">
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                           <Image url="@/lupa.png" />
+                           <Image url="@/imagenes/lupa.png" />
                         </ImageView>
                      </graphic>
                      <font>

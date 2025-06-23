@@ -13,12 +13,15 @@ import logica.DTOs.HorarioProyectoDTO;
 import logica.DTOs.OrganizacionVinculadaDTO;
 import logica.DTOs.ProyectoDTO;
 import logica.DTOs.RepresentanteDTO;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
 import logica.interfaces.ISeleccionRepresentante;
 import logica.utilidadesproyecto.SeleccionRepresentanteOrganizacion;
 import logica.verificacion.ValidadorDatosProyecto;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -132,7 +135,12 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
     private Button botonSeleccionarRepresentante;
 
     GestorHorarios gestorHorarios;
-    private Utilidades utilidades = new Utilidades();
+
+    private Utilidades gestorVentanas = new Utilidades();
+
+    private IGestorAlertas utilidades = new Utilidades();
+
+    private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, LOGGER);
 
     @FXML
     private void initialize() {
@@ -324,61 +332,11 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
 
         } catch (SQLException e) {
 
-            String estadoSQL = e.getSQLState();
-
-            switch (estadoSQL) {
-
-                case "08S01":
-
-                    LOGGER.error("El servicio de SQL se encuentra desactivado: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer una conexión con la base de datos.",
-                            "La conexión con la base de datos se encuentra interrumpida."
-                    );
-                    break;
-
-                case "42000":
-
-                    LOGGER.error("La base de datos no existe: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer conexión con la base de datos.",
-                            "La base de datos actualmente no existe."
-                    );
-                    break;
-
-                case "28000":
-
-                    LOGGER.error("Credenciales invalidas para el acceso: " + e);
-                    utilidades.mostrarAlerta(
-                            "Credenciales inválidas",
-                            "Usuario o contraseña incorrectos.",
-                            "Por favor, verifique los datos de acceso a la base" +
-                                    "de datos"
-                    );
-                    break;
-
-                default:
-
-                    LOGGER.error("Error de SQL no manejado: " + estadoSQL + "-" + e);
-                    utilidades.mostrarAlerta(
-                            "Error del sistema.",
-                            "Se produjo un error al acceder a la base de datos.",
-                            "Por favor, contacte al soporte técnico."
-                    );
-                    break;
-            }
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            LOGGER.error("Error de IOException: " + e);
-            utilidades.mostrarAlerta(
-                    "Error interno del sistema",
-                    "No se pudo completar la operación.",
-                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
-                            "o contacte al administrador."
-            );
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
@@ -409,7 +367,7 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
         String textoUsuariosIndirectos = campoUsuariosIndirectos.getText();
         String textoEstudiantesRequeridos = campoEstudianteRequeridos.getText();
 
-        utilidades.mostrarAlertaConfirmacion(
+        gestorVentanas.mostrarAlertaConfirmacion(
                 "Confirmar cancelación",
                 "¿Está seguro que desea cancelar?",
                 "Los cambios no guardados se perderán",
@@ -525,7 +483,7 @@ public class ControladorRegistroProyectoGUI implements ISeleccionRepresentante {
         Stage ventanaActual = (Stage) botonSeleccionarRepresentante.getScene().getWindow();
 
         FXMLLoader cargadorVentana = new FXMLLoader(getClass().getResource("/SeleccionarRepresentante.fxml"));
-        utilidades.abrirVentana(
+        gestorVentanas.abrirVentana(
                 "/SeleccionarRepresentante.fxml",
                 "Seleccionar Representante",
                 ventanaActual);

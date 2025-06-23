@@ -136,6 +136,12 @@ public class ControladorDetallesCronogramaActividadesGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            gestorVentanas.mostrarAlerta("Error inesperado", "Error al cargar cronograma",
+                    "Por favor, intente nuevamente más tarde.");
+            LOGGER.error("Error inesperado al cargar cronograma: " + e);
         }
     }
 
@@ -256,7 +262,14 @@ public class ControladorDetallesCronogramaActividadesGUI {
             stage.show();
 
         } catch (IOException e) {
+
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            gestorVentanas.mostrarAlerta("Error inesperado", "Error al abrir detalles de actividad",
+                    "Por favor, intente nuevamente más tarde.");
+            LOGGER.error("Error inesperado al abrir detalles de actividad: " + e);
         }
     }
 

@@ -17,8 +17,10 @@ import logica.DAOs.CriterioEvaluacionDAO;
 import logica.DTOs.CriterioEvaluacionDTO;
 import logica.ManejadorExcepciones;
 import logica.interfaces.IGestorAlertas;
+
 import java.io.IOException;
 import java.sql.SQLException;
+
 import org.apache.logging.log4j.Logger;
 
 public class ControladorHabilitarEvaluacionesGUI {
@@ -37,7 +39,6 @@ public class ControladorHabilitarEvaluacionesGUI {
     @FXML
     Button botonEditarCriterios;
 
-
     @FXML
     Button botonAñadirCriterio;
 
@@ -45,7 +46,9 @@ public class ControladorHabilitarEvaluacionesGUI {
     Button botonEliminarCriterio;
 
     Utilidades gestorVentana = new Utilidades();
+
     IGestorAlertas utilidades = new Utilidades();
+
     ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     @FXML
@@ -58,11 +61,12 @@ public class ControladorHabilitarEvaluacionesGUI {
 
         cargarCriterios();
         tablaCriterios.getSelectionModel().setSelectionMode(javafx.scene.control.SelectionMode.MULTIPLE);
+
     }
 
     public void cargarCriterios() {
 
-        try{
+        try {
 
             CriterioEvaluacionDAO criterioEvaluacionDAO = new CriterioEvaluacionDAO();
             ObservableList<CriterioEvaluacionDTO> listaCriterios =
@@ -77,7 +81,7 @@ public class ControladorHabilitarEvaluacionesGUI {
 
             manejadorExcepciones.manejarIOException(e);
 
-        } catch (Exception e){
+        } catch (Exception e) {
 
             gestorVentana.mostrarAlerta(
                     "Error",
@@ -106,6 +110,15 @@ public class ControladorHabilitarEvaluacionesGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al abrir la ventana de registro de criterio: ", e);
+            gestorVentana.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error al abrir la ventana de registro de criterio.",
+                    "Por favor, inténtelo de nuevo más tarde o contacte al administrador."
+            );
         }
     }
 
@@ -148,6 +161,15 @@ public class ControladorHabilitarEvaluacionesGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al eliminar el criterio: ", e);
+            gestorVentana.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error al eliminar el criterio.",
+                    "Por favor, inténtelo de nuevo más tarde o contacte al administrador."
+            );
         }
     }
 
@@ -194,6 +216,14 @@ public class ControladorHabilitarEvaluacionesGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al actualizar el criterio: ", e);
+            gestorVentana.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error al actualizar el criterio.",
+                    "Por favor, inténtelo de nuevo más tarde o contacte al administrador."
+            );
         }
     }
 

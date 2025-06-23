@@ -21,16 +21,19 @@ import logica.DAOs.ProyectoDAO;
 import logica.DAOs.RepresentanteDAO;
 import logica.DTOs.ProyectoDTO;
 import logica.DTOs.RepresentanteDTO;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
 import logica.utilidadesproyecto.AsociacionProyecto;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class ControladorConsultarProyectosGUI {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(ControladorConsultarProyectosGUI.class.getName());
+    private static final Logger LOGGER =
+            org.apache.logging.log4j.LogManager.getLogger(ControladorConsultarProyectosGUI.class);
 
     @FXML
     private TableView<AsociacionProyecto>
@@ -52,7 +55,12 @@ public class ControladorConsultarProyectosGUI {
     @FXML
     private Button botonRegistrar;
 
-    private Utilidades utilidades = new Utilidades();
+    private Utilidades gestorVentanas = new Utilidades();
+
+    private IGestorAlertas utilidades = new Utilidades();
+
+    private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, LOGGER);
+
     private ProyectoDTO proyectoSeleccionado;
 
     @FXML
@@ -66,7 +74,7 @@ public class ControladorConsultarProyectosGUI {
         columnaNombreRepresentante.setCellValueFactory(cellData ->
 
                 new SimpleStringProperty(cellData.getValue().getRepresentante().getNombre() + " " +
-                                cellData.getValue().getRepresentante().getApellidos()
+                        cellData.getValue().getRepresentante().getApellidos()
                 )
         );
 
@@ -103,6 +111,7 @@ public class ControladorConsultarProyectosGUI {
                 fabricadorCeldas = columnaProyecto -> new TableCell<>() {
 
             private final Button botonDetalles = new Button("Ver detalles");
+
             {
                 botonDetalles.setOnAction(evento -> {
 
@@ -141,6 +150,7 @@ public class ControladorConsultarProyectosGUI {
                 fabricadorCeldas = columna -> new TableCell<>() {
 
             private final Button botonEliminar = new Button("Eliminar");
+
             {
                 botonEliminar.setOnAction(evento -> {
                     AsociacionProyecto asociacionSeleccionada =
@@ -191,12 +201,16 @@ public class ControladorConsultarProyectosGUI {
 
         } catch (IOException e) {
 
-            LOGGER.severe("Error de E/S al abrir la ventana: " + e);
+            manejadorExcepciones.manejarIOException(e);
 
+        } catch (Exception e) {
+
+            LOGGER.error("Error inesperado al abrir la ventana de detalles del proyecto: " + e.getMessage(), e);
             utilidades.mostrarAlerta(
-                    "Error de archivo",
-                    "No se pudo cargar la interfaz del proyecto.",
-                    "Verifique que el archivo FXML exista y sea válido.");
+                    "Error",
+                    "Ocurrió un error al abrir la ventana de detalles del proyecto.",
+                    "Por favor, inténtelo de nuevo más tarde."
+            );
         }
     }
 
@@ -234,65 +248,15 @@ public class ControladorConsultarProyectosGUI {
 
         } catch (SQLException e) {
 
-            String estadoSQL = e.getSQLState();
-
-            switch (estadoSQL) {
-
-                case "08S01":
-
-                    LOGGER.severe("El servicio de SQL se encuentra desactivado: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer una conexión con la base de datos.",
-                            "La conexión con la base de datos se encuentra interrumpida."
-                    );
-                    break;
-
-                case "42000":
-
-                    LOGGER.severe("La base de datos no existe: " + e);
-                    utilidades.mostrarAlerta(
-                            "Error de conexión",
-                            "No se pudo establecer conexión con la base de datos.",
-                            "La base de datos actualmente no existe."
-                    );
-                    break;
-
-                case "28000":
-
-                    LOGGER.severe("Credenciales invalidas para el acceso: " + e);
-                    utilidades.mostrarAlerta(
-                            "Credenciales inválidas",
-                            "Usuario o contraseña incorrectos.",
-                            "Por favor, verifique los datos de acceso a la base" +
-                                    "de datos"
-                    );
-                    break;
-
-                default:
-
-                    LOGGER.severe("Error de SQL no manejado: " + estadoSQL + "-" + e);
-                    utilidades.mostrarAlerta(
-                            "Error del sistema.",
-                            "Se produjo un error al acceder a la base de datos.",
-                            "Por favor, contacte al soporte técnico."
-                    );
-                    break;
-            }
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            LOGGER.severe("Error de IOException: " + e);
-            utilidades.mostrarAlerta(
-                    "Error interno del sistema",
-                    "No se pudo completar la carga de proyectos.",
-                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
-                            "o contacte al administrador."
-            );
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
-            LOGGER.severe("Error inesperado: " + e);
+            LOGGER.error("Error inesperado al cargar los proyectos: " + e.getMessage(), e);
             utilidades.mostrarAlerta(
                     "Error interno del sistema",
                     "Ocurrió un error al completar la carga de proyectos.",
@@ -305,7 +269,7 @@ public class ControladorConsultarProyectosGUI {
     @FXML
     private void abrirVentanaRegistroProyecto() {
 
-        utilidades.abrirVentana(
+        gestorVentanas.abrirVentana(
                 "/RegistroProyectoGUI.fxml",
                 "Registrar Proyecto",
                 (Stage) botonRegistrar.getScene().getWindow()
@@ -352,6 +316,7 @@ public class ControladorConsultarProyectosGUI {
                     "No se ha encontrado ningún proyecto activo con ese nombre",
                     "Por favor, verifique que haya ingresado bien el nombre o registre el proyecto"
             );
+
             cargarRepresentanteYProyecto();
             return;
         }
@@ -363,7 +328,7 @@ public class ControladorConsultarProyectosGUI {
 
         ProyectoDAO proyectoDAO = new ProyectoDAO();
 
-        utilidades.mostrarAlertaConfirmacion(
+        gestorVentanas.mostrarAlertaConfirmacion(
                 "Confirmar eliminación",
                 "¿Está seguro que desea eliminar el proyecto seleccionado?",
                 "",
@@ -392,60 +357,19 @@ public class ControladorConsultarProyectosGUI {
 
                     } catch (SQLException e) {
 
-                        String estadoSQL = e.getSQLState();
-
-                        switch (estadoSQL) {
-
-                            case "08S01":
-
-                                LOGGER.severe("El servicio de SQL se encuentra desactivado: " + e);
-                                utilidades.mostrarAlerta(
-                                        "Error de conexión",
-                                        "No se pudo establecer una conexión con la base de datos.",
-                                        "La conexión con la base de datos se encuentra interrumpida."
-                                );
-                                break;
-
-                            case "42000":
-
-                                LOGGER.severe("La base de datos no existe: " + e);
-                                utilidades.mostrarAlerta(
-                                        "Error de conexión",
-                                        "No se pudo establecer conexión con la base de datos.",
-                                        "La base de datos actualmente no existe."
-                                );
-                                break;
-
-                            case "28000":
-
-                                LOGGER.severe("Credenciales invalidas para el acceso: " + e);
-                                utilidades.mostrarAlerta(
-                                        "Credenciales inválidas",
-                                        "Usuario o contraseña incorrectos.",
-                                        "Por favor, verifique los datos de acceso a la base" +
-                                                "de datos"
-                                );
-                                break;
-
-                            default:
-
-                                LOGGER.severe("Error de SQL no manejado: " + estadoSQL + "-" + e);
-                                utilidades.mostrarAlerta(
-                                        "Error del sistema.",
-                                        "Se produjo un error al acceder a la base de datos.",
-                                        "Por favor, contacte al soporte técnico."
-                                );
-                                break;
-                        }
+                        manejadorExcepciones.manejarSQLException(e);
 
                     } catch (IOException e) {
 
-                        LOGGER.severe("Error de IOException: " + e);
+                        manejadorExcepciones.manejarIOException(e);
+
+                    } catch (Exception e) {
+
+                        LOGGER.error("Error inesperado al eliminar el proyecto: " + e.getMessage(), e);
                         utilidades.mostrarAlerta(
-                                "Error interno del sistema",
-                                "No se pudo completar la carga de proyectos.",
-                                "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
-                                        "o contacte al administrador."
+                                "Error",
+                                "Ocurrió un error al eliminar el proyecto.",
+                                "Por favor, inténtelo de nuevo más tarde."
                         );
                     }
                 },

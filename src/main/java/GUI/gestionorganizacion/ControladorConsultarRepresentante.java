@@ -101,7 +101,6 @@ public class ControladorConsultarRepresentante {
         try {
 
             representante = representanteDAO.buscarRepresentantePorID(idRepresentante);
-            System.out.println("ID del representante: " + idRepresentante);
 
             if (representante != null) {
 
@@ -228,6 +227,7 @@ public class ControladorConsultarRepresentante {
             manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
+
             logger.error("Error al guardar los cambios del representante: " + e.getMessage());
             utilidades.mostrarAlerta(
                 "Error al guardar cambios",

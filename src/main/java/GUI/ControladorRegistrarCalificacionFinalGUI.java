@@ -35,7 +35,7 @@ public class ControladorRegistrarCalificacionFinalGUI {
     private IGestorAlertas utilidades = new Utilidades();
     private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, LOGGER);
 
-    private int nrcGrupo;
+    private int nrcGrupo = 0;
 
     @FXML
     private void initialize() {
@@ -131,10 +131,13 @@ public class ControladorRegistrarCalificacionFinalGUI {
 
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(calificacionStr -> {
+
             try {
+
                 float calificacion = Float.parseFloat(calificacionStr);
 
                 if (calificacion < 0 || calificacion > 10) {
+
                     gestorVentanas.mostrarAlerta(
                             "Error",
                             "Valor inválido",
@@ -146,10 +149,21 @@ public class ControladorRegistrarCalificacionFinalGUI {
                 asignarCalificacion(estudiante, calificacion);
 
             } catch (NumberFormatException e) {
+
+                LOGGER.error("Error al convertir la calificación: ", e);
                 gestorVentanas.mostrarAlerta(
                         "Error",
                         "Entrada inválida",
                         "Debe ingresar un número válido"
+                );
+
+            } catch (Exception e) {
+
+                LOGGER.error("Error inesperado al asignar calificación: ", e);
+                gestorVentanas.mostrarAlerta(
+                        "Error",
+                        "Error inesperado",
+                        "Ocurrió un error interno dentro del sistema, por favor intente más tarde."
                 );
             }
         });
@@ -172,6 +186,7 @@ public class ControladorRegistrarCalificacionFinalGUI {
                         "Calificación asignada",
                         String.format("Se asignó %.2f a %s", calificacion, estudiante.getNombre())
                 );
+
                 LOGGER.info("Calificación asignada: {} -> {}", estudiante.getMatricula(), calificacion);
 
             } else {
@@ -190,6 +205,15 @@ public class ControladorRegistrarCalificacionFinalGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            LOGGER.error("Error inesperado al asignar calificación: ", e);
+            gestorVentanas.mostrarAlerta(
+                    "Error",
+                    "Error inesperado",
+                    "Ocurrió un error interno dentro del sistema, por favor intente más tarde."
+            );
         }
     }
 }

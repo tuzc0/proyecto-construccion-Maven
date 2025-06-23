@@ -14,7 +14,7 @@ public class LectorPropiedadesBaseDeDatos {
     public LectorPropiedadesBaseDeDatos() throws IOException {
 
         try (InputStream lector =
-                     getClass().getClassLoader().getResourceAsStream("configuracionBD.properties")) {
+                     getClass().getClassLoader().getResourceAsStream("archivosdeconfiguracion/configuracionBD.properties")) {
 
             propiedades.load(lector);
             url = propiedades.getProperty("URL");

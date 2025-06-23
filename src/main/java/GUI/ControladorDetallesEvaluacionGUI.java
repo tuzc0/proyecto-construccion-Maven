@@ -25,16 +25,23 @@ public class ControladorDetallesEvaluacionGUI {
 
     Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorDetallesEvaluacionGUI.class);
 
-    @FXML private Label lblTitulo;
-    @FXML private Label lblEvaluador;
-    @FXML private Label lblFecha;
-    @FXML private Label lblCalificacionFinal;
-    @FXML private TableView<ContenedorCriteriosEvaluacion> tablaCriterios;
-    @FXML private TableColumn<ContenedorCriteriosEvaluacion, String> colNumeroCriterio;
-    @FXML private TableColumn<ContenedorCriteriosEvaluacion, String> colDescripcion;
-    @FXML private TableColumn<ContenedorCriteriosEvaluacion, String> colCalificacion;
+    @FXML
+    private Label lblTitulo;
+    @FXML
+    private Label lblEvaluador;
+    @FXML
+    private Label lblCalificacionFinal;
+    @FXML
+    private TableView<ContenedorCriteriosEvaluacion> tablaCriterios;
+    @FXML
+    private TableColumn<ContenedorCriteriosEvaluacion, String> colNumeroCriterio;
+    @FXML
+    private TableColumn<ContenedorCriteriosEvaluacion, String> colDescripcion;
+    @FXML
+    private TableColumn<ContenedorCriteriosEvaluacion, String> colCalificacion;
 
-    @FXML private TextArea txtComentarios;
+    @FXML
+    private TextArea txtComentarios;
 
     Utilidades gestionVentanas = new Utilidades();
     IGestorAlertas utilidades = new Utilidades();
@@ -93,8 +100,9 @@ public class ControladorDetallesEvaluacionGUI {
             EvaluacionDTO evaluacion = evaluacionDAO.buscarEvaluacionPorID(idEvaluacion);
 
             if (evaluacion.getIDEvaluacion() == -1) {
-                logger.info("No se encontró la evaluación con ID: " + idEvaluacion);
+
                 return null;
+
             }
 
             return evaluacion;
@@ -106,6 +114,14 @@ public class ControladorDetallesEvaluacionGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al obtener la evaluación: " + e);
+            gestionVentanas.mostrarAlerta(
+                    "Error",
+                    "Error inesperado",
+                    "Ocurrió un error inesperado al cargar los detalles de la evaluación.");
         }
 
         return null;
@@ -122,7 +138,9 @@ public class ControladorDetallesEvaluacionGUI {
                     academicoEvaluadorDAO.buscarAcademicoEvaluadorPorNumeroDePersonal(numeroPersonal);
 
             if (evaluador == null) {
+
                 return "Evaluador no encontrado";
+
             }
 
             UsuarioDTO usuario = usuarioDAO.buscarUsuarioPorID(evaluador.getIdUsuario());
@@ -137,6 +155,15 @@ public class ControladorDetallesEvaluacionGUI {
 
             manejadorExcepciones.manejarIOException(e);
             return "Error al cargar evaluador";
+
+        } catch (Exception e) {
+
+            logger.error("Error inesperado al obtener el nombre del evaluador: " + e);
+            gestionVentanas.mostrarAlerta(
+                    "Error",
+                    "Error inesperado",
+                    "Ocurrió un error inesperado al cargar el nombre del evaluador.");
+            return "Error inesperado";
         }
 
     }

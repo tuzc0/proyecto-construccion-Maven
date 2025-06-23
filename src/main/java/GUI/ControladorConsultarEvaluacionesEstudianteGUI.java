@@ -33,7 +33,9 @@ public class ControladorConsultarEvaluacionesEstudianteGUI {
     String matricula = ControladorInicioDeSesionGUI.matricula;
 
     Utilidades gestorVentanas = new Utilidades();
+
     IGestorAlertas utilidades = new Utilidades();
+
     ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     public void setMatricula(String matricula) {

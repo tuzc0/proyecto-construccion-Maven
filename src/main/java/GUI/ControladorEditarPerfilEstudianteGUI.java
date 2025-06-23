@@ -18,6 +18,7 @@ import logica.interfaces.IGestorAlertas;
 import logica.utilidadesproyecto.EncriptadorContraseñas;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -60,14 +61,21 @@ public class ControladorEditarPerfilEstudianteGUI {
     Label etiquetaContadorContraseña;
 
     VerificicacionGeneral verificacionGeneral = new VerificicacionGeneral();
+
     UtilidadesContraseña utilidadesContraseña = new UtilidadesContraseña();
+
     EncriptadorContraseñas encriptadorContraseñas = new EncriptadorContraseñas();
+
     Utilidades gestorVentana = new Utilidades();
+
     IGestorAlertas utilidades = new Utilidades();
+
     ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     String matricula = ControladorInicioDeSesionGUI.matricula;
+
     int idUsuario = 0;
+
     final int MAX_CARACTERES_CONTRASEÑA = 64;
 
     @FXML
@@ -97,7 +105,7 @@ public class ControladorEditarPerfilEstudianteGUI {
     }
 
 
-    public void cargarDatosPerfil () {
+    public void cargarDatosPerfil() {
 
         EstudianteDAO estudianteDAO = new EstudianteDAO();
         CuentaDAO cuentaDAO = new CuentaDAO();

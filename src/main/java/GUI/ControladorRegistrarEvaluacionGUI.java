@@ -92,11 +92,12 @@ public class ControladorRegistrarEvaluacionGUI {
         cargarCriterios();
     }
 
-    public void actualizarCalificacion () {
+    public void actualizarCalificacion() {
 
 
         columnaCalificacion.setCellFactory(TextFieldTableCell.forTableColumn());
         columnaCalificacion.setOnEditCommit(event -> {
+
             ContenedorCriteriosEvaluacion contenedor = event.getRowValue();
             EvaluacionContieneDTO evaluacionContiene = contenedor.getEvaluacionContiene();
 
@@ -104,7 +105,7 @@ public class ControladorRegistrarEvaluacionGUI {
 
                 float nuevaCalificacion = Float.parseFloat(event.getNewValue());
 
-                if (nuevaCalificacion < 0 || nuevaCalificacion > 10 ) {
+                if (nuevaCalificacion < 0 || nuevaCalificacion > 10) {
 
                     LOGGER.warn("La calificación debe estar entre 0 y 100.");
                     gestorVentanas.mostrarAlerta("Error",
@@ -121,6 +122,8 @@ public class ControladorRegistrarEvaluacionGUI {
                 if (actualizado) {
 
                     LOGGER.info("Calificación actualizada correctamente.");
+
+
                 } else {
 
                     LOGGER.warn("No se pudo actualizar la calificación.");
@@ -137,16 +140,22 @@ public class ControladorRegistrarEvaluacionGUI {
             } catch (IOException e) {
 
                 manejadorExcepciones.manejarIOException(e);
+
+            } catch (Exception e) {
+
+                LOGGER.error("Error inesperado: " + e);
+                utilidades.mostrarAlerta("Error",
+                        "ocurrio un error ",
+                        "ocurrio un error porfavor intentelo de nuevo en unos minutos");
             }
         });
-
 
         tablaCriteriosEvaluacion.setEditable(true);
     }
 
     public void cargarCriterios() {
 
-        try{
+        try {
 
             CriterioEvaluacionDAO criterioEvaluacionDAO = new CriterioEvaluacionDAO();
             EvaluacionContieneDAO evaluacionContieneDAO = new EvaluacionContieneDAO();
@@ -157,11 +166,11 @@ public class ControladorRegistrarEvaluacionGUI {
             ObservableList<ContenedorCriteriosEvaluacion> listaContenedorCriterios =
                     FXCollections.observableArrayList();
 
-            for (CriterioEvaluacionDTO criterio : listaCriterios){
+            for (CriterioEvaluacionDTO criterio : listaCriterios) {
 
-                for (EvaluacionContieneDTO evaluacionContiene : listaEvaluacionContiene){
+                for (EvaluacionContieneDTO evaluacionContiene : listaEvaluacionContiene) {
 
-                    if (criterio.getIDCriterio() == evaluacionContiene.getIdCriterio()){
+                    if (criterio.getIDCriterio() == evaluacionContiene.getIdCriterio()) {
 
                         ContenedorCriteriosEvaluacion contenedorCriterios =
                                 new ContenedorCriteriosEvaluacion(criterio, evaluacionContiene);
@@ -172,7 +181,6 @@ public class ControladorRegistrarEvaluacionGUI {
 
             tablaCriteriosEvaluacion.setItems(listaContenedorCriterios);
 
-
         } catch (SQLException e) {
 
             manejadorExcepciones.manejarSQLException(e);
@@ -181,14 +189,17 @@ public class ControladorRegistrarEvaluacionGUI {
 
             manejadorExcepciones.manejarIOException(e);
 
-        } catch (Exception e){
+        } catch (Exception e) {
 
             LOGGER.error("Error inesperado: " + e);
+            utilidades.mostrarAlerta("Error",
+                    "ocurrio un error ",
+                    "ocurrio un error porfavor intentelo de nuevo en unos minutos");
 
         }
     }
 
-    public void registrarEvaluacionVacia () {
+    public void registrarEvaluacionVacia() {
 
         EvaluacionDAO evaluacionDAO = new EvaluacionDAO();
         EvaluacionDTO evaluacionDTO = new EvaluacionDTO();
@@ -203,7 +214,7 @@ public class ControladorRegistrarEvaluacionGUI {
 
         try {
 
-            idEvaluacionGenerada= evaluacionDAO.crearNuevaEvaluacion(evaluacionDTO);
+            idEvaluacionGenerada = evaluacionDAO.crearNuevaEvaluacion(evaluacionDTO);
 
         } catch (SQLException e) {
 
@@ -216,10 +227,13 @@ public class ControladorRegistrarEvaluacionGUI {
         } catch (Exception e) {
 
             LOGGER.error("Error inesperado: " + e);
+            utilidades.mostrarAlerta("Error",
+                    "ocurrio un error ",
+                    "ocurrio un error porfavor intentelo de nuevo en unos minutos");
         }
     }
 
-    public void registrarCriteriosVacios(){
+    public void registrarCriteriosVacios() {
 
         EvaluacionContieneDAO evaluacionContieneDAO = new EvaluacionContieneDAO();
         CriterioEvaluacionDAO criterioEvaluacionDAO = new CriterioEvaluacionDAO();
@@ -228,7 +242,7 @@ public class ControladorRegistrarEvaluacionGUI {
 
             List<CriterioEvaluacionDTO> listaCriterios = criterioEvaluacionDAO.listarCriteriosActivos();
 
-            for (CriterioEvaluacionDTO criterio : listaCriterios){
+            for (CriterioEvaluacionDTO criterio : listaCriterios) {
 
                 EvaluacionContieneDTO evaluacionContieneDTO = new EvaluacionContieneDTO();
                 evaluacionContieneDTO.setIdEvaluacion(idEvaluacionGenerada);
@@ -249,11 +263,14 @@ public class ControladorRegistrarEvaluacionGUI {
         } catch (Exception e) {
 
             LOGGER.error("Error inesperado: " + e);
+            utilidades.mostrarAlerta("Error",
+                    "ocurrio un error ",
+                    "ocurrio un error porfavor intentelo de nuevo en unos minutos");
         }
     }
 
     @FXML
-    public void cancelarEvaluacion () {
+    public void cancelarEvaluacion() {
 
         EvaluacionDAO evaluacionDAO = new EvaluacionDAO();
         EvaluacionContieneDAO evaluacionContieneDAO = new EvaluacionContieneDAO();
@@ -276,22 +293,25 @@ public class ControladorRegistrarEvaluacionGUI {
         } catch (Exception e) {
 
             LOGGER.error("Error inesperado: " + e);
+            utilidades.mostrarAlerta("Error",
+                    "ocurrio un error ",
+                    "ocurrio un error porfavor intentelo de nuevo en unos minutos");
         }
     }
 
     @FXML
-    public void calcularPromedio () {
+    public void calcularPromedio() {
 
         calificacionFinal = 0.0f;
 
         EvaluacionContieneDAO evaluacionContieneDAO = new EvaluacionContieneDAO();
 
-        try{
+        try {
 
             List<EvaluacionContieneDTO> listaEvaluacionContiene =
                     evaluacionContieneDAO.listarCriteriosEvaluacionPorIdEvaluacion(idEvaluacionGenerada);
 
-            for (EvaluacionContieneDTO evaluacionContiene : listaEvaluacionContiene){
+            for (EvaluacionContieneDTO evaluacionContiene : listaEvaluacionContiene) {
 
                 calificacionFinal += evaluacionContiene.getCalificacion();
 
@@ -319,12 +339,15 @@ public class ControladorRegistrarEvaluacionGUI {
         } catch (Exception e) {
 
             LOGGER.error("Error inesperado: " + e);
+            utilidades.mostrarAlerta("Error",
+                    "ocurrio un error ",
+                    "ocurrio un error porfavor intentelo de nuevo en unos minutos");
         }
 
     }
 
     @FXML
-    public void guardarEvaluacion () {
+    public void guardarEvaluacion() {
 
         EvaluacionDAO evaluacionDAO = new EvaluacionDAO();
 
@@ -374,9 +397,9 @@ public class ControladorRegistrarEvaluacionGUI {
 
             } else {
 
-                gestorVentanas.mostrarAlerta("Error",
+                utilidades.mostrarAlerta("Error",
                         "No se pudo guardar la evaluación.",
-                        "ocurrio un error porfavor intentelo de nuevo en unos minutos");
+                        "Por favor, inténtelo de nuevo más tarde.");
                 LOGGER.warn("No se pudo guardar la evaluación.");
             }
 
@@ -384,14 +407,13 @@ public class ControladorRegistrarEvaluacionGUI {
 
             manejadorExcepciones.manejarSQLException(e);
 
-
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
-            gestorVentanas.mostrarAlerta("Error",
+            utilidades.mostrarAlerta("Error",
                     "ocurrio un error ",
                     "ocurrio un error porfavor intentelo de nuevo en unos minutos");
             LOGGER.error("Error inesperado: " + e);

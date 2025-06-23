@@ -12,7 +12,9 @@ import logica.DAOs.CuentaDAO;
 import logica.DAOs.EstudianteDAO;
 import logica.DTOs.CuentaDTO;
 import logica.DTOs.EstudianteDTO;
+import logica.ManejadorExcepciones;
 import logica.VerificacionUsuario;
+import logica.interfaces.IGestorAlertas;
 import logica.utilidadesproyecto.EncriptadorContraseñas;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.Logger;
@@ -57,21 +59,16 @@ public class ControladorEditarPerfilEstudianteGUI {
     @FXML
     Label etiquetaContadorContraseña;
 
-    final int MAX_CARACTERES_CONTRASEÑA = 64;
-
     VerificicacionGeneral verificacionGeneral = new VerificicacionGeneral();
-
     UtilidadesContraseña utilidadesContraseña = new UtilidadesContraseña();
-
     EncriptadorContraseñas encriptadorContraseñas = new EncriptadorContraseñas();
-
-    Utilidades utilidades = new Utilidades();
+    Utilidades gestorVentana = new Utilidades();
+    IGestorAlertas utilidades = new Utilidades();
+    ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     String matricula = ControladorInicioDeSesionGUI.matricula;
-
     int idUsuario = 0;
-
-    ManejadorExepciones manejadorExepciones = new ManejadorExepciones();
+    final int MAX_CARACTERES_CONTRASEÑA = 64;
 
     @FXML
     public void initialize() {
@@ -90,7 +87,6 @@ public class ControladorEditarPerfilEstudianteGUI {
 
         cargarDatosPerfil();
         utilidadesContraseña.inicializarIcono(iconoOjo);
-
     }
 
     @FXML
@@ -123,20 +119,19 @@ public class ControladorEditarPerfilEstudianteGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException( e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al cargar los datos del perfil del estudiante: " + e);
-            utilidades.mostrarAlerta("Error inesperado",
+            gestorVentana.mostrarAlerta("Error inesperado",
                     "No se pudieron cargar los datos del perfil.",
                     "Por favor, intente nuevamente más tarde.");
         }
-
     }
 
     @FXML
@@ -149,19 +144,16 @@ public class ControladorEditarPerfilEstudianteGUI {
 
         campoContraseña.setDisable(false);
         campoContraseñaDescifrada.setDisable(false);
-
     }
 
     @FXML
     public void guardarCambiosPerfil() {
 
         VerificacionUsuario verificacionUsuario = new VerificacionUsuario();
-
         CuentaDAO cuentaDAO = new CuentaDAO();
         CuentaDTO cuentaDTO = new CuentaDTO();
 
         cuentaDTO.setIdUsuario(idUsuario);
-
         String nuevaContrasena = campoContraseña.getText();
         String nuevaContrasenaDescifrada = campoContraseñaDescifrada.getText();
 
@@ -169,16 +161,18 @@ public class ControladorEditarPerfilEstudianteGUI {
 
             if (nuevaContrasena.isEmpty() || nuevaContrasenaDescifrada.isEmpty()) {
 
-                utilidades.mostrarAlerta("Campos vacíos",
+                gestorVentana.mostrarAlerta("Campos vacíos",
                         "Por favor, complete todos los campos.",
                         "No se puede guardar el perfil sin completar la contraseña.");
                 return;
             }
 
-            if (!verificacionUsuario.contrasenaValida(nuevaContrasena) || !verificacionUsuario.contrasenaValida(nuevaContrasenaDescifrada)) {
+            if (!verificacionUsuario.contrasenaValida(nuevaContrasena) ||
+                    !verificacionUsuario.contrasenaValida(nuevaContrasenaDescifrada)) {
 
-                utilidades.mostrarAlerta("Contraseña inválida",
-                        "La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una minúscula, un número y un carácter especial.",
+                gestorVentana.mostrarAlerta("Contraseña inválida",
+                        "La contraseña debe tener al menos 8 caracteres, una letra mayúscula, " +
+                                "una minúscula, un número y un carácter especial.",
                         "Por favor, ingrese una contraseña válida.");
                 return;
             }
@@ -190,17 +184,20 @@ public class ControladorEditarPerfilEstudianteGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
-
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al actualizar el perfil del estudiante: " + e);
-
+            gestorVentana.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error al guardar los cambios.",
+                    "Por favor, inténtelo de nuevo más tarde o contacte al administrador."
+            );
         }
 
         cancelarEdicion();
@@ -218,7 +215,5 @@ public class ControladorEditarPerfilEstudianteGUI {
         campoContraseñaDescifrada.setDisable(true);
 
         cargarDatosPerfil();
-
     }
-
 }

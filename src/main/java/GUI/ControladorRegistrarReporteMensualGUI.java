@@ -8,17 +8,17 @@ import javafx.stage.Stage;
 import logica.*;
 import logica.DAOs.*;
 import logica.DTOs.*;
+import logica.interfaces.IGestorAlertas;
 import logica.verificacion.ValidarFechas;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.Logger;
-
-
+import logica.ManejadorExcepciones;
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.*;
-
 
 public class ControladorRegistrarReporteMensualGUI {
 
@@ -77,31 +77,21 @@ public class ControladorRegistrarReporteMensualGUI {
 
     String matricula = ControladorInicioDeSesionGUI.matricula;
 
-    Utilidades utilidades = new Utilidades();
+    private Utilidades gestorVentanas = new Utilidades();
+    private IGestorAlertas utilidades = new Utilidades();
+    private Map<String, String> urlsDocumentos = new HashMap<>();
+    private VerificicacionGeneral verificacionGeneral = new VerificicacionGeneral();
+    private List<java.io.File> archivosLocales = new ArrayList<>();
+    public static VerificacionEntradas verificacionEntradas = new VerificacionEntradas();
+    private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
+    private ValidarFechas validarFechas = new ValidarFechas();
 
     int idCronograma = 0;
-
     public static int idReporte = 0;
-
-    private Map<String, String> urlsDocumentos = new HashMap<>();
-
     private static final double TAMANO_MAXIMO_MB = 10.0;
-
-    final int MAX_CARACTERES_METODOLOGIA = 100;
-
-    final int MAX_CARACTERES_OBSERVACIONES = 255;
-
-    final int MAX_CARACTERES_HORAS = 2;
-
-    VerificicacionGeneral verificacionGeneral = new VerificicacionGeneral();
-
-    private List<java.io.File> archivosLocales = new ArrayList<>();
-
-    public static VerificacionEntradas verificacionEntradas = new VerificacionEntradas();
-
-    ManejadorExepciones manejadorExepciones = new ManejadorExepciones();
-
-    ValidarFechas validarFechas = new ValidarFechas();
+    private final int MAX_CARACTERES_METODOLOGIA = 100;
+    private final int MAX_CARACTERES_OBSERVACIONES = 255;
+    private final int MAX_CARACTERES_HORAS = 2;
 
     @FXML
     public void initialize() {
@@ -188,7 +178,7 @@ public class ControladorRegistrarReporteMensualGUI {
 
         if (!errores.isEmpty()) {
 
-            utilidades.mostrarAlerta("Errores de validación",
+            gestorVentanas.mostrarAlerta("Errores de validación",
                     "Por favor, corrija los siguientes errores:",
                     String.join("\n", errores));
             return;
@@ -209,7 +199,7 @@ public class ControladorRegistrarReporteMensualGUI {
             reporteDAO.modificarReporte(reporteDTO);
             guardarEvidenciaReporte();
 
-            utilidades.mostrarAlerta("Éxito",
+            gestorVentanas.mostrarAlerta("Éxito",
                     "Reporte guardado",
                     "El reporte se ha guardado correctamente.");
 
@@ -219,16 +209,16 @@ public class ControladorRegistrarReporteMensualGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al guardar el reporte: ", e);
-            utilidades.mostrarAlerta("Error",
+            gestorVentanas.mostrarAlerta("Error",
                     "Ocurrió un error inesperado",
                     "Por favor, intente nuevamente más tarde.");
         }
@@ -303,7 +293,7 @@ public class ControladorRegistrarReporteMensualGUI {
 
             subirUrlBD();
 
-            utilidades.mostrarAlerta("Subida Exitosa", "Archivos subidos correctamente",
+            gestorVentanas.mostrarAlerta("Subida Exitosa", "Archivos subidos correctamente",
                     "Se subieron " + urlsDocumentos.size() + " archivos a Google Drive");
 
         } catch (Exception e) {
@@ -321,7 +311,7 @@ public class ControladorRegistrarReporteMensualGUI {
 
             EvidenciaReporteDAO evidenciaDAO = new EvidenciaReporteDAO();
 
-            for (java.io.File archivo : archivosLocales) {
+            for (File archivo : archivosLocales) {
 
                 String url = urlsDocumentos.get(archivo.getName());
 
@@ -341,16 +331,16 @@ public class ControladorRegistrarReporteMensualGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al insertar evidencia: " + e);
-            utilidades.mostrarAlerta("Error", "Error inesperado al insertar evidencia",
+            gestorVentanas.mostrarAlerta("Error", "Error inesperado al insertar evidencia",
                     "No se pudo insertar la evidencia en la base de datos. Verifique los registros.");
         }
     }
@@ -376,16 +366,16 @@ public class ControladorRegistrarReporteMensualGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al buscar el cronograma por matrícula: " + e);
-            utilidades.mostrarAlerta("Error",
+            gestorVentanas.mostrarAlerta("Error",
                     "No se pudo cargar el cronograma de actividades.",
                     "Por favor, intente nuevamente más tarde.");
 
@@ -413,16 +403,16 @@ public class ControladorRegistrarReporteMensualGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al crear el reporte: " + e);
-            utilidades.mostrarAlerta("Error",
+            gestorVentanas.mostrarAlerta("Error",
                     "No se pudo crear el reporte.",
                     "Por favor, intente nuevamente más tarde.");
         }
@@ -445,7 +435,7 @@ public class ControladorRegistrarReporteMensualGUI {
 
             if (!errores.isEmpty()) {
 
-                utilidades.mostrarAlerta("Errores de validación",
+                gestorVentanas.mostrarAlerta("Errores de validación",
                         "Por favor, corrija los siguientes errores:",
                         String.join("\n", errores));
                 return;
@@ -462,7 +452,7 @@ public class ControladorRegistrarReporteMensualGUI {
             reporteContieneDTO.setIdActividad(idActividadSeleccionada);
             reporteContieneDAO.insertarReporteContiene(reporteContieneDTO);
 
-            utilidades.mostrarAlerta("Éxito",
+            gestorVentanas.mostrarAlerta("Éxito",
                     "Actividad añadida",
                     "La actividad se ha añadido al reporte.");
 
@@ -472,12 +462,12 @@ public class ControladorRegistrarReporteMensualGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado: " + e);
-            utilidades.mostrarAlerta("Error",
+            gestorVentanas.mostrarAlerta("Error",
                     "Ocurrió un error inesperado",
                     "Por favor, intente nuevamente más tarde.");
         }
@@ -494,7 +484,7 @@ public class ControladorRegistrarReporteMensualGUI {
 
         } else {
 
-            utilidades.mostrarAlerta("Error",
+            gestorVentanas.mostrarAlerta("Error",
                     "No se seleccionó ninguna actividad.",
                     "Por favor, seleccione una actividad.");
             return -1;
@@ -528,16 +518,16 @@ public class ControladorRegistrarReporteMensualGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al cargar las actividades: " + e);
-            utilidades.mostrarAlerta("Error",
+            gestorVentanas.mostrarAlerta("Error",
                     "No se pudieron cargar las actividades.",
                     "Por favor, intente nuevamente más tarde.");
         }
@@ -546,7 +536,7 @@ public class ControladorRegistrarReporteMensualGUI {
     @FXML
     public void confirmacionCancelarRegistro() {
 
-        utilidades.mostrarAlertaConfirmacion(
+        gestorVentanas.mostrarAlertaConfirmacion(
                 "Confirmar eliminación",
                 "¿Está seguro que desea cancelar el reporte mensual?",
                 "Se cancelara el registro, esta accion no se puede deshacer.",
@@ -554,7 +544,7 @@ public class ControladorRegistrarReporteMensualGUI {
                     cancelarRegistro();
                 },
                 () -> {
-                    utilidades.mostrarAlerta("Cancelado",
+                    gestorVentanas.mostrarAlerta("Cancelado",
                             "Eliminación cancelada",
                             "No se ha cancelado ningun reporte.");
                 }
@@ -575,15 +565,15 @@ public class ControladorRegistrarReporteMensualGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
             logger.error("Error inesperado al eliminar el reporte: ", e);
-            utilidades.mostrarAlerta("Error",
+            gestorVentanas.mostrarAlerta("Error",
                     "No se pudo eliminar el reporte.",
                     "Por favor, intente nuevamente más tarde.");
         }

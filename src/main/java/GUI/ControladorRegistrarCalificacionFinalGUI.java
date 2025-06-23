@@ -11,6 +11,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 import logica.DAOs.EstudianteDAO;
 import logica.DTOs.EstudianteDTO;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,11 +31,15 @@ public class ControladorRegistrarCalificacionFinalGUI {
     @FXML private TableColumn<EstudianteDTO, Float> columnaCalificacion;
     @FXML private TableColumn<EstudianteDTO, Void> columnaAccion;
 
-    private Utilidades utilidades = new Utilidades();
+    private Utilidades gestorVentanas = new Utilidades();
+    private IGestorAlertas utilidades = new Utilidades();
+    private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, LOGGER);
+
     private int nrcGrupo;
 
     @FXML
     private void initialize() {
+
         configurarTabla();
         cargarEstudiantes();
         tablaAsignacion.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -80,6 +86,7 @@ public class ControladorRegistrarCalificacionFinalGUI {
     }
 
     private void cargarEstudiantes() {
+
         try {
 
             nrcGrupo = new AuxiliarGestionEstudiante().obtenerNRC();
@@ -89,22 +96,29 @@ public class ControladorRegistrarCalificacionFinalGUI {
             estudiantes.addAll(estudiantesBD);
 
             tablaAsignacion.setItems(estudiantes);
-
             tablaAsignacion.refresh();
 
         } catch (SQLException e) {
-            LOGGER.error("Error de SQL al cargar estudiantes: ", e);
-            utilidades.mostrarAlerta("Error BD", "Error de base de datos", e.getMessage());
+
+            manejadorExcepciones.manejarSQLException(e);
+
         } catch (IOException e) {
-            LOGGER.error("Error de IO al cargar estudiantes: ", e);
-            utilidades.mostrarAlerta("Error IO", "Error de archivos", e.getMessage());
+
+            manejadorExcepciones.manejarIOException(e);
+
         } catch (Exception e) {
+
             LOGGER.error("Error inesperado al cargar estudiantes: ", e);
-            utilidades.mostrarAlerta("Error", "Error inesperado", e.getMessage());
+            gestorVentanas.mostrarAlerta(
+                    "Error",
+                    "Error inesperado",
+                    "Ocurrió un error interno dentro del sistema, por favor intente más tarde."
+            );
         }
     }
 
     private void mostrarDialogoCalificacion(EstudianteDTO estudiante) {
+
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Asignar Calificación");
         dialog.setHeaderText(String.format(
@@ -121,7 +135,7 @@ public class ControladorRegistrarCalificacionFinalGUI {
                 float calificacion = Float.parseFloat(calificacionStr);
 
                 if (calificacion < 0 || calificacion > 10) {
-                    utilidades.mostrarAlerta(
+                    gestorVentanas.mostrarAlerta(
                             "Error",
                             "Valor inválido",
                             "La calificación debe estar entre 0 y 10"
@@ -132,7 +146,7 @@ public class ControladorRegistrarCalificacionFinalGUI {
                 asignarCalificacion(estudiante, calificacion);
 
             } catch (NumberFormatException e) {
-                utilidades.mostrarAlerta(
+                gestorVentanas.mostrarAlerta(
                         "Error",
                         "Entrada inválida",
                         "Debe ingresar un número válido"
@@ -142,7 +156,9 @@ public class ControladorRegistrarCalificacionFinalGUI {
     }
 
     private void asignarCalificacion(EstudianteDTO estudiante, float calificacion) {
+
         try {
+
             EstudianteDAO estudianteDAO = new EstudianteDAO();
             boolean exito = estudianteDAO.asignarCalificacion(calificacion, estudiante.getMatricula());
 
@@ -151,26 +167,29 @@ public class ControladorRegistrarCalificacionFinalGUI {
                 estudiante.setCalificacion(calificacion);
                 tablaAsignacion.refresh();
 
-                utilidades.mostrarAlerta(
+                gestorVentanas.mostrarAlerta(
                         "Éxito",
                         "Calificación asignada",
                         String.format("Se asignó %.2f a %s", calificacion, estudiante.getNombre())
                 );
                 LOGGER.info("Calificación asignada: {} -> {}", estudiante.getMatricula(), calificacion);
+
             } else {
-                utilidades.mostrarAlerta(
+
+                gestorVentanas.mostrarAlerta(
                         "Error",
                         "No se pudo guardar",
                         "La calificación no se pudo guardar en la base de datos"
                 );
             }
-        } catch (SQLException | IOException e) {
-            LOGGER.error("Error al asignar calificación: ", e);
-            utilidades.mostrarAlerta(
-                    "Error",
-                    "Error de sistema",
-                    "No se pudo completar la operación: " + e.getMessage()
-            );
+
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
         }
     }
 }

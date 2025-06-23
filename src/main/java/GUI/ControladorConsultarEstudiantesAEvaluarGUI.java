@@ -14,21 +14,20 @@ import javafx.util.Callback;
 import logica.DAOs.EstudianteDAO;
 import logica.DAOs.EvaluacionContieneDAO;
 import logica.DAOs.EvaluacionDAO;
-import logica.DAOs.GrupoDAO;
 import logica.DTOs.EstudianteDTO;
-import logica.DTOs.GrupoDTO;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
 
 import static GUI.ControladorRegistrarEvaluacionGUI.idEvaluacionGenerada;
 
 public class ControladorConsultarEstudiantesAEvaluarGUI {
 
-    Logger logger = Logger.getLogger(ControladorConsultarEstudiantesAEvaluarGUI.class.getName());
+    Logger logger =
+            org.apache.logging.log4j.LogManager.getLogger(ControladorConsultarEstudiantesAEvaluarGUI.class);
 
     @FXML
     TableView<EstudianteDTO> tablaEstudiantes;
@@ -49,13 +48,12 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
     TextField campoMatricula;
 
     public static String matriculaEstudianteSeleccionado;
-
-    private EstudianteDTO estudianteSeleccionado = new EstudianteDTO();
-
     private static int numeroPersonal = ControladorInicioDeSesionGUI.numeroDePersonal;
 
-    Utilidades utilidades = new Utilidades();
-
+    private EstudianteDTO estudianteSeleccionado = new EstudianteDTO();
+    private Utilidades gestorVentanas = new Utilidades();
+    private IGestorAlertas utilidades = new Utilidades();
+    private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     @FXML
     public void initialize() {
@@ -80,29 +78,32 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
 
 
     private void cargarEstudiantes() {
-        Utilidades utilidades = new Utilidades();
+
+        EstudianteDAO estudianteDAO = new EstudianteDAO();
 
         try {
-            EstudianteDAO estudianteDAO = new EstudianteDAO();
+
             ObservableList<EstudianteDTO> estudiantes = FXCollections.observableArrayList(
                     estudianteDAO.listarEstudiantesNoEvaluados(numeroPersonal)
             );
             tablaEstudiantes.setItems(estudiantes);
 
-        } catch (Exception e) {
-            logger.severe("Error al cargar la lista de estudiantes: " + e);
-            utilidades.mostrarAlerta("Error", "Ocurrio un error inesperado", "No se pudo cargar la lista de estudiantes.");
-            e.printStackTrace();
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
         }
     }
 
     private void añadirBotonEvaluarATable() {
 
-
-        Callback<TableColumn<EstudianteDTO, Void>, TableCell<EstudianteDTO, Void>> cellFactory = param -> new TableCell<>() {
+        Callback<TableColumn<EstudianteDTO, Void>, TableCell<EstudianteDTO, Void>> cellFactory =
+                param -> new TableCell<>() {
 
             private final Button botonEvaluar = new Button("Evaluar");
-
             {
                 botonEvaluar.setOnAction(event -> {
 
@@ -152,8 +153,7 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
 
         } catch (IOException e) {
 
-            logger.severe("Error al abrir la ventana RegistrarEvaluacionGUI: " + e);
-            e.printStackTrace();
+            manejadorExcepciones.manejarIOException(e);
         }
 
     }
@@ -170,13 +170,20 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
 
         } catch (SQLException e) {
 
-            logger.severe("Error de SQL: " + e);
+           manejadorExcepciones.manejarSQLException(e);
+
         } catch (IOException e) {
 
-            logger.severe("Error de IO: " + e);
+           manejadorExcepciones.manejarIOException(e);
+
         } catch (Exception e) {
 
-            logger.severe("Error inesperado: " + e);
+            logger.error("Error inesperado: " + e);
+            gestorVentanas.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error al eliminar la evaluación.",
+                    "Por favor, intentelo de nuevo más tarde."
+            );
         }
     }
 
@@ -191,8 +198,10 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
             return;
         }
 
+        EstudianteDAO estudianteDAO = new EstudianteDAO();
+
         try {
-            EstudianteDAO estudianteDAO = new EstudianteDAO();
+
             ObservableList<EstudianteDTO> estudiantes = FXCollections.observableArrayList(
                     estudianteDAO.listarEstudiantesNoEvaluados(numeroPersonal)
             );
@@ -210,10 +219,13 @@ public class ControladorConsultarEstudiantesAEvaluarGUI {
             } else {
                 tablaEstudiantes.setItems(estudiantesFiltrados);
             }
-        } catch (Exception e) {
-            logger.severe("Error al buscar el estudiante: " + e);
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
         }
-
     }
-
 }

@@ -20,7 +20,7 @@ import logica.DTOs.CuentaDTO;
 import logica.DTOs.EstudianteDTO;
 import logica.DTOs.UsuarioDTO;
 import logica.VerificacionUsuario;
-import logica.interfaces.GestorAlertas;
+import logica.interfaces.IGestorAlertas;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.Logger;
 
@@ -126,7 +126,7 @@ public class ControladorGestorEstudiantesGUI {
     final int MAX_CARACTERES_MATRICULA= 9;
 
     Utilidades utilidadesVentana = new Utilidades();
-    GestorAlertas mensajeDeAlerta = new Utilidades();
+    IGestorAlertas mensajeDeAlerta = new Utilidades();
 
     ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(mensajeDeAlerta, logger);
 

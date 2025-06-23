@@ -17,7 +17,7 @@ import logica.DAOs.UsuarioDAO;
 import logica.DTOs.AcademicoDTO;
 import logica.DTOs.CuentaDTO;
 import logica.DTOs.UsuarioDTO;
-import logica.interfaces.GestorAlertas;
+import logica.interfaces.IGestorAlertas;
 import logica.utilidadesproyecto.EncriptadorContraseñas;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.LogManager;
@@ -52,7 +52,7 @@ public class ControladorRegistroAcademicoGUI {
 
     EncriptadorContraseñas encriptadorContraseñas = new EncriptadorContraseñas();
     private UtilidadesContraseña utilidadesConstraña = new UtilidadesContraseña();
-    private GestorAlertas utilidades = new Utilidades();
+    private IGestorAlertas utilidades = new Utilidades();
     private Utilidades utilidadesVentana = new Utilidades();
     private boolean contraseñaVisible = false;
 

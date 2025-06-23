@@ -1,7 +1,7 @@
 package logica;
 
 import java.sql.SQLException;
-import logica.interfaces.GestorAlertas;
+import logica.interfaces.IGestorAlertas;
 import org.apache.logging.log4j.Logger;
 import java.io.EOFException;
 import java.io.FileNotFoundException;
@@ -12,9 +12,9 @@ import java.net.ConnectException;
 public class ManejadorExcepciones {
 
     private final Logger LOGGER;
-    private final GestorAlertas MENSAJE_DE_ALERTA;
+    private final IGestorAlertas MENSAJE_DE_ALERTA;
 
-    public ManejadorExcepciones(GestorAlertas mensajeDeAlerta, Logger logger ) {
+    public ManejadorExcepciones(IGestorAlertas mensajeDeAlerta, Logger logger ) {
 
         this.MENSAJE_DE_ALERTA = mensajeDeAlerta;
         this.LOGGER = logger;

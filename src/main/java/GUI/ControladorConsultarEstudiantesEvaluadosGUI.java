@@ -14,13 +14,17 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import logica.DAOs.EstudianteDAO;
 import logica.DTOs.EstudianteDTO;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.util.logging.Logger;
+import java.sql.SQLException;
 
 public class ControladorConsultarEstudiantesEvaluadosGUI {
 
-    Logger logger = Logger.getLogger(ControladorConsultarEstudiantesAEvaluarGUI.class.getName());
+    Logger logger =
+            org.apache.logging.log4j.LogManager.getLogger(ControladorConsultarEstudiantesEvaluadosGUI.class);
 
     @FXML
     TableView<EstudianteDTO> tablaEstudiantes;
@@ -43,10 +47,13 @@ public class ControladorConsultarEstudiantesEvaluadosGUI {
     public static String matriculaEstudianteSeleccionado;
 
     private EstudianteDTO estudianteSeleccionado = new EstudianteDTO();
+    AuxiliarGestionEstudiante auxiliarGestionEstudiante = new AuxiliarGestionEstudiante();
+    Utilidades gestorVentanas = new Utilidades();
+    IGestorAlertas utilidades = new Utilidades();
+    ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     private static int numeroPersonal = ControladorInicioDeSesionGUI.numeroDePersonal;
 
-    AuxiliarGestionEstudiante auxiliarGestionEstudiante = new AuxiliarGestionEstudiante();
     int NRC = auxiliarGestionEstudiante.obtenerNRC();
 
 
@@ -72,28 +79,29 @@ public class ControladorConsultarEstudiantesEvaluadosGUI {
     }
 
     private void cargarEstudiantes() {
-        Utilidades utilidades = new Utilidades();
+
+        EstudianteDAO estudianteDAO = new EstudianteDAO();
 
         try {
-            EstudianteDAO estudianteDAO = new EstudianteDAO();
+
             ObservableList<EstudianteDTO> estudiantes = FXCollections.observableArrayList(
-                    estudianteDAO.listarEstudiantesConEvaluacionesPorGrupo(NRC)
-            );
+                    estudianteDAO.listarEstudiantesConEvaluacionesPorGrupo(NRC));
             tablaEstudiantes.setItems(estudiantes);
 
-        } catch (Exception e) {
-            logger.severe("Error al cargar la lista de estudiantes: " + e);
-            utilidades.mostrarAlerta("Error",
-                    "Error de entrada/salida",
-                    "No se pudo cargar la lista de estudiantes.");
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+
+        }catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
         }
     }
 
     private void añadirBotonVerEvaluacionesATabla() {
 
-
-
-        Callback<TableColumn<EstudianteDTO, Void>, TableCell<EstudianteDTO, Void>> cellFactory = param -> new TableCell<>() {
+        Callback<TableColumn<EstudianteDTO, Void>, TableCell<EstudianteDTO, Void>> cellFactory =
+                param -> new TableCell<>() {
 
             private final Button botonEvaluar = new Button("Ver Evaluaciones");
 
@@ -111,9 +119,11 @@ public class ControladorConsultarEstudiantesEvaluadosGUI {
             protected void updateItem(Void item, boolean empty) {
 
                 super.updateItem(item, empty);
+
                 if (empty || getTableView().getItems().get(getIndex()) != estudianteSeleccionado) {
 
                     setGraphic(null);
+
                 } else {
 
                     setGraphic(botonEvaluar);
@@ -128,9 +138,8 @@ public class ControladorConsultarEstudiantesEvaluadosGUI {
 
         try {
 
-
-            System.out.println("Matricula del estudiante seleccionado: " + matriculaEstudianteSeleccionado);
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ConsultarEvaluacionesEstudianteGUI.fxml"));
+            FXMLLoader loader =
+                    new FXMLLoader(getClass().getResource("/ConsultarEvaluacionesEstudianteGUI.fxml"));
             Parent root = loader.load();
 
             ControladorConsultarEvaluacionesEstudianteGUI controlador = loader.getController();
@@ -141,13 +150,12 @@ public class ControladorConsultarEstudiantesEvaluadosGUI {
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
 
-
             stage.showAndWait();
-
             cargarEstudiantes();
 
         } catch (IOException e) {
-            logger.severe("Error al abrir la ventana RegistrarEvaluacionGUI: " + e);
+
+            manejadorExcepciones.manejarIOException(e);
         }
 
     }
@@ -155,31 +163,48 @@ public class ControladorConsultarEstudiantesEvaluadosGUI {
 
     @FXML
     public void buscarEstudiante() {
+
         String matriculaBuscada = campoMatricula.getText().trim();
 
         if (matriculaBuscada.isEmpty()) {
+
             cargarEstudiantes();
             return;
         }
 
+        EstudianteDAO estudianteDAO = new EstudianteDAO();
+
         try {
-            EstudianteDAO estudianteDAO = new EstudianteDAO();
+
             ObservableList<EstudianteDTO> estudiantes = FXCollections.observableArrayList(
                     estudianteDAO.listarEstudiantesConEvaluacionesPorGrupo(NRC)
             );
 
             ObservableList<EstudianteDTO> estudiantesFiltrados = estudiantes.filtered(
-                    estudiante -> estudiante.getMatricula().toLowerCase().contains(matriculaBuscada.toLowerCase())
+                    estudiante ->
+                            estudiante.getMatricula().toLowerCase().contains(matriculaBuscada.toLowerCase())
             );
 
             if (estudiantesFiltrados.isEmpty()) {
-                Utilidades utilidades = new Utilidades();
-                utilidades.mostrarAlerta("No encontrado", "Estudiante no encontrado", "No se encontró un estudiante con la matrícula: " + matriculaBuscada);
+
+                utilidades.mostrarAlerta(
+                        "No encontrado",
+                        "Estudiante no encontrado",
+                        "No se encontró un estudiante con la matrícula: " + matriculaBuscada
+                );
+
             } else {
+
                 tablaEstudiantes.setItems(estudiantesFiltrados);
             }
-        } catch (Exception e) {
-            logger.severe("Error al buscar el estudiante: " + e);
+
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
         }
     }
 }

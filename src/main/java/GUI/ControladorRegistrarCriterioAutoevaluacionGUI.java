@@ -6,7 +6,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import logica.DAOs.CriterioAutoevaluacionDAO;
 import logica.DTOs.CriterioAutoevaluacionDTO;
+import logica.ManejadorExcepciones;
 import logica.VerificacionEntradas;
+import logica.interfaces.IGestorAlertas;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.Logger;
 
@@ -26,17 +28,15 @@ public class ControladorRegistrarCriterioAutoevaluacionGUI {
     @FXML
     Label etiquetaContadorDescripcion;
 
-    Utilidades utilidades = new Utilidades();
-
     int numeroCriterioMasAlto = 0;
-
     int nuevoNumeroCriterio = 0;
-
-    VerificicacionGeneral verificicacionGeneralUtilidad = new VerificicacionGeneral();
-
-    VerificacionEntradas verificacionEntradas = new VerificacionEntradas();
-
     final int MAX_CARACTERES_DESCRIPCION = 255;
+
+    Utilidades gestorVentana = new Utilidades();
+    IGestorAlertas utilidades = new Utilidades();
+    VerificicacionGeneral verificicacionGeneralUtilidad = new VerificicacionGeneral();
+    VerificacionEntradas verificacionEntradas = new VerificacionEntradas();
+    ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     @FXML
     public void initialize() {
@@ -53,18 +53,15 @@ public class ControladorRegistrarCriterioAutoevaluacionGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error al obtener el número de criterio más alto: " + e);
-            e.printStackTrace();
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO: " + e);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado: " + e);
-            e.printStackTrace();
-
         }
     }
 
@@ -76,7 +73,7 @@ public class ControladorRegistrarCriterioAutoevaluacionGUI {
 
         if (descripcion.isEmpty()) {
 
-            utilidades.mostrarAlerta("Error",
+            gestorVentana.mostrarAlerta("Error",
                     "La descripción no puede estar vacía.",
                     "Por favor llene todos los campos.");
             return;
@@ -84,13 +81,11 @@ public class ControladorRegistrarCriterioAutoevaluacionGUI {
 
         if (!verificacionEntradas.validarTextoAlfanumerico(descripcion)) {
 
-            utilidades.mostrarAlerta("Error",
+            gestorVentana.mostrarAlerta("Error",
                     "Descripción inválida.",
                     "La descripción no puede contener caracteres especiales.");
             return;
         }
-
-
 
         try {
 
@@ -102,7 +97,7 @@ public class ControladorRegistrarCriterioAutoevaluacionGUI {
 
             if (criterioAutoevaluacionDAO.crearNuevoCriterioAutoevaluacion(nuevoCriterio)) {
 
-                utilidades.mostrarAlerta("Éxito",
+                gestorVentana.mostrarAlerta("Éxito",
                         "Criterio de autoevaluación guardado correctamente.",
                         "Se ha registrado el criterio de forma exitosa.");
                 nuevoNumeroCriterio++;
@@ -111,31 +106,24 @@ public class ControladorRegistrarCriterioAutoevaluacionGUI {
 
             } else {
 
-                utilidades.mostrarAlerta("Error",
+                gestorVentana.mostrarAlerta("Error",
                         "No se pudo guardar el criterio de autoevaluación.",
                         "Por favor intente de nuevo.");
             }
+
         } catch (SQLException e) {
 
-            utilidades.mostrarAlerta("Error",
-                    "Error al guardar el criterio de autoevaluación.",
-                    "Por favor intente de nuevo.");
-            logger.error("Error al guardar el criterio de autoevaluación: " + e);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            utilidades.mostrarAlerta("Error",
-                    "Error de IO.",
-                    "Por favor intente de nuevo.");
-            logger.error("Error de IO: " + e);
-
+            manejadorExcepciones.manejarIOException(e);
         }
     }
 
     @FXML
     public void cancelarCriterio() {
+
         textoDescripcionCriterio.clear();
     }
-
-
 }

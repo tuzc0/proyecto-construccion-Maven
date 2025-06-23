@@ -1,7 +1,6 @@
 package GUI.menuusarios;
 
 import GUI.ControladorInicioDeSesionGUI;
-import GUI.ManejadorExepciones;
 import GUI.gestioncronogramaactividades.ControladorRegistroCronogramaActividadesGUI;
 import GUI.gestionproyecto.asignacionproyecto.ControladorDetallesAsignacionProyectoGUI;
 import GUI.utilidades.Utilidades;
@@ -17,18 +16,18 @@ import logica.DTOs.AutoevaluacionDTO;
 import logica.DTOs.CronogramaActividadesDTO;
 import logica.DTOs.EstudianteDTO;
 import logica.DTOs.ProyectoDTO;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
 import org.apache.logging.log4j.Logger;
-
 import java.io.IOException;
 import java.sql.SQLException;
-
+import java.time.LocalDate;
 import static GUI.ControladorRegistrarAutoevaluacionGUI.idAutoevaluacion;
 import static GUI.ControladorRegistrarReporteMensualGUI.idReporte;
 import static java.sql.Types.NULL;
 
 public class ControladorMenuEstudianteGUI {
 
-    Utilidades utilidades = new Utilidades();
     Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorMenuEstudianteGUI.class);
 
     @FXML
@@ -39,8 +38,9 @@ public class ControladorMenuEstudianteGUI {
 
     private String matricula = ControladorInicioDeSesionGUI.matricula;
 
-    ManejadorExepciones manejadorExepciones = new ManejadorExepciones();
-
+    Utilidades gestorVentanas = new Utilidades();
+    IGestorAlertas utilidades = new Utilidades();
+    ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     @FXML
     public void initialize() {
@@ -72,16 +72,16 @@ public class ControladorMenuEstudianteGUI {
             }
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al verificar autoevaluación registrada: " + e);
-            utilidades.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error",
                     "Ocurrió un error inesperado al verificar la autoevaluación.",
                     "Por favor, contacta al administrador si el problema persiste."
@@ -96,7 +96,7 @@ public class ControladorMenuEstudianteGUI {
             return;
         }
 
-        utilidades.mostrarVentana("/EditarPerfilEstudianteGUI.fxml");
+        gestorVentanas.mostrarVentana("/EditarPerfilEstudianteGUI.fxml");
     }
 
     @FXML
@@ -107,6 +107,7 @@ public class ControladorMenuEstudianteGUI {
         }
 
         try {
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistrarAutoevaluacionGUI.fxml"));
             Parent root = loader.load();
 
@@ -128,7 +129,7 @@ public class ControladorMenuEstudianteGUI {
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         }
     }
@@ -146,16 +147,16 @@ public class ControladorMenuEstudianteGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al eliminar la evaluación: " + e);
-            utilidades.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error",
                     "Ocurrió un error inesperado al eliminar la evaluación.",
                     "Por favor, contacta al administrador si el problema persiste."
@@ -174,16 +175,16 @@ public class ControladorMenuEstudianteGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al eliminar el reporte: " + e);
-            utilidades.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error",
                     "Ocurrió un error inesperado al eliminar el reporte.",
                     "Por favor, contacta al administrador si el problema persiste."
@@ -199,7 +200,7 @@ public class ControladorMenuEstudianteGUI {
             return;
         }
 
-        utilidades.mostrarVentana("/ConsultarAutoevaluacionGUI.fxml");
+        gestorVentanas.mostrarVentana("/ConsultarAutoevaluacionGUI.fxml");
 
 
     }
@@ -211,7 +212,7 @@ public class ControladorMenuEstudianteGUI {
             return;
         }
 
-        utilidades.mostrarVentana("/ConsultarEvaluacionesEstudianteGUI.fxml");
+        gestorVentanas.mostrarVentana("/ConsultarEvaluacionesEstudianteGUI.fxml");
 
     }
 
@@ -227,11 +228,13 @@ public class ControladorMenuEstudianteGUI {
 
             ReporteDAO reporteDAO = new ReporteDAO();
 
-            int mesActual = java.time.LocalDate.now().getMonthValue();
-            int añoActual = java.time.LocalDate.now().getYear();
+            int mesActual = LocalDate.now().getMonthValue();
+            int añoActual = LocalDate.now().getYear();
 
             if (reporteDAO.existeReporteEnMes(matricula, mesActual, añoActual)) {
-                utilidades.mostrarAlerta("Reporte Mensual", "Ya has registrado un reporte mensual este mes.",
+                gestorVentanas.mostrarAlerta(
+                        "Reporte Mensual",
+                        "Ya has registrado un reporte mensual este mes.",
                         "No puedes registrar más de un reporte mensual por mes.");
                 return;
             }
@@ -243,23 +246,21 @@ public class ControladorMenuEstudianteGUI {
             stage.setTitle("Registrar Reporte Mensual");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
-
             stage.setOnCloseRequest(event -> eliminarReporte());
-
             stage.showAndWait();
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al abrir la ventana de reporte mensual: " + e);
-            utilidades.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error",
                     "Ocurrió un error inesperado al abrir la ventana de reporte mensual.",
                     "Por favor, contacta al administrador si el problema persiste."
@@ -277,7 +278,7 @@ public class ControladorMenuEstudianteGUI {
 
             if (cronograma == null || cronograma.getIDCronograma() == NULL) {
 
-                utilidades.mostrarAlerta(
+                gestorVentanas.mostrarAlerta(
                         "Cronograma de Actividades",
                         "No tienes un cronograma de actividades registrado.",
                         "Debes registrar un cronograma de actividades antes de poder registrar un reporte mensual."
@@ -291,18 +292,18 @@ public class ControladorMenuEstudianteGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
             return false;
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
             return false;
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al verificar cronograma de actividades: " + e);
-            utilidades.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error",
                     "Ocurrió un error inesperado al verificar el cronograma de actividades.",
                     "Por favor, contacta al administrador si el problema persiste."
@@ -324,7 +325,6 @@ public class ControladorMenuEstudianteGUI {
             return;
         }
 
-
         try {
 
             FXMLLoader cargarVentana = new FXMLLoader(getClass().getResource("/RegistroCronogramaActividadesGUI.fxml"));
@@ -338,14 +338,15 @@ public class ControladorMenuEstudianteGUI {
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
+
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al abrir la ventana de registro de cronograma de actividades: " + e);
-            utilidades.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error",
                     "Ocurrió un error inesperado al abrir la ventana de registro de cronograma de actividades.",
                     "Por favor, contacta al administrador si el problema persiste."
@@ -384,16 +385,16 @@ public class ControladorMenuEstudianteGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al abrir los detalles de asignación del proyecto: " + e);
-            utilidades.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error",
                     "Ocurrió un error inesperado al abrir los detalles de asignación del proyecto.",
                     "Por favor, contacta al administrador si el problema persiste."
@@ -413,7 +414,7 @@ public class ControladorMenuEstudianteGUI {
 
             if (estudianteDTO.getIdProyecto() == NULL) {
 
-                utilidades.mostrarAlerta(
+                gestorVentanas.mostrarAlerta(
                         "Error",
                         "No estás asignado a un proyecto.",
                         "Por favor, contacta al administrador para más información."
@@ -429,28 +430,26 @@ public class ControladorMenuEstudianteGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
             proyectoAsignado = false;
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
             proyectoAsignado = false;
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al verificar asignación de proyecto: " + e);
-            utilidades.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error",
                     "Ocurrió un error al verificar tu asignación de proyecto.",
                     "Por favor, intenta nuevamente más tarde."
             );
             proyectoAsignado = false;
-
         }
 
         return proyectoAsignado;
-
     }
 
     public boolean verificarCronogramaActividades() {
@@ -464,7 +463,7 @@ public class ControladorMenuEstudianteGUI {
 
             if (cronograma != null && cronograma.getIDCronograma() != NULL) {
 
-                utilidades.mostrarAlerta(
+                gestorVentanas.mostrarAlerta(
                         "Cronograma de Actividades",
                         "Ya has registrado un cronograma de actividades.",
                         "No puedes registrar más de un cronograma de actividades por proyecto."
@@ -480,18 +479,18 @@ public class ControladorMenuEstudianteGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
             cronogramaRegistrado = false;
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
             cronogramaRegistrado = false;
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al verificar cronograma de actividades: " + e);
-            utilidades.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error",
                     "Ocurrió un error inesperado al verificar el cronograma de actividades.",
                     "Por favor, contacta al administrador si el problema persiste."

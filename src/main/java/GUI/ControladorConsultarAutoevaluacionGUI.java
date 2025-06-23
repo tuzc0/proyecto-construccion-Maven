@@ -13,6 +13,8 @@ import logica.DAOs.AutoevaluacionDAO;
 import logica.DAOs.CriterioAutoevaluacionDAO;
 import logica.DAOs.EvidenciaAutoevaluacionDAO;
 import logica.DTOs.*;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
 import org.apache.logging.log4j.Logger;
 
 import java.awt.Desktop;
@@ -48,29 +50,32 @@ public class ControladorConsultarAutoevaluacionGUI {
     private ListView<String> listaArchivos;
 
     private int idAutoevaluacion;
-
     private String matricula = ControladorInicioDeSesionGUI.matricula;
 
-    Utilidades utilidades = new Utilidades();
+    private Utilidades gestorVentanas = new Utilidades();
+    private IGestorAlertas utilidades = new Utilidades();
 
-    ManejadorExepciones manejadorExepciones = new ManejadorExepciones();
+    private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     @FXML
     private void initialize() {
 
-        columnaNumeroCriterio.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(
+        columnaNumeroCriterio.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleStringProperty(
                 String.valueOf(data.getValue().getCriterioAutoevaluacion().getNumeroCriterio())));
-        columnaCriterio.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(
+        columnaCriterio.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleStringProperty(
                 data.getValue().getCriterioAutoevaluacion().getDescripcion()));
-        columnaCalificacion.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(
+        columnaCalificacion.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleStringProperty(
                 String.valueOf(data.getValue().getAutoEvaluacionContiene().getCalificacion())));
         listaArchivos.setOnMouseClicked(this::abrirURLDrive);
 
         cargarAutoevaluacion();
-
     }
 
     public void cargarCriterios(){
+
         try{
 
             if(matricula == null || matricula.isEmpty() || matricula.equals(" ")) {
@@ -101,16 +106,18 @@ public class ControladorConsultarAutoevaluacionGUI {
             }
         } catch (SQLException e){
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades); ;
+            manejadorExcepciones.manejarSQLException(e); ;
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al cargar los criterios de autoevaluación: " + e.getMessage(), e);
-            utilidades.mostrarAlerta("Error", "Ocurrió un error al cargar los criterios de autoevaluación.",
+            gestorVentanas.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error al cargar los criterios de autoevaluación.",
                     "Por favor, inténtelo de nuevo más tarde.");
 
         }
@@ -134,16 +141,18 @@ public class ControladorConsultarAutoevaluacionGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al cargar la autoevaluación: " + e.getMessage(), e);
-            utilidades.mostrarAlerta("Error", "Ocurrió un error al cargar la autoevaluación.",
+            gestorVentanas.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error al cargar la autoevaluación.",
                     "Por favor, inténtelo de nuevo más tarde.");
         }
     }
@@ -162,8 +171,7 @@ public class ControladorConsultarAutoevaluacionGUI {
 
                 } catch (IOException e) {
 
-                    manejadorExepciones.manejarIOException(e, logger, utilidades);
-
+                    manejadorExcepciones.manejarIOException(e);
                 }
             }
         }

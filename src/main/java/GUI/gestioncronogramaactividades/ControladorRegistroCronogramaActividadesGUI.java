@@ -1,7 +1,6 @@
 package GUI.gestioncronogramaactividades;
 
 import GUI.GestorHorarios;
-import GUI.ManejadorExepciones;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
@@ -12,6 +11,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logica.DAOs.*;
 import logica.DTOs.*;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
 import logica.verificacion.VerificacionDeActividad;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.LogManager;
@@ -106,10 +107,11 @@ public class ControladorRegistroCronogramaActividadesGUI {
     private Label etiquetaContadorActividades;
 
     private String matriculaEstudiante;
-    private final Utilidades UTILIDADES = new Utilidades();
+    private Utilidades gestorVentanas = new Utilidades();
+    private IGestorAlertas utilades = new Utilidades();
     private GestorHorarios gestorHorarios;
 
-    ManejadorExepciones manejadorExepciones = new ManejadorExepciones();
+    private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilades, LOGGER);
 
     @FXML
     public void initialize() {
@@ -171,7 +173,7 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
             if (fechaInicio == null || fechaFin == null) {
 
-                UTILIDADES.mostrarAlerta(
+                gestorVentanas.mostrarAlerta(
                         "Fechas vacías",
                         "Se necesitan ambas fechas para la actividad.",
                         "Por favor, seleccione la fecha de inicio y la fecha de fin para la actividad."
@@ -181,7 +183,7 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
             if (!fechaInicio.isBefore(fechaFin)) {
 
-                UTILIDADES.mostrarAlerta(
+                gestorVentanas.mostrarAlerta(
                         "Error en fechas",
                         "La fecha inicio debe ser anterior a la fecha fin",
                         "Por favor, corriga las fechas."
@@ -191,7 +193,7 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
             if (!gestorHorarios.validarDiasSeleccionados()) {
 
-                UTILIDADES.mostrarAlerta(
+                gestorVentanas.mostrarAlerta(
                         "Días no seleccionados",
                         "Seleccione al menos un día",
                         "Marque al menos un día en el panel derecho"
@@ -203,7 +205,7 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
             if (!erroresEnHorarios.isEmpty()) {
 
-                UTILIDADES.mostrarAlerta(
+                gestorVentanas.mostrarAlerta(
                         "Error en horarios",
                         "La hora de entrada debe ser menor a salida",
                         String.join("\n", erroresEnHorarios)
@@ -223,7 +225,7 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
             if (idProyecto == noAsignado) {
 
-                UTILIDADES.mostrarAlerta(
+                gestorVentanas.mostrarAlerta(
                         "Error",
                         "No se le ha asignado a proyecto",
                         "Por favor, espere a ser asignado");
@@ -245,7 +247,7 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
             if (!insertarHorarios(estudianteDTO.getIdProyecto())) {
 
-                UTILIDADES.mostrarAlerta(
+                gestorVentanas.mostrarAlerta(
                         "Error",
                         "No se pudo insertar el horarios",
                         "Por favor, intentelo de nuevo más tarde o contacte al administrador."
@@ -269,7 +271,7 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
             if (idActividadPrincipal == actividadNoInsertada) {
 
-                UTILIDADES.mostrarAlerta(
+                gestorVentanas.mostrarAlerta(
                         "Error",
                         "No se pudo crear la actividad",
                         "Por favor, inténtelo de nuevo o contacte al administrador."
@@ -289,7 +291,7 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
                 if (idActividadSecundaria == noCreada) {
 
-                    UTILIDADES.mostrarAlerta(
+                    gestorVentanas.mostrarAlerta(
                             "Error",
                             "No se pudo crear una actividad secundaria.",
                             "Por favor, intentelo de nuevo más tarde o contacte al administrador.");
@@ -307,7 +309,7 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
                 if (!cronogramaContieneDAO.insertarCronogramaContiene(contieneSecundaria)) {
 
-                    UTILIDADES.mostrarAlerta(
+                    gestorVentanas.mostrarAlerta(
                             "Error",
                             "Una actividad secundaria no se pudo añadir al cronograma.",
                             "Por favor intentelo de nuevo más tarde o contacte al administrador.");
@@ -315,7 +317,7 @@ public class ControladorRegistroCronogramaActividadesGUI {
                 }
             }
 
-            UTILIDADES.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Éxito",
                     "El cronograma fue registrado con éxito.",
                     ""
@@ -323,15 +325,16 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, LOGGER, UTILIDADES);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, LOGGER, UTILIDADES);
+            manejadorExcepciones.manejarIOException(e);
+
         } catch (Exception e) {
 
             LOGGER.error("Error inesperado al guardar el cronograma de actividades: " + e);
-            UTILIDADES.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error inesperado",
                     "No se pudo guardar el cronograma de actividades.",
                     "Por favor, inténtelo de nuevo más tarde."
@@ -342,10 +345,10 @@ public class ControladorRegistroCronogramaActividadesGUI {
     private boolean insertarHorarios(int idProyecto) throws SQLException, IOException {
 
         HorarioProyectoDAO horarioDAO = new HorarioProyectoDAO();
-
         boolean horariosInsertados = false;
 
-        for (Map.Entry<CheckBox, List<ComboBox<String>>> diasSeleccionados : gestorHorarios.obtenerDiasConHorarios().entrySet()) {
+        for (Map.Entry<CheckBox, List<ComboBox<String>>> diasSeleccionados :
+                gestorHorarios.obtenerDiasConHorarios().entrySet()) {
 
             CheckBox diaSeleccionado = diasSeleccionados.getKey();
             List<ComboBox<String>> horarios = diasSeleccionados.getValue();
@@ -391,7 +394,7 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
         if (!camposVacios.isEmpty()) {
 
-            UTILIDADES.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Campos vacíos",
                     "Complete los campos requeridos",
                     String.join("\n", camposVacios)
@@ -407,7 +410,7 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
         if (!datosInvalidos.isEmpty()) {
 
-            UTILIDADES.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Datos inválidos",
                     "Verifique los campos",
                     String.join("\n", datosInvalidos)
@@ -422,7 +425,7 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
         if (cronogramaActividadesDTO.getIdPeriodo() == -1) {
 
-            UTILIDADES.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error",
                     "No hay periodo activo",
                     "Por favor, espere a que inicie un periodo"
@@ -432,7 +435,7 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
         if (cronogramaActividadesDTO.getMatriculaEstudiante() == null || cronogramaActividadesDTO.getMatriculaEstudiante().isEmpty()) {
 
-            UTILIDADES.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error",
                     "Matrícula de estudiante no válida",
                     "Por favor, verifique la matrícula del estudiante"
@@ -466,12 +469,12 @@ public class ControladorRegistroCronogramaActividadesGUI {
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, LOGGER, UTILIDADES);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             LOGGER.error("Error inesperado al agregar actividad: " + e.getMessage());
-            UTILIDADES.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error inesperado",
                     "No se pudo agregar la actividad.",
                     "Por favor, inténtelo de nuevo más tarde."

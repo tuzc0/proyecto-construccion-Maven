@@ -9,12 +9,17 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import logica.DAOs.ReporteDAO;
 import logica.DTOs.ReporteDTO;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 public class ControladorListarReportesPorEstudianteGUI {
+
+    Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorListarReportesPorEstudianteGUI.class);
 
     @FXML
     TableView<ReporteDTO> tablaReportes;
@@ -28,7 +33,9 @@ public class ControladorListarReportesPorEstudianteGUI {
     @FXML
     TableColumn<ReporteDTO, String> columnaVerReporte;
 
-    Utilidades utilidades = new Utilidades();
+    Utilidades gestorVentana = new Utilidades();
+    IGestorAlertas utilidades = new Utilidades();
+    ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     public static int idReporteSeleccionado = 0;
 
@@ -36,9 +43,12 @@ public class ControladorListarReportesPorEstudianteGUI {
     @FXML
     public void initialize() {
 
-        columnaFecha.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFecha().toString()));
-        columnaMetodologia.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMetodologia()));
-        columnaVerReporte.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getObservaciones()));
+        columnaFecha.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getFecha().toString()));
+        columnaMetodologia.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getMetodologia()));
+        columnaVerReporte.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getObservaciones()));
 
         cargarDatosReportes();
         configurarColumnaVerReporte();
@@ -53,13 +63,17 @@ public class ControladorListarReportesPorEstudianteGUI {
             if (listaReportes != null && !listaReportes.isEmpty()) {
                 tablaReportes.getItems().setAll(listaReportes);
             } else {
-                utilidades.mostrarAlerta("No se encontraron reportes para el estudiante seleccionado.",
+                gestorVentana.mostrarAlerta("No se encontraron reportes para el estudiante seleccionado.",
                         "Información",
                         "El estudiante no tiene reportes mensuales registrados.");
             }
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
-            utilidades.mostrarAlerta("Error", "No se pudo cargar los reportes.", "Por favor, intente nuevamente más tarde.");
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
         }
     }
 
@@ -89,8 +103,6 @@ public class ControladorListarReportesPorEstudianteGUI {
 
     private void verDetallesReporte(ReporteDTO reporte) {
 
-        utilidades.mostrarVentana("/ConsultarReporteMensualGUI.fxml");
+        gestorVentana.mostrarVentana("/ConsultarReporteMensualGUI.fxml");
     }
-
-
 }

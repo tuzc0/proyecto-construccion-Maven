@@ -1,8 +1,8 @@
 package utilidadesPruebas;
 
-import logica.interfaces.GestorAlertas;
+import logica.interfaces.IGestorAlertas;
 
-public class UtilidadesConsola implements GestorAlertas {
+public class UtilidadesConsola implements IGestorAlertas {
 
     @Override
     public void mostrarAlerta(String titulo, String encabezado, String contenido) {

@@ -9,6 +9,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import logica.DAOs.*;
 import logica.DTOs.*;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
 import logica.utilidadesproyecto.EncriptadorContraseñas;
 import org.apache.logging.log4j.Logger;
 
@@ -32,19 +34,15 @@ public class ControladorInicioDeSesionGUI {
     @FXML
     ImageView iconoOjo;
 
-    Utilidades utilidades = new Utilidades();
+    private Utilidades gestorVetanas = new Utilidades();
+    private IGestorAlertas utilidades = new Utilidades();
+    private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
+    private UtilidadesContraseña utilidadesContraseña = new UtilidadesContraseña();
+    private EncriptadorContraseñas encriptadorContraseñas = new EncriptadorContraseñas();
 
     int idUsuario = 0;
-
     public static String matricula = " ";
-
     public static int numeroDePersonal = 0;
-
-    UtilidadesContraseña utilidadesContraseña = new UtilidadesContraseña();
-
-    EncriptadorContraseñas encriptadorContraseñas = new EncriptadorContraseñas();
-
-    ManejadorExepciones manejadorExepciones = new ManejadorExepciones();
 
     @FXML
     public void initialize() {
@@ -58,7 +56,6 @@ public class ControladorInicioDeSesionGUI {
     @FXML
     public void alternarVisibilidadContrasena() {
 
-
         utilidadesContraseña.visibilidadUnicaContraseña(contraseñaCifrada,campoContraseña, iconoOjo);
     }
 
@@ -70,7 +67,7 @@ public class ControladorInicioDeSesionGUI {
         String contraseña = contraseñaOculta;
 
         if (correo.isEmpty() || contraseña.isEmpty()) {
-           utilidades.mostrarAlerta("Campos Vacíos",
+           gestorVetanas.mostrarAlerta("Campos Vacíos",
                    "Por favor, complete todos los campos.",
                    "Todos los campos son obligatorios para iniciar sesión.");
         }
@@ -89,36 +86,36 @@ public class ControladorInicioDeSesionGUI {
             idUsuario = cuenta.getIdUsuario();
 
             if (correoEncontrado.equals("N/A")) {
-                utilidades.mostrarAlerta("Correo no encontrado",
+                gestorVetanas.mostrarAlerta("Correo no encontrado",
                         "El correo electrónico ingresado no está registrado.",
                         "Por favor, verifique su correo o regístrese.");
                 return;
             }
 
             if (!contraseñaEncontrada.equals(contraseña)) {
-                utilidades.mostrarAlerta("Contraseña incorrecta",
+                gestorVetanas.mostrarAlerta("Contraseña incorrecta",
                         "La contraseña ingresada es incorrecta.",
                         "Por favor, intente nuevamente.");
                 return;
             }
 
-            utilidades.mostrarAlerta("Inicio de sesión exitoso",
+            gestorVetanas.mostrarAlerta("Inicio de sesión exitoso",
                     "Bienvenido",
                     "Has iniciado sesión correctamente.");
             validarTipoUsuario(idUsuario);
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado: " + e);
-            utilidades.mostrarAlerta("Error inesperado",
+            gestorVetanas.mostrarAlerta("Error inesperado",
                     "No se pudo iniciar sesión",
                     "Por favor, intente nuevamente más tarde.");
         }
@@ -139,7 +136,7 @@ public class ControladorInicioDeSesionGUI {
             if (estudiante.getIdUsuario() != -1) {
 
                 matricula = estudiante.getMatricula();
-                utilidades.mostrarVentana("/MenuEstudianteGUI.fxml");
+                gestorVetanas.mostrarVentana("/MenuEstudianteGUI.fxml");
                 return;
             }
 
@@ -148,7 +145,7 @@ public class ControladorInicioDeSesionGUI {
             if (academico.getIdUsuario() != -1) {
 
                 numeroDePersonal = academico.getNumeroDePersonal();
-                utilidades.mostrarVentana("/MenuAcademicoGUI.fxml");
+                gestorVetanas.mostrarVentana("/MenuAcademicoGUI.fxml");
                 return;
             }
 
@@ -157,7 +154,7 @@ public class ControladorInicioDeSesionGUI {
             if (academicoEvaluador.getIdUsuario() != -1) {
 
                 numeroDePersonal = academicoEvaluador.getNumeroDePersonal();
-                utilidades.mostrarVentana("/MenuAcademicoEvaluadorGUI.fxml");
+                gestorVetanas.mostrarVentana("/MenuAcademicoEvaluadorGUI.fxml");
                 return;
             }
 
@@ -166,22 +163,22 @@ public class ControladorInicioDeSesionGUI {
             if (coordinador.getIdUsuario() != -1) {
 
                 numeroDePersonal = coordinador.getNumeroDePersonal();
-                utilidades.mostrarVentana("/MenuCoordinadorGUI.fxml");
+                gestorVetanas.mostrarVentana("/MenuCoordinadorGUI.fxml");
                 return;
             }
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al validar el tipo de usuario: " + e);
-            utilidades.mostrarAlerta("Error inesperado",
+            gestorVetanas.mostrarAlerta("Error inesperado",
                     "No se pudo validar el tipo de usuario",
                     "Por favor, intente nuevamente más tarde.");
         }

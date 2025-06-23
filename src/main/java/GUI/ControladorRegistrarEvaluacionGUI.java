@@ -14,7 +14,9 @@ import logica.DAOs.EvaluacionDAO;
 import logica.DTOs.CriterioEvaluacionDTO;
 import logica.DTOs.EvaluacionContieneDTO;
 import logica.DTOs.EvaluacionDTO;
+import logica.ManejadorExcepciones;
 import logica.VerificacionEntradas;
+import logica.interfaces.IGestorAlertas;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,9 +28,7 @@ import java.util.List;
 
 public class ControladorRegistrarEvaluacionGUI {
 
-    private static final Logger logger = LogManager.getLogger(ControladorRegistrarEvaluacionGUI.class);
-
-    Utilidades utilidades = new Utilidades();
+    private static final Logger LOGGER = LogManager.getLogger(ControladorRegistrarEvaluacionGUI.class);
 
     @FXML
     Label etiquetaPromedioEvaluacionGenerado;
@@ -55,19 +55,18 @@ public class ControladorRegistrarEvaluacionGUI {
     Label etiquetaContadorComentarios;
 
     static int idEvaluacionGenerada = 0;
-
     float calificacionFinal = 0.0f;
-
     int numeroDePersonal = ControladorInicioDeSesionGUI.numeroDePersonal;
+    final int MAX_CARACTERES_COMENTARIOS = 255;
+    public String matriculaEstudianteEvaluado =
+            ControladorConsultarEstudiantesAEvaluarGUI.matriculaEstudianteSeleccionado;
 
     VerificicacionGeneral verificicacionGeneralUtilidad = new VerificicacionGeneral();
-
+    Utilidades gestorVentanas = new Utilidades();
+    IGestorAlertas utilidades = new Utilidades();
     VerificacionEntradas verificacionEntradas = new VerificacionEntradas();
 
-    final int MAX_CARACTERES_COMENTARIOS = 255;
-
-
-    public String matriculaEstudianteEvaluado = ControladorConsultarEstudiantesAEvaluarGUI.matriculaEstudianteSeleccionado;
+    ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, LOGGER);
 
     @FXML
     public void initialize() {
@@ -107,8 +106,8 @@ public class ControladorRegistrarEvaluacionGUI {
 
                 if (nuevaCalificacion < 0 || nuevaCalificacion > 10 ) {
 
-                    logger.warn("La calificación debe estar entre 0 y 100.");
-                    utilidades.mostrarAlerta("Error",
+                    LOGGER.warn("La calificación debe estar entre 0 y 100.");
+                    gestorVentanas.mostrarAlerta("Error",
                             "La calificación debe estar entre 0 y 10.",
                             "porfavor llene todos los campos");
                     return;
@@ -121,17 +120,23 @@ public class ControladorRegistrarEvaluacionGUI {
 
                 if (actualizado) {
 
-                    logger.info("Calificación actualizada correctamente.");
+                    LOGGER.info("Calificación actualizada correctamente.");
                 } else {
 
-                    logger.warn("No se pudo actualizar la calificación.");
+                    LOGGER.warn("No se pudo actualizar la calificación.");
                 }
+
             } catch (NumberFormatException e) {
 
-                logger.warn("El valor ingresado no es un número válido.");
-            } catch (SQLException | IOException e) {
+                LOGGER.warn("El valor ingresado no es un número válido.");
 
-                logger.error("Error al actualizar la calificación: " + e);
+            } catch (SQLException e) {
+
+                manejadorExcepciones.manejarSQLException(e);
+
+            } catch (IOException e) {
+
+                manejadorExcepciones.manejarIOException(e);
             }
         });
 
@@ -170,15 +175,15 @@ public class ControladorRegistrarEvaluacionGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL: " + e);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO: " + e);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e){
 
-            logger.error("Error inesperado: " + e);
+            LOGGER.error("Error inesperado: " + e);
 
         }
     }
@@ -202,13 +207,15 @@ public class ControladorRegistrarEvaluacionGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL: " + e);
+            manejadorExcepciones.manejarSQLException(e);
+
         } catch (IOException e) {
 
-            logger.error("Error de IO: " + e);
+            manejadorExcepciones.manejarIOException(e);
+
         } catch (Exception e) {
 
-            logger.error("Error inesperado: " + e);
+            LOGGER.error("Error inesperado: " + e);
         }
     }
 
@@ -233,15 +240,15 @@ public class ControladorRegistrarEvaluacionGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL: " + e);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO: " + e);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
-            logger.error("Error inesperado: " + e);
+            LOGGER.error("Error inesperado: " + e);
         }
     }
 
@@ -260,16 +267,15 @@ public class ControladorRegistrarEvaluacionGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL: " + e);
-            e.printStackTrace();
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO: " + e);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
-            logger.error("Error inesperado: " + e);
+            LOGGER.error("Error inesperado: " + e);
         }
     }
 
@@ -291,7 +297,7 @@ public class ControladorRegistrarEvaluacionGUI {
 
                 if (evaluacionContiene.getCalificacion() < 1 || evaluacionContiene.getCalificacion() > 10) {
 
-                    utilidades.mostrarAlerta("Error",
+                    gestorVentanas.mostrarAlerta("Error",
                             "La calificación debe estar entre 0 y 10.",
                             "porfavor llene todos los campos");
                     return;
@@ -304,15 +310,15 @@ public class ControladorRegistrarEvaluacionGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL: " + e);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO: " + e);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
-            logger.error("Error inesperado: " + e);
+            LOGGER.error("Error inesperado: " + e);
         }
 
     }
@@ -336,7 +342,7 @@ public class ControladorRegistrarEvaluacionGUI {
 
             if (calificacionFinal < 1 || calificacionFinal > 10) {
 
-                utilidades.mostrarAlerta("Error",
+                gestorVentanas.mostrarAlerta("Error",
                         "Debe de calcular la calificacio primero",
                         "porfavor calcule la calificacion final");
                 return;
@@ -344,7 +350,7 @@ public class ControladorRegistrarEvaluacionGUI {
 
             if (textoComentarios.getText().isEmpty()) {
 
-                utilidades.mostrarAlerta("Error",
+                gestorVentanas.mostrarAlerta("Error",
                         "El campo de comentarios no puede estar vacío.",
                         "porfavor llene el campo de comentarios");
                 return;
@@ -352,17 +358,15 @@ public class ControladorRegistrarEvaluacionGUI {
 
             if (!verificacionEntradas.validarTextoAlfanumerico(textoComentarios.getText())) {
 
-                utilidades.mostrarAlerta("Error",
+                gestorVentanas.mostrarAlerta("Error",
                         "Los comentarios no son válidos.",
                         "porfavor llene el campo de comentarios");
                 return;
             }
 
-
-
             if (actualizado) {
 
-                utilidades.mostrarAlerta("Éxito",
+                gestorVentanas.mostrarAlerta("Éxito",
                         "Evaluación guardada correctamente.",
                         "La evaluación ha sido guardada.");
                 javafx.stage.Stage stage = (javafx.stage.Stage) textoComentarios.getScene().getWindow();
@@ -370,35 +374,27 @@ public class ControladorRegistrarEvaluacionGUI {
 
             } else {
 
-                utilidades.mostrarAlerta("Error",
+                gestorVentanas.mostrarAlerta("Error",
                         "No se pudo guardar la evaluación.",
                         "ocurrio un error porfavor intentelo de nuevo en unos minutos");
-                logger.warn("No se pudo guardar la evaluación.");
+                LOGGER.warn("No se pudo guardar la evaluación.");
             }
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL: " + e);
-            utilidades.mostrarAlerta("Error",
-                    "Error de conexion " ,
-                    "ocurrio un error porfavor intentelo de nuevo en unos minutos");
+            manejadorExcepciones.manejarSQLException(e);
 
 
         } catch (IOException e) {
 
-            utilidades.mostrarAlerta("Error",
-                    "ocurrio un error " ,
-                    "ocurrio un error porfavor intentelo de nuevo en unos minutos");
-            logger.error("Error de IO: " + e);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
-            utilidades.mostrarAlerta("Error",
+            gestorVentanas.mostrarAlerta("Error",
                     "ocurrio un error ",
                     "ocurrio un error porfavor intentelo de nuevo en unos minutos");
-            logger.error("Error inesperado: " + e);
+            LOGGER.error("Error inesperado: " + e);
         }
     }
-
-
 }

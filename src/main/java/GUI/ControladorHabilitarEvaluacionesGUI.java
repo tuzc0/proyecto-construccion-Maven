@@ -8,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -16,15 +15,15 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logica.DAOs.CriterioEvaluacionDAO;
 import logica.DTOs.CriterioEvaluacionDTO;
-
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.Logger;
 
 public class ControladorHabilitarEvaluacionesGUI {
 
-    Logger logger = Logger.getLogger(ControladorHabilitarEvaluacionesGUI.class.getName());
+    Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorHabilitarEvaluacionesGUI.class);
 
     @FXML
     TableView<CriterioEvaluacionDTO> tablaCriterios;
@@ -45,14 +44,17 @@ public class ControladorHabilitarEvaluacionesGUI {
     @FXML
     Button botonEliminarCriterio;
 
-    Utilidades utilidades = new Utilidades();
-
+    Utilidades gestorVentana = new Utilidades();
+    IGestorAlertas utilidades = new Utilidades();
+    ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     @FXML
     public void initialize() {
 
-        columnaDescripcion.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getDescripcion()));
-        columnaNumeroCriterio.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(String.valueOf(cellData.getValue().getNumeroCriterio())));
+        columnaDescripcion.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getDescripcion()));
+        columnaNumeroCriterio.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(String.valueOf(cellData.getValue().getNumeroCriterio())));
 
         cargarCriterios();
         tablaCriterios.getSelectionModel().setSelectionMode(javafx.scene.control.SelectionMode.MULTIPLE);
@@ -69,16 +71,19 @@ public class ControladorHabilitarEvaluacionesGUI {
 
         } catch (SQLException e) {
 
-            logger.severe("Error al cargar los criterios: " + e);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            logger.severe("Error de IO: " + e);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e){
 
-            logger.severe("Error inesperado: " + e);
-
+            gestorVentana.mostrarAlerta(
+                    "Error",
+                    "Ocurrió al cargar los criterios de evaluación",
+                    "Por favor, intentelo de nuevo más tarde o contacte al administrador."
+            );
         }
     }
 
@@ -100,7 +105,7 @@ public class ControladorHabilitarEvaluacionesGUI {
 
         } catch (IOException e) {
 
-            logger.severe("Error al abrir la ventana RegistrarCriterioEvaluacionGUI: " + e);
+            manejadorExcepciones.manejarIOException(e);
         }
     }
 
@@ -111,10 +116,12 @@ public class ControladorHabilitarEvaluacionesGUI {
 
         if (criterioSeleccionado == null) {
 
-            logger.warning("No se ha seleccionado ningún criterio para eliminar.");
-            utilidades.mostrarAlerta("Error",
+            logger.error("No se ha seleccionado ningún criterio para eliminar.");
+            gestorVentana.mostrarAlerta(
+                    "Error",
                     "No se ha seleccionado ningún criterio.",
-                    "porfavor seleccione un criterio para eliminar");
+                    "porfavor seleccione un criterio para eliminar"
+            );
             return;
         }
 
@@ -131,16 +138,16 @@ public class ControladorHabilitarEvaluacionesGUI {
                 cargarCriterios();
 
             } else {
-                logger.warning("No se pudo eliminar el criterio.");
+                logger.warn("No se pudo eliminar el criterio.");
             }
 
         } catch (SQLException e) {
 
-            logger.severe("Error al eliminar el criterio: " + e);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            logger.severe("Error de IO al eliminar el criterio: " + e);
+            manejadorExcepciones.manejarIOException(e);
         }
     }
 
@@ -177,11 +184,16 @@ public class ControladorHabilitarEvaluacionesGUI {
             if (actualizado) {
                 logger.info("Criterio actualizado correctamente.");
             } else {
-                logger.warning("No se pudo actualizar el criterio.");
+                logger.error("No se pudo actualizar el criterio.");
             }
 
-        } catch (SQLException | IOException e) {
-            logger.severe("Error al actualizar el criterio: " + e);
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
         }
     }
 

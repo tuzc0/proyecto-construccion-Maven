@@ -6,7 +6,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import logica.DAOs.CriterioEvaluacionDAO;
 import logica.DTOs.CriterioEvaluacionDTO;
+import logica.ManejadorExcepciones;
 import logica.VerificacionEntradas;
+import logica.interfaces.IGestorAlertas;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.Logger;
 
@@ -27,16 +29,14 @@ public class ControladorRegistrarCriterioEvaluacionGUI {
     @FXML
     Label etiquetaContadorDescripcion;
 
-    Utilidades utilidades = new Utilidades();
+    Utilidades gestorVentanas = new Utilidades();
+    IGestorAlertas utilidades = new Utilidades();
+    VerificacionEntradas verificacionEntradas = new VerificacionEntradas();
+    VerificicacionGeneral verificicacionGeneralUtilidad = new VerificicacionGeneral();
+    ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     int numeroCriterioMasAlto;
-
     int nuevoNumeroCriterio;
-
-    VerificacionEntradas verificacionEntradas = new VerificacionEntradas();
-
-    VerificicacionGeneral verificicacionGeneralUtilidad = new VerificicacionGeneral();
-
     final int MAX_CARACTERES_DESCRIPCION = 255;
 
     @FXML
@@ -54,20 +54,17 @@ public class ControladorRegistrarCriterioEvaluacionGUI {
 
         } catch (SQLException e ) {
 
-            logger.error("Error al obtener el número de criterio más alto: " + e);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO: " + e);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado: " + e);
-
         }
-
     }
-
 
     @FXML
     public void guardarCriterio () {
@@ -77,7 +74,7 @@ public class ControladorRegistrarCriterioEvaluacionGUI {
 
         if (descripcion.isEmpty()) {
 
-            utilidades.mostrarAlerta("Error",
+            gestorVentanas.mostrarAlerta("Error",
                     "La descripción no puede estar vacía.",
                     "porfavor llene todos los campos");
             return;
@@ -85,7 +82,7 @@ public class ControladorRegistrarCriterioEvaluacionGUI {
 
         if (!verificacionEntradas.validarTextoAlfanumerico(descripcion)) {
 
-            utilidades.mostrarAlerta("Error",
+            gestorVentanas.mostrarAlerta("Error",
                     "La descripción no es válida.",
                     "porfavor llene todos los campos");
             return;
@@ -100,7 +97,7 @@ public class ControladorRegistrarCriterioEvaluacionGUI {
             nuevoCriterio.setIDCriterio(0);
 
             if (criterioEvaluacionDAO.crearNuevoCriterioEvaluacion(nuevoCriterio)) {
-                utilidades.mostrarAlerta("Éxito",
+                gestorVentanas.mostrarAlerta("Éxito",
                         "Criterio de evaluación guardado correctamente.",
                         "se ha registrado el criterio de forma exitosa");
                 nuevoNumeroCriterio ++;
@@ -108,31 +105,24 @@ public class ControladorRegistrarCriterioEvaluacionGUI {
                 numeroCriterio.setText(String.valueOf(nuevoNumeroCriterio));
 
             } else {
-                utilidades.mostrarAlerta("Error",
+                gestorVentanas.mostrarAlerta("Error",
                         "No se pudo guardar el criterio de evaluación.",
                         "porfavor llene todos los campos");
             }
 
         } catch (SQLException e){
 
-            utilidades.mostrarAlerta("Error",
-                    "Error al obtener el número de criterio más alto.",
-                    "porfavor llene todos los campos");
-            logger.error("Error al obtener el número de criterio más alto: " + e);
+            manejadorExcepciones.manejarSQLException(e);
+
         } catch (IOException e) {
 
-            utilidades.mostrarAlerta("Error",
-                    "Error al guardar el criterio de evaluación.",
-                    "porfavor llene todos los campos");
-            logger.error("Error al guardar el criterio de evaluación: " + e);
+            manejadorExcepciones.manejarIOException(e);
         }
-
     }
 
     @FXML
     public void cancelarCriterio() {
 
         textoDescripcionCriterio.clear();
-
     }
 }

@@ -8,20 +8,28 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
 import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
 
 public class ControladorObjetoEvaluacion {
 
     Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorObjetoEvaluacion.class);
 
-    Utilidades utilidades = new Utilidades();
     @FXML private HBox root;
     @FXML private Label etiquetaNombreEvaluador;
     @FXML private Label etiquetaCalificacion;
 
+    private Utilidades gestorVentana = new Utilidades();
+    private IGestorAlertas utilidades = new Utilidades();
+    private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
+
     private int idEvaluacion;
 
     public void setDatosEvaluacion(String nombreEvaluador, String calificacion, int idEvaluacion) {
+
         etiquetaNombreEvaluador.setText(nombreEvaluador);
         etiquetaCalificacion.setText(calificacion);
         this.idEvaluacion = idEvaluacion;
@@ -43,10 +51,9 @@ public class ControladorObjetoEvaluacion {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
 
-        } catch (Exception e) {
+        } catch (IOException e) {
 
-            logger.error("Error al cargar la ventana de detalles de evaluación: " +  e);
-            utilidades.mostrarAlerta("Error", "No se pudo cargar la evaluación", "La evaluación solicitada no existe o no se pudo cargar.");
+            manejadorExcepciones.manejarIOException(e);
         }
     }
 }

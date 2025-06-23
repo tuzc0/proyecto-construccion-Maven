@@ -14,9 +14,13 @@ import logica.DAOs.PeriodoDAO;
 import logica.DTOs.AcademicoDTO;
 import logica.DTOs.GrupoDTO;
 import logica.DTOs.PeriodoDTO;
+import logica.ManejadorExcepciones;
 import logica.VerificacionEntradas;
+import logica.interfaces.IGestorAlertas;
 import logica.verificacion.VerificicacionGeneral;
+import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +28,7 @@ import java.util.Map;
 
 public class ControladorCrearGrupoGUI {
 
-    Utilidades utilidades = new Utilidades();
+    Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorCrearGrupoGUI.class);
 
     @FXML
     ComboBox <String> comboAcademico;
@@ -42,10 +46,11 @@ public class ControladorCrearGrupoGUI {
     Label etiquetaContadorNombre;
 
     private Map<String, Integer> academicoMap = new HashMap<>();
-
+    Utilidades gestorVentanas = new Utilidades();
     VerificicacionGeneral verificicacionGeneralUtilidad = new VerificicacionGeneral();
-
     VerificacionEntradas verificacionEntradas = new VerificacionEntradas();
+    IGestorAlertas utilidades = new Utilidades();
+    ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     final int MAX_CARACTERES_NOMBRE = 100;
 
@@ -62,20 +67,26 @@ public class ControladorCrearGrupoGUI {
 
     @FXML
     private void guardarGrupo() {
+
         GrupoDAO grupoDAO = new GrupoDAO();
         String nombreSeleccionado = comboAcademico.getValue();
 
         if (nombreSeleccionado == null || nombreSeleccionado.isEmpty()) {
-            utilidades.mostrarAlerta("Error",
+
+            gestorVentanas.mostrarAlerta(
+                    "Error",
                     "Académico no seleccionado",
-                    "Debe seleccionar un académico para crear el grupo.");
+                    "Debe seleccionar un académico para crear el grupo."
+            );
             return;
         }
 
         if (!academicoMap.containsKey(nombreSeleccionado)) {
-            utilidades.mostrarAlerta("Error",
+
+            gestorVentanas.mostrarAlerta("Error",
                     "Académico no válido",
-                    "Seleccione un académico válido.");
+                    "Seleccione un académico válido."
+            );
             return;
         }
 
@@ -84,9 +95,12 @@ public class ControladorCrearGrupoGUI {
         try {
 
             if (grupoDAO.existeGrupoPorNumeroAcademico(numeroPersonal)) {
-                utilidades.mostrarAlerta("Error",
+
+                gestorVentanas.mostrarAlerta(
+                        "Error",
                         "Académico ya asignado",
-                        "El académico seleccionado ya está asignado a un grupo.");
+                        "El académico seleccionado ya está asignado a un grupo."
+                );
                 return;
             }
 
@@ -98,22 +112,28 @@ public class ControladorCrearGrupoGUI {
             nuevoGrupo.setEstadoActivo(1);
 
             if (nuevoGrupo.getNombre().isEmpty()) {
-                utilidades.mostrarAlerta("Error",
+
+                gestorVentanas.mostrarAlerta(
+                        "Error",
                         "Nombre de grupo vacío",
-                        "El nombre del grupo no puede estar vacío.");
+                        "El nombre del grupo no puede estar vacío."
+                );
                 return;
             }
 
             if (!verificacionEntradas.validarTextoAlfanumerico(nuevoGrupo.getNombre())) {
-                utilidades.mostrarAlerta("Error",
+
+                gestorVentanas.mostrarAlerta(
+                        "Error",
                         "Nombre de grupo inválido",
-                        "El nombre del grupo no puede estar vacío o exceder los 100 caracteres.");
+                        "El nombre del grupo no puede estar vacío o exceder los 100 caracteres."
+                );
                 return;
             }
 
             grupoDAO.crearNuevoGrupo(nuevoGrupo);
 
-            utilidades.mostrarAlerta("Éxito",
+            gestorVentanas.mostrarAlerta("Éxito",
                     "Grupo guardado",
                     "El grupo se ha guardado correctamente.");
 
@@ -121,20 +141,22 @@ public class ControladorCrearGrupoGUI {
 
         } catch (SQLException e) {
 
-            utilidades.mostrarAlerta(
-                    "Error",
-                    "Error al guardar el grupo",
-                    "No se pudo guardar el grupo en la base de datos.");
+            manejadorExcepciones.manejarSQLException(e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
-            utilidades.mostrarAlerta("Error inesperado",
+            logger.error("Ocurrio un error al guardar un nuevo grupo: " + e.getMessage(), e);
+            gestorVentanas.mostrarAlerta(
                     "Error",
-                    "Ocurrió un error inesperado: ");
+                    "Ocurrió un eror al guardar el grupo.",
+                    "Por favor, inténtelo de nuevo más tarde."
+            );
         }
     }
-
-
 
     public void cargarAcademicos() {
 
@@ -156,15 +178,20 @@ public class ControladorCrearGrupoGUI {
 
         } catch (SQLException e) {
 
-            utilidades.mostrarAlerta("Error al cargar los académicos: ",
-                    "Error",
-                    "No se pudieron cargar los académicos desde la base de datos.");
+            manejadorExcepciones.manejarSQLException(e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
-            utilidades.mostrarAlerta("Error inesperado: ",
+            logger.error("Ocurrio un error al cargar el academico: " + e.getMessage(), e);
+            gestorVentanas.mostrarAlerta(
                     "Error",
-                    "Ocurrió un error inesperado al cargar los académicos.");
+                    "Ocurrió un error cargar a los académicos.",
+                    "Por favor, inténtelo de nuevo más tarde."
+            );
         }
     }
 
@@ -178,13 +205,21 @@ public class ControladorCrearGrupoGUI {
             etiquetaPeriodo.setText(periodo.getDescripcion());
 
         } catch (SQLException e) {
-            utilidades.mostrarAlerta("Error al cargar los periodos: " ,
-                    "Error",
-                    "No se pudieron cargar los periodos desde la base de datos.");
+
+            manejadorExcepciones.manejarSQLException(e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
+
         } catch (Exception e) {
-            utilidades.mostrarAlerta("Error inesperado: ",
+
+            logger.error("Ocurrio un error al cargar el periodo: " + e.getMessage(), e);
+            gestorVentanas.mostrarAlerta(
                     "Error",
-                    "Ocurrió un error inesperado al cargar los periodos.");
+                    "Ocurrió un error cargar el periodo .",
+                    "Por favor, inténtelo de nuevo más tarde."
+            );
         }
     }
 
@@ -199,14 +234,11 @@ public class ControladorCrearGrupoGUI {
 
         } catch (SQLException e) {
 
-            utilidades.mostrarAlerta("Error al generar NRC: ",
-                    "Error",
-                    "No se pudo generar el NRC desde la base de datos.");
-        } catch (Exception e) {
+            manejadorExcepciones.manejarSQLException(e);
 
-            utilidades.mostrarAlerta("Error inesperado: ",
-                    "Error",
-                    "Ocurrió un error inesperado al generar el NRC.");
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
         }
 
     }

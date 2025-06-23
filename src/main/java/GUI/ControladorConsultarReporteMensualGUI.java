@@ -14,6 +14,8 @@ import logica.DTOs.ActividadDTO;
 import logica.DTOs.EvidenciaReporteDTO;
 import logica.DTOs.ReporteContieneDTO;
 import logica.DTOs.ReporteDTO;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
@@ -55,9 +57,9 @@ public class ControladorConsultarReporteMensualGUI {
     ListView<String> listaArchivos;
 
 
-    Utilidades utilidades = new Utilidades();
-
-    ManejadorExepciones manejadorExepciones = new ManejadorExepciones();
+    Utilidades gestorVentanas = new Utilidades();
+    IGestorAlertas utilidades = new Utilidades();
+    ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     int idReporteSeleccionado = ControladorListarReportesPorEstudianteGUI.idReporteSeleccionado;
 
@@ -81,6 +83,7 @@ public class ControladorConsultarReporteMensualGUI {
 
     @FXML
     public void cargarDatosReporte() {
+
         try {
 
             ReporteDAO reporteDAO = new ReporteDAO();
@@ -95,36 +98,55 @@ public class ControladorConsultarReporteMensualGUI {
 
                 EvidenciaReporteDAO evidenciaReporteDAO = new EvidenciaReporteDAO();
                 List<EvidenciaReporteDTO> evidenciasReporte = evidenciaReporteDAO.mostrarEvidenciasPorIdReporte(idReporteSeleccionado);
+
                 if (evidenciasReporte != null && !evidenciasReporte.isEmpty()) {
+
                     for (EvidenciaReporteDTO evidencia : evidenciasReporte) {
+
                         listaArchivos.getItems().add(evidencia.getURL());
                     }
+
                 } else {
-                    utilidades.mostrarAlerta("No se encontraron evidencias", "Información", "El reporte no tiene evidencias asociadas.");
+
+                    gestorVentanas.mostrarAlerta(
+                            "No se encontraron evidencias",
+                            "Información",
+                            "El reporte no tiene evidencias asociadas."
+                    );
                 }
 
             } else {
-                utilidades.mostrarAlerta("No se encontró el reporte", "Información", "El reporte seleccionado no existe.");
+
+                gestorVentanas.mostrarAlerta(
+                        "No se encontró el reporte",
+                        "Información",
+                        "El reporte seleccionado no existe."
+                );
             }
 
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
+
             logger.error("Error inesperado al cargar los datos del reporte: " + e);
-            utilidades.mostrarAlerta("Error", "No se pudieron cargar los datos del reporte.", "Por favor, intente nuevamente más tarde.");
+            gestorVentanas.mostrarAlerta("Error",
+                    "No se pudieron cargar los datos del reporte.",
+                    "Por favor, intente nuevamente más tarde.");
         }
     }
 
     @FXML
     public void verArchivo() {
+
         String urlSeleccionada = listaArchivos.getSelectionModel().getSelectedItem();
+
         if (urlSeleccionada != null && !urlSeleccionada.isEmpty()) {
 
             try {
@@ -134,13 +156,21 @@ public class ControladorConsultarReporteMensualGUI {
 
             } catch (Exception e) {
 
-                utilidades.mostrarAlerta("Error", "No se pudo abrir el archivo.", "Por favor, verifique la URL.");
+                gestorVentanas.mostrarAlerta(
+                        "Error",
+                        "No se pudo abrir el archivo.",
+                        "Por favor, verifique la URL."
+                );
                 logger.error("Error al abrir el archivo: " + e);
 
             }
         } else {
 
-            utilidades.mostrarAlerta("Advertencia", "No se seleccionó ningún archivo.", "Seleccione un archivo de la lista para abrirlo.");
+            gestorVentanas.mostrarAlerta(
+                    "Advertencia",
+                    "No se seleccionó ningún archivo.",
+                    "Seleccione un archivo de la lista para abrirlo."
+            );
         }
     }
 
@@ -152,7 +182,8 @@ public class ControladorConsultarReporteMensualGUI {
 
         try {
 
-            List<ReporteContieneDTO> listaActividadesReporte = reporteContieneDAO.listarReporteContienePorIDReporte(idReporteSeleccionado);
+            List<ReporteContieneDTO> listaActividadesReporte =
+                    reporteContieneDAO.listarReporteContienePorIDReporte(idReporteSeleccionado);
 
             for (ReporteContieneDTO reporteContiene : listaActividadesReporte) {
 
@@ -170,18 +201,20 @@ public class ControladorConsultarReporteMensualGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al cargar las actividades: " + e);
-            utilidades.mostrarAlerta("Error",
+            gestorVentanas.mostrarAlerta(
+                    "Error",
                     "No se pudieron cargar las actividades.",
-                    "Por favor, intente nuevamente más tarde.");
+                    "Por favor, intente nuevamente más tarde."
+            );
         }
     }
 
@@ -189,11 +222,15 @@ public class ControladorConsultarReporteMensualGUI {
     public void cerrarVentana() {
 
         Stage stage = (Stage) etiquetaMatricula.getScene().getWindow();
+
         if (stage != null) {
             stage.close();
         } else {
-            utilidades.mostrarAlerta("Error", "No se pudo cerrar la ventana.", "Por favor, intente nuevamente.");
+            gestorVentanas.mostrarAlerta(
+                    "Error",
+                    "No se pudo cerrar la ventana.",
+                    "Por favor, intente nuevamente."
+            );
         }
-
     }
 }

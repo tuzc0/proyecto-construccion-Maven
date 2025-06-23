@@ -8,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -16,6 +15,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logica.DAOs.CriterioAutoevaluacionDAO;
 import logica.DTOs.CriterioAutoevaluacionDTO;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
@@ -24,7 +25,6 @@ import java.sql.SQLException;
 public class ControladorHabilitarAutoevaluacionGUI {
 
     Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorHabilitarAutoevaluacionGUI.class);
-
 
     @FXML
     TableView<CriterioAutoevaluacionDTO> tablaCriterios;
@@ -44,41 +44,49 @@ public class ControladorHabilitarAutoevaluacionGUI {
     @FXML
     Button botonEliminarCriterio;
 
-
-    Utilidades utilidades = new Utilidades();
+    Utilidades gestionVentanas = new Utilidades();
+    IGestorAlertas utilidades = new Utilidades();
+    ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     @FXML
     public void initialize() {
 
-        columnaDescripcion.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getDescripcion()));
-        columnaNumeroCriterio.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(String.valueOf(cellData.getValue().getNumeroCriterio())));
+        columnaDescripcion.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getDescripcion()));
+        columnaNumeroCriterio.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(String.valueOf(cellData.getValue().getNumeroCriterio())));
 
         cargarCriterios();
-
     }
 
     @FXML
     public void cargarCriterios() {
 
+        CriterioAutoevaluacionDAO criterioAutoevaluacionDAO = new CriterioAutoevaluacionDAO();
+
         try {
 
-            CriterioAutoevaluacionDAO criterioAutoevaluacionDAO = new CriterioAutoevaluacionDAO();
             ObservableList<CriterioAutoevaluacionDTO> listaCriterios =
-                    FXCollections.observableArrayList(criterioAutoevaluacionDAO.listarCriteriosAutoevaluacionActivos());
+                    FXCollections.observableArrayList(criterioAutoevaluacionDAO
+                            .listarCriteriosAutoevaluacionActivos());
             tablaCriterios.setItems(listaCriterios);
 
         } catch (SQLException e){
 
-            logger.error("Error al cargar los datos de la tabla de criterios de autoevaluación: " + e);
+             manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            logger.error("Error al cargar los datos de la tabla de criterios de autoevaluación: " + e);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al cargar los datos de la tabla de criterios de autoevaluación: " + e);
-
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error al cargar los criterios de autoevaluación",
+                    "Por favor vuelva a intentarlo más tarde."
+            );
         }
     }
 
@@ -87,26 +95,31 @@ public class ControladorHabilitarAutoevaluacionGUI {
 
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/RegistrarCriterioAutoevaluacionGUI.fxml"));
-            Parent root = loader.load();
+            FXMLLoader cargarFXML =
+                    new FXMLLoader(getClass().getResource("/RegistrarCriterioAutoevaluacionGUI.fxml"));
+            Parent root = cargarFXML.load();
 
-            Stage stage = new Stage();
-            stage.setTitle("Registrar Nuevo Criterio");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
+            Stage ventana = new Stage();
+            ventana.setTitle("Registrar Nuevo Criterio");
+            ventana.setScene(new Scene(root));
+            ventana.initModality(Modality.APPLICATION_MODAL);
+            ventana.showAndWait();
 
             cargarCriterios();
 
         } catch (IOException e) {
 
-            logger.error("Error al abrir la ventana de registrar criterio de autoevaluación: " + e);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al abrir la ventana de registrar criterio de autoevaluación: " + e);
+            utilidades.mostrarAlerta(
+                    "Error",
+                    "Ocurrió un error al intentar abrir la ventana de Criterios.",
+                    "Por favor, vuelva a intentarlo más tarde."
+            );
         }
-
     }
 
     @FXML
@@ -116,7 +129,7 @@ public class ControladorHabilitarAutoevaluacionGUI {
         if (criterioSeleccionado == null) {
 
             logger.warn("No se ha seleccionado ningún criterio para eliminar.");
-            utilidades.mostrarAlerta("Error",
+            gestionVentanas.mostrarAlerta("Error",
                     "No se ha seleccionado ningún criterio.",
                     "Por favor seleccione un criterio para eliminar.");
             return;
@@ -141,11 +154,11 @@ public class ControladorHabilitarAutoevaluacionGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error al eliminar el criterio de autoevaluación: " + e);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO al eliminar el criterio de autoevaluación: " + e);
+            manejadorExcepciones.manejarIOException(e);
         }
     }
 
@@ -166,7 +179,6 @@ public class ControladorHabilitarAutoevaluacionGUI {
         });
 
         tablaCriterios.setEditable(true);
-
         botonAñadirCriterio.setDisable(true);
         botonEditarCriterio.setDisable(true);
         botonEliminarCriterio.setDisable(true);
@@ -185,9 +197,13 @@ public class ControladorHabilitarAutoevaluacionGUI {
                 logger.warn("No se pudo actualizar el criterio de autoevaluación.");
             }
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
-            logger.error("Error al actualizar el criterio de autoevaluación: " + e);
+            manejadorExcepciones.manejarSQLException(e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
         }
     }
 

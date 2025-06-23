@@ -1,7 +1,7 @@
 import accesoadatos.ConexionBaseDeDatos;
 import logica.DAOs.UsuarioDAO;
 import logica.DTOs.UsuarioDTO;
-import logica.interfaces.GestorAlertas;
+import logica.interfaces.IGestorAlertas;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.*;
@@ -159,7 +159,7 @@ public class AcademicoDAOTest {
     @BeforeEach
     void prepararDatosDePrueba() {
 
-        GestorAlertas utilidadesConsola = new UtilidadesConsola();
+        IGestorAlertas utilidadesConsola = new UtilidadesConsola();
         manejadorExcepciones = new ManejadorExcepciones(utilidadesConsola, logger);
         academicoDAO = new AcademicoDAO();
         usuarioDAO = new UsuarioDAO();

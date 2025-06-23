@@ -12,20 +12,23 @@ import logica.DTOs.AutoEvaluacionContieneDTO;
 import logica.DTOs.AutoevaluacionDTO;
 import logica.DTOs.CriterioAutoevaluacionDTO;
 import logica.DTOs.EvidenciaAutoevaluacionDTO;
+import logica.ManejadorExcepciones;
 import logica.SelectorArchivos;
 import logica.SubidorArchivosDrive;
+import logica.interfaces.IGestorAlertas;
 import org.apache.logging.log4j.Logger;
-
+import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.*;
 import java.sql.SQLException;
-
 
 public class ControladorRegistrarAutoevaluacionGUI {
 
     Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorRegistrarAutoevaluacionGUI.class);
 
-    Utilidades utilidades = new Utilidades();
+    Utilidades gestorVentanas = new Utilidades();
 
     @FXML
     Label etiquetaFecha;
@@ -63,24 +66,23 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
 
     private Map<String, String> urlsDrive = new HashMap<>();
-
-    private static final double TAMANO_MAXIMO_MB = 10.0;
-
     private List<java.io.File> archivosLocales = new ArrayList<>();
+    private IGestorAlertas utilidades = new Utilidades();
+    private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     public static int idAutoevaluacion = 0;
-
+    private static final double TAMANO_MAXIMO_MB = 10.0;
     String idEstudiante = ControladorInicioDeSesionGUI.matricula;
-
-    ManejadorExepciones manejadorExepciones = new ManejadorExepciones();
-
 
     @FXML
     public void initialize() {
 
-        columnaNumeroCriterio.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(String.valueOf(cellData.getValue().getCriterioAutoevaluacion().getNumeroCriterio())));
-        columnaCriterio.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getCriterioAutoevaluacion().getDescripcion()));
-
+        columnaNumeroCriterio.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(String.valueOf(cellData.getValue()
+                        .getCriterioAutoevaluacion().getNumeroCriterio())));
+        columnaCriterio.setCellValueFactory(cellData ->
+                new javafx.beans.property.SimpleStringProperty(cellData.getValue().getCriterioAutoevaluacion()
+                        .getDescripcion()));
 
         crearColumnaPuntuacion(columna1, 1);
         crearColumnaPuntuacion(columna2, 2);
@@ -102,9 +104,12 @@ public class ControladorRegistrarAutoevaluacionGUI {
             CriterioAutoevaluacionDAO criterioAutoevaluacionDAO = new CriterioAutoevaluacionDAO();
             AutoevaluacionContieneDAO autoEvaluacionContieneDAO = new AutoevaluacionContieneDAO();
 
-            List<CriterioAutoevaluacionDTO> listaCriterios = criterioAutoevaluacionDAO.listarCriteriosAutoevaluacionActivos();
-            List<AutoEvaluacionContieneDTO> listaAutoEvaluacionContiene = autoEvaluacionContieneDAO.listarAutoevaluacionesPorIdAutoevaluacion(idAutoevaluacion);
-            ObservableList<ContenedorCriteriosAutoevaluacion> listaContenedorCriterios = FXCollections.observableArrayList();
+            List<CriterioAutoevaluacionDTO> listaCriterios =
+                    criterioAutoevaluacionDAO.listarCriteriosAutoevaluacionActivos();
+            List<AutoEvaluacionContieneDTO> listaAutoEvaluacionContiene =
+                    autoEvaluacionContieneDAO.listarAutoevaluacionesPorIdAutoevaluacion(idAutoevaluacion);
+            ObservableList<ContenedorCriteriosAutoevaluacion> listaContenedorCriterios =
+                    FXCollections.observableArrayList();
 
             for (CriterioAutoevaluacionDTO criterio : listaCriterios) {
 
@@ -112,7 +117,8 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
                     if (criterio.getIDCriterio() == autoEvaluacionContiene.getIdCriterio()) {
 
-                        ContenedorCriteriosAutoevaluacion contenedorCriterios = new ContenedorCriteriosAutoevaluacion(criterio, autoEvaluacionContiene);
+                        ContenedorCriteriosAutoevaluacion contenedorCriterios =
+                                new ContenedorCriteriosAutoevaluacion(criterio, autoEvaluacionContiene);
                         listaContenedorCriterios.add(contenedorCriterios);
                     }
                 }
@@ -122,16 +128,16 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado: " + e);
-            utilidades.mostrarAlerta("Error inesperado",
+            gestorVentanas.mostrarAlerta("Error inesperado",
                     "Ocurrió un error al cargar los criterios de autoevaluación.",
                     "Por favor, intente nuevamente más tarde.");
 
@@ -182,7 +188,7 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
             if (autoEvaluacionContiene.getCalificacion() == 0) {
 
-                utilidades.mostrarAlerta("Advertencia",
+                gestorVentanas.mostrarAlerta("Advertencia",
                         "Calificación incompleta",
                         "Debe calificar todos los criterios antes de calcular el promedio.");
                 return;
@@ -201,7 +207,7 @@ public class ControladorRegistrarAutoevaluacionGUI {
         AutoevaluacionDAO autoevaluacionDAO = new AutoevaluacionDAO();
         AutoevaluacionDTO autoevaluacion = new AutoevaluacionDTO();
 
-        autoevaluacion.setFecha(java.sql.Timestamp.from(java.time.Instant.now()));
+        autoevaluacion.setFecha(Timestamp.from(Instant.now()));
         autoevaluacion.setIDAutoevaluacion(0);
         autoevaluacion.setCalificacionFinal(0.0f);
         autoevaluacion.setLugar(" ");
@@ -214,16 +220,16 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al crear la autoevaluación: " + e);
-            utilidades.mostrarAlerta("Error inesperado",
+            gestorVentanas.mostrarAlerta("Error inesperado",
                     "Ocurrió un error al crear la autoevaluación.",
                     "Por favor, intente nuevamente más tarde.");
 
@@ -250,16 +256,16 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al guardar los criterios vacíos: " + e);
-            utilidades.mostrarAlerta("Error inesperado",
+            gestorVentanas.mostrarAlerta("Error inesperado",
                     "Ocurrió un error al guardar los criterios vacíos.",
                     "Por favor, intente nuevamente más tarde.");
 
@@ -271,7 +277,7 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
         if (archivosLocales.isEmpty()) {
 
-            utilidades.mostrarAlerta("Error",
+            gestorVentanas.mostrarAlerta("Error",
                     "Archivos no adjuntados",
                     "Debe adjuntar al menos un archivo de evidencia antes de guardar.");
             return;
@@ -280,7 +286,7 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
         if (etiquetaPromedio.getText() == null || etiquetaPromedio.getText().isEmpty()) {
 
-            utilidades.mostrarAlerta("Error",
+            gestorVentanas.mostrarAlerta("Error",
                     "Calificación no calculada",
                     "Debe calcular la calificación final antes de guardar.");
             return;
@@ -296,7 +302,7 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
         AutoevaluacionDTO autoevaluacion = new AutoevaluacionDTO();
         autoevaluacion.setIDAutoevaluacion(idAutoevaluacion);
-        autoevaluacion.setFecha(java.sql.Timestamp.from(java.time.Instant.now()));
+        autoevaluacion.setFecha(Timestamp.from(Instant.now()));
         autoevaluacion.setCalificacionFinal(Float.parseFloat(etiquetaPromedio.getText()));
         autoevaluacion.setLugar(" ");
         autoevaluacion.setEstadoActivo(1);
@@ -307,27 +313,27 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
             autoevaluacionDAO.modificarAutoevaluacion(autoevaluacion);
             actualizarCriteriosAutoevaluacion();
-            utilidades.mostrarAlerta("Registro Exitoso",
+            gestorVentanas.mostrarAlerta("Registro Exitoso",
                     "Autoevaluación guardada",
                     "La autoevaluación se ha guardado correctamente.");
 
             Stage currentStage = (Stage) etiquetaFecha.getScene().getWindow();
             currentStage.close();
 
-            utilidades.mostrarVentana("GUI/MenuEstudianteGUI.fxml");
+            gestorVentanas.mostrarVentana("GUI/MenuEstudianteGUI.fxml");
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al guardar la autoevaluación: " + e);
-            utilidades.mostrarAlerta("Error inesperado",
+            gestorVentanas.mostrarAlerta("Error inesperado",
                     "Ocurrió un error al guardar la autoevaluación.",
                     "Por favor, intente nuevamente más tarde.");
 
@@ -353,16 +359,16 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al actualizar los criterios de autoevaluación: " + e);
-            utilidades.mostrarAlerta("Error inesperado",
+            gestorVentanas.mostrarAlerta("Error inesperado",
                     "Ocurrió un error al actualizar los criterios de autoevaluación.",
                     "Por favor, intente nuevamente más tarde.");
 
@@ -382,25 +388,23 @@ public class ControladorRegistrarAutoevaluacionGUI {
             Stage currentStage = (Stage) etiquetaFecha.getScene().getWindow();
             currentStage.close();
 
-            utilidades.mostrarVentana("GUI/MenuEstudianteGUI.fxml");
+            gestorVentanas.mostrarVentana("GUI/MenuEstudianteGUI.fxml");
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al cancelar el registro: " + e);
-            utilidades.mostrarAlerta("Error inesperado",
+            gestorVentanas.mostrarAlerta("Error inesperado",
                     "Ocurrió un error al cancelar el registro.",
                     "Por favor, intente nuevamente más tarde.");
-
         }
-
     }
 
     @FXML
@@ -427,8 +431,6 @@ public class ControladorRegistrarAutoevaluacionGUI {
         }
     }
 
-
-
     private void actualizarListaArchivos() {
 
         listaArchivos.getItems().clear();
@@ -446,7 +448,6 @@ public class ControladorRegistrarAutoevaluacionGUI {
         }
     }
 
-
     private void guardarEvidenciaAutoevaluacion() {
 
         if (archivosLocales.isEmpty()) {
@@ -462,7 +463,7 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
             subirUrlBD();
 
-            utilidades.mostrarAlerta("Subida Exitosa", "Archivos subidos correctamente",
+            gestorVentanas.mostrarAlerta("Subida Exitosa", "Archivos subidos correctamente",
                     "Se subieron " + urlsDrive.size() + " archivos a Google Drive");
 
         } catch (Exception e) {
@@ -479,7 +480,7 @@ public class ControladorRegistrarAutoevaluacionGUI {
         try{
             EvidenciaAutoevaluacionDAO evidenciaDAO = new EvidenciaAutoevaluacionDAO();
 
-            for (java.io.File archivo : archivosLocales) {
+            for (File archivo : archivosLocales) {
                 String url = urlsDrive.get(archivo.getName());
                 if (url != null) {
                     EvidenciaAutoevaluacionDTO evidencia = new EvidenciaAutoevaluacionDTO();
@@ -496,16 +497,18 @@ public class ControladorRegistrarAutoevaluacionGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, logger, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, logger, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado al insertar evidencia: " + e);
-            utilidades.mostrarAlerta("Error", "Error inesperado al insertar evidencia",
+            gestorVentanas.mostrarAlerta(
+                    "Error",
+                    "Error inesperado al insertar evidencia",
                     "No se pudo insertar la evidencia en la base de datos. Verifique los registros.");
 
         }

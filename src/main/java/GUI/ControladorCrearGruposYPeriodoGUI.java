@@ -10,12 +10,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import logica.ContenedorGrupo;
 import logica.DAOs.*;
-import logica.DTOs.AcademicoDTO;
 import logica.DTOs.GrupoDTO;
 import logica.DTOs.PeriodoDTO;
-import logica.DTOs.UsuarioDTO;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -23,7 +23,7 @@ import java.util.List;
 
 public class ControladorCrearGruposYPeriodoGUI {
 
-    Utilidades utilidades = new Utilidades();
+    Logger logger = org.apache.logging.log4j.LogManager.getLogger(ControladorCrearGruposYPeriodoGUI.class);
 
     @FXML
     ComboBox<String> comboPeriodo;
@@ -67,7 +67,9 @@ public class ControladorCrearGruposYPeriodoGUI {
     @FXML
     Label etiquetaFinal;
 
-
+    Utilidades gestorVentanas = new Utilidades();
+    IGestorAlertas utilidades = new Utilidades();
+    ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     @FXML
     private void initialize() {
@@ -92,9 +94,6 @@ public class ControladorCrearGruposYPeriodoGUI {
         columnaAcademico.setCellValueFactory(cellData ->
                 new javafx.beans.property.SimpleStringProperty(String.valueOf(cellData.getValue().getNumeroPersonal())));
         cargarGruposActivos();
-
-
-
     }
 
     private void restringirFechas(String periodo) {
@@ -135,6 +134,7 @@ public class ControladorCrearGruposYPeriodoGUI {
 
         PeriodoDTO periodo = new PeriodoDTO(-1, "", -1, null, null);
         PeriodoDAO periodoDAO = new PeriodoDAO();
+
         try {
 
             periodo = periodoDAO.mostrarPeriodoActual();
@@ -159,13 +159,12 @@ public class ControladorCrearGruposYPeriodoGUI {
             }
 
         } catch (SQLException e) {
-            utilidades.mostrarAlerta("Error de base de datos",
-                    "Error al verificar periodo activo",
-                    "Ocurrió un problema al acceder a la base de datos: " + e);
+
+            manejadorExcepciones.manejarSQLException(e);
+
         } catch (IOException e) {
-            utilidades.mostrarAlerta("Error de entrada/salida",
-                    "Error al verificar periodo activo",
-                    "Ocurrió un problema al procesar los datos: " + e);
+
+            manejadorExcepciones.manejarIOException(e);
         }
     }
 
@@ -180,14 +179,12 @@ public class ControladorCrearGruposYPeriodoGUI {
         etiquetaPeriodo.setVisible(false);
         botonEliminarPeriodo.setVisible(false);
         botonCrearNuevoPeriodo.setVisible(true);
-
-
     }
 
     @FXML
     public void eliminarPeriodo() {
 
-        utilidades.mostrarAlertaConfirmacion(
+        gestorVentanas.mostrarAlertaConfirmacion(
                 "Confirmar eliminación",
                 "¿Está seguro que desea eliminar el periodo activo?",
                 "Se eliminará el periodo, grupos y estduiantes activos. Esta acción no se puede deshacer.",
@@ -195,7 +192,7 @@ public class ControladorCrearGruposYPeriodoGUI {
                     eliminarPeriodoConfirmado();
                 },
                 () -> {
-                    utilidades.mostrarAlerta("Cancelado",
+                    gestorVentanas.mostrarAlerta("Cancelado",
                             "Eliminación cancelada",
                             "No se ha eliminado ningún periodo.");
                 }
@@ -204,14 +201,16 @@ public class ControladorCrearGruposYPeriodoGUI {
 
     public void eliminarPeriodoConfirmado() {
 
+        PeriodoDAO periodoDAO = new PeriodoDAO();
+        EstudianteDAO estudianteDAO = new EstudianteDAO();
+
         try {
 
-            PeriodoDAO periodoDAO = new PeriodoDAO();
-            EstudianteDAO estudianteDAO = new EstudianteDAO();
             int idPeriodo = periodoDAO.mostrarPeriodoActual().getIDPeriodo();
             GrupoDAO grupoDAO = new GrupoDAO();
 
             List<GrupoDTO> gruposDelPeriodo = grupoDAO.mostrarGruposActivosEnPeriodoActivo();
+
             for (GrupoDTO grupo : gruposDelPeriodo) {
                 estudianteDAO.eliminarEstudiantesPorGrupo(grupo.getNRC());
             }
@@ -222,25 +221,26 @@ public class ControladorCrearGruposYPeriodoGUI {
             cargarGruposActivos();
             verificarPeriodoActivo();
 
-            utilidades.mostrarAlerta("Éxito",
+            gestorVentanas.mostrarAlerta("Éxito",
                     "Periodo eliminado",
                     "El periodo activo se ha eliminado correctamente.");
 
         } catch (SQLException e) {
-            utilidades.mostrarAlerta("Error de base de datos",
-                    "Error al eliminar periodo",
-                    "Ocurrió un problema al acceder a la base de datos: " + e);
+
+            manejadorExcepciones.manejarSQLException(e);
+
         } catch (IOException e) {
-            utilidades.mostrarAlerta("Error de entrada/salida",
-                    "Error al eliminar periodo",
-                    "Ocurrió un problema al procesar los datos: " + e);
+
+            manejadorExcepciones.manejarIOException(e);
         }
     }
 
 
     @FXML
     private void crearGrupo() {
+
         try {
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/CrearGrupoGUI.fxml"));
             Parent root = loader.load();
 
@@ -252,9 +252,8 @@ public class ControladorCrearGruposYPeriodoGUI {
             cargarGruposActivos();
 
         } catch (IOException e) {
-            utilidades.mostrarAlerta("Error",
-                    "No se pudo cargar la ventana",
-                    "Ocurrió un error al abrir la ventana para crear grupo.");
+
+            manejadorExcepciones.manejarIOException(e);
         }
     }
 
@@ -262,39 +261,48 @@ public class ControladorCrearGruposYPeriodoGUI {
     @FXML
     private void cargarPeriodos() {
 
-        ObservableList<String> periodos = FXCollections.observableArrayList("febrero-julio", "agosto-enero");
+        ObservableList<String> periodos =
+                FXCollections.observableArrayList("febrero-julio", "agosto-enero");
         comboPeriodo.setItems(periodos);
-
     }
 
     @FXML
     private void crearNuevoPeriodo() {
 
+        PeriodoDAO periodoDAO = new PeriodoDAO();
+
         try {
 
             if (fechaInicio.getValue() == null || fechaFinal.getValue() == null) {
-                utilidades.mostrarAlerta("Error",
+
+                gestorVentanas.mostrarAlerta("Error",
                         "Fechas inválidas",
                         "Debe seleccionar ambas fechas.");
                 return;
             }
 
             if (!fechaInicio.getValue().isBefore(fechaFinal.getValue())) {
-                utilidades.mostrarAlerta("Error",
+
+                gestorVentanas.mostrarAlerta(
+                        "Error",
                         "Fechas inválidas",
-                        "La fecha de inicio debe ser menor a la fecha final.");
+                        "La fecha de inicio debe ser menor a la fecha final."
+                );
                 return;
             }
 
-            PeriodoDAO periodoDAO = new PeriodoDAO();
             if (periodoDAO.existePeriodoActivo()) {
-                utilidades.mostrarAlerta("Error",
+
+                gestorVentanas.mostrarAlerta(
+                        "Error",
                         "Periodo activo",
-                        "Ya existe un periodo activo. Desactívelo antes de crear uno nuevo.");
+                        "Ya existe un periodo activo. Desactívelo antes de crear uno nuevo."
+                );
                 return;
             }
 
             PeriodoDTO nuevoPeriodo = new PeriodoDTO();
+
             nuevoPeriodo.setIDPeriodo(0);
             nuevoPeriodo.setDescripcion(comboPeriodo.getValue());
             nuevoPeriodo.setFechaInicio(java.sql.Date.valueOf(fechaInicio.getValue()));
@@ -303,31 +311,35 @@ public class ControladorCrearGruposYPeriodoGUI {
 
             periodoDAO.crearNuevoPeriodo(nuevoPeriodo);
 
-            utilidades.mostrarAlerta("Éxito",
+            gestorVentanas.mostrarAlerta("Éxito",
                     "Periodo creado",
                     "El nuevo periodo se ha creado correctamente.");
 
             verificarPeriodoActivo();
 
-        } catch (Exception e) {
-            utilidades.mostrarAlerta("Error",
-                    "Error al crear el periodo",
-                    "Ocurrió un error al guardar el periodo: ");
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
         }
     }
 
     @FXML
     private void eliminarGrupo() {
+
         GrupoDTO grupoSeleccionado = tablaGrupos.getSelectionModel().getSelectedItem();
 
         if (grupoSeleccionado == null) {
-            utilidades.mostrarAlerta("Error",
+            gestorVentanas.mostrarAlerta("Error",
                     "Grupo no seleccionado",
                     "Por favor, seleccione un grupo para eliminar.");
             return;
         }
 
-        utilidades.mostrarAlertaConfirmacion(
+        gestorVentanas.mostrarAlertaConfirmacion(
                 "Confirmar eliminación",
                 "¿Está seguro que desea eliminar el grupo seleccionado?",
                 "Se eliminarán el grupo seleccionado . Esta acción no se puede deshacer.",
@@ -335,55 +347,54 @@ public class ControladorCrearGruposYPeriodoGUI {
                     eliminarGrupoConfirmado(grupoSeleccionado);
                 },
                 () -> {
-                    utilidades.mostrarAlerta("Cancelado",
+                    gestorVentanas.mostrarAlerta("Cancelado",
                             "Eliminación cancelada",
                             "No se ha eliminado ningún grupo.");
                 }
-
         );
-
     }
 
     private void eliminarGrupoConfirmado(GrupoDTO grupoSeleccionado) {
+
+        GrupoDAO grupoDAO = new GrupoDAO();
+        EstudianteDAO estudianteDAO = new EstudianteDAO();
+
         try {
 
-            GrupoDAO grupoDAO = new GrupoDAO();
-            EstudianteDAO estudianteDAO = new EstudianteDAO();
             estudianteDAO.eliminarEstudiantesPorGrupo(grupoSeleccionado.getNRC());
             grupoDAO.eliminarGrupoPorNRC(grupoSeleccionado.getNRC());
             cargarGruposActivos();
-            utilidades.mostrarAlerta("Éxito",
+            gestorVentanas.mostrarAlerta("Éxito",
                     "Grupo eliminado",
                     "El grupo se ha eliminado correctamente.");
 
-        } catch (Exception e) {
-            utilidades.mostrarAlerta("Error",
-                    "Error al eliminar el grupo",
-                    "Ocurrió un error al eliminar el grupo: ");
+        } catch (SQLException e) {
+
+            manejadorExcepciones.manejarSQLException(e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
         }
     }
 
     @FXML
     private void cargarGruposActivos() {
 
-        try {
+        GrupoDAO grupoDAO = new GrupoDAO();
 
-            GrupoDAO grupoDAO = new GrupoDAO();
+        try {
 
             List<GrupoDTO> gruposActivos = grupoDAO.mostrarGruposActivosEnPeriodoActivo();
             tablaGrupos.setItems(FXCollections.observableArrayList(gruposActivos));
 
         } catch (SQLException e) {
 
-            utilidades.mostrarAlerta("Error de base de datos",
-                    "Error al cargar grupos",
-                    "Ocurrió un problema al acceder a la base de datos: " + e);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
-            utilidades.mostrarAlerta("Error de entrada/salida",
-                    "Error al cargar grupos",
-                    "Ocurrió un problema al procesar los datos: " + e);
 
+            manejadorExcepciones.manejarIOException(e);
         }
     }
 }

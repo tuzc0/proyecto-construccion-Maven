@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 import logica.ContenedorCriteriosEvaluacion;
 import logica.DAOs.*;
 import logica.DTOs.*;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
@@ -34,12 +36,14 @@ public class ControladorDetallesEvaluacionGUI {
 
     @FXML private TextArea txtComentarios;
 
-    Utilidades utilidades = new Utilidades();
+    Utilidades gestionVentanas = new Utilidades();
+    IGestorAlertas utilidades = new Utilidades();
+    ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, logger);
 
     int idEvaluacion = 0;
 
-
     public void setIdEvaluacion(int idEvaluacion) {
+
         this.idEvaluacion = idEvaluacion;
     }
 
@@ -58,7 +62,7 @@ public class ControladorDetallesEvaluacionGUI {
         if (evaluacion == null) {
 
             logger.error("No se pudo cargar la evaluación con ID: " + idEvaluacion);
-            utilidades.mostrarAlerta("Error",
+            gestionVentanas.mostrarAlerta("Error",
                     "No se pudo cargar la evaluación",
                     "La evaluación solicitada no existe o no se pudo cargar.");
             cerrarVentana();
@@ -97,18 +101,11 @@ public class ControladorDetallesEvaluacionGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error al buscar la evaluación por ID: " + e);
-            utilidades.mostrarAlerta("Error de BD",
-                    "Error al buscar evaluación",
-                    "No se pudo conectar con la base de datos.");
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            logger.error("Error al cargar la evaluación: " + e);
-            utilidades.mostrarAlerta("Error",
-                    "Error al cargar datos",
-                    "Ocurrió un error al cargar los datos de la evaluación.");
-
+            manejadorExcepciones.manejarIOException(e);
         }
 
         return null;
@@ -121,7 +118,8 @@ public class ControladorDetallesEvaluacionGUI {
 
         try {
 
-            AcademicoEvaluadorDTO evaluador = academicoEvaluadorDAO.buscarAcademicoEvaluadorPorNumeroDePersonal(numeroPersonal);
+            AcademicoEvaluadorDTO evaluador =
+                    academicoEvaluadorDAO.buscarAcademicoEvaluadorPorNumeroDePersonal(numeroPersonal);
 
             if (evaluador == null) {
                 return "Evaluador no encontrado";
@@ -130,31 +128,41 @@ public class ControladorDetallesEvaluacionGUI {
             UsuarioDTO usuario = usuarioDAO.buscarUsuarioPorID(evaluador.getIdUsuario());
             return usuario.getNombre() + " " + usuario.getApellido();
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
 
-            logger.error("Error al obtener nombre del evaluador: " + e);
+            manejadorExcepciones.manejarSQLException(e);
+            return "Error al cargar evaluador";
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
             return "Error al cargar evaluador";
         }
+
     }
 
     private void cargarDatosCriteriosEvaluacion(int idEvaluacionGenerada) {
 
+        CriterioEvaluacionDAO criterioEvaluacionDAO = new CriterioEvaluacionDAO();
+        EvaluacionContieneDAO evaluacionContieneDAO = new EvaluacionContieneDAO();
+
         try {
 
-            CriterioEvaluacionDAO criterioEvaluacionDAO = new CriterioEvaluacionDAO();
-            EvaluacionContieneDAO evaluacionContieneDAO = new EvaluacionContieneDAO();
-
             List<CriterioEvaluacionDTO> listaCriterios = criterioEvaluacionDAO.listarCriteriosActivos();
-            List<EvaluacionContieneDTO> listaEvaluacionContiene = evaluacionContieneDAO.listarCriteriosEvaluacionPorIdEvaluacion(idEvaluacionGenerada);
+            List<EvaluacionContieneDTO> listaEvaluacionContiene =
+                    evaluacionContieneDAO.listarCriteriosEvaluacionPorIdEvaluacion(idEvaluacionGenerada);
 
-            ObservableList<ContenedorCriteriosEvaluacion> listaContenedorCriterios = FXCollections.observableArrayList();
+            ObservableList<ContenedorCriteriosEvaluacion> listaContenedorCriterios =
+                    FXCollections.observableArrayList();
 
             for (CriterioEvaluacionDTO criterio : listaCriterios) {
 
                 for (EvaluacionContieneDTO evaluacionContiene : listaEvaluacionContiene) {
 
                     if (criterio.getIDCriterio() == evaluacionContiene.getIdCriterio()) {
-                        listaContenedorCriterios.add(new ContenedorCriteriosEvaluacion(criterio, evaluacionContiene));
+
+                        listaContenedorCriterios.add(new ContenedorCriteriosEvaluacion(criterio,
+                                evaluacionContiene));
                     }
                 }
             }
@@ -163,22 +171,17 @@ public class ControladorDetallesEvaluacionGUI {
 
         } catch (SQLException e) {
 
-            logger.error("Error de SQL: " + e);
-            utilidades.mostrarAlerta("Error de BD",
-                    "Error al cargar criterios",
-                    "No se pudieron cargar los criterios de evaluación.");
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            logger.error("Error de IO: " + e);
-            utilidades.mostrarAlerta("Error",
-                    "Error al cargar datos",
-                    "Ocurrió un error al cargar los criterios.");
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             logger.error("Error inesperado: " + e);
-            utilidades.mostrarAlerta("Error",
+            gestionVentanas.mostrarAlerta(
+                    "Error",
                     "Error inesperado",
                     "Ocurrió un error inesperado al cargar los criterios.");
         }

@@ -1,6 +1,5 @@
 package GUI.gestionacademico;
 
-import GUI.ManejadorExepciones;
 import GUI.utilidades.Utilidades;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -17,7 +16,9 @@ import logica.DTOs.CuentaDTO;
 import logica.DTOs.AcademicoDTO;
 import logica.DTOs.GrupoDTO;
 import logica.DTOs.UsuarioDTO;
+import logica.ManejadorExcepciones;
 import logica.VerificacionUsuario;
+import logica.interfaces.IGestorAlertas;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -59,12 +60,11 @@ public class ControladorGestorAcademicosGUI {
     @FXML private Button botonSeleccionarAcademicos;
     @FXML private Button botonRegistrarAcademico;
 
-    private Utilidades utilidades = new Utilidades();
+    private Utilidades gestorVentanas = new Utilidades();
+    private IGestorAlertas utilidades = new Utilidades();
+    private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(utilidades, LOGGER);
 
     private int idUsuario = 0;
-
-    ManejadorExepciones manejadorExepciones = new ManejadorExepciones();
-
 
     @FXML
     public void initialize() {
@@ -133,16 +133,16 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, LOGGER, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, LOGGER, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             LOGGER.error("Error inesperado al cargar académico: " + e);
-            utilidades.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error interno del sistema",
                     "Ocurrió un error al cargar los datos.",
                     "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
@@ -158,7 +158,7 @@ public class ControladorGestorAcademicosGUI {
 
         if (numeroDePersonal.isEmpty()) {
 
-            utilidades.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Búsqueda invalida",
                     "No se ingresó un número de personal.",
                     "Por favor, escribe el número de personal en el campo " +
@@ -198,7 +198,7 @@ public class ControladorGestorAcademicosGUI {
                 etiquetaNumeroDePersonalEncontrado.setText("");
                 etiquetaCorreoEncontrado.setText("");
 
-                utilidades.mostrarAlerta(
+                gestorVentanas.mostrarAlerta(
                         "Académico no encontrado",
                         "No hay registros que coincidan con el número ingresado.",
                         "Verifica que el número de personal sea correcto o " +
@@ -207,7 +207,7 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (NumberFormatException e) {
 
-            utilidades.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error de busqueda",
                     "El número de personal tiene que ser un número",
                     "Verifique que el número introducido en el campo de busqueda sea un número Ej.12345."
@@ -215,16 +215,16 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, LOGGER, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, LOGGER, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             LOGGER.error("Error inesperado al buscar académico: " + e);
-            utilidades.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error interno del sistema",
                     "Ocurrió un error al buscar el académico.",
                     "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
@@ -262,16 +262,16 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, LOGGER, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, LOGGER, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             LOGGER.error("Error inesperado al mostrar detalles del académico: " + e);
-            utilidades.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error interno del sistema",
                     "Ocurrió un error al mostrar los detalles del académico.",
                     "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
@@ -284,7 +284,7 @@ public class ControladorGestorAcademicosGUI {
     @FXML
     private void abrirVentanaRegistrarAcademico() {
 
-        utilidades.abrirVentana(
+        gestorVentanas.abrirVentana(
                 "/RegistroAcademicoGUI.fxml",
                 "Registro de Académico",
                 (Stage) botonRegistrarAcademico.getScene().getWindow()
@@ -307,7 +307,7 @@ public class ControladorGestorAcademicosGUI {
 
             if (grupoDTO.getNRC() != (-1)) {
 
-                utilidades.mostrarAlerta(
+                gestorVentanas.mostrarAlerta(
                         "Error al eliminar académico",
                         "El académico no puede ser eliminado porque está asignado a un grupo activo.",
                         "Por favor, desasigne al académico del grupo antes de intentar eliminarlo."
@@ -332,16 +332,16 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, LOGGER, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, LOGGER, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             LOGGER.error("Error inesperado al eliminar académico: " + e);
-            utilidades.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error interno del sistema",
                     "Ocurrió un error al eliminar el académico.",
                     "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
@@ -388,7 +388,7 @@ public class ControladorGestorAcademicosGUI {
 
         if (academicosSeleccionados == null || academicosSeleccionados.isEmpty()) {
 
-            utilidades.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error",
                     "No se han seleccionado académicos para eliminar.",
                     "Por favor, seleccione uno o más académicos en la tabla " +
@@ -399,7 +399,7 @@ public class ControladorGestorAcademicosGUI {
 
         List<AcademicoDTO> copiaAcademicos = new ArrayList<>(academicosSeleccionados);
 
-        utilidades.mostrarAlertaConfirmacion(
+        gestorVentanas.mostrarAlertaConfirmacion(
                 "Confirmar eliminación",
                 "¿Está seguro que desea eliminar los académicos seleccionados?",
                 "Se eliminarán " + academicosSeleccionados.size() +
@@ -417,7 +417,7 @@ public class ControladorGestorAcademicosGUI {
 
                     if (errorAlEliminar) {
 
-                        utilidades.mostrarAlerta(
+                        gestorVentanas.mostrarAlerta(
                                 "Error",
                                 "No fue posible eliminar algunos de los académicos seleccionados.",
                                 "Inténtelo más tarde o contacte al administrador."
@@ -425,7 +425,7 @@ public class ControladorGestorAcademicosGUI {
 
                     } else {
 
-                        utilidades.mostrarAlerta(
+                        gestorVentanas.mostrarAlerta(
                                 "Éxito",
                                 "Los académicos seleccionados han sido eliminados correctamente.",
                                 ""
@@ -443,7 +443,7 @@ public class ControladorGestorAcademicosGUI {
                         tablaAcademicos.getSelectionModel().select(academico);
                     }
 
-                    utilidades.mostrarAlerta(
+                    gestorVentanas.mostrarAlerta(
                             "Operación cancelada",
                             "La eliminación fue cancelada",
                             "Los académicos no han sido eliminados."
@@ -578,7 +578,7 @@ public class ControladorGestorAcademicosGUI {
             if (!listaDeCamposVacios.isEmpty()) {
 
                 String mensajeDelCampoVacio = String.join("\n", listaDeCamposVacios);
-                utilidades.mostrarAlerta(
+                gestorVentanas.mostrarAlerta(
                         "Campos vacíos",
                         "Por favor, complete todos los campos requeridos.",
                         mensajeDelCampoVacio
@@ -598,7 +598,7 @@ public class ControladorGestorAcademicosGUI {
             if (!errores.isEmpty()) {
 
                 String mensajeError = String.join("\n", errores);
-                utilidades.mostrarAlerta(
+                gestorVentanas.mostrarAlerta(
                         "Datos inválidos",
                         "Algunos campos contienen datos no válidos.",
                         mensajeError);
@@ -614,7 +614,7 @@ public class ControladorGestorAcademicosGUI {
                 if (academicoDAO.buscarAcademicoPorNumeroDePersonal(numeroPersonal).
                         getIdUsuario() != academicoNoEncontrado) {
 
-                    utilidades.mostrarAlerta(
+                    gestorVentanas.mostrarAlerta(
                             "Número de personal invalido",
                             "El número de personal ya está registrado en el sistema.",
                             "Por favor, ingrese un número de personal diferente.");
@@ -627,7 +627,7 @@ public class ControladorGestorAcademicosGUI {
                 if (!correoNoEncontrado.equals(cuentaDAO.buscarCuentaPorCorreo(correoEditado)
                         .getCorreoElectronico())) {
 
-                    utilidades.mostrarAlerta(
+                    gestorVentanas.mostrarAlerta(
                             "Correo electrónico invalido",
                             "El correo electrónico ya se encuentra registrado en el sistema.",
                             "Por favor, utilice un correo electrónico diferente.");
@@ -664,7 +664,7 @@ public class ControladorGestorAcademicosGUI {
             if (usuarioModificado && academicoModificado && cuentaModificada) {
 
                 LOGGER.info("El académico ha sido modificado correctamente.");
-                utilidades.mostrarAlertaConfirmacion(
+                gestorVentanas.mostrarAlertaConfirmacion(
                         "Éxito",
                         "Los cambios se han realizado correctamente.",
                         ""
@@ -673,7 +673,7 @@ public class ControladorGestorAcademicosGUI {
             } else {
 
                 LOGGER.warn("No se pudieron guardar completamente los cambios del académico.");
-                utilidades.mostrarAlerta(
+                gestorVentanas.mostrarAlerta(
                         "Error",
                         "No se pudieron guardar todos los cambios.",
                         "Algunos datos no se modificaron correctamente. " +
@@ -693,7 +693,7 @@ public class ControladorGestorAcademicosGUI {
         } catch (NumberFormatException e) {
 
             LOGGER.error("Error en formato numérico: " + e);
-            utilidades.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error de formato",
                     "El número de personal debe ser un valor numérico válido.",
                     "Por favor, revise el número de personal e intente de nuevo."
@@ -701,16 +701,16 @@ public class ControladorGestorAcademicosGUI {
 
         } catch (SQLException e) {
 
-            manejadorExepciones.manejarSQLException(e, LOGGER, utilidades);
+            manejadorExcepciones.manejarSQLException(e);
 
         } catch (IOException e) {
 
-            manejadorExepciones.manejarIOException(e, LOGGER, utilidades);
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 
             LOGGER.error("Error inesperado al registrar académico: " + e);
-            utilidades.mostrarAlerta(
+            gestorVentanas.mostrarAlerta(
                     "Error interno del sistema",
                     "Ocurrió un error al guardar los datos.",
                     "Ocurrió un error dentro del sistema al editar al académico, por favor inténtelo " +

@@ -12475,3 +12475,4 @@ The last packet sent successfully to the server was 0 milliseconds ago. The driv
 2025-06-22 21:03:06 [main] ERROR AcademicoDAOTest - Error de conexión con la base de datos: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
 
 The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-23 05:04:31 [JavaFX Application Thread] ERROR GUI.ControladorInicioDeSesionGUI - Error inesperado: javax.crypto.IllegalBlockSizeException: Input length must be multiple of 16 when decrypting with padded cipher

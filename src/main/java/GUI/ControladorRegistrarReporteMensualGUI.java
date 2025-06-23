@@ -301,6 +301,8 @@ public class ControladorRegistrarReporteMensualGUI {
             etiquetaErrorArchivos.setText("Error al subir archivos: " + e);
             logger.error("Error al subir archivos: ", e);
 
+            cancelarRegistro();
+
         }
     }
 
@@ -463,6 +465,10 @@ public class ControladorRegistrarReporteMensualGUI {
         } catch (SQLException e) {
 
             manejadorExcepciones.manejarSQLException(e);
+
+        } catch (IOException e) {
+
+            manejadorExcepciones.manejarIOException(e);
 
         } catch (Exception e) {
 

@@ -82,4 +82,12 @@
    <Pane layoutX="0.0" layoutY="576.0" prefHeight="40.0" prefWidth="898.0" style="-fx-background-color: #34495e;">
       <Label layoutX="20.0" layoutY="10.0" style="-fx-text-fill: #ecf0f1; -fx-font-size: 12;" text="Sistema Académico v1.0" />
    </Pane>
+   <Button layoutX="567.0" layoutY="98.0" mnemonicParsing="false" onAction="#abrirConsultarCronogramaActividades" prefHeight="60.0" prefWidth="300.0" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;" text="Consultar Cronogramas">
+      <padding>
+         <Insets bottom="10" left="20" right="20" top="10" />
+      </padding>
+      <effect>
+         <DropShadow color="rgba(0,0,0,0.3)" offsetX="3" offsetY="3" radius="5" />
+      </effect>
+   </Button>
 </Pane>

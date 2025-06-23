@@ -116,7 +116,7 @@ public class ActividadDAO implements IActividadDAO {
 
         ActividadDTO actividad = new ActividadDTO(-1, "N/A", "N/A", "N/A",null, null,  0);
 
-        String buscarSQLActividad = "SELECT * FROM actividad WHERE IDActividad = ?";
+        String buscarSQLActividad = "SELECT * FROM actividad WHERE idActividad = ?";
 
         try {
 
@@ -127,7 +127,7 @@ public class ActividadDAO implements IActividadDAO {
 
             if (resultadoConsulta.next()) {
 
-                actividad.setIDActividad(resultadoConsulta.getInt("IdActividad"));
+                actividad.setIDActividad(resultadoConsulta.getInt("idActividad"));
                 actividad.setNombre(resultadoConsulta.getString("nombre"));
                 actividad.setDuracion(resultadoConsulta.getString("duracion"));
                 actividad.setHitos(resultadoConsulta.getString("hitos"));

@@ -1,9 +1,16 @@
 package GUI.menuusarios;
 
 import GUI.ControladorInicioDeSesionGUI;
+import GUI.gestioncronogramaactividades.ControladorConsultarCronogramaActividadesGUI;
 import GUI.gestionestudiante.AuxiliarGestionEstudiante;
 import GUI.utilidades.Utilidades;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class ControladorMenuAcademicoGUI {
 
@@ -72,5 +79,10 @@ public class ControladorMenuAcademicoGUI {
         mostrarVentana(ventana);
     }
 
+    @FXML
+    public void abrirConsultarCronogramaActividades() {
 
+        String ventana = "/ConsultarCronogramaActividadesGUI.fxml";
+        mostrarVentana(ventana);
+    }
 }

@@ -12,7 +12,7 @@ import logica.DAOs.OrganizacionVinculadaDAO;
 import logica.DAOs.RepresentanteDAO;
 import logica.DTOs.OrganizacionVinculadaDTO;
 import logica.DTOs.RepresentanteDTO;
-import logica.utilidadesproyecto.AsociacionRepresentanteOrganizacionProyecto;
+import logica.utilidadesproyecto.AsociacionProyecto;
 import logica.utilidadesproyecto.SeleccionRepresentanteOrganizacion;
 import logica.interfaces.ISeleccionRepresentante;
 import org.apache.logging.log4j.LogManager;
@@ -28,11 +28,11 @@ public class ControladorSeleccionRepresentanteGUI {
             LogManager.getLogger(ControladorSeleccionRepresentanteGUI.class);
 
     @FXML
-    private TableView<AsociacionRepresentanteOrganizacionProyecto> tablaRepresentantes;
+    private TableView<AsociacionProyecto> tablaRepresentantes;
     @FXML
-    private TableColumn<AsociacionRepresentanteOrganizacionProyecto, String> columnaRepresentante;
+    private TableColumn<AsociacionProyecto, String> columnaRepresentante;
     @FXML
-    private TableColumn<AsociacionRepresentanteOrganizacionProyecto, String> columnaOrganizacion;
+    private TableColumn<AsociacionProyecto, String> columnaOrganizacion;
     @FXML
     private TextField campoBusqueda;
     @FXML
@@ -80,7 +80,7 @@ public class ControladorSeleccionRepresentanteGUI {
             List<RepresentanteDTO> representantes = representanteDAO.obtenerTodosLosRepresentantes();
             List<OrganizacionVinculadaDTO> organizaciones = organizacionDAO.obtenerTodasLasOrganizaciones();
 
-            ObservableList<AsociacionRepresentanteOrganizacionProyecto> listaRepresentantesYOrganizaciones =
+            ObservableList<AsociacionProyecto> listaRepresentantesYOrganizaciones =
                     FXCollections.observableArrayList();
 
             for (RepresentanteDTO representante : representantes) {
@@ -89,7 +89,7 @@ public class ControladorSeleccionRepresentanteGUI {
 
                     if (representante.getIdOrganizacion() == organizacion.getIdOrganizacion()) {
 
-                        listaRepresentantesYOrganizaciones.add(new AsociacionRepresentanteOrganizacionProyecto(
+                        listaRepresentantesYOrganizaciones.add(new AsociacionProyecto(
                                 representante, organizacion, null));
                     }
                 }
@@ -172,10 +172,10 @@ public class ControladorSeleccionRepresentanteGUI {
             return;
         }
 
-        ObservableList<AsociacionRepresentanteOrganizacionProyecto> listaFiltrada =
+        ObservableList<AsociacionProyecto> listaFiltrada =
                 FXCollections.observableArrayList();
 
-        for (AsociacionRepresentanteOrganizacionProyecto asociacion : tablaRepresentantes.getItems()) {
+        for (AsociacionProyecto asociacion : tablaRepresentantes.getItems()) {
 
             String nombreRepresentante = asociacion.getRepresentante().getNombre() + " " +
                     asociacion.getRepresentante().getApellidos();
@@ -205,7 +205,7 @@ public class ControladorSeleccionRepresentanteGUI {
     @FXML
     private void confirmarSeleccionRepresentante() {
 
-        AsociacionRepresentanteOrganizacionProyecto asociacionSeleccionada =
+        AsociacionProyecto asociacionSeleccionada =
                 tablaRepresentantes.getSelectionModel().getSelectedItem();
 
         if (asociacionSeleccionada != null) {

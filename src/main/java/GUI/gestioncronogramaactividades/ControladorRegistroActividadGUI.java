@@ -8,11 +8,18 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import logica.DAOs.ActividadDAO;
 import logica.DTOs.ActividadDTO;
+import logica.ManejadorExcepciones;
+import logica.interfaces.IGestorAlertas;
+import logica.verificacion.ValidarFechas;
 import logica.verificacion.VerificacionDeActividad;
 import logica.verificacion.VerificicacionGeneral;
 import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +41,10 @@ public class ControladorRegistroActividadGUI {
 
     private ControladorRegistroCronogramaActividadesGUI controladorCronogramaActividadesGUI;
     private String matriculaEstudiante;
-    private Utilidades UTILIDADES = new Utilidades();
+
+    private Utilidades gestorVentanas = new Utilidades();
+    private IGestorAlertas gestorAlertas = new Utilidades();
+    private ManejadorExcepciones manejadorExcepciones = new ManejadorExcepciones(gestorAlertas, logger);
 
     @FXML
     private void initialize() {
@@ -56,10 +66,9 @@ public class ControladorRegistroActividadGUI {
         botonCancelar.setCursor(Cursor.HAND);
     }
 
-    private List<ActividadDTO> actividadesSecundarias = new ArrayList<>();
 
     @FXML
-    private void añadirActividad() {
+    private void añadirActividad() throws SQLException, IOException {
 
         String nombreActividad = campoNombreActividad.getText();
         String duracion = campoDuracion.getText();
@@ -67,22 +76,45 @@ public class ControladorRegistroActividadGUI {
         LocalDate fechaInicio = fechaInicioActividad.getValue();
         LocalDate fechaFin = fechaFinActividad.getValue();
 
-        if (fechaInicio == null || fechaFin == null) {
+        ValidarFechas validarFechas = new ValidarFechas();
 
-            UTILIDADES.mostrarAlerta(
-                    "Fechas vacías",
-                    "Se necesitan ambas fechas para la actividad",
-                    "Por favor, seleccione la fecha de inicio y fin"
+        List<String> erroresEnLasFechas = validarFechas.validarFechas(fechaInicio, fechaFin);
+
+        if (!erroresEnLasFechas.isEmpty()) {
+
+            String error = String.join("\n", erroresEnLasFechas);
+            gestorVentanas.mostrarAlerta(
+                    "Error",
+                    "Algunos datos dentro de las fechas son incorrectos.",
+                    error
             );
             return;
         }
 
-        if (!fechaInicio.isBefore(fechaFin)) {
+        VerificacionDeActividad verificacionActividad = new VerificacionDeActividad();
 
-            UTILIDADES.mostrarAlerta(
-                    "Error en fechas",
-                    "La fecha inicio debe ser anterior a la fecha fin",
-                    "Por favor, corrija las fechas"
+        List<String> camposVacios =
+                verificacionActividad.validarCamposVacios(nombreActividad, duracion, hitos);
+
+        if (!camposVacios.isEmpty()) {
+
+            gestorVentanas.mostrarAlerta(
+                    "Campos vacíos",
+                    "Complete los campos requeridos",
+                    String.join("\n", camposVacios)
+            );
+            return;
+        }
+
+        List<String> datosInvalidos =
+                verificacionActividad.validarCamposInvalidos(nombreActividad, duracion, hitos);
+
+        if (!datosInvalidos.isEmpty()) {
+
+            gestorVentanas.mostrarAlerta(
+                    "Datos inválidos",
+                    "Verifique los campos",
+                    String.join("\n", datosInvalidos)
             );
             return;
         }
@@ -100,51 +132,33 @@ public class ControladorRegistroActividadGUI {
                 estadoActivo
         );
 
-        VerificacionDeActividad verificacionActividad = new VerificacionDeActividad();
-
-        List<String> camposVacios = verificacionActividad.validarCamposVacios(nombreActividad, duracion, hitos);
-
-        if (!camposVacios.isEmpty()) {
-
-            UTILIDADES.mostrarAlerta(
-                    "Campos vacíos",
-                    "Complete los campos requeridos",
-                    String.join("\n", camposVacios)
-            );
-            return;
-        }
-
-        List<String> datosInvalidos = verificacionActividad.validarCamposInvalidos(nombreActividad, duracion, hitos);
-
-        if (!datosInvalidos.isEmpty()) {
-
-            UTILIDADES.mostrarAlerta(
-                    "Datos inválidos",
-                    "Verifique los campos",
-                    String.join("\n", datosInvalidos)
-            );
-            return;
-        }
-
         if (controladorCronogramaActividadesGUI != null) {
+
             controladorCronogramaActividadesGUI.agregarActividadSecundaria(actividadDTO);
+            gestorVentanas.mostrarAlerta(
+                    "Éxito",
+                    "Actividad añadida",
+                    "La actividad se ha añadido correctamente al cronograma"
+            );
         }
 
         ((Stage) botonAñadir.getScene().getWindow()).close();
-
     }
 
     @FXML
     private void cancelar() {
+
         ((Stage) botonCancelar.getScene().getWindow()).close();
     }
 
 
     public void setControladorPrincipal(ControladorRegistroCronogramaActividadesGUI controlador) {
+
         this.controladorCronogramaActividadesGUI = controlador;
     }
 
     public void setDatosIniciales(String matriculaEstudiante) {
+
         this.matriculaEstudiante = matriculaEstudiante;
     }
 }

@@ -21,7 +21,7 @@ import logica.DAOs.ProyectoDAO;
 import logica.DAOs.RepresentanteDAO;
 import logica.DTOs.ProyectoDTO;
 import logica.DTOs.RepresentanteDTO;
-import logica.utilidadesproyecto.AsociacionRepresentanteOrganizacionProyecto;
+import logica.utilidadesproyecto.AsociacionProyecto;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -33,19 +33,19 @@ public class ControladorConsultarProyectosGUI {
             .getLogger(ControladorConsultarProyectosGUI.class.getName());
 
     @FXML
-    private TableView<AsociacionRepresentanteOrganizacionProyecto>
+    private TableView<AsociacionProyecto>
             tablaProyectos;
     @FXML
-    private TableColumn<AsociacionRepresentanteOrganizacionProyecto, String>
+    private TableColumn<AsociacionProyecto, String>
             columnaNombreProyecto;
     @FXML
-    private TableColumn<AsociacionRepresentanteOrganizacionProyecto, String>
+    private TableColumn<AsociacionProyecto, String>
             columnaNombreRepresentante;
     @FXML
-    private TableColumn<AsociacionRepresentanteOrganizacionProyecto, Void>
+    private TableColumn<AsociacionProyecto, Void>
             columnaVerDetalles;
     @FXML
-    private TableColumn<AsociacionRepresentanteOrganizacionProyecto, Void>
+    private TableColumn<AsociacionProyecto, Void>
             columnaEliminarProyecto;
     @FXML
     private TextField campoBusqueda;
@@ -98,15 +98,15 @@ public class ControladorConsultarProyectosGUI {
 
     private void añadirBotonVerDetallesATabla() {
 
-        Callback<TableColumn<AsociacionRepresentanteOrganizacionProyecto, Void>,
-                TableCell<AsociacionRepresentanteOrganizacionProyecto, Void>>
+        Callback<TableColumn<AsociacionProyecto, Void>,
+                TableCell<AsociacionProyecto, Void>>
                 fabricadorCeldas = columnaProyecto -> new TableCell<>() {
 
             private final Button botonDetalles = new Button("Ver detalles");
             {
                 botonDetalles.setOnAction(evento -> {
 
-                    AsociacionRepresentanteOrganizacionProyecto asociacionSeleccionada =
+                    AsociacionProyecto asociacionSeleccionada =
                             getTableView().getItems().get(getIndex());
                     ProyectoDTO proyectoSeleccionado = asociacionSeleccionada.getProyecto();
                     abrirVentanaDetallesProyecto(proyectoSeleccionado);
@@ -136,14 +136,14 @@ public class ControladorConsultarProyectosGUI {
 
     private void añadirBotonEliminarATabla() {
 
-        Callback<TableColumn<AsociacionRepresentanteOrganizacionProyecto, Void>,
-                TableCell<AsociacionRepresentanteOrganizacionProyecto, Void>>
+        Callback<TableColumn<AsociacionProyecto, Void>,
+                TableCell<AsociacionProyecto, Void>>
                 fabricadorCeldas = columna -> new TableCell<>() {
 
             private final Button botonEliminar = new Button("Eliminar");
             {
                 botonEliminar.setOnAction(evento -> {
-                    AsociacionRepresentanteOrganizacionProyecto asociacionSeleccionada =
+                    AsociacionProyecto asociacionSeleccionada =
                             getTableView().getItems().get(getIndex());
                     ProyectoDTO proyectoAEliminar = asociacionSeleccionada.getProyecto();
                     confirmarEliminacion(proyectoAEliminar);
@@ -210,7 +210,7 @@ public class ControladorConsultarProyectosGUI {
             List<ProyectoDTO> proyectos = proyectoDAO.listarProyectos();
             List<RepresentanteDTO> representantes = representanteDAO.obtenerTodosLosRepresentantes();
 
-            ObservableList<AsociacionRepresentanteOrganizacionProyecto> listaRepresentantesProyectos =
+            ObservableList<AsociacionProyecto> listaRepresentantesProyectos =
                     FXCollections.observableArrayList();
 
             for (ProyectoDTO proyectoDTO : proyectos) {
@@ -220,7 +220,7 @@ public class ControladorConsultarProyectosGUI {
                     if (proyectoDTO.getIdRepresentante() == representanteDTO.getIDRepresentante()) {
 
                         listaRepresentantesProyectos.add(
-                                new AsociacionRepresentanteOrganizacionProyecto(
+                                new AsociacionProyecto(
                                         representanteDTO,
                                         null,
                                         proyectoDTO
@@ -330,10 +330,10 @@ public class ControladorConsultarProyectosGUI {
             return;
         }
 
-        ObservableList<AsociacionRepresentanteOrganizacionProyecto> proyectosFiltrados =
+        ObservableList<AsociacionProyecto> proyectosFiltrados =
                 FXCollections.observableArrayList();
 
-        for (AsociacionRepresentanteOrganizacionProyecto asociacionProyecto : tablaProyectos.getItems()) {
+        for (AsociacionProyecto asociacionProyecto : tablaProyectos.getItems()) {
 
             String nombreProyecto = asociacionProyecto.getProyecto().getNombre().toLowerCase();
             String nombreRepresentante = asociacionProyecto.getRepresentante().getNombre().toLowerCase();
@@ -346,6 +346,7 @@ public class ControladorConsultarProyectosGUI {
         }
 
         if (proyectosFiltrados.isEmpty()) {
+
             utilidades.mostrarAlerta(
                     "Proyecto no encontrado",
                     "No se ha encontrado ningún proyecto activo con ese nombre",

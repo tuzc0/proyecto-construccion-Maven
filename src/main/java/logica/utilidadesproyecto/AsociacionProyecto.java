@@ -4,14 +4,14 @@ import logica.DTOs.OrganizacionVinculadaDTO;
 import logica.DTOs.ProyectoDTO;
 import logica.DTOs.RepresentanteDTO;
 
-public class AsociacionRepresentanteOrganizacionProyecto {
+public class AsociacionProyecto {
 
     private RepresentanteDTO representante;
     private OrganizacionVinculadaDTO organizacion;
     private ProyectoDTO proyecto;
 
-    public AsociacionRepresentanteOrganizacionProyecto(RepresentanteDTO representante,
-                                                       OrganizacionVinculadaDTO organizacion, ProyectoDTO proyecto) {
+    public AsociacionProyecto(RepresentanteDTO representante,
+                              OrganizacionVinculadaDTO organizacion, ProyectoDTO proyecto) {
 
         this.representante = representante;
         this.organizacion = organizacion;

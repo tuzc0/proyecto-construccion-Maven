@@ -139,4 +139,39 @@ public class HorarioProyectoDAO implements IHorarioProyectoDAO {
 
         return listaHorarios;
     }
+
+    public List<HorarioProyectoDTO> buscarHorarioPorMatricula(String matriculaEstudiante) throws SQLException, IOException {
+
+        String buscarHorarioSQL = "SELECT * FROM horariosproyecto WHERE idEstudiante = ?";
+        List<HorarioProyectoDTO> listaHorarios = new ArrayList<>();
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaHorarioProyecto = conexionBaseDeDatos.prepareStatement(buscarHorarioSQL);
+            sentenciaHorarioProyecto.setString(1, matriculaEstudiante);
+            resultadoBusquedaHorario = sentenciaHorarioProyecto.executeQuery();
+
+            while (resultadoBusquedaHorario.next()) {
+
+                int iDHorario = resultadoBusquedaHorario.getInt("idHorario");
+                int iDProyecto = resultadoBusquedaHorario.getInt("idProyecto");
+                String dia = resultadoBusquedaHorario.getString("diaSemana");
+                Time horaDeInicio = resultadoBusquedaHorario.getTime("horaInicio");
+                Time horaDeFin = resultadoBusquedaHorario.getTime("horaFin");
+                String idEstudiante = resultadoBusquedaHorario.getString("idEstudiante");
+
+                HorarioProyectoDTO horarioProyectoDTO = new HorarioProyectoDTO(iDHorario, iDProyecto, dia, horaDeInicio, horaDeFin, idEstudiante);
+                listaHorarios.add(horarioProyectoDTO);
+            }
+
+        } finally {
+
+            if (sentenciaHorarioProyecto != null) {
+                sentenciaHorarioProyecto.close();
+            }
+        }
+
+        return listaHorarios;
+    }
 }

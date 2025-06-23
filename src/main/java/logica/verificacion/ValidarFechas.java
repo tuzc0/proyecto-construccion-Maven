@@ -22,13 +22,18 @@ public class ValidarFechas {
         LocalDate fechaFinPeriodoActual = periodoDTO.getFechaFinal().toLocalDate();
 
         if (fechaInicio == null || fechaFin == null) {
+
             errores.add("Debe seleccionar ambas fechas.");
+
         } else {
+
             if (fechaInicio.isBefore(fechaInicioPeriodoActual) || fechaFin.isAfter(fechaFinPeriodoActual)) {
+
                 errores.add("Las fechas seleccionadas deben estar dentro del periodo actual.");
             }
 
             if (fechaInicio.isAfter(fechaFin)) {
+
                 errores.add("La fecha de inicio no puede ser posterior a la fecha de fin.");
             }
         }

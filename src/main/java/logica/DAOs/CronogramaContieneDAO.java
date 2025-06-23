@@ -160,4 +160,31 @@ public class CronogramaContieneDAO implements ICronogramaContieneDAO {
         return listaCronogramaContiene;
     }
 
+    public List<Integer> obtenerActividadesPorCronograma(int idCronograma) throws SQLException, IOException {
+
+        List<Integer> idsActividades = new ArrayList<>();
+        String consultaSQL = "SELECT idActividad FROM cronogramacontiene WHERE idCronograma = ? AND estadoActivo = 1";
+
+        try {
+
+            conexionBaseDeDatos = new ConexionBaseDeDatos().getConnection();
+            sentenciaCronograma = conexionBaseDeDatos.prepareStatement(consultaSQL);
+            sentenciaCronograma.setInt(1, idCronograma);
+            resultadoConsulta = sentenciaCronograma.executeQuery();
+
+            while (resultadoConsulta.next()) {
+
+                idsActividades.add(resultadoConsulta.getInt("idActividad"));
+            }
+
+        } finally {
+
+            if (sentenciaCronograma != null) {
+
+                sentenciaCronograma.close();
+            }
+        }
+
+        return idsActividades;
+    }
 }

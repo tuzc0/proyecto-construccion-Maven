@@ -285,20 +285,21 @@ public class ControladorGestorAcademicoEvaluadorGUI {
     }
 
     private boolean eliminarAcademico(int numeroDePersonal) {
-
-        AcademicoDAO academicoDAO = new AcademicoDAO();
+        AcademicoEvaluadorDAO academicoEvaluadorDAO = new AcademicoEvaluadorDAO();
         boolean estadoEliminacion = false;
 
         try {
 
-            boolean academicoEliminado =
-                    academicoDAO.eliminarAcademicoPorNumeroDePersonal(numeroDePersonal);
+            boolean academicoEliminado = academicoEvaluadorDAO.eliminarAcademicoEvaluadorPorNumeroDePersonal(numeroDePersonal);
 
             if (academicoEliminado) {
+
                 estadoEliminacion = true;
+                LOGGER.info("Académico con número de personal " + numeroDePersonal + " eliminado correctamente.");
+
             } else {
-                LOGGER.warn("No se pudo eliminar al académico con número de personal: " +
-                        numeroDePersonal);
+
+                LOGGER.warn("No se pudo eliminar al académico con número de personal: " + numeroDePersonal);
             }
 
         } catch (SQLException e) {
@@ -308,6 +309,15 @@ public class ControladorGestorAcademicoEvaluadorGUI {
         } catch (IOException e) {
 
             manejadorExcepciones.manejarIOException(e);
+
+        } catch (Exception e) {
+            LOGGER.error("Error inesperado al eliminar académico: " + e);
+            utilidades.mostrarAlerta(
+                    "Error interno del sistema",
+                    "Ocurrió un error al eliminar el académico.",
+                    "Ocurrió un error dentro del sistema, por favor inténtelo de nuevo más tarde " +
+                            "o contacte al administrador."
+            );
         }
 
         return estadoEliminacion;

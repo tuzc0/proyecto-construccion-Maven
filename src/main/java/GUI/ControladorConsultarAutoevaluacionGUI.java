@@ -96,6 +96,12 @@ public class ControladorConsultarAutoevaluacionGUI {
 
             Timestamp fecha = auto.getFecha();
 
+            if (fecha != null) {
+                etiquetaFecha.setText(fecha.toLocalDateTime().toString());
+            } else {
+                etiquetaFecha.setText("Fecha no disponible");
+            }
+
             List<AutoEvaluacionContieneDTO> listaContiene = contieneDAO.listarAutoevaluacionesPorIdAutoevaluacion(idAutoevaluacion);
             List<CriterioAutoevaluacionDTO> listaCriterios = criterioDAO.listarCriteriosAutoevaluacionActivos();
 

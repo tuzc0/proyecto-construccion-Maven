@@ -440,12 +440,12 @@ public class EstudianteDAO implements IEstudianteDAO {
             try (ResultSet resultado = sentencia.executeQuery()) {
                 while (resultado.next()) {
                     EstudianteDTO estudiante = new EstudianteDTO(
-                            -1, // idUsuario (no necesario)
+                            -1,
                             resultado.getString("nombre"),
                             resultado.getString("apellidos"),
                             resultado.getString("matricula"),
-                            1,  // estadoActivo
-                            0   // idProyecto (no necesario)
+                            1,
+                            0
                     );
                     estudiantesNoEvaluados.add(estudiante);
                 }
@@ -599,6 +599,8 @@ public class EstudianteDAO implements IEstudianteDAO {
 
         return estudiantesConAutoevaluacion;
     }
+
+
 
 
 }
